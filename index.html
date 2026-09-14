@@ -281,12 +281,12 @@
             pointer-events: none;
         }
 
-        /* Text pushed to the far right */
+        /* Text moved higher and further to the right */
         .hero-text-overlay {
             position: absolute;
-            top: 15%;
-            right: 8%; /* Pushed to the right */
-            width: 55%;
+            top: 5%; /* Moved higher */
+            right: 4%; /* Moved further right */
+            width: 50%;
             z-index: 3;
             text-align: left;
             animation: slideUpFade 1s ease-out 0.5s forwards;
@@ -319,26 +319,28 @@
             margin-top: 20px;
         }
 
-        /* Bottom Button - Perfectly Centered */
+        /* Bottom Button - Smaller and Centered */
         .splash-btn-container {
             position: absolute;
             bottom: max(30px, env(safe-area-inset-bottom));
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 400px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center; /* Centers the button */
             z-index: 4;
             animation: slideUpFade 1s ease-out 0.8s forwards;
             opacity: 0;
         }
 
         .splash-btn-container .btn {
+            width: auto;
+            min-width: 200px; /* Smaller width */
+            padding: 14px 30px; /* Smaller padding */
+            font-size: 16px; /* Smaller font */
             background: var(--primary);
             color: white;
             border: 2px solid white;
             box-shadow: 0 8px 25px rgba(26, 138, 60, 0.4);
-            padding: 18px;
-            font-size: 18px;
         }
 
         /* --- Keyframe Animations --- */
@@ -646,7 +648,7 @@
         <div class="splash-hero">
             <img src="farmer.png" alt="Farmer in field">
             
-            <!-- Text moved to the far right -->
+            <!-- Text moved higher and further right -->
             <div class="hero-text-overlay">
                 <h2>Welcome<br>Farmer</h2>
                 <p>Grow your produce, reach more customers and build a better tomorrow.</p>
@@ -654,7 +656,7 @@
             </div>
         </div>
 
-        <!-- Button perfectly centered -->
+        <!-- Button centered and smaller -->
         <div class="splash-btn-container">
             <button class="btn btn-primary" onclick="navigateTo('screen-login')">Get Started &rarr;</button>
         </div>
