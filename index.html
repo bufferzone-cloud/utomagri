@@ -183,100 +183,159 @@
         .link:hover { text-decoration: underline; }
 
         /* =========================================
-           NEW AMAZING SPLASH SCREEN
+           NEW AMAZING SPLASH SCREEN (AgriConnect Style)
            ========================================= */
         #screen-splash {
             padding: 0;
             display: flex;
             flex-direction: column;
-            height: 100dvh; /* Dynamic viewport height for mobile browsers */
-            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+            height: 100dvh; /* Dynamic viewport height */
+            background: #ffffff;
+            position: relative;
             overflow: hidden;
         }
 
-        .splash-top {
-            flex: 1; /* Takes remaining space */
+        /* Decorative Leaves */
+        .leaf-top-left, .leaf-bottom-right {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+        .leaf-top-left { top: -20px; left: -20px; width: 120px; transform: rotate(15deg); }
+        .leaf-bottom-right { bottom: -20px; right: -20px; width: 150px; transform: rotate(-15deg); }
+
+        /* Header Section */
+        .splash-header {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            padding: 40px 20px;
+            padding-top: max(50px, env(safe-area-inset-top));
             z-index: 2;
+            position: relative;
+            text-align: center;
             animation: fadeInDown 1s ease-out;
         }
 
         .splash-logo {
-            width: clamp(140px, 35vw, 200px); /* Responsive logo sizing */
+            width: clamp(100px, 25vw, 140px);
             height: auto;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 15px 25px rgba(26, 138, 60, 0.25));
-            animation: float 4s ease-in-out infinite;
+            margin-bottom: 5px;
+            filter: drop-shadow(0 10px 15px rgba(26, 138, 60, 0.15));
         }
 
         .splash-title {
-            font-size: clamp(36px, 12vw, 56px);
+            font-size: clamp(32px, 8vw, 42px);
             font-weight: 800;
             color: var(--primary);
-            letter-spacing: 2px;
+            letter-spacing: -1px;
+            margin-bottom: 5px;
             text-transform: uppercase;
-            margin-bottom: 0;
-            text-shadow: 0 4px 10px rgba(26, 138, 60, 0.15);
         }
 
-        .splash-bottom {
-            position: relative;
-            flex: 1.2; /* Takes slightly more space for the image */
-            min-height: 300px;
+        .splash-tagline {
+            font-size: clamp(14px, 4vw, 16px);
+            color: var(--primary);
+            font-weight: 500;
+            letter-spacing: 1px;
             display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            overflow: hidden;
+            align-items: center;
+            gap: 8px;
         }
 
-        .farmer-image-container {
+        .splash-tagline span {
+            font-size: 8px;
+            color: var(--primary);
+        }
+
+        /* Hero Image & Overlay Text */
+        .splash-hero {
             position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 65%; /* Takes up bottom 65% */
             z-index: 1;
         }
 
-        .farmer-image-container img {
+        .splash-hero img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             object-position: top center;
             opacity: 0;
-            animation: fadeInImage 2s ease-out forwards;
+            animation: fadeInImage 1.5s ease-out forwards;
         }
 
-        /* White fade effect overlay */
-        .farmer-image-container::after {
+        /* Gradient overlay to blend the image smoothly into the white background */
+        .splash-hero::after {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 55%; /* Adjust fade height */
+            height: 40%;
             background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
             pointer-events: none;
         }
 
-        .splash-btn-container {
-            position: relative;
+        .hero-text-overlay {
+            position: absolute;
+            top: 15%;
+            right: 5%;
+            width: 60%;
             z-index: 3;
-            padding: 20px;
-            /* Safe area for notched phones */
-            padding-bottom: max(25px, env(safe-area-inset-bottom));
-            width: 100%;
-            background: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+            text-align: left;
             animation: slideUpFade 1s ease-out 0.5s forwards;
             opacity: 0;
         }
 
+        .hero-text-overlay h2 {
+            font-size: clamp(24px, 7vw, 32px);
+            color: #0d4e21; /* Dark green */
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .hero-text-overlay p {
+            font-size: clamp(13px, 3.5vw, 15px);
+            color: #1f2937;
+            line-height: 1.5;
+            margin-bottom: 0;
+            text-align: left;
+        }
+
+        /* Decorative green line under text */
+        .hero-text-overlay .line {
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+            margin-top: 20px;
+        }
+
+        /* Bottom Button */
+        .splash-btn-container {
+            position: absolute;
+            bottom: max(30px, env(safe-area-inset-bottom));
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            z-index: 4;
+            animation: slideUpFade 1s ease-out 0.8s forwards;
+            opacity: 0;
+        }
+
         .splash-btn-container .btn {
-            animation: pulse 2.5s infinite;
+            background: var(--primary);
+            color: white;
+            border: 2px solid white;
+            box-shadow: 0 8px 25px rgba(26, 138, 60, 0.4);
+            padding: 18px;
+            font-size: 18px;
         }
 
         /* --- Keyframe Animations --- */
@@ -293,18 +352,6 @@
         @keyframes fadeInImage {
             0% { opacity: 0; transform: scale(1.05); }
             100% { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(26, 138, 60, 0.5); }
-            70% { box-shadow: 0 0 0 15px rgba(26, 138, 60, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(26, 138, 60, 0); }
         }
 
         /* --- Account Selection Grid --- */
@@ -550,42 +597,20 @@
                 margin-top: 20px;
             }
 
-            /* Transform Splash Screen into a Split-Screen Hero layout */
+            /* Center the mobile view on desktop for the splash screen */
             #screen-splash {
-                flex-direction: row;
+                align-items: center;
+                background: #f0fdf4;
             }
-            .splash-top {
-                width: 50%;
-                height: 100%;
-                padding: 80px;
-                justify-content: center;
-                align-items: flex-start;
-                text-align: left;
-                background: linear-gradient(to right, #ffffff, #f0fdf4);
+            .splash-header, .splash-hero, .splash-btn-container {
+                max-width: 480px; /* Constrain to look like a phone */
+                width: 100%;
             }
-            .splash-title {
-                text-align: left;
-            }
-            .splash-bottom {
-                width: 50%;
-                height: 100%;
-                min-height: auto;
-            }
-            .farmer-image-container::after {
-                /* Horizontal fade for desktop */
-                height: 100%;
-                width: 30%;
-                background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
-            }
-            .splash-btn-container {
-                position: absolute;
-                bottom: 80px;
-                left: 80px;
-                width: calc(50% - 160px);
-                padding: 0;
-                background: none;
-                max-width: 350px;
-            }
+            .splash-header { margin-top: 5vh; }
+            .splash-hero { height: 60%; border-radius: 30px 30px 0 0; overflow: hidden; }
+            .splash-btn-container { bottom: 5vh; }
+            .leaf-top-left { left: calc(50% - 240px); top: 5vh; }
+            .leaf-bottom-right { right: calc(50% - 240px); bottom: 5vh; }
         }
     </style>
 </head>
@@ -593,19 +618,40 @@
 
 <div class="app-container">
     
-    <!-- 1. Splash Screen (Amazing Redesign) -->
+    <!-- 1. New Splash Screen (AgriConnect Style) -->
     <div id="screen-splash" class="screen active">
-        <div class="splash-top">
+        
+        <!-- Decorative Leaves -->
+        <svg class="leaf-top-left" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 90C10 90 20 50 60 30C100 10 90 10 90 10C90 10 50 20 30 60C10 100 10 90 10 90Z" fill="#4ade80" opacity="0.6"/>
+            <path d="M30 70C30 70 40 40 70 20C100 0 90 0 90 0C90 0 60 10 40 40C20 70 30 70 30 70Z" fill="#22c55e" opacity="0.4"/>
+        </svg>
+        
+        <svg class="leaf-bottom-right" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M90 10C90 10 80 50 40 70C0 90 10 90 10 90C10 90 50 80 70 40C90 0 90 10 90 10Z" fill="#4ade80" opacity="0.6"/>
+            <path d="M70 30C70 30 60 60 30 80C0 100 10 100 10 100C10 100 40 90 60 60C80 30 70 30 70 30Z" fill="#22c55e" opacity="0.4"/>
+        </svg>
+
+        <div class="splash-header">
             <img src="logo.png" alt="UTOM Logo" class="splash-logo">
             <h1 class="splash-title">UTOM</h1>
+            <div class="splash-tagline">
+                Farm <span>•</span> Buy <span>•</span> Sell <span>•</span> Deliver
+            </div>
         </div>
-        <div class="splash-bottom">
-            <div class="farmer-image-container">
-                <img src="farmer.png" alt="Farmer in field">
+
+        <div class="splash-hero">
+            <img src="farmer.png" alt="Farmer in field">
+            
+            <div class="hero-text-overlay">
+                <h2>Welcome<br>Farmer</h2>
+                <p>Grow your produce, reach more customers and build a better tomorrow.</p>
+                <div class="line"></div>
             </div>
-            <div class="splash-btn-container">
-                <button class="btn btn-primary" onclick="navigateTo('screen-login')">Get Started &rarr;</button>
-            </div>
+        </div>
+
+        <div class="splash-btn-container">
+            <button class="btn btn-primary" onclick="navigateTo('screen-login')">Get Started &rarr;</button>
         </div>
     </div>
 
