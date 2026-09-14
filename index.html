@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UTOM - Farm to Table</title>
+    <style>
+        /* --- CSS Variables & Reset --- */
+        :root {
+            --primary: #1a8a3c;
+            --primary-hover: #146d2f;
+            --primary-light: #e8f5e9;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --border: #d1d5db;
+            --bg: #ffffff;
+            --radius: 12px;
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #f3f4f6;
+            overflow: hidden; 
+        }
+
+        /* --- App Container --- */
+        .app-container {
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* --- Screen Management & Transitions --- */
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 30px 24px;
+            overflow-y: auto;
+            background: var(--bg);
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .screen.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        .screen::-webkit-scrollbar { width: 0px; }
+
+        .screen-content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        /* --- Common UI Elements --- */
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        h1 { font-size: 28px; color: var(--primary); margin-bottom: 5px; }
+        h2 { font-size: 22px; margin-bottom: 8px; }
+        p { color: var(--text-light); text-align: center; font-size: 14px; line-height: 1.5; margin-bottom: 24px; }
+
+        /* --- Inputs --- */
+        .input-group {
+            position: relative;
+            margin-bottom: 16px;
+            width: 100%;
+        }
+
+        .input-group svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            fill: var(--text-light);
+        }
+
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%;
+            padding: 14px 14px 14px 42px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.2s;
+            background: var(--bg);
+            -webkit-appearance: none;
+        }
+
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .input-group.no-icon input { padding-left: 14px; }
+
+        /* --- Buttons --- */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            -webkit-appearance: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 14px rgba(26, 138, 60, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 138, 60, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover { background: var(--primary-light); }
+
+        .link { color: var(--primary); text-decoration: none; font-size: 13px; font-weight: 600; }
+        .link:hover { text-decoration: underline; }
+
+        /* --- Splash Screen (Fixed Design) --- */
+        #screen-splash {
+            padding: 0;
+            justify-content: flex-end;
+            background: #ffffff;
+        }
+
+        .splash-content {
+            padding: 40px 24px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            z-index: 2;
+            background: radial-gradient(circle at top left, #ffffff, #f0fdf4);
+        }
+
+        .splash-content h1 {
+            font-size: 48px;
+            margin-bottom: 0;
+            letter-spacing: -1px;
+            color: var(--primary);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .splash-logo {
+            width: 160px; /* Made logo bigger */
+            height: 160px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .farmer-image-container {
+            width: 100%;
+            height: 40%;
+            position: relative;
+            overflow: hidden;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
+        }
+
+        .farmer-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+            /* Fade in animation */
+            opacity: 0;
+            animation: fadeInImage 2s ease-in-out forwards;
+        }
+
+        /* White fade effect overlay */
+        .farmer-image-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40%; /* Adjust this to control how much fade you want */
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes fadeInImage {
+            0% { opacity: 0; transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .splash-btn-container {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            padding: 0 24px;
+            z-index: 2;
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Account Selection Grid --- */
+        .account-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 10px;
+        }
+
+        .account-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            background: var(--bg);
+        }
+
+        .account-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .account-card.active-card {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .account-card.active-card svg { fill: white; }
+        .account-card.active-card p { color: rgba(255,255,255,0.8); }
+        .account-card svg { width: 40px; height: 40px; fill: var(--primary); margin-bottom: 12px; }
+        .account-card h3 { font-size: 16px; margin-bottom: 8px; }
+        .account-card p { font-size: 11px; margin-bottom: 0; line-height: 1.3; }
+
+        .arrow-icon {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .arrow-icon svg { width: 12px; height: 12px; margin: 0; }
+
+        /* --- Checkbox Grid --- */
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .custom-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .custom-checkbox input { display: none; }
+
+        .checkmark {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .custom-checkbox input:checked + .checkmark {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .custom-checkbox input:checked + .checkmark::after {
+            content: '';
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            margin-bottom: 2px;
+        }
+
+        /* --- Success Screen --- */
+        #screen-success {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 24px;
+            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            flex-shrink: 0;
+        }
+
+        .success-icon svg { width: 40px; height: 40px; fill: white; }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- Misc --- */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: var(--text-light);
+            font-size: 12px;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider span { padding: 0 10px; }
+
+        .top-nav {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            margin-right: 15px;
+        }
+
+        .back-btn svg { width: 24px; height: 24px; fill: var(--text-dark); }
+        .header-logo { display: flex; justify-content: center; flex-grow: 1; }
+        .header-logo img { width: 40px; height: 40px; }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .row label { display: flex; align-items: center; gap: 5px; color: var(--text-light); cursor: pointer; }
+
+        .file-upload {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 13px;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+            width: 100%;
+            background: #f9fafb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .file-upload svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--text-light);
+            transition: fill 0.2s;
+        }
+
+        .file-upload:hover svg { fill: var(--primary); }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            text-align: left;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* =========================================
+           RESPONSIVE DESIGN FOR PC / DESKTOP
+           ========================================= */
+        @media (min-width: 768px) {
+            .screen:not(#screen-splash) {
+                align-items: center;
+            }
+            .screen-content {
+                max-width: 520px;
+                flex-grow: 0;
+                background: white;
+                padding: 40px;
+                border-radius: 20px;
+                box-shadow: var(--shadow-lg);
+                margin-top: 20px;
+            }
+
+            /* Transform Splash Screen into a Split-Screen Hero layout */
+            #screen-splash {
+                flex-direction: row;
+                justify-content: flex-start;
+                background: #ffffff;
+            }
+            .splash-content {
+                width: 50%;
+                height: 100%;
+                padding: 60px 80px;
+                justify-content: center;
+                align-items: flex-start;
+                text-align: left;
+                background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+            }
+            .splash-content h1 { 
+                font-size: 64px; 
+                text-align: left; 
+                margin-bottom: 0;
+            }
+            .splash-logo {
+                width: 200px;
+                height: 200px;
+                margin-bottom: 0;
+            }
+            .farmer-image-container {
+                width: 50%;
+                height: 100%;
+                border-radius: 0;
+            }
+            .splash-btn-container {
+                position: absolute;
+                bottom: auto;
+                top: 70%;
+                left: 80px;
+                width: calc(50% - 160px);
+                padding: 0;
+                max-width: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    
+    <!-- 1. Splash Screen (Fixed Design) -->
+    <div id="screen-splash" class="screen active">
+        <div class="splash-content">
+            <img src="logo.png" alt="UTOM Logo" class="splash-logo">
+            <h1>UTOM</h1>
+        </div>
+        <div class="farmer-image-container">
+            <img src="farmer.png" alt="Farmer in field">
+        </div>
+        <div class="splash-btn-container">
+            <button class="btn btn-primary" onclick="navigateTo('screen-login')">Get Started &rarr;</button>
+        </div>
+    </div>
+
+    <!-- 2. Login Screen -->
+    <div id="screen-login" class="screen">
+        <div class="screen-content">
+            <div class="logo-container">
+                <img src="logo.png" alt="UTOM Logo" class="logo">
+                <h2>Welcome Back</h2>
+                <p>Log in to your account</p>
+            </div>
+            
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <input type="tel" placeholder="Phone Number">
+            </div>
+            
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                <input type="password" placeholder="Password">
+            </div>
+
+            <div class="row">
+                <label><input type="checkbox"> Remember me</label>
+                <a href="#" class="link">Forgot Password?</a>
+            </div>
+
+            <button class="btn btn-primary" onclick="navigateTo('screen-select')">Login &rarr;</button>
+            
+            <div class="divider"><span>OR</span></div>
+            
+            <button class="btn btn-outline" onclick="navigateTo('screen-select')">Create Account</button>
+        </div>
+    </div>
+
+    <!-- 3. Account Selection Screen -->
+    <div id="screen-select" class="screen">
+        <div class="screen-content">
+            <div class="top-nav">
+                <button class="back-btn" onclick="navigateTo('screen-login')">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                </button>
+                <div class="header-logo"><img src="logo.png" alt="UTOM"></div>
+            </div>
+            
+            <h2>Create Your Account</h2>
+            <p>What type of account do you need?</p>
+
+            <div class="account-grid">
+                <div class="account-card active-card" onclick="navigateTo('screen-farmer')">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                    <h3>Farmer</h3>
+                    <p>Grow and sell your produce</p>
+                    <div class="arrow-icon"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+                </div>
+                
+                <div class="account-card" onclick="navigateTo('screen-customer')">
+                    <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                    <h3>Customer</h3>
+                    <p>Buy fresh products and services</p>
+                    <div class="arrow-icon"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+                </div>
+                
+                <div class="account-card" onclick="navigateTo('screen-vendor')">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></svg>
+                    <h3>Vendor</h3>
+                    <p>Sell your products and grow your business</p>
+                    <div class="arrow-icon"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+                </div>
+                
+                <div class="account-card" onclick="navigateTo('screen-delivery')">
+                    <svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                    <h3>Delivery Partner</h3>
+                    <p>Deliver orders and earn</p>
+                    <div class="arrow-icon"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Farmer Account Screen (No Map Address) -->
+    <div id="screen-farmer" class="screen">
+        <div class="screen-content">
+            <div class="top-nav">
+                <button class="back-btn" onclick="navigateTo('screen-select')">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                </button>
+                <div class="header-logo"><img src="logo.png" alt="UTOM"></div>
+            </div>
+            
+            <h2>Farmer Account</h2>
+            <p>Let's get you started. Please fill in your farmer details.</p>
+
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <input type="text" placeholder="Full Name">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <input type="tel" placeholder="Phone Number">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <input type="email" placeholder="Email (Optional)">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                <input type="password" placeholder="Password">
+            </div>
+
+            <div class="input-group no-icon">
+                <select>
+                    <option value="" disabled selected>Select Province</option>
+                    <option>Province 1</option>
+                    <option>Province 2</option>
+                </select>
+            </div>
+            <div class="input-group no-icon">
+                <select>
+                    <option value="" disabled selected>Select District</option>
+                    <option>District 1</option>
+                    <option>District 2</option>
+                </select>
+            </div>
+
+            <div class="section-title">What do you produce?</div>
+            <div class="checkbox-grid">
+                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Vegetables</label>
+                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Fruits</label>
+                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Grains</label>
+                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Livestock</label>
+                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Poultry</label>
+                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Other</label>
+            </div>
+
+            <button class="btn btn-primary" onclick="navigateTo('screen-success')">Create Account</button>
+            <div style="height: 20px;"></div>
+        </div>
+    </div>
+
+    <!-- 5. Customer Account Screen -->
+    <div id="screen-customer" class="screen">
+        <div class="screen-content">
+            <div class="top-nav">
+                <button class="back-btn" onclick="navigateTo('screen-select')">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                </button>
+                <div class="header-logo"><img src="logo.png" alt="UTOM"></div>
+            </div>
+            
+            <h2>Customer Account</h2>
+            <p>Shop fresh. Live healthy.</p>
+
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <input type="text" placeholder="Full Name">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <input type="tel" placeholder="Phone Number">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <input type="email" placeholder="Email">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                <input type="password" placeholder="Password">
+            </div>
+
+            <button class="btn btn-primary" onclick="navigateTo('screen-success')">Create Account</button>
+        </div>
+    </div>
+
+    <!-- 6. Vendor Account Screen (No Map Address, ZRA & PACRA) -->
+    <div id="screen-vendor" class="screen">
+        <div class="screen-content">
+            <div class="top-nav">
+                <button class="back-btn" onclick="navigateTo('screen-select')">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                </button>
+                <div class="header-logo"><img src="logo.png" alt="UTOM"></div>
+            </div>
+            
+            <h2>Vendor Account</h2>
+            <p>Grow your business with us.</p>
+
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10z"/></svg>
+                <input type="text" placeholder="Business Name">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <input type="text" placeholder="Owner Name">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <input type="tel" placeholder="Phone Number">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <input type="email" placeholder="Email">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                <input type="password" placeholder="Password">
+            </div>
+
+            <div class="section-title">Business Description</div>
+            <div class="input-group">
+                <textarea rows="3" placeholder="Tell us about your business..."></textarea>
+            </div>
+
+            <div class="section-title">Required Documents</div>
+            <div class="file-upload">
+                <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+                <div>Upload Business Logo (PNG, JPG)</div>
+            </div>
+            <div class="file-upload">
+                <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+                <div>Upload ZRA Certificate (PDF, JPG)</div>
+            </div>
+            <div class="file-upload">
+                <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+                <div>Upload PACRA Certificate (PDF, JPG)</div>
+            </div>
+
+            <button class="btn btn-primary" onclick="navigateTo('screen-success')">Create Account</button>
+            <div style="height: 20px;"></div>
+        </div>
+    </div>
+
+    <!-- 7. Delivery Partner Account Screen (Dynamic Uploads) -->
+    <div id="screen-delivery" class="screen">
+        <div class="screen-content">
+            <div class="top-nav">
+                <button class="back-btn" onclick="navigateTo('screen-select')">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                </button>
+                <div class="header-logo"><img src="logo.png" alt="UTOM"></div>
+            </div>
+            
+            <h2>Delivery Partner</h2>
+            <p>Deliver today. Earn tomorrow.</p>
+
+            <div class="section-title">Personal Information</div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <input type="text" placeholder="Full Name">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <input type="tel" placeholder="Phone Number">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <input type="email" placeholder="Email">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                <input type="password" placeholder="Password">
+            </div>
+
+            <div class="section-title">Vehicle Type</div>
+            <div class="checkbox-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <label class="custom-checkbox"><input type="radio" name="vehicle" value="bicycle" checked><span class="checkmark" style="border-radius: 50%;"></span> Bicycle</label>
+                <label class="custom-checkbox"><input type="radio" name="vehicle" value="motorcycle"><span class="checkmark" style="border-radius: 50%;"></span> Motorcycle</label>
+                <label class="custom-checkbox"><input type="radio" name="vehicle" value="car"><span class="checkmark" style="border-radius: 50%;"></span> Car</label>
+                <label class="custom-checkbox"><input type="radio" name="vehicle" value="van"><span class="checkmark" style="border-radius: 50%;"></span> Van</label>
+                <label class="custom-checkbox"><input type="radio" name="vehicle" value="truck"><span class="checkmark" style="border-radius: 50%;"></span> Truck</label>
+            </div>
+
+            <div class="section-title">Vehicle Registration</div>
+            <div class="input-group no-icon">
+                <input type="text" placeholder="e.g. BA 1234">
+            </div>
+
+            <div class="section-title">Delivery Area</div>
+            <div class="input-group no-icon">
+                <select>
+                    <option value="" disabled selected>Select Area</option>
+                    <option>Area 1</option>
+                    <option>Area 2</option>
+                </select>
+            </div>
+
+            <div class="section-title">Upload Required Documents</div>
+            <!-- Dynamic Upload Container -->
+            <div id="dynamic-uploads">
+                <!-- Content will be injected via JavaScript based on vehicle selection -->
+            </div>
+
+            <button class="btn btn-primary" onclick="navigateTo('screen-success')">Create Account</button>
+            <div style="height: 20px;"></div>
+        </div>
+    </div>
+
+    <!-- 8. Success Screen -->
+    <div id="screen-success" class="screen">
+        <div class="screen-content" style="justify-content: center; align-items: center;">
+            <div class="logo-container">
+                <img src="logo.png" alt="UTOM Logo" class="logo">
+            </div>
+            
+            <div class="success-icon">
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
+            
+            <h2>Account Created!</h2>
+            <p>Your delivery partner account is awaiting approval.</p>
+
+            <div class="input-group" style="background: var(--primary-light); padding: 15px; border-radius: var(--radius); display: flex; gap: 10px; align-items: flex-start; margin-bottom: 30px;">
+                <svg viewBox="0 0 24 24" style="position: static; transform: none; fill: var(--primary); flex-shrink: 0;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                <span style="font-size: 13px; color: var(--text-dark); text-align: left;">You will be notified once your documents are verified.</span>
+            </div>
+
+            <button class="btn btn-primary" onclick="navigateTo('screen-login')" style="margin-top: auto; width: 100%;">Go to Login</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- Screen Navigation ---
+    function navigateTo(screenId) {
+        const currentScreen = document.querySelector('.screen.active');
+        const targetScreen = document.getElementById(screenId);
+
+        if (currentScreen && targetScreen && currentScreen !== targetScreen) {
+            currentScreen.classList.remove('active');
+            setTimeout(() => {
+                targetScreen.classList.add('active');
+                targetScreen.scrollTop = 0;
+            }, 50);
+        }
+    }
+
+    // --- Dynamic Upload Logic for Delivery Partner ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const vehicleRadios = document.querySelectorAll('input[name="vehicle"]');
+        const uploadContainer = document.getElementById('dynamic-uploads');
+
+        // Function to generate HTML for uploads based on vehicle type
+        function updateUploads(vehicleType) {
+            let html = '';
+            
+            const uploadIcon = `<svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>`;
+
+            if (vehicleType === 'bicycle') {
+                html = `
+                    <div class="file-upload">${uploadIcon}<div>Upload National ID (Front & Back)</div></div>
+                    <div class="file-upload">${uploadIcon}<div>Upload Bicycle Photo</div></div>
+                `;
+            } else if (vehicleType === 'motorcycle') {
+                html = `
+                    <div class="file-upload">${uploadIcon}<div>Upload National ID (Front & Back)</div></div>
+                    <div class="file-upload">${uploadIcon}<div>Upload Driver's License</div></div>
+                    <div class="file-upload">${uploadIcon}<div>Upload Motorcycle Photo</div></div>
+                    <div class="file-upload">${uploadIcon}<div>Upload Motorcycle Registration</div></div>
+                `;
+            } else {
+                // Car, Van, Truck
+                html = `
+                    <div class="file-upload">${uploadIcon}<div>Upload National ID (Front & Back)</div></div>
+                    <div class="file-upload">${uploadIcon}<div>Upload Driver's License</div></div>
+                    <div class="file-upload">${uploadIcon}<div>Upload Vehicle Registration (White Book)</div></div>
+                    <div class="file-upload">${uploadIcon}<div>Upload Vehicle Photo (Front & Side)</div></div>
+                    <div class="file-upload">${uploadIcon}<div>Upload Certificate of Fitness</div></div>
+                `;
+            }
+            
+            uploadContainer.innerHTML = html;
+        }
+
+        // Initialize with the default checked value (Bicycle)
+        const checkedVehicle = document.querySelector('input[name="vehicle"]:checked');
+        if (checkedVehicle) {
+            updateUploads(checkedVehicle.value);
+        }
+
+        // Add event listeners to radio buttons
+        vehicleRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                updateUploads(this.value);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
