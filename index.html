@@ -1,1087 +1,1342 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#0f7a34">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="U-AGRI">
-    <meta name="application-name" content="U-AGRI">
-    <meta name="description" content="U-AGRI — Farm · Buy · Sell · Deliver">
-    <title>U-AGRI · Farm to Table</title>
-
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="logo.png">
-    <link rel="icon" type="image/png" href="logo.png">
-
-    <style>
-        /* =========================================
-           DESIGN TOKENS
-           ========================================= */
-        :root {
-            --primary: #0f7a34;
-            --primary-hover: #0b5f28;
-            --primary-dark: #084d20;
-            --primary-light: #e6f5eb;
-            --primary-lighter: #f1faf4;
-            --primary-glow: rgba(15, 122, 52, 0.28);
-            --accent: #16a34a;
-            --accent-soft: #86efac;
-
-            --text-dark: #0f172a;
-            --text-body: #334155;
-            --text-light: #64748b;
-            --text-muted: #94a3b8;
-            --border: #e2e8f0;
-            --border-strong: #cbd5e1;
-            --surface: #ffffff;
-            --surface-alt: #f8fafc;
-            --bg: #f4f7f5;
-
-            --radius-sm: 10px;
-            --radius: 14px;
-            --radius-lg: 20px;
-            --radius-xl: 28px;
-            --radius-pill: 999px;
-
-            --ease: cubic-bezier(0.22, 1, 0.36, 1);
-            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-
-            --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
-            --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
-            --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.07), 0 2px 4px rgba(15, 23, 42, 0.04);
-            --shadow-lg: 0 12px 28px rgba(15, 23, 42, 0.09), 0 4px 10px rgba(15, 23, 42, 0.05);
-            --shadow-xl: 0 24px 48px rgba(15, 23, 42, 0.12), 0 8px 16px rgba(15, 23, 42, 0.06);
-            --shadow-brand: 0 10px 30px -8px var(--primary-glow);
-            --shadow-brand-lg: 0 20px 45px -12px var(--primary-glow);
-
-            --ring: 0 0 0 4px rgba(15, 122, 52, 0.14);
-
-            /* Fluid type scale — fits any phone */
-            --fs-xs: clamp(10px, 2.7vw, 12px);
-            --fs-sm: clamp(12px, 3.2vw, 13.5px);
-            --fs-base: clamp(13px, 3.6vw, 15px);
-            --fs-md: clamp(15px, 4.2vw, 17px);
-            --fs-lg: clamp(18px, 5.4vw, 23px);
-            --fs-xl: clamp(26px, 8.5vw, 40px);
-            --fs-title: clamp(34px, 12vw, 52px);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html {
-            -webkit-text-size-adjust: 100%;
-            height: 100%;
-        }
-
-        body {
-            width: 100%;
-            height: 100%;
-            min-height: 100dvh;
-            background-color: var(--bg);
-            overflow: hidden;
-            color: var(--text-body);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            text-rendering: optimizeLegibility;
-            overscroll-behavior: none;
-        }
-
-        /* =========================================
-           APP CONTAINER — fits any phone perfectly
-           ========================================= */
-        .app-container {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            height: 100dvh;
-            background: var(--surface);
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-        }
-
-        /* =========================================
-           SCREEN MANAGEMENT
-           ========================================= */
-        .screen {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            padding: calc(env(safe-area-inset-top, 0px) + 24px) 22px calc(env(safe-area-inset-bottom, 0px) + 24px);
-            overflow-y: auto;
-            overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
-            background: var(--surface);
-            opacity: 0;
-            transform: translateY(20px);
-            pointer-events: none;
-            transition: opacity 0.5s var(--ease), transform 0.55s var(--ease);
-            display: flex;
-            flex-direction: column;
-            will-change: opacity, transform;
-        }
-
-        .screen.active {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-            z-index: 10;
-        }
-
-        .screen.fade-out {
-            opacity: 0;
-            transform: scale(0.98);
-            transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
-        }
-
-        .screen::-webkit-scrollbar { width: 0; height: 0; }
-        .screen { scrollbar-width: none; -ms-overflow-style: none; }
-
-        .screen-content {
-            width: 100%;
-            max-width: 520px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        /* =========================================
-           LOADER SCREEN
-           ========================================= */
-        #screen-loader {
-            padding: 0;
-            background: linear-gradient(180deg, #ffffff 0%, #f3fbf5 55%, #eaf7ee 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            opacity: 1;
-            transform: none;
-            pointer-events: auto;
-        }
-
-        #screen-loader.active { z-index: 100; }
-
-        .loader-stage {
-            position: relative;
-            width: clamp(180px, 58vw, 240px);
-            height: clamp(180px, 58vw, 240px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2;
-            flex-shrink: 0;
-        }
-
-        .loader-icon {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transform: scale(0.5);
-            pointer-events: none;
-            will-change: transform, opacity;
-        }
-
-        .loader-icon.active {
-            animation: fadeZoom 1200ms var(--ease) forwards;
-        }
-
-        @keyframes fadeZoom {
-            0%   { transform: scale(0.5);   opacity: 0; }
-            18%  { transform: scale(1.10);  opacity: 1; }
-            28%  { transform: scale(1);     opacity: 1; }
-            72%  { transform: scale(1);     opacity: 1; }
-            100% { transform: scale(0.42);  opacity: 0; }
-        }
-
-        .icon-circle {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: clamp(70px, 28vw, 110px);
-            line-height: 1;
-            border: 4px solid #ffffff;
-            box-shadow:
-                0 28px 60px -18px rgba(15, 23, 42, 0.32),
-                0 10px 24px -10px rgba(15, 23, 42, 0.22),
-                inset 0 -8px 18px rgba(0, 0, 0, 0.09),
-                inset 0 6px 14px rgba(255, 255, 255, 0.38);
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        .icon-circle.tomato   { background: linear-gradient(145deg, #ff8a8a 0%, #e63946 55%, #b91c1c 100%); }
-        .icon-circle.maize    { background: linear-gradient(145deg, #ffe066 0%, #f4a100 55%, #c47b00 100%); }
-        .icon-circle.cow      { background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 55%, #5c3a22 100%); }
-        .icon-circle.onion    { background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 55%, #6b21a8 100%); }
-        .icon-circle.apple    { background: linear-gradient(145deg, #fca5a5 0%, #dc2626 55%, #991b1b 100%); }
-        .icon-circle.delivery { background: linear-gradient(145deg, #93c5fd 0%, #2563eb 55%, #1e40af 100%); }
-        .icon-circle.pharmacy { background: linear-gradient(145deg, #6ee7b7 0%, #10b981 55%, #047857 100%); }
-
-        .icon-circle.logo-circle {
-            background: linear-gradient(145deg, #ffffff 0%, #f3fbf5 60%, #d7f0df 100%);
-            padding: 14%;
-        }
-        .icon-circle.logo-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 6px 14px rgba(15, 122, 52, 0.28));
-        }
-
-        .plus-icon {
-            position: relative;
-            display: block;
-            width: 1em;
-            height: 1em;
-            filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
-        }
-        .plus-icon::before,
-        .plus-icon::after {
-            content: '';
-            position: absolute;
-            background: #ffffff;
-            border-radius: 0.09em;
-        }
-        .plus-icon::before {
-            left: 50%;
-            top: 0;
-            width: 0.28em;
-            height: 100%;
-            transform: translateX(-50%);
-        }
-        .plus-icon::after {
-            top: 50%;
-            left: 0;
-            height: 0.28em;
-            width: 100%;
-            transform: translateY(-50%);
-        }
-
-        .loader-brand {
-            position: relative;
-            margin-top: 18px;
-            text-align: center;
-            z-index: 2;
-            width: 100%;
-            padding: 0 24px;
-        }
-
-        .loader-brand h1 {
-            font-size: clamp(30px, 9vw, 42px);
-            font-weight: 900;
-            color: var(--primary);
-            letter-spacing: -0.04em;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            line-height: 1;
-        }
-
-        .loader-brand p {
-            font-size: clamp(10px, 3vw, 12.5px);
-            color: var(--primary);
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            opacity: 0.72;
-            margin: 0;
-        }
-
-        .loader-progress {
-            position: relative;
-            margin-top: clamp(26px, 8vw, 42px);
-            width: clamp(160px, 55vw, 200px);
-            height: 5px;
-            background: rgba(15, 122, 52, 0.14);
-            border-radius: 5px;
-            overflow: hidden;
-            z-index: 2;
-        }
-
-        .loader-progress-bar {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-soft), var(--primary));
-            border-radius: 5px;
-            transition: width 1.1s linear;
-            box-shadow: 0 0 14px var(--primary-glow);
-        }
-
-        .loader-blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            pointer-events: none;
-            z-index: 0;
-        }
-        .loader-blob.b1 {
-            width: 280px; height: 280px;
-            background: radial-gradient(circle, #86efac 0%, transparent 70%);
-            top: -80px; right: -100px;
-            opacity: 0.55;
-            animation: floatBlob 12s ease-in-out infinite;
-        }
-        .loader-blob.b2 {
-            width: 320px; height: 320px;
-            background: radial-gradient(circle, #bbf7d0 0%, transparent 70%);
-            bottom: -100px; left: -100px;
-            opacity: 0.5;
-            animation: floatBlob 15s ease-in-out infinite reverse;
-        }
-
-        @keyframes floatBlob {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-14px, 22px) scale(1.08); }
-        }
-
-        /* =========================================
-           SPLASH SCREEN — PLAIN WHITE, NO SHADOWS
-           ========================================= */
-        #screen-splash {
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            background: #ffffff;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .splash-inner {
-            position: relative;
-            z-index: 2;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            padding: calc(env(safe-area-inset-top, 0px) + 60px) 24px calc(env(safe-area-inset-bottom, 0px) + 160px);
-            text-align: center;
-            min-height: 0;
-        }
-
-        .splash-logo {
-            width: clamp(150px, 46vw, 240px);
-            height: auto;
-            margin-bottom: 8px;
-            filter: none;
-            animation: fadeInDown 1s var(--ease) both;
-        }
-
-        .splash-title {
-            font-size: var(--fs-title);
-            font-weight: 900;
-            color: var(--primary);
-            letter-spacing: -0.04em;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            line-height: 1;
-            animation: fadeInDown 1s var(--ease) 0.1s both;
-        }
-
-        .splash-tagline {
-            font-size: clamp(11px, 3.4vw, 14px);
-            color: var(--primary);
-            font-weight: 700;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            animation: fadeInDown 1s var(--ease) 0.2s both;
-        }
-
-        .splash-tagline span {
-            font-size: 7px;
-            color: var(--primary);
-            opacity: 0.6;
-        }
-
-        .hero-icons-row {
-            display: flex;
-            gap: clamp(8px, 2.8vw, 14px);
-            justify-content: center;
-            align-items: center;
-            margin-top: auto;
-            padding-top: clamp(24px, 8vw, 42px);
-            flex-wrap: wrap;
-            animation: slideUpFade 0.9s var(--ease) 0.4s both;
-            max-width: 100%;
-        }
-
-        .hero-icon-chip {
-            width: clamp(52px, 15vw, 72px);
-            height: clamp(52px, 15vw, 72px);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: clamp(24px, 8vw, 34px);
-            border: 3px solid #ffffff;
-            box-shadow:
-                0 16px 32px -12px rgba(15, 23, 42, 0.28),
-                inset 0 -5px 12px rgba(0, 0, 0, 0.07);
-            user-select: none;
-            transition: transform 0.3s var(--ease);
-        }
-
-        .hero-icon-chip.tomato   { background: linear-gradient(145deg, #ff8a8a 0%, #e63946 100%); }
-        .hero-icon-chip.maize    { background: linear-gradient(145deg, #ffe066 0%, #f4a100 100%); }
-        .hero-icon-chip.cow      { background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 100%); }
-        .hero-icon-chip.onion    { background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 100%); }
-        .hero-icon-chip.apple    { background: linear-gradient(145deg, #fca5a5 0%, #dc2626 100%); }
-        .hero-icon-chip.delivery { background: linear-gradient(145deg, #93c5fd 0%, #2563eb 100%); }
-        .hero-icon-chip.pharmacy { background: linear-gradient(145deg, #6ee7b7 0%, #10b981 100%); }
-
-        .hero-icon-chip .plus-icon { width: 0.9em; height: 0.9em; }
-
-        .splash-btn-container {
-            position: absolute;
-            bottom: calc(env(safe-area-inset-bottom, 0px) + 28px);
-            left: 0;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            padding: 0 24px;
-            z-index: 4;
-            animation: slideUpFade 0.9s var(--ease) 0.8s both;
-        }
-
-        .splash-btn-container .btn {
-            width: 100%;
-            max-width: 320px;
-            padding: 16px 32px;
-            font-size: var(--fs-base);
-        }
-
-        .btn-install {
-            display: none;
-            width: 100%;
-            max-width: 320px;
-            padding: 13px 28px;
-            font-size: var(--fs-sm);
-            background: rgba(255, 255, 255, 0.94);
-            color: var(--primary);
-            border: 1.5px solid var(--primary);
-            box-shadow: var(--shadow-md);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: var(--radius-pill);
-            font-weight: 700;
-            cursor: pointer;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            transition: transform 0.2s var(--ease), background 0.25s var(--ease);
-        }
-        .btn-install.show { display: flex; animation: slideUpFade 0.5s var(--ease) both; }
-        .btn-install:hover { background: var(--primary-light); transform: translateY(-2px); }
-        .btn-install:active { transform: translateY(0) scale(0.98); }
-        .btn-install svg { width: 16px; height: 16px; fill: var(--primary); flex-shrink: 0; }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-24px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(24px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* =========================================
-           BUTTONS
-           ========================================= */
-        .btn {
-            width: 100%;
-            padding: 16px;
-            border-radius: var(--radius-pill);
-            font-size: var(--fs-base);
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            -webkit-appearance: none;
-            position: relative;
-            overflow: hidden;
-            text-decoration: none;
-        }
-
-        .btn::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.35) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.4s var(--ease);
-            pointer-events: none;
-        }
-
-        .btn:active::after { opacity: 1; transition: opacity 0s; }
-
-        .btn-primary {
-            background: linear-gradient(180deg, #12903e 0%, var(--primary) 100%);
-            color: white;
-            box-shadow: var(--shadow-brand);
-        }
-        .btn-primary:hover {
-            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-hover) 100%);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-brand-lg);
-        }
-        .btn-primary:active { transform: translateY(0) scale(0.985); }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--primary);
-            border: 1.5px solid var(--primary);
-        }
-        .btn-outline:hover { background: var(--primary-light); transform: translateY(-2px); }
-        .btn-outline:active { transform: translateY(0) scale(0.985); }
-
-        .link {
-            color: var(--primary);
-            text-decoration: none;
-            font-size: var(--fs-sm);
-            font-weight: 600;
-        }
-        .link:hover { color: var(--primary-hover); text-decoration: underline; }
-
-        /* =========================================
-           LOGO / HEADINGS
-           ========================================= */
-        .logo-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            margin-bottom: 22px;
-        }
-
-        .logo {
-            width: 58px;
-            height: 58px;
-            object-fit: contain;
-            margin-bottom: 12px;
-            filter: drop-shadow(0 8px 14px rgba(15, 122, 52, 0.16));
-        }
-
-        h1, h2, h3 {
-            color: var(--text-dark);
-            text-align: center;
-            letter-spacing: -0.02em;
-        }
-        h2 { font-size: var(--fs-lg); margin-bottom: 8px; font-weight: 800; letter-spacing: -0.03em; }
-        h3 { font-size: var(--fs-md); font-weight: 700; }
-        p { color: var(--text-light); text-align: center; font-size: var(--fs-base); line-height: 1.55; margin-bottom: 24px; }
-
-        /* =========================================
-           INPUTS
-           ========================================= */
-        .input-group {
-            position: relative;
-            margin-bottom: 13px;
-            width: 100%;
-        }
-
-        .input-group svg {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 18px;
-            height: 18px;
-            fill: var(--text-muted);
-            transition: fill 0.25s var(--ease);
-            pointer-events: none;
-            z-index: 2;
-        }
-
-        .input-group input,
-        .input-group select,
-        .input-group textarea {
-            width: 100%;
-            padding: 15px 14px 15px 44px;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius);
-            font-size: 16px; /* prevents iOS zoom */
-            font-weight: 500;
-            color: var(--text-dark);
-            outline: none;
-            transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease);
-            background: var(--surface);
-            -webkit-appearance: none;
-            appearance: none;
-        }
-
-        .input-group textarea {
-            padding-left: 16px;
-            padding-top: 14px;
-            resize: vertical;
-            min-height: 90px;
-            line-height: 1.5;
-        }
-
-        .input-group input::placeholder,
-        .input-group textarea::placeholder { color: var(--text-muted); font-weight: 400; }
-
-        .input-group input:focus,
-        .input-group select:focus,
-        .input-group textarea:focus {
-            border-color: var(--primary);
-            box-shadow: var(--ring);
-            background: #fbfdfb;
-        }
-
-        .input-group input:focus ~ svg,
-        .input-group textarea:focus ~ svg { fill: var(--primary); }
-
-        .input-group.no-icon input,
-        .input-group.no-icon select,
-        .input-group.no-icon textarea { padding-left: 16px; }
-
-        .input-group select {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
-            padding-right: 42px;
-            cursor: pointer;
-        }
-
-        /* =========================================
-           TOP NAV
-           ========================================= */
-        .top-nav {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            width: 100%;
-        }
-
-        .back-btn {
-            background: var(--surface-alt);
-            border: 1px solid var(--border);
-            cursor: pointer;
-            padding: 10px;
-            margin-right: 14px;
-            border-radius: 50%;
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.22s var(--ease);
-            flex-shrink: 0;
-        }
-        .back-btn:hover { background: var(--primary-light); border-color: var(--primary); transform: translateX(-2px); }
-        .back-btn:active { transform: scale(0.94); }
-        .back-btn svg { width: 20px; height: 20px; fill: var(--text-dark); transition: fill 0.2s var(--ease); }
-        .back-btn:hover svg { fill: var(--primary); }
-
-        .header-logo { display: flex; justify-content: center; flex-grow: 1; }
-        .header-logo img {
-            width: 40px;
-            height: 40px;
-            filter: drop-shadow(0 4px 10px rgba(15, 122, 52, 0.12));
-        }
-
-        /* =========================================
-           ROW (remember me / forgot)
-           ========================================= */
-        .row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: var(--fs-sm);
-            margin-bottom: 20px;
-            width: 100%;
-            gap: 12px;
-        }
-        .row label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-light);
-            cursor: pointer;
-            font-weight: 500;
-        }
-        .row label input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            accent-color: var(--primary);
-            cursor: pointer;
-        }
-
-        /* =========================================
-           DIVIDER
-           ========================================= */
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 20px 0;
-            color: var(--text-muted);
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-        }
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border), transparent);
-        }
-        .divider span { padding: 0 14px; }
-
-        /* =========================================
-           ACCOUNT GRID
-           ========================================= */
-        .account-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .account-card {
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 20px 12px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
-            position: relative;
-            background: var(--surface);
-            overflow: hidden;
-            box-shadow: var(--shadow-xs);
-        }
-        .account-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--primary-light) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.35s var(--ease);
-            pointer-events: none;
-        }
-        .account-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-        }
-        .account-card:hover::before { opacity: 0.5; }
-        .account-card:active { transform: translateY(-1px) scale(0.985); }
-
-        .account-card.active-card {
-            background: linear-gradient(150deg, var(--primary) 0%, var(--primary-dark) 100%);
-            border-color: var(--primary-dark);
-            color: white;
-            box-shadow: var(--shadow-brand-lg);
-        }
-        .account-card.active-card::before { opacity: 0; }
-
-        .account-card svg {
-            width: 40px;
-            height: 40px;
-            fill: var(--primary);
-            margin-bottom: 12px;
-            position: relative;
-            z-index: 1;
-            transition: transform 0.4s var(--ease), fill 0.3s var(--ease);
-        }
-        .account-card:hover svg { transform: scale(1.08); }
-        .account-card.active-card svg { fill: #ffffff; }
-
-        .account-card h3 {
-            font-size: var(--fs-sm);
-            margin-bottom: 5px;
-            position: relative;
-            z-index: 1;
-            letter-spacing: -0.01em;
-        }
-        .account-card.active-card h3 { color: #ffffff; }
-
-        .account-card p {
-            font-size: var(--fs-xs);
-            margin-bottom: 0;
-            line-height: 1.4;
-            color: var(--text-light);
-            position: relative;
-            z-index: 1;
-        }
-        .account-card.active-card p { color: rgba(255,255,255,0.78); }
-
-        .arrow-icon {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            width: 22px;
-            height: 22px;
-            background: var(--primary-light);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.3s var(--ease), background 0.3s var(--ease);
-            z-index: 1;
-        }
-        .account-card:hover .arrow-icon { transform: translateX(2px); background: var(--primary); }
-        .account-card:hover .arrow-icon svg { fill: #ffffff; }
-        .account-card.active-card .arrow-icon { background: rgba(255,255,255,0.2); }
-        .arrow-icon svg {
-            width: 12px;
-            height: 12px;
-            margin: 0;
-            fill: var(--primary);
-            transition: fill 0.3s var(--ease);
-        }
-        .account-card.active-card .arrow-icon svg { fill: #ffffff; }
-
-        /* =========================================
-           CHECKBOXES & RADIOS
-           ========================================= */
-        .checkbox-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 9px;
-            margin-bottom: 20px;
-        }
-
-        .custom-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            font-size: var(--fs-sm);
-            font-weight: 500;
-            color: var(--text-dark);
-            cursor: pointer;
-            padding: 10px 11px;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            transition: all 0.22s var(--ease);
-            background: var(--surface);
-            user-select: none;
-        }
-        .custom-checkbox:hover {
-            border-color: var(--primary);
-            background: var(--primary-lighter);
-        }
-        .custom-checkbox:has(input:checked) {
-            border-color: var(--primary);
-            background: var(--primary-light);
-        }
-        .custom-checkbox input { display: none; }
-
-        .checkmark {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--border-strong);
-            border-radius: 6px;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.22s var(--ease);
-            flex-shrink: 0;
-            background: #ffffff;
-        }
-        .custom-checkbox input[type="radio"] + .checkmark { border-radius: 50%; }
-
-        .custom-checkbox input:checked + .checkmark {
-            background: var(--primary);
-            border-color: var(--primary);
-            transform: scale(1.05);
-        }
-        .custom-checkbox input:checked + .checkmark::after {
-            content: '';
-            width: 5px;
-            height: 9px;
-            border: solid white;
-            border-width: 0 2.5px 2.5px 0;
-            transform: rotate(45deg);
-            margin-bottom: 2px;
-        }
-        .custom-checkbox input[type="radio"]:checked + .checkmark::after {
-            content: '';
-            width: 7px;
-            height: 7px;
-            background: #ffffff;
-            border: none;
-            border-radius: 50%;
-            transform: none;
-            margin: 0;
-        }
-
-        /* =========================================
-           SECTION TITLE
-           ========================================= */
-        .section-title {
-            font-size: var(--fs-sm);
-            font-weight: 800;
-            color: var(--text-dark);
-            margin-bottom: 12px;
-            margin-top: 8px;
-            text-align: left;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            letter-spacing: 0.02em;
-            text-transform: uppercase;
-        }
-        .section-title::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, var(--border-strong), transparent);
-        }
-
-        /* =========================================
-           FILE UPLOAD
-           ========================================= */
-        .file-upload {
-            border: 2px dashed var(--border-strong);
-            border-radius: var(--radius);
-            padding: 20px 16px;
-            text-align: center;
-            color: var(--text-light);
-            font-size: var(--fs-sm);
-            font-weight: 500;
-            cursor: pointer;
-            margin-bottom: 11px;
-            transition: all 0.28s var(--ease);
-            width: 100%;
-            background: var(--surface-alt);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 9px;
-            position: relative;
-            overflow: hidden;
-        }
-        .file-upload:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-            background: #ffffff;
-        }
-        .file-upload:active { transform: translateY(0) scale(0.99); }
-        .file-upload svg {
-            width: 28px;
-            height: 28px;
-            fill: var(--text-muted);
-            transition: fill 0.25s var(--ease), transform 0.3s var(--ease);
-        }
-        .file-upload:hover svg { fill: var(--primary); transform: translateY(-2px) scale(1.05); }
-
-        /* =========================================
-           SUCCESS SCREEN
-           ========================================= */
-        #screen-success { justify-content: center; align-items: center; text-align: center; }
-
-        .success-icon {
-            width: 88px;
-            height: 88px;
-            background: linear-gradient(145deg, #12903e 0%, var(--primary-dark) 100%);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 24px;
-            animation: scaleIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-            flex-shrink: 0;
-            box-shadow: 0 20px 40px -12px var(--primary-glow), inset 0 -3px 8px rgba(0,0,0,0.15);
-            position: relative;
-        }
-        .success-icon::before {
-            content: '';
-            position: absolute;
-            inset: -8px;
-            border-radius: 50%;
-            border: 2px solid var(--primary);
-            opacity: 0.25;
-            animation: pulseRing 2s ease-out infinite;
-        }
-        @keyframes pulseRing {
-            0% { transform: scale(0.9); opacity: 0.4; }
-            100% { transform: scale(1.25); opacity: 0; }
-        }
-        .success-icon svg { width: 42px; height: 42px; fill: white; }
-        @keyframes scaleIn {
-            0% { transform: scale(0); }
-            100% { transform: scale(1); }
-        }
-
-        /* =========================================
-           UTILITY
-           ========================================= */
-        .hidden { display: none !important; }
-
-        /* =========================================
-           RESPONSIVE — DESKTOP CARD LOOK
-           ========================================= */
-        @media (min-width: 768px) {
-            body, html { background: linear-gradient(135deg, #eef7f0 0%, #e0f2e6 50%, #d5ecdc 100%); }
-
-            .screen:not(#screen-splash):not(#screen-loader) { align-items: center; }
-
-            .screen-content {
-                flex-grow: 0;
-                background: #ffffff;
-                padding: 44px 40px;
-                border-radius: var(--radius-xl);
-                box-shadow: var(--shadow-xl), 0 0 0 1px rgba(15, 23, 42, 0.03);
-                margin-top: 20px;
-                position: relative;
-            }
-
-            #screen-splash { align-items: center; }
-            .splash-inner { max-width: 480px; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0f7a34">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="U-AGRI">
+<meta name="application-name" content="U-AGRI">
+<meta name="description" content="U-AGRI — Farm · Buy · Sell · Deliver">
+<title>U-AGRI · Farm to Table</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="icon" type="image/png" href="logo.png">
+
+<script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+
+<script type="importmap">
+{
+  "imports": {
+    "firebase/app": "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js",
+    "firebase/auth": "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js",
+    "firebase/database": "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js"
+  }
+}
+</script>
+
+<style>
+/* =========================================
+   DESIGN TOKENS
+   ========================================= */
+:root {
+    --primary: #0f7a34;
+    --primary-hover: #0b5f28;
+    --primary-dark: #084d20;
+    --primary-light: #e6f5eb;
+    --primary-lighter: #f1faf4;
+    --primary-glow: rgba(15, 122, 52, 0.28);
+    --accent: #16a34a;
+    --accent-soft: #86efac;
+
+    --text-dark: #0f172a;
+    --text-body: #334155;
+    --text-light: #64748b;
+    --text-muted: #94a3b8;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --surface: #ffffff;
+    --surface-alt: #f8fafc;
+    --bg: #f4f7f5;
+
+    --danger: #dc2626;
+    --danger-bg: #fef2f2;
+    --warn: #b45309;
+    --warn-bg: #fffbeb;
+
+    --radius-sm: 10px;
+    --radius: 14px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+    --radius-pill: 999px;
+
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+    --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
+    --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.07), 0 2px 4px rgba(15, 23, 42, 0.04);
+    --shadow-lg: 0 12px 28px rgba(15, 23, 42, 0.09), 0 4px 10px rgba(15, 23, 42, 0.05);
+    --shadow-xl: 0 24px 48px rgba(15, 23, 42, 0.12), 0 8px 16px rgba(15, 23, 42, 0.06);
+    --shadow-brand: 0 10px 30px -8px var(--primary-glow);
+    --shadow-brand-lg: 0 20px 45px -12px var(--primary-glow);
+    --ring: 0 0 0 4px rgba(15, 122, 52, 0.14);
+
+    --fs-xs: clamp(10px, 2.7vw, 12px);
+    --fs-sm: clamp(12px, 3.2vw, 13.5px);
+    --fs-base: clamp(13px, 3.6vw, 15px);
+    --fs-md: clamp(15px, 4.2vw, 17px);
+    --fs-lg: clamp(18px, 5.4vw, 23px);
+    --fs-xl: clamp(26px, 8.5vw, 40px);
+    --fs-title: clamp(34px, 12vw, 52px);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html { -webkit-text-size-adjust: 100%; height: 100%; }
+
+body {
+    width: 100%;
+    height: 100%;
+    min-height: 100dvh;
+    background-color: var(--bg);
+    overflow: hidden;
+    color: var(--text-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overscroll-behavior: none;
+}
+
+/* =========================================
+   APP CONTAINER
+   ========================================= */
+.app-container {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    background: var(--surface);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+/* =========================================
+   SCREEN MANAGEMENT
+   ========================================= */
+.screen {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: calc(env(safe-area-inset-top, 0px) + 24px) 22px calc(env(safe-area-inset-bottom, 0px) + 24px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    background: var(--surface);
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    transition: opacity 0.5s var(--ease), transform 0.55s var(--ease);
+    display: flex;
+    flex-direction: column;
+    will-change: opacity, transform;
+}
+
+.screen.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    z-index: 10;
+}
+
+.screen.fade-out {
+    opacity: 0;
+    transform: scale(0.98);
+    transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+}
+
+.screen::-webkit-scrollbar { width: 0; height: 0; }
+.screen { scrollbar-width: none; -ms-overflow-style: none; }
+
+.screen-content {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+/* =========================================
+   LOADER SCREEN
+   ========================================= */
+#screen-loader {
+    padding: 0;
+    background: linear-gradient(180deg, #ffffff 0%, #f3fbf5 55%, #eaf7ee 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+}
+#screen-loader.active { z-index: 100; }
+
+.loader-stage {
+    position: relative;
+    width: clamp(180px, 58vw, 240px);
+    height: clamp(180px, 58vw, 240px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    flex-shrink: 0;
+}
+
+.loader-icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transform: scale(0.5);
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+.loader-icon.active { animation: fadeZoom 1200ms var(--ease) forwards; }
+
+@keyframes fadeZoom {
+    0%   { transform: scale(0.5);   opacity: 0; }
+    18%  { transform: scale(1.10);  opacity: 1; }
+    28%  { transform: scale(1);     opacity: 1; }
+    72%  { transform: scale(1);     opacity: 1; }
+    100% { transform: scale(0.42);  opacity: 0; }
+}
+
+.icon-circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(70px, 28vw, 110px);
+    line-height: 1;
+    border: 4px solid #ffffff;
+    box-shadow:
+        0 28px 60px -18px rgba(15, 23, 42, 0.32),
+        0 10px 24px -10px rgba(15, 23, 42, 0.22),
+        inset 0 -8px 18px rgba(0, 0, 0, 0.09),
+        inset 0 6px 14px rgba(255, 255, 255, 0.38);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.icon-circle.tomato   { background: linear-gradient(145deg, #ff8a8a 0%, #e63946 55%, #b91c1c 100%); }
+.icon-circle.maize    { background: linear-gradient(145deg, #ffe066 0%, #f4a100 55%, #c47b00 100%); }
+.icon-circle.cow      { background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 55%, #5c3a22 100%); }
+.icon-circle.onion    { background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 55%, #6b21a8 100%); }
+.icon-circle.apple    { background: linear-gradient(145deg, #fca5a5 0%, #dc2626 55%, #991b1b 100%); }
+.icon-circle.delivery { background: linear-gradient(145deg, #93c5fd 0%, #2563eb 55%, #1e40af 100%); }
+.icon-circle.pharmacy { background: linear-gradient(145deg, #6ee7b7 0%, #10b981 55%, #047857 100%); }
+
+.icon-circle.logo-circle {
+    background: linear-gradient(145deg, #ffffff 0%, #f3fbf5 60%, #d7f0df 100%);
+    padding: 14%;
+}
+.icon-circle.logo-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 14px rgba(15, 122, 52, 0.28));
+}
+
+.plus-icon {
+    position: relative;
+    display: block;
+    width: 1em;
+    height: 1em;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
+}
+.plus-icon::before,
+.plus-icon::after {
+    content: '';
+    position: absolute;
+    background: #ffffff;
+    border-radius: 0.09em;
+}
+.plus-icon::before { left: 50%; top: 0; width: 0.28em; height: 100%; transform: translateX(-50%); }
+.plus-icon::after  { top: 50%; left: 0; height: 0.28em; width: 100%; transform: translateY(-50%); }
+
+.loader-brand {
+    position: relative;
+    margin-top: 18px;
+    text-align: center;
+    z-index: 2;
+    width: 100%;
+    padding: 0 24px;
+}
+.loader-brand h1 {
+    font-size: clamp(30px, 9vw, 42px);
+    font-weight: 900;
+    color: var(--primary);
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    line-height: 1;
+}
+.loader-brand p {
+    font-size: clamp(10px, 3vw, 12.5px);
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.72;
+    margin: 0;
+}
+
+.loader-progress {
+    position: relative;
+    margin-top: clamp(26px, 8vw, 42px);
+    width: clamp(160px, 55vw, 200px);
+    height: 5px;
+    background: rgba(15, 122, 52, 0.14);
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 2;
+}
+.loader-progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-soft), var(--primary));
+    border-radius: 5px;
+    transition: width 1.1s linear;
+    box-shadow: 0 0 14px var(--primary-glow);
+}
+
+.loader-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+}
+.loader-blob.b1 {
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, #86efac 0%, transparent 70%);
+    top: -80px; right: -100px;
+    opacity: 0.55;
+    animation: floatBlob 12s ease-in-out infinite;
+}
+.loader-blob.b2 {
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, #bbf7d0 0%, transparent 70%);
+    bottom: -100px; left: -100px;
+    opacity: 0.5;
+    animation: floatBlob 15s ease-in-out infinite reverse;
+}
+@keyframes floatBlob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%      { transform: translate(-14px, 22px) scale(1.08); }
+}
+
+/* =========================================
+   SPLASH SCREEN
+   ========================================= */
+#screen-splash {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+
+.splash-inner {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: calc(env(safe-area-inset-top, 0px) + 60px) 24px calc(env(safe-area-inset-bottom, 0px) + 160px);
+    text-align: center;
+    min-height: 0;
+}
+
+.splash-logo {
+    width: clamp(150px, 46vw, 240px);
+    height: auto;
+    margin-bottom: 8px;
+    animation: fadeInDown 1s var(--ease) both;
+}
+
+.splash-title {
+    font-size: var(--fs-title);
+    font-weight: 900;
+    color: var(--primary);
+    letter-spacing: -0.04em;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    line-height: 1;
+    animation: fadeInDown 1s var(--ease) 0.1s both;
+}
+
+.splash-tagline {
+    font-size: clamp(11px, 3.4vw, 14px);
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    animation: fadeInDown 1s var(--ease) 0.2s both;
+}
+.splash-tagline span { font-size: 7px; opacity: 0.6; }
+
+.hero-icons-row {
+    display: flex;
+    gap: clamp(8px, 2.8vw, 14px);
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    padding-top: clamp(24px, 8vw, 42px);
+    flex-wrap: wrap;
+    animation: slideUpFade 0.9s var(--ease) 0.4s both;
+    max-width: 100%;
+}
+
+.hero-icon-chip {
+    width: clamp(52px, 15vw, 72px);
+    height: clamp(52px, 15vw, 72px);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(24px, 8vw, 34px);
+    border: 3px solid #ffffff;
+    box-shadow:
+        0 16px 32px -12px rgba(15, 23, 42, 0.28),
+        inset 0 -5px 12px rgba(0, 0, 0, 0.07);
+    user-select: none;
+    transition: transform 0.3s var(--ease);
+}
+.hero-icon-chip.tomato   { background: linear-gradient(145deg, #ff8a8a 0%, #e63946 100%); }
+.hero-icon-chip.maize    { background: linear-gradient(145deg, #ffe066 0%, #f4a100 100%); }
+.hero-icon-chip.cow      { background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 100%); }
+.hero-icon-chip.onion    { background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 100%); }
+.hero-icon-chip.apple    { background: linear-gradient(145deg, #fca5a5 0%, #dc2626 100%); }
+.hero-icon-chip.delivery { background: linear-gradient(145deg, #93c5fd 0%, #2563eb 100%); }
+.hero-icon-chip.pharmacy { background: linear-gradient(145deg, #6ee7b7 0%, #10b981 100%); }
+.hero-icon-chip .plus-icon { width: 0.9em; height: 0.9em; }
+
+.splash-btn-container {
+    position: absolute;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 28px);
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 0 24px;
+    z-index: 4;
+    animation: slideUpFade 0.9s var(--ease) 0.8s both;
+}
+.splash-btn-container .btn {
+    width: 100%;
+    max-width: 320px;
+    padding: 16px 32px;
+    font-size: var(--fs-base);
+}
+
+.btn-install {
+    display: none;
+    width: 100%;
+    max-width: 320px;
+    padding: 13px 28px;
+    font-size: var(--fs-sm);
+    background: rgba(255, 255, 255, 0.94);
+    color: var(--primary);
+    border: 1.5px solid var(--primary);
+    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.2s var(--ease), background 0.25s var(--ease);
+}
+.btn-install.show { display: flex; animation: slideUpFade 0.5s var(--ease) both; }
+.btn-install:hover { background: var(--primary-light); transform: translateY(-2px); }
+.btn-install:active { transform: translateY(0) scale(0.98); }
+.btn-install svg { width: 16px; height: 16px; fill: var(--primary); flex-shrink: 0; }
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   BUTTONS
+   ========================================= */
+.btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-base);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease), opacity 0.25s var(--ease);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    -webkit-appearance: none;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+}
+.btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+
+.btn-primary {
+    background: linear-gradient(180deg, #12903e 0%, var(--primary) 100%);
+    color: white;
+    box-shadow: var(--shadow-brand);
+}
+.btn-primary:hover:not(:disabled) {
+    background: linear-gradient(180deg, var(--primary) 0%, var(--primary-hover) 100%);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-brand-lg);
+}
+.btn-primary:active:not(:disabled) { transform: translateY(0) scale(0.985); }
+
+.btn-outline {
+    background: transparent;
+    color: var(--primary);
+    border: 1.5px solid var(--primary);
+}
+.btn-outline:hover:not(:disabled) { background: var(--primary-light); transform: translateY(-2px); }
+.btn-outline:active:not(:disabled) { transform: translateY(0) scale(0.985); }
+
+.btn-text {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: var(--fs-sm);
+    cursor: pointer;
+    padding: 8px;
+    font-family: inherit;
+}
+.btn-text:hover { text-decoration: underline; }
+
+.link {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 4px;
+}
+.link:hover { color: var(--primary-hover); text-decoration: underline; }
+
+/* =========================================
+   LOGO / HEADINGS
+   ========================================= */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 22px;
+}
+.logo {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 8px 14px rgba(15, 122, 52, 0.16));
+}
+
+h1, h2, h3 { color: var(--text-dark); text-align: center; letter-spacing: -0.02em; }
+h2 { font-size: var(--fs-lg); margin-bottom: 8px; font-weight: 800; letter-spacing: -0.03em; }
+h3 { font-size: var(--fs-md); font-weight: 700; }
+p  { color: var(--text-light); text-align: center; font-size: var(--fs-base); line-height: 1.55; margin-bottom: 24px; }
+
+/* =========================================
+   INPUTS
+   ========================================= */
+.input-group {
+    position: relative;
+    margin-bottom: 13px;
+    width: 100%;
+}
+.input-group svg {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    fill: var(--text-muted);
+    transition: fill 0.25s var(--ease);
+    pointer-events: none;
+    z-index: 2;
+}
+.input-group input,
+.input-group select,
+.input-group textarea {
+    width: 100%;
+    padding: 15px 14px 15px 44px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-dark);
+    outline: none;
+    transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease);
+    background: var(--surface);
+    -webkit-appearance: none;
+    appearance: none;
+    font-family: inherit;
+}
+.input-group textarea {
+    padding-left: 16px;
+    padding-top: 14px;
+    resize: vertical;
+    min-height: 90px;
+    line-height: 1.5;
+}
+.input-group input::placeholder,
+.input-group textarea::placeholder { color: var(--text-muted); font-weight: 400; }
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+    border-color: var(--primary);
+    box-shadow: var(--ring);
+    background: #fbfdfb;
+}
+.input-group input:focus ~ svg,
+.input-group textarea:focus ~ svg { fill: var(--primary); }
+
+.input-group.no-icon input,
+.input-group.no-icon select,
+.input-group.no-icon textarea { padding-left: 16px; }
+
+.input-group select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 42px;
+    cursor: pointer;
+}
+
+.input-group input[readonly] {
+    background: var(--primary-lighter);
+    border-color: rgba(15, 122, 52, 0.22);
+    color: var(--primary-dark);
+    font-weight: 600;
+    cursor: default;
+}
+.input-group input[readonly]:focus { box-shadow: none; border-color: rgba(15, 122, 52, 0.22); }
+
+.field-note {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    margin: -8px 0 12px 4px;
+    line-height: 1.4;
+    text-align: left;
+}
+
+/* =========================================
+   TOP NAV
+   ========================================= */
+.top-nav {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+.back-btn {
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    padding: 10px;
+    margin-right: 14px;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.22s var(--ease);
+    flex-shrink: 0;
+}
+.back-btn:hover { background: var(--primary-light); border-color: var(--primary); transform: translateX(-2px); }
+.back-btn:active { transform: scale(0.94); }
+.back-btn svg { width: 20px; height: 20px; fill: var(--text-dark); transition: fill 0.2s var(--ease); }
+.back-btn:hover svg { fill: var(--primary); }
+
+.header-logo { display: flex; justify-content: center; flex-grow: 1; }
+.header-logo img {
+    width: 40px;
+    height: 40px;
+    filter: drop-shadow(0 4px 10px rgba(15, 122, 52, 0.12));
+}
+
+/* =========================================
+   ROW (remember / forgot)
+   ========================================= */
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--fs-sm);
+    margin-bottom: 20px;
+    width: 100%;
+    gap: 12px;
+}
+.row label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-light);
+    cursor: pointer;
+    font-weight: 500;
+}
+.row label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+/* =========================================
+   DIVIDER
+   ========================================= */
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+}
+.divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.divider span { padding: 0 14px; }
+
+/* =========================================
+   ACCOUNT GRID
+   ========================================= */
+.account-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 10px;
+}
+.account-card {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 12px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
+    position: relative;
+    background: var(--surface);
+    overflow: hidden;
+    box-shadow: var(--shadow-xs);
+    font-family: inherit;
+    color: inherit;
+    -webkit-appearance: none;
+    appearance: none;
+}
+.account-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--primary-light) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.35s var(--ease);
+    pointer-events: none;
+}
+.account-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+.account-card:hover::before { opacity: 0.5; }
+.account-card:active { transform: translateY(-1px) scale(0.985); }
+
+.account-card svg {
+    width: 40px;
+    height: 40px;
+    fill: var(--primary);
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.4s var(--ease), fill 0.3s var(--ease);
+}
+.account-card:hover svg { transform: scale(1.08); }
+.account-card h3 { font-size: var(--fs-sm); margin-bottom: 5px; position: relative; z-index: 1; letter-spacing: -0.01em; }
+.account-card p { font-size: var(--fs-xs); margin-bottom: 0; line-height: 1.4; color: var(--text-light); position: relative; z-index: 1; }
+
+.arrow-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 22px;
+    height: 22px;
+    background: var(--primary-light);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s var(--ease), background 0.3s var(--ease);
+    z-index: 1;
+}
+.account-card:hover .arrow-icon { transform: translateX(2px); background: var(--primary); }
+.account-card:hover .arrow-icon svg { fill: #ffffff; }
+.arrow-icon svg { width: 12px; height: 12px; margin: 0; fill: var(--primary); transition: fill 0.3s var(--ease); }
+
+/* =========================================
+   SECTION TITLE
+   ========================================= */
+.section-title {
+    font-size: var(--fs-sm);
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    margin-top: 8px;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+.section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-strong), transparent);
+}
+
+/* =========================================
+   UPLOAD BOXES
+   ========================================= */
+.upload-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 11px;
+    margin-bottom: 14px;
+    width: 100%;
+}
+.upload-grid.single { grid-template-columns: 1fr; }
+
+.upload-box {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border: 2px dashed var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--surface-alt);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.25s var(--ease), background 0.25s var(--ease), transform 0.25s var(--ease);
+    padding: 8px;
+    text-align: center;
+    user-select: none;
+}
+.upload-box:hover {
+    border-color: var(--primary);
+    background: #ffffff;
+    transform: translateY(-2px);
+}
+.upload-box:active { transform: translateY(0) scale(0.985); }
+.upload-box.has-image {
+    border-style: solid;
+    border-color: var(--primary);
+    background: #ffffff;
+}
+.upload-box .ub-preview {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+.upload-box.has-image .ub-preview { display: block; }
+.upload-box.has-image .ub-icon,
+.upload-box.has-image .ub-label,
+.upload-box.has-image .ub-hint { display: none; }
+
+.upload-box .ub-icon {
+    width: 26px;
+    height: 26px;
+    fill: var(--text-muted);
+    transition: fill 0.25s var(--ease), transform 0.25s var(--ease);
+    flex-shrink: 0;
+}
+.upload-box:hover .ub-icon { fill: var(--primary); transform: scale(1.06); }
+
+.upload-box .ub-label {
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    color: var(--text-body);
+    line-height: 1.25;
+    padding: 0 4px;
+}
+.upload-box .ub-hint {
+    font-size: 9.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.upload-box .ub-change {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.78);
+    color: #ffffff;
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 4px 11px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    display: none;
+    z-index: 3;
+    white-space: nowrap;
+    pointer-events: none;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+.upload-box.has-image .ub-change { display: inline-block; }
+
+.upload-box.uploading { pointer-events: none; opacity: 0.65; }
+.upload-box.uploading::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.6);
+    z-index: 4;
+}
+
+/* =========================================
+   VEHICLE SELECTOR
+   ========================================= */
+.vehicle-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+    width: 100%;
+}
+.vehicle-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 12px 4px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    background: var(--surface);
+    transition: all 0.22s var(--ease);
+    text-align: center;
+    user-select: none;
+}
+.vehicle-card input { display: none; }
+.vehicle-card .vc-emoji { font-size: 22px; line-height: 1; }
+.vehicle-card .vc-name {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+.vehicle-card:has(input:checked) {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(15, 122, 52, 0.12);
+}
+.vehicle-card:has(input:checked) .vc-name { color: var(--primary-dark); }
+.vehicle-card:active { transform: scale(0.96); }
+
+/* =========================================
+   FORM ERROR / INFO
+   ========================================= */
+.form-error {
+    color: var(--danger);
+    background: var(--danger-bg);
+    border: 1px solid rgba(220, 38, 38, 0.2);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    padding: 11px 14px;
+    border-radius: var(--radius-sm);
+    margin: 4px 0 14px;
+    line-height: 1.45;
+    display: none;
+    text-align: left;
+}
+.form-error.show { display: block; animation: slideUpFade 0.28s var(--ease); }
+
+.info-box {
+    background: var(--primary-lighter);
+    border: 1px solid rgba(15, 122, 52, 0.15);
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    display: flex;
+    gap: 11px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+    text-align: left;
+}
+.info-box svg {
+    width: 18px; height: 18px; fill: var(--primary);
+    flex-shrink: 0; margin-top: 1px;
+}
+.info-box span {
+    font-size: var(--fs-sm);
+    color: var(--text-dark);
+    line-height: 1.55;
+    font-weight: 500;
+}
+
+.warn-box {
+    background: var(--warn-bg);
+    border: 1px solid rgba(180, 83, 9, 0.2);
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    display: flex;
+    gap: 11px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+    text-align: left;
+}
+.warn-box svg { width: 18px; height: 18px; fill: var(--warn); flex-shrink: 0; margin-top: 1px; }
+.warn-box span { font-size: var(--fs-sm); color: #78350f; line-height: 1.55; font-weight: 500; }
+
+/* =========================================
+   SUCCESS SCREEN
+   ========================================= */
+#screen-success { justify-content: center; align-items: center; }
+
+.success-icon {
+    width: 88px;
+    height: 88px;
+    background: linear-gradient(145deg, #12903e 0%, var(--primary-dark) 100%);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+    animation: scaleIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    flex-shrink: 0;
+    box-shadow: 0 20px 40px -12px var(--primary-glow), inset 0 -3px 8px rgba(0,0,0,0.15);
+    position: relative;
+}
+.success-icon::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+    opacity: 0.25;
+    animation: pulseRing 2s ease-out infinite;
+}
+@keyframes pulseRing {
+    0%   { transform: scale(0.9); opacity: 0.4; }
+    100% { transform: scale(1.25); opacity: 0; }
+}
+.success-icon svg { width: 42px; height: 42px; fill: white; }
+@keyframes scaleIn {
+    0%   { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+
+.success-icon.pending {
+    background: linear-gradient(145deg, #f59e0b 0%, #b45309 100%);
+    box-shadow: 0 20px 40px -12px rgba(180, 83, 9, 0.4), inset 0 -3px 8px rgba(0,0,0,0.15);
+}
+.success-icon.pending::before { border-color: #f59e0b; }
+
+.email-card {
+    background: linear-gradient(150deg, var(--primary-light) 0%, #ffffff 100%);
+    border: 1.5px solid rgba(15, 122, 52, 0.22);
+    border-radius: var(--radius-lg);
+    padding: 18px 18px 16px;
+    width: 100%;
+    margin-bottom: 22px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+.email-card .ec-label {
+    font-size: var(--fs-xs);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--primary);
+    margin-bottom: 8px;
+    display: block;
+}
+.email-card .ec-value {
+    font-size: var(--fs-md);
+    font-weight: 800;
+    color: var(--text-dark);
+    word-break: break-all;
+    line-height: 1.35;
+    display: block;
+    margin-bottom: 12px;
+    font-family: 'SF Mono', 'Roboto Mono', Menlo, Consolas, monospace;
+    letter-spacing: -0.02em;
+}
+.email-card .ec-copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: var(--fs-xs);
+    padding: 9px 18px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: transform 0.2s var(--ease), background 0.2s var(--ease);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.email-card .ec-copy:hover { background: var(--primary-hover); transform: translateY(-1px); }
+.email-card .ec-copy:active { transform: scale(0.96); }
+.email-card .ec-copy svg { width: 13px; height: 13px; fill: #fff; }
+
+/* =========================================
+   MODAL
+   ========================================= */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.25s var(--ease-out);
+}
+.modal-overlay.open { display: flex; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-card {
+    background: #ffffff;
+    border-radius: var(--radius-xl);
+    width: 100%;
+    max-width: 400px;
+    padding: 28px 24px 24px;
+    text-align: center;
+    box-shadow: 0 30px 70px -20px rgba(15, 23, 42, 0.4);
+    animation: modalIn 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+@keyframes modalIn {
+    from { opacity: 0; transform: scale(0.92) translateY(16px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #12903e 0%, var(--primary-dark) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+    box-shadow: 0 14px 30px -10px var(--primary-glow);
+}
+.modal-icon svg { width: 32px; height: 32px; fill: #fff; }
+.modal-icon.error { background: linear-gradient(145deg, #ef4444 0%, #991b1b 100%); box-shadow: 0 14px 30px -10px rgba(220,38,38,.4); }
+.modal-icon.pending { background: linear-gradient(145deg, #f59e0b 0%, #b45309 100%); box-shadow: 0 14px 30px -10px rgba(180,83,9,.4); }
+
+.modal-card h3 {
+    font-size: var(--fs-lg);
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: var(--text-dark);
+    letter-spacing: -0.03em;
+}
+.modal-card p {
+    font-size: var(--fs-sm);
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.modal-email-box {
+    background: var(--primary-lighter);
+    border: 1.5px solid rgba(15, 122, 52, 0.2);
+    border-radius: var(--radius);
+    padding: 14px 14px 12px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.modal-email-box .meb-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--primary);
+    margin-bottom: 6px;
+}
+.modal-email-box .meb-value {
+    display: block;
+    font-size: var(--fs-sm);
+    font-weight: 800;
+    color: var(--text-dark);
+    word-break: break-all;
+    font-family: 'SF Mono', 'Roboto Mono', Menlo, Consolas, monospace;
+    margin-bottom: 10px;
+}
+.modal-email-box .meb-copy {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 10px;
+    padding: 7px 14px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+.modal-email-box .meb-copy:active { transform: scale(0.96); }
+
+/* =========================================
+   TOAST
+   ========================================= */
+.toast {
+    position: fixed;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+    left: 50%;
+    transform: translate(-50%, 30px);
+    background: rgba(15, 23, 42, 0.94);
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+    z-index: 1000;
+    box-shadow: 0 12px 30px -8px rgba(0,0,0,0.4);
+    max-width: calc(100vw - 40px);
+    text-align: center;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* =========================================
+   UTILITY
+   ========================================= */
+.hidden { display: none !important; }
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (min-width: 768px) {
+    body, html { background: linear-gradient(135deg, #eef7f0 0%, #e0f2e6 50%, #d5ecdc 100%); }
+
+    .screen:not(#screen-splash):not(#screen-loader) { align-items: center; }
+
+    .screen-content {
+        flex-grow: 0;
+        background: #ffffff;
+        padding: 44px 40px;
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-xl), 0 0 0 1px rgba(15, 23, 42, 0.03);
+        margin-top: 20px;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    #screen-splash { align-items: center; }
+    .splash-inner { max-width: 480px; }
+}
+
+@media (max-width: 400px) {
+    .vehicle-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+</style>
 </head>
 <body>
 
 <div class="app-container">
 
     <!-- ============================
-         0. LOADER SCREEN
-         tomato → maize → cow → onion → apple → delivery → pharmacy → logo
+         0. LOADER
          ============================ -->
     <div id="screen-loader" class="screen active">
         <div class="loader-blob b1"></div>
@@ -1111,12 +1366,12 @@
     </div>
 
     <!-- ============================
-         1. SPLASH / GET STARTED
-         Plain white background, big logo at top, no shadows
+         1. SPLASH
          ============================ -->
     <div id="screen-splash" class="screen">
         <div class="splash-inner">
-            <img src="logo.png" alt="U-AGRI Logo" class="splash-logo">
+            <img src="logo.png" alt="U-AGRI Logo" class="splash-logo"
+                 onerror="this.style.display='none'">
             <h1 class="splash-title">UTOM-AGRI</h1>
             <div class="splash-tagline">
                 Farm <span>•</span> Buy <span>•</span> Sell <span>•</span> Deliver
@@ -1138,7 +1393,7 @@
                 <svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
                 Install U-AGRI App
             </button>
-            <button class="btn btn-primary" onclick="navigateTo('screen-login')">Get Started &rarr;</button>
+            <button class="btn btn-primary" type="button" data-nav="screen-login">Get Started →</button>
         </div>
     </div>
 
@@ -1148,31 +1403,35 @@
     <div id="screen-login" class="screen">
         <div class="screen-content">
             <div class="logo-container">
-                <img src="logo.png" alt="U-AGRI Logo" class="logo">
+                <img src="logo.png" alt="U-AGRI Logo" class="logo" onerror="this.style.display='none'">
                 <h2>Welcome Back</h2>
                 <p>Log in to your account to continue</p>
             </div>
 
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                <input type="tel" placeholder="Phone Number">
-            </div>
+            <form id="form-login" novalidate>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <input type="email" id="login-email" placeholder="Email address" autocomplete="email" required>
+                </div>
 
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                <input type="password" placeholder="Password">
-            </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" required>
+                </div>
 
-            <div class="row">
-                <label><input type="checkbox"> Remember me</label>
-                <a href="#" class="link">Forgot Password?</a>
-            </div>
+                <div class="row">
+                    <label><input type="checkbox" id="login-remember"> Remember me</label>
+                    <button type="button" class="link" id="forgot-link">Forgot Password?</button>
+                </div>
 
-            <button class="btn btn-primary" onclick="navigateTo('screen-select')">Login &rarr;</button>
+                <div class="form-error" id="login-error"></div>
+
+                <button type="submit" class="btn btn-primary" id="login-submit">Login →</button>
+            </form>
 
             <div class="divider"><span>OR</span></div>
 
-            <button class="btn btn-outline" onclick="navigateTo('screen-select')">Create Account</button>
+            <button class="btn btn-outline" type="button" data-nav="screen-select">Create Account</button>
         </div>
     </div>
 
@@ -1182,282 +1441,338 @@
     <div id="screen-select" class="screen">
         <div class="screen-content">
             <div class="top-nav">
-                <button class="back-btn" onclick="navigateTo('screen-login')">
+                <button class="back-btn" type="button" data-back>
                     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="U-AGRI"></div>
+                <div class="header-logo"><img src="logo.png" alt="U-AGRI" onerror="this.style.display='none'"></div>
             </div>
 
             <h2>Create Your Account</h2>
             <p>Choose the account type that fits you best</p>
 
             <div class="account-grid">
-                <div class="account-card active-card" onclick="navigateTo('screen-farmer')">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-                    <h3>Farmer</h3>
-                    <p>Grow and sell your produce</p>
-                    <div class="arrow-icon"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-                </div>
-
-                <div class="account-card" onclick="navigateTo('screen-customer')">
+                <button class="account-card" type="button" data-nav="screen-customer">
                     <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
                     <h3>Customer</h3>
-                    <p>Buy fresh products and services</p>
+                    <p>Buy fresh products</p>
                     <div class="arrow-icon"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-                </div>
+                </button>
 
-                <div class="account-card" onclick="navigateTo('screen-vendor')">
+                <button class="account-card" type="button" data-nav="screen-farmer">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                    <h3>Farmer</h3>
+                    <p>Grow and sell produce</p>
+                    <div class="arrow-icon"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+                </button>
+
+                <button class="account-card" type="button" data-nav="screen-supplier">
                     <svg viewBox="0 0 24 24"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></svg>
-                    <h3>Vendor</h3>
-                    <p>Sell products and grow your business</p>
+                    <h3>Supplier</h3>
+                    <p>Sell products in bulk</p>
                     <div class="arrow-icon"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-                </div>
+                </button>
 
-                <div class="account-card" onclick="navigateTo('screen-delivery')">
+                <button class="account-card" type="button" data-nav="screen-marketeer">
+                    <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+                    <h3>Marketeer</h3>
+                    <p>Trade at the market</p>
+                    <div class="arrow-icon"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+                </button>
+
+                <button class="account-card" type="button" data-nav="screen-delivery" style="grid-column: 1 / -1;">
                     <svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                     <h3>Delivery Partner</h3>
                     <p>Deliver orders and earn</p>
                     <div class="arrow-icon"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-                </div>
-
-                <div class="account-card" onclick="navigateTo('screen-pharmacy')">
-                    <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm8 10h-3v3h-2v-3h-3v-2h3V9h2v3h3v2z"/></svg>
-                    <h3>Pharmacy</h3>
-                    <p>Supply certified agro-inputs</p>
-                    <div class="arrow-icon"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================
-         4. FARMER
-         ============================ -->
-    <div id="screen-farmer" class="screen">
-        <div class="screen-content">
-            <div class="top-nav">
-                <button class="back-btn" onclick="navigateTo('screen-select')">
-                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="U-AGRI"></div>
             </div>
-
-            <h2>Farmer Account</h2>
-            <p>Let's get you started — fill in your farmer details.</p>
-
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <input type="text" placeholder="Full Name">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                <input type="tel" placeholder="Phone Number">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                <input type="email" placeholder="Email (Optional)">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                <input type="password" placeholder="Password">
-            </div>
-
-            <div class="input-group no-icon">
-                <select>
-                    <option value="" disabled selected>Select Province</option>
-                    <option>Province 1</option>
-                    <option>Province 2</option>
-                </select>
-            </div>
-            <div class="input-group no-icon">
-                <select>
-                    <option value="" disabled selected>Select District</option>
-                    <option>District 1</option>
-                    <option>District 2</option>
-                </select>
-            </div>
-
-            <div class="section-title">What do you produce?</div>
-            <div class="checkbox-grid">
-                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Vegetables</label>
-                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Fruits</label>
-                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Grains</label>
-                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Livestock</label>
-                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Poultry</label>
-                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Other</label>
-            </div>
-
-            <button class="btn btn-primary" onclick="navigateTo('screen-success')">Create Account</button>
-            <div style="height: 20px;"></div>
         </div>
     </div>
 
     <!-- ============================
-         5. CUSTOMER
+         4. CUSTOMER
          ============================ -->
     <div id="screen-customer" class="screen">
         <div class="screen-content">
             <div class="top-nav">
-                <button class="back-btn" onclick="navigateTo('screen-select')">
+                <button class="back-btn" type="button" data-back>
                     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="U-AGRI"></div>
+                <div class="header-logo"><img src="logo.png" alt="U-AGRI" onerror="this.style.display='none'"></div>
             </div>
 
             <h2>Customer Account</h2>
             <p>Shop fresh. Live healthy.</p>
 
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <input type="text" placeholder="Full Name">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                <input type="tel" placeholder="Phone Number">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                <input type="email" placeholder="Email">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                <input type="password" placeholder="Password">
-            </div>
+            <form id="form-customer" novalidate data-role="customer">
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <input type="text" name="firstName" placeholder="First Name" autocomplete="given-name" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <input type="text" name="lastName" placeholder="Last Name" autocomplete="family-name" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    <input type="tel" name="phone" placeholder="Phone Number" autocomplete="tel" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <input type="email" name="email" placeholder="Email (e.g. you@gmail.com)" autocomplete="email" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <input type="password" name="password" placeholder="Password" autocomplete="new-password" minlength="6" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <input type="password" name="confirmPassword" placeholder="Confirm Password" autocomplete="new-password" minlength="6" required>
+                </div>
 
-            <button class="btn btn-primary" onclick="navigateTo('screen-success')">Create Account</button>
+                <div class="form-error"></div>
+                <div style="height:6px"></div>
+                <button type="submit" class="btn btn-primary">Create Account</button>
+                <div style="height: 20px;"></div>
+            </form>
         </div>
     </div>
 
     <!-- ============================
-         6. VENDOR
+         5. FARMER
          ============================ -->
-    <div id="screen-vendor" class="screen">
+    <div id="screen-farmer" class="screen">
         <div class="screen-content">
             <div class="top-nav">
-                <button class="back-btn" onclick="navigateTo('screen-select')">
+                <button class="back-btn" type="button" data-back>
                     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="U-AGRI"></div>
+                <div class="header-logo"><img src="logo.png" alt="U-AGRI" onerror="this.style.display='none'"></div>
             </div>
 
-            <h2>Vendor Account</h2>
-            <p>Grow your business with us.</p>
+            <h2>Farmer Account</h2>
+            <p>Grow and sell your produce.</p>
 
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10z"/></svg>
-                <input type="text" placeholder="Business Name">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <input type="text" placeholder="Owner Name">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                <input type="tel" placeholder="Phone Number">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                <input type="email" placeholder="Email">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                <input type="password" placeholder="Password">
-            </div>
+            <form id="form-farmer" novalidate data-role="farmer">
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <input type="text" name="firstName" placeholder="First Name" data-autogen autocomplete="given-name" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <input type="text" name="lastName" placeholder="Last Name" data-autogen autocomplete="family-name" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    <input type="tel" name="phone" placeholder="Phone Number" autocomplete="tel" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <input type="email" name="email" placeholder="Auto-generated email" readonly required>
+                </div>
+                <div class="field-note">This email is generated from your name and is used to log in.</div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <input type="password" name="password" placeholder="Password" autocomplete="new-password" minlength="6" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <input type="password" name="confirmPassword" placeholder="Confirm Password" autocomplete="new-password" minlength="6" required>
+                </div>
 
-            <div class="section-title">Business Description</div>
-            <div class="input-group">
-                <textarea rows="3" placeholder="Tell us about your business..."></textarea>
-            </div>
+                <div class="section-title">Required Documents</div>
+                <div class="upload-grid single">
+                    <div class="upload-box" data-key="profileUrl">
+                        <img class="ub-preview" alt="">
+                        <svg class="ub-icon" viewBox="0 0 24 24"><path d="M9 3l-1.5 2H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V7a2 2 0 00-2-2h-3.5L15 3H9zm3 15a5 5 0 110-10 5 5 0 010 10zm0-2a3 3 0 100-6 3 3 0 000 6z"/></svg>
+                        <span class="ub-label">Profile Photo</span>
+                        <span class="ub-hint">Tap to upload</span>
+                        <span class="ub-change">Change</span>
+                    </div>
+                </div>
+                <div class="upload-grid">
+                    <div class="upload-box" data-key="nrcFront">
+                        <img class="ub-preview" alt="">
+                        <svg class="ub-icon" viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zM9 8a2 2 0 110 4 2 2 0 010-4zm-4 9c0-1.33 2.67-2 4-2s4 .67 4 2v1H5v-1zm11-1h-2v-2h2v2zm0-3h-2V9h2v4zm3 3h-2v-2h2v2zm0-3h-2V9h2v4z"/></svg>
+                        <span class="ub-label">NRC Front</span>
+                        <span class="ub-hint">Tap to upload</span>
+                        <span class="ub-change">Change</span>
+                    </div>
+                    <div class="upload-box" data-key="nrcBack">
+                        <img class="ub-preview" alt="">
+                        <svg class="ub-icon" viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zM9 8a2 2 0 110 4 2 2 0 010-4zm-4 9c0-1.33 2.67-2 4-2s4 .67 4 2v1H5v-1zm11-1h-2v-2h2v2zm0-3h-2V9h2v4zm3 3h-2v-2h2v2zm0-3h-2V9h2v4z"/></svg>
+                        <span class="ub-label">NRC Back</span>
+                        <span class="ub-hint">Tap to upload</span>
+                        <span class="ub-change">Change</span>
+                    </div>
+                </div>
 
-            <div class="section-title">Required Documents</div>
-            <div class="file-upload">
-                <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
-                <div>Upload Business Logo (PNG, JPG)</div>
-            </div>
-            <div class="file-upload">
-                <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
-                <div>Upload ZRA Certificate (PDF, JPG)</div>
-            </div>
-            <div class="file-upload">
-                <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
-                <div>Upload PACRA Certificate (PDF, JPG)</div>
-            </div>
-
-            <button class="btn btn-primary" onclick="navigateTo('screen-success')">Create Account</button>
-            <div style="height: 20px;"></div>
+                <div class="form-error"></div>
+                <div style="height:6px"></div>
+                <button type="submit" class="btn btn-primary">Create Account</button>
+                <div style="height: 20px;"></div>
+            </form>
         </div>
     </div>
 
     <!-- ============================
-         7. PHARMACY
+         6. SUPPLIER
          ============================ -->
-    <div id="screen-pharmacy" class="screen">
+    <div id="screen-supplier" class="screen">
         <div class="screen-content">
             <div class="top-nav">
-                <button class="back-btn" onclick="navigateTo('screen-select')">
+                <button class="back-btn" type="button" data-back>
                     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="U-AGRI"></div>
+                <div class="header-logo"><img src="logo.png" alt="U-AGRI" onerror="this.style.display='none'"></div>
             </div>
 
-            <h2>Pharmacy Account</h2>
-            <p>Supply certified agro-inputs to farmers.</p>
+            <h2>Supplier Account</h2>
+            <p>Sell your products in bulk.</p>
 
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm8 10h-3v3h-2v-3h-3v-2h3V9h2v3h3v2z"/></svg>
-                <input type="text" placeholder="Pharmacy / Business Name">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <input type="text" placeholder="Owner / Pharmacist Name">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                <input type="tel" placeholder="Phone Number">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                <input type="email" placeholder="Email">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                <input type="password" placeholder="Password">
+            <div class="warn-box">
+                <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg>
+                <span>Supplier accounts require admin approval before you can log in.</span>
             </div>
 
-            <div class="input-group no-icon">
-                <select>
-                    <option value="" disabled selected>Select Province</option>
-                    <option>Province 1</option>
-                    <option>Province 2</option>
-                </select>
+            <form id="form-supplier" novalidate data-role="supplier">
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10z"/></svg>
+                    <input type="text" name="businessName" placeholder="Business Name" data-autogen required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    <input type="tel" name="phone" placeholder="Phone Number" autocomplete="tel" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <input type="email" name="email" placeholder="Auto-generated email" readonly required>
+                </div>
+                <div class="field-note">This email is generated from your business name and is used to log in.</div>
+
+                <div class="section-title">About Your Business</div>
+                <div class="input-group">
+                    <textarea name="about" rows="3" placeholder="Tell us about your business..." required></textarea>
+                </div>
+
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <input type="password" name="password" placeholder="Password" autocomplete="new-password" minlength="6" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <input type="password" name="confirmPassword" placeholder="Confirm Password" autocomplete="new-password" minlength="6" required>
+                </div>
+
+                <div class="section-title">Required Documents</div>
+                <div class="upload-grid single">
+                    <div class="upload-box" data-key="logoUrl">
+                        <img class="ub-preview" alt="">
+                        <svg class="ub-icon" viewBox="0 0 24 24"><path d="M9 3l-1.5 2H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V7a2 2 0 00-2-2h-3.5L15 3H9zm3 15a5 5 0 110-10 5 5 0 010 10zm0-2a3 3 0 100-6 3 3 0 000 6z"/></svg>
+                        <span class="ub-label">Business Logo</span>
+                        <span class="ub-hint">Tap to upload</span>
+                        <span class="ub-change">Change</span>
+                    </div>
+                </div>
+                <div class="upload-grid">
+                    <div class="upload-box" data-key="zraUrl">
+                        <img class="ub-preview" alt="">
+                        <svg class="ub-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        <span class="ub-label">ZRA Certificate</span>
+                        <span class="ub-hint">Tap to upload</span>
+                        <span class="ub-change">Change</span>
+                    </div>
+                    <div class="upload-box" data-key="pacraUrl">
+                        <img class="ub-preview" alt="">
+                        <svg class="ub-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        <span class="ub-label">PACRA Certificate</span>
+                        <span class="ub-hint">Tap to upload</span>
+                        <span class="ub-change">Change</span>
+                    </div>
+                </div>
+
+                <div class="form-error"></div>
+                <div style="height:6px"></div>
+                <button type="submit" class="btn btn-primary">Submit Application</button>
+                <div style="height: 20px;"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================
+         7. MARKETEER
+         ============================ -->
+    <div id="screen-marketeer" class="screen">
+        <div class="screen-content">
+            <div class="top-nav">
+                <button class="back-btn" type="button" data-back>
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                </button>
+                <div class="header-logo"><img src="logo.png" alt="U-AGRI" onerror="this.style.display='none'"></div>
             </div>
 
-            <div class="section-title">Products Supplied</div>
-            <div class="checkbox-grid">
-                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Seeds</label>
-                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Fertilizers</label>
-                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Pesticides</label>
-                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Vet Drugs</label>
-                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Farm Tools</label>
-                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Other</label>
-            </div>
+            <h2>Marketeer Account</h2>
+            <p>Trade fresh produce at the market.</p>
 
-            <div class="section-title">Required Documents</div>
-            <div class="file-upload">
-                <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
-                <div>Upload Pharmacy License (PDF, JPG)</div>
-            </div>
-            <div class="file-upload">
-                <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
-                <div>Upload ZRA Certificate (PDF, JPG)</div>
-            </div>
-            <div class="file-upload">
-                <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
-                <div>Upload PACRA Certificate (PDF, JPG)</div>
-            </div>
+            <form id="form-marketeer" novalidate data-role="marketeer">
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <input type="text" name="firstName" placeholder="First Name" data-autogen autocomplete="given-name" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <input type="text" name="lastName" placeholder="Last Name" data-autogen autocomplete="family-name" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    <input type="tel" name="phone" placeholder="Phone Number" autocomplete="tel" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <input type="email" name="email" placeholder="Auto-generated email" readonly required>
+                </div>
+                <div class="field-note">This email is generated from your name and is used to log in.</div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <input type="password" name="password" placeholder="Password" autocomplete="new-password" minlength="6" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <input type="password" name="confirmPassword" placeholder="Confirm Password" autocomplete="new-password" minlength="6" required>
+                </div>
 
-            <button class="btn btn-primary" onclick="navigateTo('screen-success')">Create Account</button>
-            <div style="height: 20px;"></div>
+                <div class="section-title">Required Documents</div>
+                <div class="upload-grid single">
+                    <div class="upload-box" data-key="profileUrl">
+                        <img class="ub-preview" alt="">
+                        <svg class="ub-icon" viewBox="0 0 24 24"><path d="M9 3l-1.5 2H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V7a2 2 0 00-2-2h-3.5L15 3H9zm3 15a5 5 0 110-10 5 5 0 010 10zm0-2a3 3 0 100-6 3 3 0 000 6z"/></svg>
+                        <span class="ub-label">Profile Photo</span>
+                        <span class="ub-hint">Tap to upload</span>
+                        <span class="ub-change">Change</span>
+                    </div>
+                </div>
+                <div class="upload-grid">
+                    <div class="upload-box" data-key="nrcFront">
+                        <img class="ub-preview" alt="">
+                        <svg class="ub-icon" viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zM9 8a2 2 0 110 4 2 2 0 010-4zm-4 9c0-1.33 2.67-2 4-2s4 .67 4 2v1H5v-1zm11-1h-2v-2h2v2zm0-3h-2V9h2v4zm3 3h-2v-2h2v2zm0-3h-2V9h2v4z"/></svg>
+                        <span class="ub-label">NRC Front</span>
+                        <span class="ub-hint">Tap to upload</span>
+                        <span class="ub-change">Change</span>
+                    </div>
+                    <div class="upload-box" data-key="nrcBack">
+                        <img class="ub-preview" alt="">
+                        <svg class="ub-icon" viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zM9 8a2 2 0 110 4 2 2 0 010-4zm-4 9c0-1.33 2.67-2 4-2s4 .67 4 2v1H5v-1zm11-1h-2v-2h2v2zm0-3h-2V9h2v4zm3 3h-2v-2h2v2zm0-3h-2V9h2v4z"/></svg>
+                        <span class="ub-label">NRC Back</span>
+                        <span class="ub-hint">Tap to upload</span>
+                        <span class="ub-change">Change</span>
+                    </div>
+                </div>
+
+                <div class="form-error"></div>
+                <div style="height:6px"></div>
+                <button type="submit" class="btn btn-primary">Create Account</button>
+                <div style="height: 20px;"></div>
+            </form>
         </div>
     </div>
 
@@ -1467,63 +1782,79 @@
     <div id="screen-delivery" class="screen">
         <div class="screen-content">
             <div class="top-nav">
-                <button class="back-btn" onclick="navigateTo('screen-select')">
+                <button class="back-btn" type="button" data-back>
                     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="U-AGRI"></div>
+                <div class="header-logo"><img src="logo.png" alt="U-AGRI" onerror="this.style.display='none'"></div>
             </div>
 
             <h2>Delivery Partner</h2>
             <p>Deliver today. Earn tomorrow.</p>
 
-            <div class="section-title">Personal Information</div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <input type="text" placeholder="Full Name">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                <input type="tel" placeholder="Phone Number">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                <input type="email" placeholder="Email">
-            </div>
-            <div class="input-group">
-                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                <input type="password" placeholder="Password">
+            <div class="warn-box">
+                <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg>
+                <span>Delivery partner accounts require admin approval before you can log in.</span>
             </div>
 
-            <div class="section-title">Vehicle Type</div>
-            <div class="checkbox-grid" style="grid-template-columns: repeat(3, 1fr);">
-                <label class="custom-checkbox"><input type="radio" name="vehicle" value="bicycle" checked><span class="checkmark"></span> Bicycle</label>
-                <label class="custom-checkbox"><input type="radio" name="vehicle" value="motorcycle"><span class="checkmark"></span> Motorcycle</label>
-                <label class="custom-checkbox"><input type="radio" name="vehicle" value="car"><span class="checkmark"></span> Car</label>
-                <label class="custom-checkbox"><input type="radio" name="vehicle" value="van"><span class="checkmark"></span> Van</label>
-                <label class="custom-checkbox"><input type="radio" name="vehicle" value="truck"><span class="checkmark"></span> Truck</label>
-            </div>
-
-            <div id="vehicle-registration-section">
-                <div class="section-title">Vehicle Registration</div>
-                <div class="input-group no-icon">
-                    <input type="text" placeholder="e.g. BA 1234">
+            <form id="form-delivery" novalidate data-role="delivery">
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <input type="text" name="firstName" placeholder="First Name" data-autogen autocomplete="given-name" required>
                 </div>
-            </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <input type="text" name="lastName" placeholder="Last Name" data-autogen autocomplete="family-name" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    <input type="tel" name="phone" placeholder="Phone Number" autocomplete="tel" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <input type="email" name="email" placeholder="Auto-generated email" readonly required>
+                </div>
+                <div class="field-note">This email is generated from your name and is used to log in.</div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <input type="password" name="password" placeholder="Password" autocomplete="new-password" minlength="6" required>
+                </div>
+                <div class="input-group">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <input type="password" name="confirmPassword" placeholder="Confirm Password" autocomplete="new-password" minlength="6" required>
+                </div>
 
-            <div class="section-title">Delivery Area</div>
-            <div class="input-group no-icon">
-                <select>
-                    <option value="" disabled selected>Select Area</option>
-                    <option>Area 1</option>
-                    <option>Area 2</option>
-                </select>
-            </div>
+                <div class="section-title">Vehicle Type</div>
+                <div class="vehicle-grid">
+                    <label class="vehicle-card">
+                        <input type="radio" name="vehicle" value="bicycle" checked>
+                        <span class="vc-emoji">🚲</span>
+                        <span class="vc-name">Bicycle</span>
+                    </label>
+                    <label class="vehicle-card">
+                        <input type="radio" name="vehicle" value="bike">
+                        <span class="vc-emoji">🏍️</span>
+                        <span class="vc-name">Bike</span>
+                    </label>
+                    <label class="vehicle-card">
+                        <input type="radio" name="vehicle" value="car">
+                        <span class="vc-emoji">🚗</span>
+                        <span class="vc-name">Car</span>
+                    </label>
+                    <label class="vehicle-card">
+                        <input type="radio" name="vehicle" value="truck">
+                        <span class="vc-emoji">🚚</span>
+                        <span class="vc-name">Truck</span>
+                    </label>
+                </div>
 
-            <div class="section-title">Upload Required Documents</div>
-            <div id="dynamic-uploads"></div>
+                <div class="section-title">Required Documents</div>
+                <div id="delivery-uploads"></div>
 
-            <button class="btn btn-primary" onclick="navigateTo('screen-success')">Create Account</button>
-            <div style="height: 20px;"></div>
+                <div class="form-error"></div>
+                <div style="height:6px"></div>
+                <button type="submit" class="btn btn-primary">Submit Application</button>
+                <div style="height: 20px;"></div>
+            </form>
         </div>
     </div>
 
@@ -1533,207 +1864,1133 @@
     <div id="screen-success" class="screen">
         <div class="screen-content" style="justify-content: center; align-items: center;">
             <div class="logo-container">
-                <img src="logo.png" alt="U-AGRI Logo" class="logo">
+                <img src="logo.png" alt="U-AGRI Logo" class="logo" onerror="this.style.display='none'">
             </div>
 
-            <div class="success-icon">
+            <div class="success-icon" id="success-icon">
                 <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
             </div>
 
-            <h2>Account Created!</h2>
-            <p>Your account is awaiting approval from our team.</p>
+            <h2 id="success-title">Account Created!</h2>
+            <p id="success-message">Your account is awaiting approval from our team.</p>
 
-            <div class="input-group" style="background: var(--primary-light); padding: 16px; border-radius: var(--radius); display: flex; gap: 12px; align-items: flex-start; margin-bottom: 30px; border: 1px solid rgba(15, 122, 52, 0.15);">
-                <svg viewBox="0 0 24 24" style="position: static; transform: none; fill: var(--primary); flex-shrink: 0; width: 20px; height: 20px; margin-top: 1px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                <span style="font-size: var(--fs-sm); color: var(--text-dark); text-align: left; line-height: 1.55; font-weight: 500;">You will be notified once your documents are verified.</span>
+            <div class="email-card" id="success-email-card">
+                <span class="ec-label">Use this email to log in</span>
+                <span class="ec-value" id="success-email">—</span>
+                <button type="button" class="ec-copy" id="success-copy">
+                    <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                    Copy email
+                </button>
             </div>
 
-            <button class="btn btn-primary" onclick="navigateTo('screen-login')" style="margin-top: auto; width: 100%;">Go to Login</button>
+            <button class="btn btn-primary" type="button" data-nav-reset="screen-login" style="width: 100%;">Go to Login</button>
+            <div style="height: 20px;"></div>
         </div>
     </div>
 
 </div>
 
-<script>
-    /* =========================================
-       SCREEN NAVIGATION
-       ========================================= */
-    function navigateTo(screenId) {
-        const currentScreen = document.querySelector('.screen.active');
-        const targetScreen = document.getElementById(screenId);
+<!-- ============================
+     MODAL
+     ============================ -->
+<div class="modal-overlay" id="app-modal">
+    <div class="modal-card">
+        <div class="modal-icon" id="modal-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </div>
+        <h3 id="modal-title">Title</h3>
+        <p id="modal-body">Body</p>
+        <div class="modal-email-box" id="modal-email-box" style="display:none;">
+            <span class="meb-label">Login email</span>
+            <span class="meb-value" id="modal-email">—</span>
+            <button type="button" class="meb-copy" id="modal-copy">Copy</button>
+        </div>
+        <button type="button" class="btn btn-primary" id="modal-close">Continue</button>
+    </div>
+</div>
 
-        if (!targetScreen) return;
-        if (currentScreen === targetScreen) return;
+<div class="toast" id="toast"></div>
 
-        if (currentScreen) {
-            currentScreen.classList.remove('active');
-            currentScreen.classList.add('fade-out');
-            setTimeout(() => currentScreen.classList.remove('fade-out'), 600);
+<script type="module">
+import { initializeApp } from "firebase/app";
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    sendPasswordResetEmail
+} from "firebase/auth";
+import {
+    getDatabase,
+    ref,
+    set,
+    get
+} from "firebase/database";
+
+/* ============================================================
+   FIREBASE CONFIG (reaper-7b33d)
+   ============================================================ */
+const firebaseConfig = {
+    apiKey: "AIzaSyDye0P37QYNjtRRKh2_At84QCkKCqjceAQ",
+    authDomain: "reaper-7b33d.firebaseapp.com",
+    databaseURL: "https://reaper-7b33d-default-rtdb.firebaseio.com",
+    projectId: "reaper-7b33d",
+    storageBucket: "reaper-7b33d.firebasestorage.app",
+    messagingSenderId: "1023523985110",
+    appId: "1:1023523985110:web:889e2200fad1fa5b98db77",
+    measurementId: "G-NQ8F9TKPVZ"
+};
+
+const app      = initializeApp(firebaseConfig);
+const auth     = getAuth(app);
+const database = getDatabase(app);
+
+/* ============================================================
+   CLOUDINARY CONFIG (same as UTOM)
+   ============================================================ */
+const CLOUD_NAME    = 'dd3lcymrk';
+const UPLOAD_PRESET = 'h3eyhc2o';
+
+/* ============================================================
+   NAVIGATION (with device back-button support)
+   ============================================================ */
+let currentScreenId = 'screen-loader';
+
+const screenEls = document.querySelectorAll('.screen');
+
+function showScreen(id) {
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    const current = document.querySelector('.screen.active');
+    if (current === target) return;
+
+    if (current) {
+        current.classList.remove('active');
+        current.classList.add('fade-out');
+        setTimeout(() => current.classList.remove('fade-out'), 600);
+    }
+
+    setTimeout(() => {
+        target.classList.add('active');
+        target.scrollTop = 0;
+    }, 70);
+
+    currentScreenId = id;
+}
+
+function navigateTo(id) {
+    if (id === currentScreenId) return;
+    showScreen(id);
+    try {
+        history.pushState({ screen: id }, '', '#' + id.replace('screen-', ''));
+    } catch (e) { /* ignore */ }
+}
+
+/* Seed initial history state */
+try {
+    history.replaceState({ screen: 'screen-loader' }, '', location.pathname + location.search);
+} catch (e) { /* ignore */ }
+
+/* Device back button / browser back */
+window.addEventListener('popstate', (e) => {
+    // If a modal is open, close it first
+    const modal = document.getElementById('app-modal');
+    if (modal && modal.classList.contains('open')) {
+        modal.classList.remove('open');
+        return;
+    }
+
+    const id = (e.state && e.state.screen) || 'screen-splash';
+    if (id === currentScreenId) return;
+    showScreen(id);
+});
+
+/* Generic nav buttons */
+document.querySelectorAll('[data-nav]').forEach(btn => {
+    btn.addEventListener('click', () => navigateTo(btn.dataset.nav));
+});
+
+/* Generic back buttons */
+document.querySelectorAll('[data-back]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        try { history.back(); } catch (e) {
+            // Fallback if no history
+            navigateTo('screen-select');
+        }
+    });
+});
+
+/* "Go to Login" — reset history so back doesn't return to success */
+document.querySelectorAll('[data-nav-reset]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const id = btn.dataset.navReset;
+        showScreen(id);
+        try {
+            history.replaceState({ screen: id }, '', '#' + id.replace('screen-', ''));
+        } catch (e) { /* ignore */ }
+    });
+});
+
+/* ============================================================
+   LOADER SEQUENCE
+   ============================================================ */
+const loaderIcons  = document.querySelectorAll('#screen-loader .loader-icon');
+const progressBar  = document.getElementById('loaderProgressBar');
+const ICON_DURATION = 1200;
+let loaderIndex = 0;
+let loaderTimer = null;
+
+function startLoader() {
+    loaderIndex = 0;
+    progressBar.style.transition = 'none';
+    progressBar.style.width = '0%';
+    void progressBar.offsetWidth;
+    progressBar.style.transition = '';
+
+    function showNext() {
+        if (loaderIndex >= loaderIcons.length) {
+            loaderTimer = setTimeout(() => {
+                showScreen('screen-splash');
+                try {
+                    history.replaceState({ screen: 'screen-splash' }, '', location.pathname + '#home');
+                } catch (e) { /* ignore */ }
+            }, 350);
+            return;
         }
 
-        setTimeout(() => {
-            targetScreen.classList.add('active');
-            targetScreen.scrollTop = 0;
-        }, 80);
+        const icon = loaderIcons[loaderIndex];
+        icon.classList.add('active');
+        progressBar.style.width = ((loaderIndex + 1) / loaderIcons.length) * 100 + '%';
+        loaderIndex++;
+
+        loaderTimer = setTimeout(() => {
+            icon.classList.remove('active');
+            showNext();
+        }, ICON_DURATION);
     }
 
-    /* =========================================
-       LOADER SEQUENCE — re-runnable
-       ========================================= */
-    const loaderIcons = document.querySelectorAll('#screen-loader .loader-icon');
-    const progressBar = document.getElementById('loaderProgressBar');
-    const ICON_DURATION = 1200;
-    let loaderIndex = 0;
-    let loaderTimer = null;
+    loaderTimer = setTimeout(showNext, 180);
+}
 
-    function stopLoader() {
-        if (loaderTimer) {
-            clearTimeout(loaderTimer);
-            loaderTimer = null;
+startLoader();
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function slug(str) {
+    return String(str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function showToast(msg, ms = 2600) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('show'), ms);
+}
+
+function showFormError(form, msg) {
+    const el = form.querySelector('.form-error');
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.add('show');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function clearFormError(form) {
+    const el = form.querySelector('.form-error');
+    if (el) {
+        el.classList.remove('show');
+        el.textContent = '';
+    }
+}
+
+function setBtnLoading(btn, loading, originalHTML) {
+    if (loading) {
+        btn.disabled = true;
+        btn.dataset.original = originalHTML;
+        btn.innerHTML = '<span class="spinner"></span> Please wait...';
+    } else {
+        btn.disabled = false;
+        btn.innerHTML = originalHTML || btn.dataset.original || btn.innerHTML;
+    }
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+const modalEl      = document.getElementById('app-modal');
+const modalIcon    = document.getElementById('modal-icon');
+const modalTitle   = document.getElementById('modal-title');
+const modalBody    = document.getElementById('modal-body');
+const modalEmailBox= document.getElementById('modal-email-box');
+const modalEmail   = document.getElementById('modal-email');
+const modalCopy    = document.getElementById('modal-copy');
+const modalClose   = document.getElementById('modal-close');
+
+function openModal({ title, body, type = 'success', email = null, onClose = null }) {
+    modalTitle.textContent = title;
+    modalBody.textContent = body;
+
+    modalIcon.classList.remove('error', 'pending');
+    if (type === 'error') modalIcon.classList.add('error');
+    if (type === 'pending') modalIcon.classList.add('pending');
+
+    if (email) {
+        modalEmail.textContent = email;
+        modalEmailBox.style.display = 'block';
+    } else {
+        modalEmailBox.style.display = 'none';
+    }
+
+    modalEl._onClose = onClose;
+    modalEl.classList.add('open');
+
+    // Push state so device back button closes the modal
+    try {
+        history.pushState({ screen: currentScreenId, modal: true }, '', '#modal');
+    } catch (e) { /* ignore */ }
+}
+
+function closeModal() {
+    modalEl.classList.remove('open');
+    const cb = modalEl._onClose;
+    modalEl._onClose = null;
+    if (typeof cb === 'function') cb();
+}
+
+modalClose.addEventListener('click', () => {
+    // Pop the modal history entry
+    try { history.back(); } catch (e) { closeModal(); }
+});
+
+modalEl.addEventListener('click', (e) => {
+    if (e.target === modalEl) {
+        try { history.back(); } catch (err) { closeModal(); }
+    }
+});
+
+modalCopy.addEventListener('click', async () => {
+    const text = modalEmail.textContent;
+    if (!text) return;
+    try {
+        await navigator.clipboard.writeText(text);
+        modalCopy.textContent = 'Copied!';
+        setTimeout(() => { modalCopy.textContent = 'Copy'; }, 1600);
+    } catch (e) {
+        showToast('Could not copy — please select manually');
+    }
+});
+
+/* ============================================================
+   CLOUDINARY UPLOAD
+   ============================================================ */
+function openCloudUpload(opts) {
+    return new Promise((resolve, reject) => {
+        if (typeof cloudinary === 'undefined' || !cloudinary.openUploadWidget) {
+            reject(new Error('Upload widget not loaded yet. Check your connection.'));
+            return;
         }
-        loaderIcons.forEach(icon => icon.classList.remove('active'));
-    }
 
-    function resetLoader() {
-        stopLoader();
-        loaderIndex = 0;
-        progressBar.style.transition = 'none';
-        progressBar.style.width = '0%';
-        void progressBar.offsetWidth;
-        progressBar.style.transition = '';
-    }
+        const options = Object.assign({
+            cloudName: CLOUD_NAME,
+            uploadPreset: UPLOAD_PRESET,
+            sources: ['local', 'camera'],
+            multiple: false,
+            maxFiles: 1,
+            maxFileSize: 25000000,
+            clientAllowedFormats: ['jpg', 'jpeg', 'png', 'webp', 'gif', 'heic', 'pdf'],
+            cropping: false,
+            showAdvancedOptions: false,
+            folder: 'utom-agri'
+        }, opts || {});
 
-    function startLoader() {
-        resetLoader();
-
-        function showNext() {
-            if (loaderIndex >= loaderIcons.length) {
-                loaderTimer = setTimeout(() => {
-                    navigateTo('screen-splash');
-                }, 350);
+        cloudinary.openUploadWidget(options, (error, result) => {
+            if (error) {
+                reject(error);
                 return;
             }
+            if (result && result.event === 'success' && result.info) {
+                resolve(result.info.secure_url);
+            }
+        });
+    });
+}
 
-            const icon = loaderIcons[loaderIndex];
-            icon.classList.add('active');
+/* Wire all upload boxes inside a given root element */
+function wireUploadBoxes(root) {
+    root.querySelectorAll('.upload-box').forEach(box => {
+        if (box.dataset.wired === '1') return;
+        box.dataset.wired = '1';
 
-            progressBar.style.width = ((loaderIndex + 1) / loaderIcons.length) * 100 + '%';
-            loaderIndex++;
+        box.addEventListener('click', async () => {
+            if (box.classList.contains('uploading')) return;
+            box.classList.add('uploading');
 
-            loaderTimer = setTimeout(() => {
-                icon.classList.remove('active');
-                showNext();
-            }, ICON_DURATION);
-        }
+            try {
+                const url = await openCloudUpload();
+                box.dataset.value = url;
 
-        loaderTimer = setTimeout(showNext, 180);
+                let preview = box.querySelector('.ub-preview');
+                if (!preview) {
+                    preview = document.createElement('img');
+                    preview.className = 'ub-preview';
+                    preview.alt = '';
+                    box.insertBefore(preview, box.firstChild);
+                }
+                preview.src = url;
+                box.classList.add('has-image');
+                showToast('Image uploaded ✓');
+            } catch (err) {
+                const msg = (err && (err.message || err.statusText)) || 'Upload cancelled';
+                if (String(msg).toLowerCase().indexOf('cancel') === -1) {
+                    showToast('Upload failed: ' + msg);
+                }
+            } finally {
+                box.classList.remove('uploading');
+            }
+        });
+    });
+}
+
+/* Collect all uploaded URLs inside a form */
+function collectUploads(form) {
+    const out = {};
+    form.querySelectorAll('.upload-box[data-key]').forEach(box => {
+        out[box.dataset.key] = box.dataset.value || '';
+    });
+    return out;
+}
+
+/* Reset all upload boxes inside a form */
+function resetUploads(form) {
+    form.querySelectorAll('.upload-box').forEach(box => {
+        box.dataset.value = '';
+        box.classList.remove('has-image');
+        const preview = box.querySelector('.ub-preview');
+        if (preview) preview.removeAttribute('src');
+    });
+}
+
+/* Wire all upload boxes currently on the page */
+wireUploadBoxes(document);
+
+/* ============================================================
+   AUTO-GENERATED EMAIL LOGIC
+   ============================================================ */
+function updateAutoEmail(form) {
+    const emailInput = form.querySelector('input[name="email"][readonly]');
+    if (!emailInput) return;
+
+    const role = form.dataset.role;
+
+    let local = '';
+    if (role === 'supplier') {
+        const biz = form.querySelector('input[name="businessName"]');
+        local = slug(biz ? biz.value : '');
+        emailInput.value = local ? `supplier@${local}.com` : '';
+    } else {
+        const fn = form.querySelector('input[name="firstName"]');
+        const ln = form.querySelector('input[name="lastName"]');
+        const full = slug((fn ? fn.value : '') + (ln ? ln.value : ''));
+        const prefix = role === 'farmer' ? 'farmer'
+                     : role === 'marketeer' ? 'marketeer'
+                     : role === 'delivery' ? 'delivery'
+                     : '';
+        emailInput.value = (full && prefix) ? `${prefix}@${full}.com` : '';
+    }
+}
+
+document.querySelectorAll('form[data-role]').forEach(form => {
+    const role = form.dataset.role;
+    if (role === 'customer') return;
+
+    form.querySelectorAll('[data-autogen]').forEach(input => {
+        input.addEventListener('input', () => updateAutoEmail(form));
+    });
+
+    // Initial
+    updateAutoEmail(form);
+});
+
+/* ============================================================
+   ROLE DETECTION + REDIRECT TARGETS
+   ============================================================ */
+function detectRoleFromEmail(email) {
+    const e = String(email || '').toLowerCase().trim();
+    if (e.startsWith('admin@'))      return 'admin';
+    if (e.startsWith('farmer@'))     return 'farmer';
+    if (e.startsWith('supplier@'))   return 'supplier';
+    if (e.startsWith('marketeer@'))  return 'marketeer';
+    if (e.startsWith('delivery@'))   return 'delivery';
+    return 'customer';
+}
+
+function getRedirectTarget(email) {
+    switch (detectRoleFromEmail(email)) {
+        case 'admin':     return 'admin.html';
+        case 'farmer':    return 'farmer.html';
+        case 'supplier':  return 'supplier.html';
+        case 'marketeer': return 'marketeer.html';
+        case 'delivery':  return 'delivery.html';
+        default:          return 'customer.html';
+    }
+}
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
+const loginForm  = document.getElementById('form-login');
+const loginBtn   = document.getElementById('login-submit');
+
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearFormError(loginForm);
+
+    const email    = document.getElementById('login-email').value.trim().toLowerCase();
+    const password = document.getElementById('login-password').value;
+
+    if (!email || !password) {
+        showFormError(loginForm, 'Please enter both email and password.');
+        return;
     }
 
-    // Boot loader on first load
-    startLoader();
+    const original = loginBtn.innerHTML;
+    setBtnLoading(loginBtn, true, original);
 
-    /* =========================================
-       DYNAMIC UPLOADS + VEHICLE REGISTRATION
-       ========================================= */
-    document.addEventListener('DOMContentLoaded', () => {
-        const vehicleRadios = document.querySelectorAll('input[name="vehicle"]');
-        const uploadContainer = document.getElementById('dynamic-uploads');
-        const regSection = document.getElementById('vehicle-registration-section');
+    try {
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+        const uid  = cred.user.uid;
 
-        const uploadIcon = `<svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>`;
-
-        function updateDeliveryFields(vehicleType) {
-            if (vehicleType === 'bicycle') {
-                regSection.classList.add('hidden');
-            } else {
-                regSection.classList.remove('hidden');
-            }
-
-            let html = '';
-
-            if (vehicleType === 'bicycle') {
-                html = `
-                    <div class="file-upload">${uploadIcon}<div>Upload National ID (Front &amp; Back)</div></div>
-                    <div class="file-upload">${uploadIcon}<div>Upload Bicycle Photo</div></div>
-                `;
-            } else if (vehicleType === 'motorcycle') {
-                html = `
-                    <div class="file-upload">${uploadIcon}<div>Upload National ID (Front &amp; Back)</div></div>
-                    <div class="file-upload">${uploadIcon}<div>Upload Driver's License</div></div>
-                    <div class="file-upload">${uploadIcon}<div>Upload Motorcycle Photo</div></div>
-                    <div class="file-upload">${uploadIcon}<div>Upload Motorcycle Registration</div></div>
-                `;
-            } else {
-                html = `
-                    <div class="file-upload">${uploadIcon}<div>Upload National ID (Front &amp; Back)</div></div>
-                    <div class="file-upload">${uploadIcon}<div>Upload Driver's License</div></div>
-                    <div class="file-upload">${uploadIcon}<div>Upload Vehicle Registration (White Book)</div></div>
-                    <div class="file-upload">${uploadIcon}<div>Upload Vehicle Photo (Front &amp; Side)</div></div>
-                    <div class="file-upload">${uploadIcon}<div>Upload Certificate of Fitness</div></div>
-                `;
-            }
-
-            uploadContainer.style.opacity = '0';
-            uploadContainer.style.transform = 'translateY(6px)';
-            uploadContainer.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
-            setTimeout(() => {
-                uploadContainer.innerHTML = html;
-                uploadContainer.style.opacity = '1';
-                uploadContainer.style.transform = 'translateY(0)';
-            }, 120);
+        // Load user profile from Realtime Database
+        let profile = null;
+        try {
+            const snap = await get(ref(database, 'users/' + uid));
+            if (snap.exists()) profile = snap.val();
+        } catch (dbErr) {
+            console.warn('Could not load profile:', dbErr);
         }
 
-        const checkedVehicle = document.querySelector('input[name="vehicle"]:checked');
-        if (checkedVehicle) updateDeliveryFields(checkedVehicle.value);
+        const role = (profile && profile.role) || detectRoleFromEmail(email);
+        const status = (profile && profile.status) || 'approved';
 
-        vehicleRadios.forEach(radio => {
-            radio.addEventListener('change', function () {
-                updateDeliveryFields(this.value);
+        // Supplier & Delivery require admin approval
+        if (role === 'supplier' || role === 'delivery') {
+            if (status === 'pending') {
+                await signOut(auth);
+                setBtnLoading(loginBtn, false, original);
+                openModal({
+                    title: 'Approval Pending',
+                    body: 'Your application is still under review. You will be able to log in once an admin approves your account.',
+                    type: 'pending'
+                });
+                return;
+            }
+            if (status === 'rejected') {
+                await signOut(auth);
+                setBtnLoading(loginBtn, false, original);
+                openModal({
+                    title: 'Application Rejected',
+                    body: 'Unfortunately your application was rejected. Please contact support for more information.',
+                    type: 'error'
+                });
+                return;
+            }
+            if (status === 'banned') {
+                await signOut(auth);
+                setBtnLoading(loginBtn, false, original);
+                openModal({
+                    title: 'Account Banned',
+                    body: (profile && profile.banReason) ? profile.banReason : 'Your account has been banned. Contact support.',
+                    type: 'error'
+                });
+                return;
+            }
+        }
+
+        if (profile && profile.status === 'banned') {
+            await signOut(auth);
+            setBtnLoading(loginBtn, false, original);
+            openModal({
+                title: 'Account Banned',
+                body: (profile && profile.banReason) ? profile.banReason : 'Your account has been banned. Contact support.',
+                type: 'error'
             });
+            return;
+        }
+
+        // Success — redirect
+        showToast('Login successful! Redirecting…');
+        const target = getRedirectTarget(email);
+        setTimeout(() => { window.location.href = target; }, 500);
+
+    } catch (err) {
+        let msg = 'Login failed. Please try again.';
+        const code = err && err.code;
+        if (code === 'auth/user-not-found')      msg = 'No account found with this email.';
+        else if (code === 'auth/wrong-password' || code === 'auth/invalid-credential') msg = 'Incorrect password.';
+        else if (code === 'auth/invalid-email')  msg = 'Please enter a valid email address.';
+        else if (code === 'auth/too-many-requests') msg = 'Too many attempts. Try again later.';
+        else if (code === 'auth/network-request-failed') msg = 'Network error. Check your connection.';
+        else if (err && err.message) msg = err.message;
+
+        showFormError(loginForm, msg);
+        setBtnLoading(loginBtn, false, original);
+    }
+});
+
+/* Forgot password */
+document.getElementById('forgot-link').addEventListener('click', async () => {
+    const email = document.getElementById('login-email').value.trim().toLowerCase();
+    if (!email) {
+        showFormError(loginForm, 'Enter your email above, then tap "Forgot Password?" again.');
+        return;
+    }
+    try {
+        await sendPasswordResetEmail(auth, email);
+        openModal({
+            title: 'Reset Link Sent',
+            body: `We've sent a password reset link to ${email}. Check your inbox (and spam folder).`,
+            type: 'success'
         });
+    } catch (err) {
+        let msg = 'Could not send reset email.';
+        if (err && err.code === 'auth/user-not-found') msg = 'No account found with that email.';
+        else if (err && err.message) msg = err.message;
+        showFormError(loginForm, msg);
+    }
+});
+
+/* ============================================================
+   SIGN-UP — shared helpers
+   ============================================================ */
+const PENDING_ROLES = ['supplier', 'delivery'];
+
+function readForm(form) {
+    const data = {};
+    form.querySelectorAll('input, textarea, select').forEach(el => {
+        if (!el.name) return;
+        if (el.type === 'password' || el.type === 'text' || el.type === 'tel' || el.type === 'email' || el.tagName === 'TEXTAREA') {
+            data[el.name] = el.value.trim();
+        }
+    });
+    // keep passwords raw (trim already applied is fine)
+    return data;
+}
+
+function validateCommon(data, form) {
+    if (!data.password || data.password.length < 6) {
+        showFormError(form, 'Password must be at least 6 characters.');
+        return false;
+    }
+    if (data.password !== data.confirmPassword) {
+        showFormError(form, 'Passwords do not match.');
+        return false;
+    }
+    if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+        showFormError(form, 'Please enter a valid email address.');
+        return false;
+    }
+    if (data.phone && !/^[\+\d\s\-\(\)]{8,20}$/.test(data.phone)) {
+        showFormError(form, 'Please enter a valid phone number.');
+        return false;
+    }
+    return true;
+}
+
+/* Save signup to Firebase + Realtime Database */
+async function createAccount({ role, email, password, profile, uploads, status }) {
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+    const uid  = cred.user.uid;
+
+    const payload = Object.assign({}, profile, uploads, {
+        role,
+        email,
+        status: status || 'approved',
+        createdAt: Date.now()
     });
 
-    /* =========================================
-       PWA — SERVICE WORKER
-       ========================================= */
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('[U-AGRI] SW registered:', reg.scope))
-                .catch(err => console.warn('[U-AGRI] SW registration failed:', err));
-        });
+    // Remove any undefined / empty sensitive fields
+    delete payload.password;
+    delete payload.confirmPassword;
+
+    await set(ref(database, 'users/' + uid), payload);
+
+    // Sign out so user must log in explicitly
+    try { await signOut(auth); } catch (e) { /* ignore */ }
+
+    return uid;
+}
+
+/* Handle Firebase auth errors consistently */
+function authErrorMessage(err) {
+    const code = err && err.code;
+    if (code === 'auth/email-already-in-use') return 'This email is already registered. Try logging in instead.';
+    if (code === 'auth/weak-password')        return 'Password is too weak. Use at least 6 characters.';
+    if (code === 'auth/invalid-email')        return 'The generated email is invalid. Check your name.';
+    if (code === 'auth/network-request-failed') return 'Network error. Check your connection.';
+    if (code === 'auth/operation-not-allowed')  return 'Email sign-up is disabled in Firebase console.';
+    return (err && err.message) || 'Something went wrong. Please try again.';
+}
+
+/* Show the success screen with the generated email */
+function showSuccessScreen({ email, role, pending }) {
+    const titleEl = document.getElementById('success-title');
+    const msgEl   = document.getElementById('success-message');
+    const iconEl  = document.getElementById('success-icon');
+    const emailEl = document.getElementById('success-email');
+
+    emailEl.textContent = email || '—';
+
+    if (pending) {
+        iconEl.classList.add('pending');
+        titleEl.textContent = 'Application Submitted!';
+        msgEl.textContent = 'Your documents are being reviewed by our team. You will be notified once approved.';
+    } else {
+        iconEl.classList.remove('pending');
+        titleEl.textContent = 'Account Created!';
+        msgEl.textContent = 'You can now log in with the email below.';
     }
 
-    /* =========================================
-       PWA — INSTALL PROMPT
-       ========================================= */
-    let deferredInstallPrompt = null;
-    const installBtn = document.getElementById('installBtn');
+    // Replace history so back doesn't return to the form
+    showScreen('screen-success');
+    try {
+        history.replaceState({ screen: 'screen-success' }, '', '#success');
+    } catch (e) { /* ignore */ }
+}
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredInstallPrompt = e;
-        if (installBtn) installBtn.classList.add('show');
+document.getElementById('success-copy').addEventListener('click', async () => {
+    const text = document.getElementById('success-email').textContent;
+    if (!text || text === '—') return;
+    try {
+        await navigator.clipboard.writeText(text);
+        showToast('Email copied ✓');
+    } catch (e) {
+        showToast('Could not copy — please select manually');
+    }
+});
+
+/* ============================================================
+   CUSTOMER SIGN-UP
+   ============================================================ */
+const customerForm = document.getElementById('form-customer');
+customerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearFormError(customerForm);
+
+    const btn = customerForm.querySelector('button[type="submit"]');
+    const original = btn.innerHTML;
+
+    const data = readForm(customerForm);
+
+    if (!data.firstName || !data.lastName || !data.phone || !data.email || !data.password) {
+        showFormError(customerForm, 'Please fill in all fields.');
+        return;
+    }
+    if (!/^[A-Za-zÀ-ÖØ-öø-ÿ\s\-']+$/.test(data.firstName)) {
+        showFormError(customerForm, 'First name must contain only letters.');
+        return;
+    }
+    if (!/^[A-Za-zÀ-ÖØ-öø-ÿ\s\-']+$/.test(data.lastName)) {
+        showFormError(customerForm, 'Last name must contain only letters.');
+        return;
+    }
+    if (!validateCommon(data, customerForm)) return;
+
+    setBtnLoading(btn, true, original);
+
+    try {
+        await createAccount({
+            role: 'customer',
+            email: data.email.toLowerCase(),
+            password: data.password,
+            status: 'approved',
+            profile: {
+                firstName: data.firstName,
+                lastName: data.lastName,
+                phone: data.phone
+            },
+            uploads: {}
+        });
+
+        customerForm.reset();
+        showSuccessScreen({ email: data.email.toLowerCase(), role: 'customer', pending: false });
+
+    } catch (err) {
+        showFormError(customerForm, authErrorMessage(err));
+        setBtnLoading(btn, false, original);
+    }
+});
+
+/* ============================================================
+   FARMER SIGN-UP
+   ============================================================ */
+const farmerForm = document.getElementById('form-farmer');
+farmerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearFormError(farmerForm);
+
+    const btn = farmerForm.querySelector('button[type="submit"]');
+    const original = btn.innerHTML;
+
+    const data = readForm(farmerForm);
+    const uploads = collectUploads(farmerForm);
+
+    if (!data.firstName || !data.lastName || !data.phone || !data.password) {
+        showFormError(farmerForm, 'Please fill in all fields.');
+        return;
+    }
+    if (!data.email) {
+        showFormError(farmerForm, 'Your email could not be generated — please check your name.');
+        return;
+    }
+    if (!validateCommon(data, farmerForm)) return;
+    if (!uploads.profileUrl) { showFormError(farmerForm, 'Please upload your profile photo.'); return; }
+    if (!uploads.nrcFront)   { showFormError(farmerForm, 'Please upload the front of your NRC.'); return; }
+    if (!uploads.nrcBack)    { showFormError(farmerForm, 'Please upload the back of your NRC.'); return; }
+
+    setBtnLoading(btn, true, original);
+
+    try {
+        await createAccount({
+            role: 'farmer',
+            email: data.email.toLowerCase(),
+            password: data.password,
+            status: 'approved',
+            profile: {
+                firstName: data.firstName,
+                lastName: data.lastName,
+                phone: data.phone
+            },
+            uploads
+        });
+
+        farmerForm.reset();
+        resetUploads(farmerForm);
+        updateAutoEmail(farmerForm);
+        showSuccessScreen({ email: data.email.toLowerCase(), role: 'farmer', pending: false });
+
+    } catch (err) {
+        showFormError(farmerForm, authErrorMessage(err));
+        setBtnLoading(btn, false, original);
+    }
+});
+
+/* ============================================================
+   SUPPLIER SIGN-UP
+   ============================================================ */
+const supplierForm = document.getElementById('form-supplier');
+supplierForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearFormError(supplierForm);
+
+    const btn = supplierForm.querySelector('button[type="submit"]');
+    const original = btn.innerHTML;
+
+    const data = readForm(supplierForm);
+    const uploads = collectUploads(supplierForm);
+
+    if (!data.businessName || !data.phone || !data.password || !data.about) {
+        showFormError(supplierForm, 'Please fill in all fields.');
+        return;
+    }
+    if (!data.email) {
+        showFormError(supplierForm, 'Your email could not be generated — please check the business name.');
+        return;
+    }
+    if (!validateCommon(data, supplierForm)) return;
+    if (!uploads.logoUrl)  { showFormError(supplierForm, 'Please upload your business logo.'); return; }
+    if (!uploads.zraUrl)   { showFormError(supplierForm, 'Please upload your ZRA certificate.'); return; }
+    if (!uploads.pacraUrl) { showFormError(supplierForm, 'Please upload your PACRA certificate.'); return; }
+
+    setBtnLoading(btn, true, original);
+
+    try {
+        await createAccount({
+            role: 'supplier',
+            email: data.email.toLowerCase(),
+            password: data.password,
+            status: 'pending',
+            profile: {
+                businessName: data.businessName,
+                phone: data.phone,
+                about: data.about
+            },
+            uploads
+        });
+
+        supplierForm.reset();
+        resetUploads(supplierForm);
+        updateAutoEmail(supplierForm);
+        showSuccessScreen({ email: data.email.toLowerCase(), role: 'supplier', pending: true });
+
+    } catch (err) {
+        showFormError(supplierForm, authErrorMessage(err));
+        setBtnLoading(btn, false, original);
+    }
+});
+
+/* ============================================================
+   MARKETEER SIGN-UP
+   ============================================================ */
+const marketeerForm = document.getElementById('form-marketeer');
+marketeerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearFormError(marketeerForm);
+
+    const btn = marketeerForm.querySelector('button[type="submit"]');
+    const original = btn.innerHTML;
+
+    const data = readForm(marketeerForm);
+    const uploads = collectUploads(marketeerForm);
+
+    if (!data.firstName || !data.lastName || !data.phone || !data.password) {
+        showFormError(marketeerForm, 'Please fill in all fields.');
+        return;
+    }
+    if (!data.email) {
+        showFormError(marketeerForm, 'Your email could not be generated — please check your name.');
+        return;
+    }
+    if (!validateCommon(data, marketeerForm)) return;
+    if (!uploads.profileUrl) { showFormError(marketeerForm, 'Please upload your profile photo.'); return; }
+    if (!uploads.nrcFront)   { showFormError(marketeerForm, 'Please upload the front of your NRC.'); return; }
+    if (!uploads.nrcBack)    { showFormError(marketeerForm, 'Please upload the back of your NRC.'); return; }
+
+    setBtnLoading(btn, true, original);
+
+    try {
+        await createAccount({
+            role: 'marketeer',
+            email: data.email.toLowerCase(),
+            password: data.password,
+            status: 'approved',
+            profile: {
+                firstName: data.firstName,
+                lastName: data.lastName,
+                phone: data.phone
+            },
+            uploads
+        });
+
+        marketeerForm.reset();
+        resetUploads(marketeerForm);
+        updateAutoEmail(marketeerForm);
+        showSuccessScreen({ email: data.email.toLowerCase(), role: 'marketeer', pending: false });
+
+    } catch (err) {
+        showFormError(marketeerForm, authErrorMessage(err));
+        setBtnLoading(btn, false, original);
+    }
+});
+
+/* ============================================================
+   DELIVERY PARTNER — dynamic upload fields
+   ============================================================ */
+const DELIVERY_UPLOADS = {
+    bicycle: [
+        { key: 'profileUrl',   label: 'Profile Photo' },
+        { key: 'nrcFront',     label: 'NRC Front' },
+        { key: 'nrcBack',      label: 'NRC Back' },
+        { key: 'vehiclePhoto', label: 'Bicycle Picture' }
+    ],
+    bike: [
+        { key: 'nrcFront',     label: 'NRC Front' },
+        { key: 'nrcBack',      label: 'NRC Back' },
+        { key: 'licenseUrl',   label: "Driver's License" },
+        { key: 'vehiclePhoto', label: 'Bike Picture' }
+    ],
+    car: [
+        { key: 'nrcFront',     label: 'NRC Front' },
+        { key: 'nrcBack',      label: 'NRC Back' },
+        { key: 'licenseUrl',   label: "Driver's License" },
+        { key: 'vehicleFront', label: 'Car Front' },
+        { key: 'vehicleBack',  label: 'Car Back' }
+    ],
+    truck: [
+        { key: 'nrcFront',     label: 'NRC Front' },
+        { key: 'nrcBack',      label: 'NRC Back' },
+        { key: 'licenseUrl',   label: "Driver's License" },
+        { key: 'vehicleFront', label: 'Truck Front' },
+        { key: 'vehicleBack',  label: 'Truck Back' }
+    ]
+};
+
+function uploadBoxHTML(key, label) {
+    return `
+        <div class="upload-box" data-key="${key}">
+            <img class="ub-preview" alt="">
+            <svg class="ub-icon" viewBox="0 0 24 24"><path d="M9 3l-1.5 2H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V7a2 2 0 00-2-2h-3.5L15 3H9zm3 15a5 5 0 110-10 5 5 0 010 10zm0-2a3 3 0 100-6 3 3 0 000 6z"/></svg>
+            <span class="ub-label">${label}</span>
+            <span class="ub-hint">Tap to upload</span>
+            <span class="ub-change">Change</span>
+        </div>
+    `;
+}
+
+const deliveryForm    = document.getElementById('form-delivery');
+const deliveryUploads = document.getElementById('delivery-uploads');
+
+function renderDeliveryUploads(vehicleType) {
+    const items = DELIVERY_UPLOADS[vehicleType] || DELIVERY_UPLOADS.bicycle;
+
+    // Preserve any already-uploaded values
+    const existing = {};
+    deliveryUploads.querySelectorAll('.upload-box[data-key]').forEach(box => {
+        if (box.dataset.value) existing[box.dataset.key] = box.dataset.value;
     });
 
-    if (installBtn) {
-        installBtn.addEventListener('click', async () => {
-            if (!deferredInstallPrompt) return;
-
-            deferredInstallPrompt.prompt();
-            const { outcome } = await deferredInstallPrompt.userChoice;
-            console.log('[U-AGRI] Install choice:', outcome);
-
-            deferredInstallPrompt = null;
-            installBtn.classList.remove('show');
-        });
+    let html = '';
+    for (let i = 0; i < items.length; i += 2) {
+        const row = items.slice(i, i + 2);
+        html += '<div class="upload-grid' + (row.length === 1 ? ' single' : '') + '">';
+        row.forEach(item => { html += uploadBoxHTML(item.key, item.label); });
+        html += '</div>';
     }
 
-    window.addEventListener('appinstalled', () => {
-        console.log('[U-AGRI] App installed');
+    deliveryUploads.style.opacity = '0';
+    deliveryUploads.style.transform = 'translateY(6px)';
+    deliveryUploads.style.transition = 'opacity .22s ease, transform .22s ease';
+
+    setTimeout(() => {
+        deliveryUploads.innerHTML = html;
+
+        // Restore values that still apply
+        deliveryUploads.querySelectorAll('.upload-box[data-key]').forEach(box => {
+            const k = box.dataset.key;
+            if (existing[k]) {
+                box.dataset.value = existing[k];
+                box.classList.add('has-image');
+                const prev = box.querySelector('.ub-preview');
+                if (prev) prev.src = existing[k];
+            }
+        });
+
+        wireUploadBoxes(deliveryUploads);
+        deliveryUploads.style.opacity = '1';
+        deliveryUploads.style.transform = 'translateY(0)';
+    }, 120);
+}
+
+deliveryForm.querySelectorAll('input[name="vehicle"]').forEach(radio => {
+    radio.addEventListener('change', function () {
+        if (this.checked) renderDeliveryUploads(this.value);
+    });
+});
+
+// Initial render
+renderDeliveryUploads('bicycle');
+
+/* Delivery sign-up submit */
+deliveryForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearFormError(deliveryForm);
+
+    const btn = deliveryForm.querySelector('button[type="submit"]');
+    const original = btn.innerHTML;
+
+    const data = readForm(deliveryForm);
+    const uploads = collectUploads(deliveryForm);
+    const vehicle = deliveryForm.querySelector('input[name="vehicle"]:checked').value;
+
+    if (!data.firstName || !data.lastName || !data.phone || !data.password) {
+        showFormError(deliveryForm, 'Please fill in all fields.');
+        return;
+    }
+    if (!data.email) {
+        showFormError(deliveryForm, 'Your email could not be generated — please check your name.');
+        return;
+    }
+    if (!validateCommon(data, deliveryForm)) return;
+
+    // Validate uploads based on vehicle
+    const required = DELIVERY_UPLOADS[vehicle] || [];
+    for (const item of required) {
+        if (!uploads[item.key]) {
+            showFormError(deliveryForm, `Please upload: ${item.label}`);
+            return;
+        }
+    }
+
+    setBtnLoading(btn, true, original);
+
+    try {
+        await createAccount({
+            role: 'delivery',
+            email: data.email.toLowerCase(),
+            password: data.password,
+            status: 'pending',
+            profile: {
+                firstName: data.firstName,
+                lastName: data.lastName,
+                phone: data.phone,
+                vehicleType: vehicle
+            },
+            uploads
+        });
+
+        deliveryForm.reset();
+        // Reset radio to bicycle
+        const bicycleRadio = deliveryForm.querySelector('input[name="vehicle"][value="bicycle"]');
+        if (bicycleRadio) bicycleRadio.checked = true;
+        renderDeliveryUploads('bicycle');
+        updateAutoEmail(deliveryForm);
+
+        showSuccessScreen({ email: data.email.toLowerCase(), role: 'delivery', pending: true });
+
+    } catch (err) {
+        showFormError(deliveryForm, authErrorMessage(err));
+        setBtnLoading(btn, false, original);
+    }
+});
+
+/* ============================================================
+   PWA — INSTALL PROMPT
+   ============================================================ */
+let deferredInstallPrompt = null;
+const installBtn = document.getElementById('installBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    if (installBtn) installBtn.classList.add('show');
+});
+
+if (installBtn) {
+    installBtn.addEventListener('click', async () => {
+        if (!deferredInstallPrompt) return;
+        deferredInstallPrompt.prompt();
+        const { outcome } = await deferredInstallPrompt.userChoice;
+        console.log('[U-AGRI] Install choice:', outcome);
         deferredInstallPrompt = null;
-        if (installBtn) installBtn.classList.remove('show');
+        installBtn.classList.remove('show');
     });
+}
+
+window.addEventListener('appinstalled', () => {
+    console.log('[U-AGRI] App installed');
+    deferredInstallPrompt = null;
+    if (installBtn) installBtn.classList.remove('show');
+});
+
+/* ============================================================
+   SERVICE WORKER
+   ============================================================ */
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('[U-AGRI] SW registered:', reg.scope))
+            .catch(err => console.warn('[U-AGRI] SW registration skipped:', err.message));
+    });
+}
+
+/* ============================================================
+   GLOBAL ERROR SAFETY
+   ============================================================ */
+window.addEventListener('unhandledrejection', (e) => {
+    console.warn('Unhandled promise rejection:', e.reason);
+});
 </script>
 
 </body>
