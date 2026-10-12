@@ -2,22 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#0f7a34">
-    <title>U-AGRI · Farm to Table</title>
-
-    <!-- =========================================
-         PWA
-         ========================================= -->
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="logo.png">
-    <link rel="icon" type="image/png" href="logo.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="U-AGRI">
     <meta name="application-name" content="U-AGRI">
     <meta name="description" content="U-AGRI — Farm · Buy · Sell · Deliver">
+    <title>U-AGRI · Farm to Table</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
 
     <style>
         /* =========================================
@@ -45,7 +42,6 @@
 
             --danger: #e63946;
             --danger-dark: #b91c1c;
-            --danger-light: #fee2e2;
 
             --radius-sm: 10px;
             --radius: 14px;
@@ -55,8 +51,6 @@
 
             --ease: cubic-bezier(0.22, 1, 0.36, 1);
             --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-            --transition: all 0.35s var(--ease);
-            --transition-fast: all 0.2s var(--ease);
 
             --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
             --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
@@ -67,6 +61,15 @@
             --shadow-brand-lg: 0 20px 45px -12px var(--primary-glow);
 
             --ring: 0 0 0 4px rgba(15, 122, 52, 0.14);
+
+            /* Fluid type scale — fits any phone */
+            --fs-xs: clamp(10px, 2.7vw, 12px);
+            --fs-sm: clamp(12px, 3.2vw, 13.5px);
+            --fs-base: clamp(13px, 3.6vw, 15px);
+            --fs-md: clamp(15px, 4.2vw, 17px);
+            --fs-lg: clamp(18px, 5.4vw, 23px);
+            --fs-xl: clamp(26px, 8.5vw, 40px);
+            --fs-title: clamp(34px, 12vw, 52px);
         }
 
         * {
@@ -77,28 +80,34 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html { -webkit-text-size-adjust: 100%; }
+        html {
+            -webkit-text-size-adjust: 100%;
+            height: 100%;
+        }
 
-        body, html {
+        body {
             width: 100%;
             height: 100%;
+            min-height: 100dvh;
             background-color: var(--bg);
             overflow: hidden;
             color: var(--text-body);
-            font-synthesis: none;
-            text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            overscroll-behavior: none;
         }
 
         /* =========================================
-           APP CONTAINER
+           APP CONTAINER — fits any phone perfectly
            ========================================= */
         .app-container {
-            width: 100vw;
-            height: 100vh;
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
             background: var(--surface);
-            position: relative;
             overflow: hidden;
             display: flex;
             justify-content: center;
@@ -109,17 +118,18 @@
            ========================================= */
         .screen {
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
-            padding: 28px 22px;
+            padding: calc(env(safe-area-inset-top, 0px) + 24px) 22px calc(env(safe-area-inset-bottom, 0px) + 24px);
             overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
             background: var(--surface);
             opacity: 0;
-            transform: translateY(24px) scale(0.99);
+            transform: translateY(20px);
             pointer-events: none;
-            transition: opacity 0.45s var(--ease), transform 0.55s var(--ease);
+            transition: opacity 0.5s var(--ease), transform 0.55s var(--ease);
             display: flex;
             flex-direction: column;
             will-change: opacity, transform;
@@ -127,22 +137,31 @@
 
         .screen.active {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
             pointer-events: auto;
             z-index: 10;
         }
 
-        .screen::-webkit-scrollbar { width: 0px; }
+        .screen.fade-out {
+            opacity: 0;
+            transform: scale(0.98);
+            transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+        }
+
+        .screen::-webkit-scrollbar { width: 0; height: 0; }
+        .screen { scrollbar-width: none; -ms-overflow-style: none; }
 
         .screen-content {
             width: 100%;
+            max-width: 520px;
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
         }
 
         /* =========================================
-           LOADER SCREEN — fully centered
+           LOADER SCREEN
            ========================================= */
         #screen-loader {
             padding: 0;
@@ -152,13 +171,17 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            position: relative;
+            opacity: 1;
+            transform: none;
+            pointer-events: auto;
         }
+
+        #screen-loader.active { z-index: 100; }
 
         .loader-stage {
             position: relative;
-            width: 260px;
-            height: 260px;
+            width: clamp(180px, 58vw, 240px);
+            height: clamp(180px, 58vw, 240px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -179,10 +202,9 @@
         }
 
         .loader-icon.active {
-            animation: fadeZoom 1333ms var(--ease) forwards;
+            animation: fadeZoom 1200ms var(--ease) forwards;
         }
 
-        /* Fade in + zoom in, hold, then fade out + zoom out */
         @keyframes fadeZoom {
             0%   { transform: scale(0.5);   opacity: 0; }
             18%  { transform: scale(1.10);  opacity: 1; }
@@ -192,15 +214,15 @@
         }
 
         .icon-circle {
-            width: 220px;
-            height: 220px;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 118px;
+            font-size: clamp(70px, 28vw, 110px);
             line-height: 1;
-            border: 5px solid #ffffff;
+            border: 4px solid #ffffff;
             box-shadow:
                 0 28px 60px -18px rgba(15, 23, 42, 0.32),
                 0 10px 24px -10px rgba(15, 23, 42, 0.22),
@@ -210,28 +232,16 @@
             -webkit-user-select: none;
         }
 
-        .icon-circle.tomato {
-            background: linear-gradient(145deg, #ff8a8a 0%, #e63946 55%, #b91c1c 100%);
-        }
-        .icon-circle.maize {
-            background: linear-gradient(145deg, #ffe066 0%, #f4a100 55%, #c47b00 100%);
-        }
-        .icon-circle.cow {
-            background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 55%, #5c3a22 100%);
-        }
-        .icon-circle.onion {
-            background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 55%, #6b21a8 100%);
-        }
-        .icon-circle.delivery {
-            background: linear-gradient(145deg, #93c5fd 0%, #2563eb 55%, #1e40af 100%);
-        }
-        /* NEW — green pharmacy cross */
-        .icon-circle.pharmacy {
-            background: linear-gradient(145deg, #6ee7b7 0%, #10b981 55%, #047857 100%);
-        }
+        .icon-circle.tomato   { background: linear-gradient(145deg, #ff8a8a 0%, #e63946 55%, #b91c1c 100%); }
+        .icon-circle.maize    { background: linear-gradient(145deg, #ffe066 0%, #f4a100 55%, #c47b00 100%); }
+        .icon-circle.cow      { background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 55%, #5c3a22 100%); }
+        .icon-circle.onion    { background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 55%, #6b21a8 100%); }
+        .icon-circle.delivery { background: linear-gradient(145deg, #93c5fd 0%, #2563eb 55%, #1e40af 100%); }
+        .icon-circle.pharmacy { background: linear-gradient(145deg, #6ee7b7 0%, #10b981 55%, #047857 100%); }
+
         .icon-circle.logo-circle {
             background: linear-gradient(145deg, #ffffff 0%, #f3fbf5 60%, #d7f0df 100%);
-            padding: 34px;
+            padding: 14%;
         }
         .icon-circle.logo-circle img {
             width: 100%;
@@ -240,7 +250,6 @@
             filter: drop-shadow(0 6px 14px rgba(15, 122, 52, 0.28));
         }
 
-        /* Em-based plus so it scales in both big & small circles */
         .plus-icon {
             position: relative;
             display: block;
@@ -270,10 +279,9 @@
             transform: translateY(-50%);
         }
 
-        /* Brand text centered below the stage */
         .loader-brand {
             position: relative;
-            margin-top: 12px;
+            margin-top: 18px;
             text-align: center;
             z-index: 2;
             width: 100%;
@@ -281,7 +289,7 @@
         }
 
         .loader-brand h1 {
-            font-size: 40px;
+            font-size: clamp(30px, 9vw, 42px);
             font-weight: 900;
             color: var(--primary);
             letter-spacing: -0.04em;
@@ -291,7 +299,7 @@
         }
 
         .loader-brand p {
-            font-size: 12.5px;
+            font-size: clamp(10px, 3vw, 12.5px);
             color: var(--primary);
             font-weight: 700;
             letter-spacing: 3px;
@@ -302,8 +310,8 @@
 
         .loader-progress {
             position: relative;
-            margin-top: 42px;
-            width: 200px;
+            margin-top: clamp(26px, 8vw, 42px);
+            width: clamp(160px, 55vw, 200px);
             height: 5px;
             background: rgba(15, 122, 52, 0.14);
             border-radius: 5px;
@@ -316,11 +324,10 @@
             height: 100%;
             background: linear-gradient(90deg, var(--accent-soft), var(--primary));
             border-radius: 5px;
-            transition: width 1.2s linear;
+            transition: width 1.1s linear;
             box-shadow: 0 0 14px var(--primary-glow);
         }
 
-        /* Ambient blobs */
         .loader-blob {
             position: absolute;
             border-radius: 50%;
@@ -329,14 +336,14 @@
             z-index: 0;
         }
         .loader-blob.b1 {
-            width: 300px; height: 300px;
+            width: 280px; height: 280px;
             background: radial-gradient(circle, #86efac 0%, transparent 70%);
             top: -80px; right: -100px;
             opacity: 0.55;
             animation: floatBlob 12s ease-in-out infinite;
         }
         .loader-blob.b2 {
-            width: 340px; height: 340px;
+            width: 320px; height: 320px;
             background: radial-gradient(circle, #bbf7d0 0%, transparent 70%);
             bottom: -100px; left: -100px;
             opacity: 0.5;
@@ -349,6 +356,264 @@
         }
 
         /* =========================================
+           SPLASH SCREEN
+           ========================================= */
+        #screen-splash {
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: linear-gradient(180deg, #ffffff 0%, #f3fbf5 55%, #eaf7ee 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.55;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .blob-1 {
+            width: 240px; height: 240px;
+            background: radial-gradient(circle, #86efac 0%, transparent 70%);
+            top: -80px; right: -60px;
+            animation: floatBlob 12s ease-in-out infinite;
+        }
+        .blob-2 {
+            width: 280px; height: 280px;
+            background: radial-gradient(circle, #4ade80 0%, transparent 70%);
+            bottom: 120px; left: -100px;
+            opacity: 0.35;
+            animation: floatBlob 15s ease-in-out infinite reverse;
+        }
+        .blob-3 {
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, #bbf7d0 0%, transparent 70%);
+            top: 40%; right: -80px;
+            opacity: 0.6;
+            animation: floatBlob 18s ease-in-out infinite;
+        }
+
+        .leaf-top-left, .leaf-bottom-right {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.7;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 8px rgba(15, 122, 52, 0.08));
+        }
+        .leaf-top-left { top: -20px; left: -20px; width: 110px; transform: rotate(15deg); }
+        .leaf-bottom-right { bottom: -20px; right: -20px; width: 140px; transform: rotate(-15deg); }
+
+        .splash-inner {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: calc(env(safe-area-inset-top, 0px) + 20px) 24px calc(env(safe-area-inset-bottom, 0px) + 150px);
+            text-align: center;
+            min-height: 0;
+        }
+
+        .splash-logo {
+            width: clamp(90px, 26vw, 140px);
+            height: auto;
+            margin-bottom: 4px;
+            filter: drop-shadow(0 12px 22px rgba(15, 122, 52, 0.18));
+            animation: fadeInDown 1s var(--ease) both;
+        }
+
+        .splash-title {
+            font-size: var(--fs-title);
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: -0.04em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            line-height: 1;
+            animation: fadeInDown 1s var(--ease) 0.1s both;
+        }
+
+        .splash-tagline {
+            font-size: clamp(11px, 3.4vw, 14px);
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            animation: fadeInDown 1s var(--ease) 0.2s both;
+        }
+
+        .splash-tagline span {
+            font-size: 7px;
+            color: var(--primary);
+            opacity: 0.6;
+        }
+
+        .hero-icons-row {
+            display: flex;
+            gap: clamp(8px, 2.8vw, 14px);
+            justify-content: center;
+            align-items: center;
+            margin-top: clamp(24px, 8vw, 42px);
+            flex-wrap: wrap;
+            animation: slideUpFade 0.9s var(--ease) 0.4s both;
+            max-width: 100%;
+        }
+
+        .hero-icon-chip {
+            width: clamp(52px, 15vw, 72px);
+            height: clamp(52px, 15vw, 72px);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: clamp(24px, 8vw, 34px);
+            border: 3px solid #ffffff;
+            box-shadow:
+                0 16px 32px -12px rgba(15, 23, 42, 0.28),
+                inset 0 -5px 12px rgba(0, 0, 0, 0.07);
+            user-select: none;
+            transition: transform 0.3s var(--ease);
+        }
+
+        .hero-icon-chip.tomato   { background: linear-gradient(145deg, #ff8a8a 0%, #e63946 100%); }
+        .hero-icon-chip.maize    { background: linear-gradient(145deg, #ffe066 0%, #f4a100 100%); }
+        .hero-icon-chip.cow      { background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 100%); }
+        .hero-icon-chip.onion    { background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 100%); }
+        .hero-icon-chip.delivery { background: linear-gradient(145deg, #93c5fd 0%, #2563eb 100%); }
+        .hero-icon-chip.pharmacy { background: linear-gradient(145deg, #6ee7b7 0%, #10b981 100%); }
+
+        .hero-icon-chip .plus-icon { width: 0.9em; height: 0.9em; }
+
+        .splash-btn-container {
+            position: absolute;
+            bottom: calc(env(safe-area-inset-bottom, 0px) + 28px);
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 0 24px;
+            z-index: 4;
+            animation: slideUpFade 0.9s var(--ease) 0.8s both;
+        }
+
+        .splash-btn-container .btn {
+            width: 100%;
+            max-width: 320px;
+            padding: 16px 32px;
+            font-size: var(--fs-base);
+        }
+
+        .btn-install {
+            display: none;
+            width: 100%;
+            max-width: 320px;
+            padding: 13px 28px;
+            font-size: var(--fs-sm);
+            background: rgba(255, 255, 255, 0.94);
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--radius-pill);
+            font-weight: 700;
+            cursor: pointer;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s var(--ease), background 0.25s var(--ease);
+        }
+        .btn-install.show { display: flex; animation: slideUpFade 0.5s var(--ease) both; }
+        .btn-install:hover { background: var(--primary-light); transform: translateY(-2px); }
+        .btn-install:active { transform: translateY(0) scale(0.98); }
+        .btn-install svg { width: 16px; height: 16px; fill: var(--primary); flex-shrink: 0; }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* =========================================
+           BUTTONS
+           ========================================= */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: var(--radius-pill);
+            font-size: var(--fs-base);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            -webkit-appearance: none;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.35) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s var(--ease);
+            pointer-events: none;
+        }
+
+        .btn:active::after { opacity: 1; transition: opacity 0s; }
+
+        .btn-primary {
+            background: linear-gradient(180deg, #12903e 0%, var(--primary) 100%);
+            color: white;
+            box-shadow: var(--shadow-brand);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-hover) 100%);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-brand-lg);
+        }
+        .btn-primary:active { transform: translateY(0) scale(0.985); }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+        }
+        .btn-outline:hover { background: var(--primary-light); transform: translateY(-2px); }
+        .btn-outline:active { transform: translateY(0) scale(0.985); }
+
+        .link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: var(--fs-sm);
+            font-weight: 600;
+        }
+        .link:hover { color: var(--primary-hover); text-decoration: underline; }
+
+        /* =========================================
            LOGO / HEADINGS
            ========================================= */
         .logo-container {
@@ -356,12 +621,12 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            margin-bottom: 24px;
+            margin-bottom: 22px;
         }
 
         .logo {
-            width: 62px;
-            height: 62px;
+            width: 58px;
+            height: 58px;
             object-fit: contain;
             margin-bottom: 12px;
             filter: drop-shadow(0 8px 14px rgba(15, 122, 52, 0.16));
@@ -372,18 +637,16 @@
             text-align: center;
             letter-spacing: -0.02em;
         }
-
-        h1 { font-size: 28px; color: var(--primary); margin-bottom: 6px; font-weight: 800; }
-        h2 { font-size: 23px; margin-bottom: 8px; font-weight: 800; letter-spacing: -0.03em; }
-        h3 { font-size: 16px; font-weight: 700; }
-        p { color: var(--text-light); text-align: center; font-size: 14px; line-height: 1.55; margin-bottom: 26px; }
+        h2 { font-size: var(--fs-lg); margin-bottom: 8px; font-weight: 800; letter-spacing: -0.03em; }
+        h3 { font-size: var(--fs-md); font-weight: 700; }
+        p { color: var(--text-light); text-align: center; font-size: var(--fs-base); line-height: 1.55; margin-bottom: 24px; }
 
         /* =========================================
            INPUTS
            ========================================= */
         .input-group {
             position: relative;
-            margin-bottom: 14px;
+            margin-bottom: 13px;
             width: 100%;
         }
 
@@ -407,7 +670,7 @@
             padding: 15px 14px 15px 44px;
             border: 1.5px solid var(--border);
             border-radius: var(--radius);
-            font-size: 14.5px;
+            font-size: 16px; /* prevents iOS zoom */
             font-weight: 500;
             color: var(--text-dark);
             outline: none;
@@ -437,15 +700,11 @@
         }
 
         .input-group input:focus ~ svg,
-        .input-group textarea:focus ~ svg {
-            fill: var(--primary);
-        }
+        .input-group textarea:focus ~ svg { fill: var(--primary); }
 
         .input-group.no-icon input,
         .input-group.no-icon select,
-        .input-group.no-icon textarea {
-            padding-left: 16px;
-        }
+        .input-group.no-icon textarea { padding-left: 16px; }
 
         .input-group select {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
@@ -456,537 +715,12 @@
         }
 
         /* =========================================
-           BUTTONS
+           TOP NAV
            ========================================= */
-        .btn {
-            width: 100%;
-            padding: 16px;
-            border-radius: var(--radius-pill);
-            font-size: 15.5px;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            -webkit-appearance: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.35) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.4s var(--ease);
-            pointer-events: none;
-        }
-
-        .btn:active::after { opacity: 1; transition: opacity 0s; }
-
-        .btn-primary {
-            background: linear-gradient(180deg, #12903e 0%, var(--primary) 100%);
-            color: white;
-            box-shadow: var(--shadow-brand);
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-hover) 100%);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-brand-lg);
-        }
-
-        .btn-primary:active { transform: translateY(0) scale(0.985); }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--primary);
-            border: 1.5px solid var(--primary);
-        }
-
-        .btn-outline:hover {
-            background: var(--primary-light);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .btn-outline:active { transform: translateY(0) scale(0.985); }
-
-        .link {
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            transition: color 0.2s var(--ease);
-        }
-
-        .link:hover { color: var(--primary-hover); text-decoration: underline; }
-
-        /* =========================================
-           SPLASH SCREEN — centered content
-           ========================================= */
-        #screen-splash {
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100dvh;
-            background: linear-gradient(180deg, #ffffff 0%, #f3fbf5 55%, #eaf7ee 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.55;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .blob-1 {
-            width: 260px; height: 260px;
-            background: radial-gradient(circle, #86efac 0%, transparent 70%);
-            top: -80px; right: -60px;
-            animation: floatBlob 12s ease-in-out infinite;
-        }
-        .blob-2 {
-            width: 300px; height: 300px;
-            background: radial-gradient(circle, #4ade80 0%, transparent 70%);
-            bottom: 120px; left: -100px;
-            opacity: 0.35;
-            animation: floatBlob 15s ease-in-out infinite reverse;
-        }
-        .blob-3 {
-            width: 220px; height: 220px;
-            background: radial-gradient(circle, #bbf7d0 0%, transparent 70%);
-            top: 40%; right: -80px;
-            opacity: 0.6;
-            animation: floatBlob 18s ease-in-out infinite;
-        }
-
-        .leaf-top-left, .leaf-bottom-right {
-            position: absolute;
-            z-index: 1;
-            opacity: 0.7;
-            pointer-events: none;
-            filter: drop-shadow(0 4px 8px rgba(15, 122, 52, 0.08));
-        }
-        .leaf-top-left { top: -20px; left: -20px; width: 130px; transform: rotate(15deg); }
-        .leaf-bottom-right { bottom: -20px; right: -20px; width: 160px; transform: rotate(-15deg); }
-
-        .splash-inner {
-            position: relative;
-            z-index: 2;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 24px 160px;
-            text-align: center;
-        }
-
-        .splash-logo {
-            width: clamp(110px, 28vw, 150px);
-            height: auto;
-            margin-bottom: 6px;
-            filter: drop-shadow(0 12px 22px rgba(15, 122, 52, 0.18));
-            animation: fadeInDown 1s var(--ease) both;
-        }
-
-        .splash-title {
-            font-size: clamp(38px, 10vw, 52px);
-            font-weight: 900;
-            color: var(--primary);
-            letter-spacing: -0.04em;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            line-height: 1;
-            animation: fadeInDown 1s var(--ease) 0.1s both;
-        }
-
-        .splash-tagline {
-            font-size: clamp(13px, 3.8vw, 15px);
-            color: var(--primary);
-            font-weight: 700;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            animation: fadeInDown 1s var(--ease) 0.2s both;
-        }
-
-        .splash-tagline span {
-            font-size: 7px;
-            color: var(--primary);
-            opacity: 0.6;
-        }
-
-        /* Hero icon chips — centered */
-        .hero-icons-row {
-            display: flex;
-            gap: 14px;
-            justify-content: center;
-            align-items: center;
-            margin-top: 42px;
-            flex-wrap: wrap;
-            animation: slideUpFade 0.9s var(--ease) 0.4s both;
-        }
-
-        .hero-icon-chip {
-            width: 76px;
-            height: 76px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 36px;
-            border: 3.5px solid #ffffff;
-            box-shadow:
-                0 16px 32px -12px rgba(15, 23, 42, 0.28),
-                inset 0 -5px 12px rgba(0, 0, 0, 0.07);
-            user-select: none;
-            transition: transform 0.3s var(--ease);
-        }
-
-        .hero-icon-chip:hover { transform: translateY(-4px) scale(1.06); }
-
-        .hero-icon-chip.tomato   { background: linear-gradient(145deg, #ff8a8a 0%, #e63946 100%); }
-        .hero-icon-chip.maize    { background: linear-gradient(145deg, #ffe066 0%, #f4a100 100%); }
-        .hero-icon-chip.cow      { background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 100%); }
-        .hero-icon-chip.onion    { background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 100%); }
-        .hero-icon-chip.delivery { background: linear-gradient(145deg, #93c5fd 0%, #2563eb 100%); }
-        .hero-icon-chip.pharmacy { background: linear-gradient(145deg, #6ee7b7 0%, #10b981 100%); }
-
-        .splash-btn-container {
-            position: absolute;
-            bottom: max(34px, env(safe-area-inset-bottom));
-            left: 0;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            z-index: 4;
-            animation: slideUpFade 0.9s var(--ease) 0.8s both;
-        }
-
-        .splash-btn-container .btn {
-            width: auto;
-            min-width: 230px;
-            padding: 16px 36px;
-            font-size: 16px;
-            border: 2px solid rgba(255,255,255,0.85);
-            backdrop-filter: blur(6px);
-        }
-
-        /* PWA install button (hidden until beforeinstallprompt) */
-        .btn-install {
-            display: none;
-            min-width: 230px;
-            padding: 13px 32px !important;
-            font-size: 14.5px !important;
-            background: rgba(255, 255, 255, 0.94);
-            color: var(--primary);
-            border: 1.5px solid var(--primary) !important;
-            box-shadow: var(--shadow-md);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-        .btn-install.show { display: flex; animation: slideUpFade 0.5s var(--ease) both; }
-        .btn-install:hover { background: var(--primary-light); transform: translateY(-2px); }
-        .btn-install svg { width: 17px; height: 17px; fill: var(--primary); flex-shrink: 0; }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-28px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(28px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* =========================================
-           ACCOUNT SELECTION GRID
-           ========================================= */
-        .account-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            margin-top: 10px;
-        }
-
-        .account-card {
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 22px 14px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease), background 0.3s var(--ease);
-            position: relative;
-            background: var(--surface);
-            overflow: hidden;
-            box-shadow: var(--shadow-xs);
-        }
-
-        .account-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--primary-light) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.35s var(--ease);
-            pointer-events: none;
-        }
-
-        .account-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .account-card:hover::before { opacity: 0.5; }
-
-        .account-card:active { transform: translateY(-1px) scale(0.985); }
-
-        .account-card.active-card {
-            background: linear-gradient(150deg, var(--primary) 0%, var(--primary-dark) 100%);
-            border-color: var(--primary-dark);
-            color: white;
-            box-shadow: var(--shadow-brand-lg);
-        }
-
-        .account-card.active-card::before { opacity: 0; }
-
-        .account-card svg {
-            width: 42px;
-            height: 42px;
-            fill: var(--primary);
-            margin-bottom: 14px;
-            position: relative;
-            z-index: 1;
-            transition: transform 0.4s var(--ease), fill 0.3s var(--ease);
-        }
-
-        .account-card:hover svg { transform: scale(1.08); }
-
-        .account-card.active-card svg { fill: #ffffff; }
-
-        .account-card h3 {
-            font-size: 15px;
-            margin-bottom: 6px;
-            position: relative;
-            z-index: 1;
-            letter-spacing: -0.01em;
-        }
-
-        .account-card.active-card h3 { color: #ffffff; }
-
-        .account-card p {
-            font-size: 11px;
-            margin-bottom: 0;
-            line-height: 1.4;
-            color: var(--text-light);
-            position: relative;
-            z-index: 1;
-        }
-
-        .account-card.active-card p { color: rgba(255,255,255,0.78); }
-
-        .arrow-icon {
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
-            width: 24px;
-            height: 24px;
-            background: var(--primary-light);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.3s var(--ease), background 0.3s var(--ease);
-            z-index: 1;
-        }
-
-        .account-card:hover .arrow-icon {
-            transform: translateX(2px);
-            background: var(--primary);
-        }
-
-        .account-card:hover .arrow-icon svg { fill: #ffffff; }
-
-        .account-card.active-card .arrow-icon { background: rgba(255,255,255,0.2); }
-
-        .arrow-icon svg {
-            width: 13px;
-            height: 13px;
-            margin: 0;
-            fill: var(--primary);
-            transition: fill 0.3s var(--ease);
-        }
-
-        .account-card.active-card .arrow-icon svg { fill: #ffffff; }
-
-        /* =========================================
-           CHECKBOXES & RADIOS
-           ========================================= */
-        .checkbox-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 22px;
-        }
-
-        .custom-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 13.5px;
-            font-weight: 500;
-            color: var(--text-dark);
-            cursor: pointer;
-            padding: 10px 12px;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            transition: all 0.22s var(--ease);
-            background: var(--surface);
-            user-select: none;
-        }
-
-        .custom-checkbox:hover {
-            border-color: var(--primary);
-            background: var(--primary-lighter);
-        }
-
-        .custom-checkbox:has(input:checked) {
-            border-color: var(--primary);
-            background: var(--primary-light);
-        }
-
-        .custom-checkbox input { display: none; }
-
-        .checkmark {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--border-strong);
-            border-radius: 6px;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.22s var(--ease);
-            flex-shrink: 0;
-            background: #ffffff;
-        }
-
-        .custom-checkbox input[type="radio"] + .checkmark { border-radius: 50%; }
-
-        .custom-checkbox input:checked + .checkmark {
-            background: var(--primary);
-            border-color: var(--primary);
-            transform: scale(1.05);
-        }
-
-        .custom-checkbox input:checked + .checkmark::after {
-            content: '';
-            width: 5px;
-            height: 9px;
-            border: solid white;
-            border-width: 0 2.5px 2.5px 0;
-            transform: rotate(45deg);
-            margin-bottom: 2px;
-        }
-
-        .custom-checkbox input[type="radio"]:checked + .checkmark::after {
-            content: '';
-            width: 7px;
-            height: 7px;
-            background: #ffffff;
-            border: none;
-            border-radius: 50%;
-            transform: none;
-            margin: 0;
-        }
-
-        /* =========================================
-           SUCCESS SCREEN
-           ========================================= */
-        #screen-success {
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .success-icon {
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(145deg, #12903e 0%, var(--primary-dark) 100%);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 26px;
-            animation: scaleIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-            flex-shrink: 0;
-            box-shadow: 0 20px 40px -12px var(--primary-glow), inset 0 -3px 8px rgba(0,0,0,0.15);
-            position: relative;
-        }
-
-        .success-icon::before {
-            content: '';
-            position: absolute;
-            inset: -8px;
-            border-radius: 50%;
-            border: 2px solid var(--primary);
-            opacity: 0.25;
-            animation: pulseRing 2s ease-out infinite;
-        }
-
-        @keyframes pulseRing {
-            0% { transform: scale(0.9); opacity: 0.4; }
-            100% { transform: scale(1.25); opacity: 0; }
-        }
-
-        .success-icon svg { width: 44px; height: 44px; fill: white; }
-
-        @keyframes scaleIn {
-            0% { transform: scale(0); }
-            100% { transform: scale(1); }
-        }
-
-        /* =========================================
-           MISC
-           ========================================= */
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 22px 0;
-            color: var(--text-muted);
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-        }
-
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border), transparent);
-        }
-
-        .divider span { padding: 0 14px; }
-
         .top-nav {
             display: flex;
             align-items: center;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
             width: 100%;
         }
 
@@ -1003,35 +737,32 @@
             align-items: center;
             justify-content: center;
             transition: all 0.22s var(--ease);
+            flex-shrink: 0;
         }
-
-        .back-btn:hover {
-            background: var(--primary-light);
-            border-color: var(--primary);
-            transform: translateX(-2px);
-        }
-
+        .back-btn:hover { background: var(--primary-light); border-color: var(--primary); transform: translateX(-2px); }
         .back-btn:active { transform: scale(0.94); }
-
         .back-btn svg { width: 20px; height: 20px; fill: var(--text-dark); transition: fill 0.2s var(--ease); }
         .back-btn:hover svg { fill: var(--primary); }
 
         .header-logo { display: flex; justify-content: center; flex-grow: 1; }
         .header-logo img {
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             filter: drop-shadow(0 4px 10px rgba(15, 122, 52, 0.12));
         }
 
+        /* =========================================
+           ROW (remember me / forgot)
+           ========================================= */
         .row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 13px;
-            margin-bottom: 22px;
+            font-size: var(--fs-sm);
+            margin-bottom: 20px;
             width: 100%;
+            gap: 12px;
         }
-
         .row label {
             display: flex;
             align-items: center;
@@ -1040,7 +771,6 @@
             cursor: pointer;
             font-weight: 500;
         }
-
         .row label input[type="checkbox"] {
             width: 16px;
             height: 16px;
@@ -1049,76 +779,211 @@
         }
 
         /* =========================================
-           FILE UPLOAD
+           DIVIDER
            ========================================= */
-        .file-upload {
-            border: 2px dashed var(--border-strong);
-            border-radius: var(--radius);
-            padding: 22px 18px;
-            text-align: center;
-            color: var(--text-light);
-            font-size: 13.5px;
-            font-weight: 500;
-            cursor: pointer;
-            margin-bottom: 12px;
-            transition: all 0.28s var(--ease);
-            width: 100%;
-            background: var(--surface-alt);
+        .divider {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
+            margin: 20px 0;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+        .divider span { padding: 0 14px; }
+
+        /* =========================================
+           ACCOUNT GRID
+           ========================================= */
+        .account-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 10px;
         }
 
-        .file-upload::before {
+        .account-card {
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px 12px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
+            position: relative;
+            background: var(--surface);
+            overflow: hidden;
+            box-shadow: var(--shadow-xs);
+        }
+        .account-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at center, var(--primary-light) 0%, transparent 70%);
+            background: linear-gradient(135deg, var(--primary-light) 0%, transparent 60%);
             opacity: 0;
-            transition: opacity 0.3s var(--ease);
+            transition: opacity 0.35s var(--ease);
             pointer-events: none;
         }
-
-        .file-upload:hover {
+        .account-card:hover {
             border-color: var(--primary);
-            color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-            background: #ffffff;
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
         }
+        .account-card:hover::before { opacity: 0.5; }
+        .account-card:active { transform: translateY(-1px) scale(0.985); }
 
-        .file-upload:hover::before { opacity: 0.7; }
+        .account-card.active-card {
+            background: linear-gradient(150deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-color: var(--primary-dark);
+            color: white;
+            box-shadow: var(--shadow-brand-lg);
+        }
+        .account-card.active-card::before { opacity: 0; }
 
-        .file-upload:active { transform: translateY(0) scale(0.99); }
+        .account-card svg {
+            width: 40px;
+            height: 40px;
+            fill: var(--primary);
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.4s var(--ease), fill 0.3s var(--ease);
+        }
+        .account-card:hover svg { transform: scale(1.08); }
+        .account-card.active-card svg { fill: #ffffff; }
 
-        .file-upload svg {
-            width: 30px;
-            height: 30px;
-            fill: var(--text-muted);
-            transition: fill 0.25s var(--ease), transform 0.3s var(--ease);
+        .account-card h3 {
+            font-size: var(--fs-sm);
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.01em;
+        }
+        .account-card.active-card h3 { color: #ffffff; }
+
+        .account-card p {
+            font-size: var(--fs-xs);
+            margin-bottom: 0;
+            line-height: 1.4;
+            color: var(--text-light);
             position: relative;
             z-index: 1;
         }
+        .account-card.active-card p { color: rgba(255,255,255,0.78); }
 
-        .file-upload:hover svg {
+        .arrow-icon {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 22px;
+            height: 22px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s var(--ease), background 0.3s var(--ease);
+            z-index: 1;
+        }
+        .account-card:hover .arrow-icon { transform: translateX(2px); background: var(--primary); }
+        .account-card:hover .arrow-icon svg { fill: #ffffff; }
+        .account-card.active-card .arrow-icon { background: rgba(255,255,255,0.2); }
+        .arrow-icon svg {
+            width: 12px;
+            height: 12px;
+            margin: 0;
             fill: var(--primary);
-            transform: translateY(-2px) scale(1.05);
+            transition: fill 0.3s var(--ease);
+        }
+        .account-card.active-card .arrow-icon svg { fill: #ffffff; }
+
+        /* =========================================
+           CHECKBOXES & RADIOS
+           ========================================= */
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+            margin-bottom: 20px;
         }
 
-        .file-upload div { position: relative; z-index: 1; }
+        .custom-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: var(--fs-sm);
+            font-weight: 500;
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: 10px 11px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            transition: all 0.22s var(--ease);
+            background: var(--surface);
+            user-select: none;
+        }
+        .custom-checkbox:hover {
+            border-color: var(--primary);
+            background: var(--primary-lighter);
+        }
+        .custom-checkbox:has(input:checked) {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+        .custom-checkbox input { display: none; }
+
+        .checkmark {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-strong);
+            border-radius: 6px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.22s var(--ease);
+            flex-shrink: 0;
+            background: #ffffff;
+        }
+        .custom-checkbox input[type="radio"] + .checkmark { border-radius: 50%; }
+
+        .custom-checkbox input:checked + .checkmark {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+        .custom-checkbox input:checked + .checkmark::after {
+            content: '';
+            width: 5px;
+            height: 9px;
+            border: solid white;
+            border-width: 0 2.5px 2.5px 0;
+            transform: rotate(45deg);
+            margin-bottom: 2px;
+        }
+        .custom-checkbox input[type="radio"]:checked + .checkmark::after {
+            content: '';
+            width: 7px;
+            height: 7px;
+            background: #ffffff;
+            border: none;
+            border-radius: 50%;
+            transform: none;
+            margin: 0;
+        }
 
         /* =========================================
            SECTION TITLE
            ========================================= */
         .section-title {
-            font-size: 13px;
+            font-size: var(--fs-sm);
             font-weight: 800;
             color: var(--text-dark);
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             margin-top: 8px;
             text-align: left;
             width: 100%;
@@ -1128,7 +993,6 @@
             letter-spacing: 0.02em;
             text-transform: uppercase;
         }
-
         .section-title::after {
             content: '';
             flex: 1;
@@ -1136,10 +1000,86 @@
             background: linear-gradient(90deg, var(--border-strong), transparent);
         }
 
-        .hidden { display: none !important; }
+        /* =========================================
+           FILE UPLOAD
+           ========================================= */
+        .file-upload {
+            border: 2px dashed var(--border-strong);
+            border-radius: var(--radius);
+            padding: 20px 16px;
+            text-align: center;
+            color: var(--text-light);
+            font-size: var(--fs-sm);
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 11px;
+            transition: all 0.28s var(--ease);
+            width: 100%;
+            background: var(--surface-alt);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            position: relative;
+            overflow: hidden;
+        }
+        .file-upload:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            background: #ffffff;
+        }
+        .file-upload:active { transform: translateY(0) scale(0.99); }
+        .file-upload svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--text-muted);
+            transition: fill 0.25s var(--ease), transform 0.3s var(--ease);
+        }
+        .file-upload:hover svg { fill: var(--primary); transform: translateY(-2px) scale(1.05); }
 
         /* =========================================
-           ERROR MODAL — "Google Maps failed"
+           SUCCESS SCREEN
+           ========================================= */
+        #screen-success { justify-content: center; align-items: center; text-align: center; }
+
+        .success-icon {
+            width: 88px;
+            height: 88px;
+            background: linear-gradient(145deg, #12903e 0%, var(--primary-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 24px;
+            animation: scaleIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+            flex-shrink: 0;
+            box-shadow: 0 20px 40px -12px var(--primary-glow), inset 0 -3px 8px rgba(0,0,0,0.15);
+            position: relative;
+        }
+        .success-icon::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            opacity: 0.25;
+            animation: pulseRing 2s ease-out infinite;
+        }
+        @keyframes pulseRing {
+            0% { transform: scale(0.9); opacity: 0.4; }
+            100% { transform: scale(1.25); opacity: 0; }
+        }
+        .success-icon svg { width: 42px; height: 42px; fill: white; }
+        @keyframes scaleIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        /* =========================================
+           ERROR MODAL
            ========================================= */
         .modal-overlay {
             position: fixed;
@@ -1156,32 +1096,25 @@
             pointer-events: none;
             transition: opacity 0.32s var(--ease);
         }
-
-        .modal-overlay.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .modal-overlay.show { opacity: 1; pointer-events: auto; }
 
         .modal-card {
             width: 100%;
             max-width: 340px;
             background: #ffffff;
             border-radius: var(--radius-xl);
-            padding: 32px 24px 24px;
+            padding: 30px 22px 22px;
             text-align: center;
             box-shadow: var(--shadow-xl), 0 0 0 1px rgba(15, 23, 42, 0.04);
             transform: scale(0.9) translateY(16px);
             transition: transform 0.42s var(--ease-out);
         }
-
-        .modal-overlay.show .modal-card {
-            transform: scale(1) translateY(0);
-        }
+        .modal-overlay.show .modal-card { transform: scale(1) translateY(0); }
 
         .modal-icon {
-            width: 72px;
-            height: 72px;
-            margin: 0 auto 20px;
+            width: 68px;
+            height: 68px;
+            margin: 0 auto 18px;
             border-radius: 50%;
             background: linear-gradient(145deg, #ff8a8a 0%, var(--danger) 55%, var(--danger-dark) 100%);
             display: flex;
@@ -1191,7 +1124,6 @@
             position: relative;
             animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
         }
-
         .modal-icon::before {
             content: '';
             position: absolute;
@@ -1201,50 +1133,45 @@
             opacity: 0.28;
             animation: pulseRing 2s ease-out infinite;
         }
-
-        .modal-icon svg {
-            width: 34px;
-            height: 34px;
-            fill: #ffffff;
-        }
+        .modal-icon svg { width: 32px; height: 32px; fill: #ffffff; }
 
         .modal-card h3 {
-            font-size: 18px;
+            font-size: var(--fs-md);
             font-weight: 800;
             color: var(--text-dark);
             margin-bottom: 8px;
             letter-spacing: -0.02em;
         }
-
         .modal-card p {
-            font-size: 13.5px;
+            font-size: var(--fs-sm);
             color: var(--text-light);
             line-height: 1.55;
-            margin-bottom: 24px;
+            margin-bottom: 22px;
         }
-
-        .modal-card .btn { font-size: 15px; }
+        .modal-card .btn { font-size: var(--fs-base); }
 
         .modal-hint {
             display: block;
             margin-top: 12px;
-            font-size: 11.5px;
+            font-size: var(--fs-xs);
             color: var(--text-muted);
             font-weight: 500;
         }
 
         /* =========================================
-           RESPONSIVE FOR DESKTOP
+           UTILITY
+           ========================================= */
+        .hidden { display: none !important; }
+
+        /* =========================================
+           RESPONSIVE — DESKTOP CARD LOOK
            ========================================= */
         @media (min-width: 768px) {
             body, html { background: linear-gradient(135deg, #eef7f0 0%, #e0f2e6 50%, #d5ecdc 100%); }
 
-            .screen:not(#screen-splash):not(#screen-loader) {
-                align-items: center;
-            }
+            .screen:not(#screen-splash):not(#screen-loader) { align-items: center; }
 
             .screen-content {
-                max-width: 520px;
                 flex-grow: 0;
                 background: #ffffff;
                 padding: 44px 40px;
@@ -1254,18 +1181,12 @@
                 position: relative;
             }
 
-            #screen-splash {
-                align-items: center;
-                background: linear-gradient(180deg, #ffffff 0%, #f3fbf5 55%, #eaf7ee 100%);
-            }
-
+            #screen-splash { align-items: center; }
             .splash-inner { max-width: 480px; }
             .leaf-top-left { left: calc(50% - 240px); top: 5vh; }
             .leaf-bottom-right { right: calc(50% - 240px); bottom: 5vh; }
-
             .blob-1 { right: calc(50% - 340px); }
             .blob-2 { left: calc(50% - 400px); }
-
             .loader-blob.b1 { right: calc(50% - 400px); }
             .loader-blob.b2 { left: calc(50% - 460px); }
         }
@@ -1285,36 +1206,20 @@
 
     <!-- ============================
          0. LOADER SCREEN
-         Icons: tomato → maize → cow → onion → delivery → pharmacy → logo
-         7 icons × 1333ms ≈ 9.3 seconds
          ============================ -->
     <div id="screen-loader" class="screen active">
         <div class="loader-blob b1"></div>
         <div class="loader-blob b2"></div>
 
         <div class="loader-stage">
-            <div class="loader-icon" data-index="0">
-                <div class="icon-circle tomato">🍅</div>
-            </div>
-            <div class="loader-icon" data-index="1">
-                <div class="icon-circle maize">🌽</div>
-            </div>
-            <div class="loader-icon" data-index="2">
-                <div class="icon-circle cow">🐄</div>
-            </div>
-            <div class="loader-icon" data-index="3">
-                <div class="icon-circle onion">🧅</div>
-            </div>
-            <div class="loader-icon" data-index="4">
-                <div class="icon-circle delivery">🚚</div>
-            </div>
-            <div class="loader-icon" data-index="5">
-                <div class="icon-circle pharmacy"><span class="plus-icon"></span></div>
-            </div>
+            <div class="loader-icon" data-index="0"><div class="icon-circle tomato">🍅</div></div>
+            <div class="loader-icon" data-index="1"><div class="icon-circle maize">🌽</div></div>
+            <div class="loader-icon" data-index="2"><div class="icon-circle cow">🐄</div></div>
+            <div class="loader-icon" data-index="3"><div class="icon-circle onion">🧅</div></div>
+            <div class="loader-icon" data-index="4"><div class="icon-circle delivery">🚚</div></div>
+            <div class="loader-icon" data-index="5"><div class="icon-circle pharmacy"><span class="plus-icon"></span></div></div>
             <div class="loader-icon" data-index="6">
-                <div class="icon-circle logo-circle">
-                    <img src="logo.png" alt="U-AGRI">
-                </div>
+                <div class="icon-circle logo-circle"><img src="logo.png" alt="U-AGRI"></div>
             </div>
         </div>
 
@@ -1329,7 +1234,7 @@
     </div>
 
     <!-- ============================
-         1. SPLASH / LANDING SCREEN
+         1. SPLASH / GET STARTED
          ============================ -->
     <div id="screen-splash" class="screen">
         <div class="blob blob-1"></div>
@@ -1340,7 +1245,6 @@
             <path d="M10 90C10 90 20 50 60 30C100 10 90 10 90 10C90 10 50 20 30 60C10 100 10 90 10 90Z" fill="#4ade80" opacity="0.6"/>
             <path d="M30 70C30 70 40 40 70 20C100 0 90 0 90 0C90 0 60 10 40 40C20 70 30 70 30 70Z" fill="#16a34a" opacity="0.4"/>
         </svg>
-
         <svg class="leaf-bottom-right" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M90 10C90 10 80 50 40 70C0 90 10 90 10 90C10 90 50 80 70 40C90 0 90 10 90 10Z" fill="#4ade80" opacity="0.6"/>
             <path d="M70 30C70 30 60 60 30 80C0 100 10 100 10 100C10 100 40 90 60 60C80 30 70 30 70 30Z" fill="#16a34a" opacity="0.4"/>
@@ -1364,12 +1268,10 @@
         </div>
 
         <div class="splash-btn-container">
-            <!-- PWA INSTALL BUTTON (auto-shows when installable) -->
-            <button id="installBtn" class="btn btn-install" type="button">
+            <button id="installBtn" class="btn-install" type="button">
                 <svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
                 Install U-AGRI App
             </button>
-
             <button class="btn btn-primary" onclick="onGetStarted()">Get Started &rarr;</button>
         </div>
     </div>
@@ -1669,7 +1571,7 @@
                 <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Seeds</label>
                 <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Fertilizers</label>
                 <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Pesticides</label>
-                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Veterinary Drugs</label>
+                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Vet Drugs</label>
                 <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Farm Tools</label>
                 <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Other</label>
             </div>
@@ -1777,7 +1679,7 @@
 
             <div class="input-group" style="background: var(--primary-light); padding: 16px; border-radius: var(--radius); display: flex; gap: 12px; align-items: flex-start; margin-bottom: 30px; border: 1px solid rgba(15, 122, 52, 0.15);">
                 <svg viewBox="0 0 24 24" style="position: static; transform: none; fill: var(--primary); flex-shrink: 0; width: 20px; height: 20px; margin-top: 1px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                <span style="font-size: 13px; color: var(--text-dark); text-align: left; line-height: 1.55; font-weight: 500;">You will be notified once your documents are verified.</span>
+                <span style="font-size: var(--fs-sm); color: var(--text-dark); text-align: left; line-height: 1.55; font-weight: 500;">You will be notified once your documents are verified.</span>
             </div>
 
             <button class="btn btn-primary" onclick="navigateTo('screen-login')" style="margin-top: auto; width: 100%;">Go to Login</button>
@@ -1809,23 +1711,28 @@
         const currentScreen = document.querySelector('.screen.active');
         const targetScreen = document.getElementById(screenId);
 
-        if (currentScreen && targetScreen && currentScreen !== targetScreen) {
+        if (!targetScreen) return;
+        if (currentScreen === targetScreen) return;
+
+        if (currentScreen) {
             currentScreen.classList.remove('active');
-            setTimeout(() => {
-                targetScreen.classList.add('active');
-                targetScreen.scrollTop = 0;
-            }, 60);
+            currentScreen.classList.add('fade-out');
+            setTimeout(() => currentScreen.classList.remove('fade-out'), 600);
         }
+
+        setTimeout(() => {
+            targetScreen.classList.add('active');
+            targetScreen.scrollTop = 0;
+        }, 80);
     }
 
     /* =========================================
-       LOADER SEQUENCE  (re-runnable)
-       - 7 icons × 1333ms ≈ 9.3 seconds
-       - tomato → maize → cow → onion → delivery → pharmacy → logo
+       LOADER SEQUENCE — re-runnable
        ========================================= */
+    const loaderEl = document.getElementById('screen-loader');
     const loaderIcons = document.querySelectorAll('#screen-loader .loader-icon');
     const progressBar = document.getElementById('loaderProgressBar');
-    const ICON_DURATION = 1333;
+    const ICON_DURATION = 1200;
     let loaderIndex = 0;
     let loaderTimer = null;
 
@@ -1840,12 +1747,10 @@
     function resetLoader() {
         stopLoader();
         loaderIndex = 0;
-
-        // Kill the transition while we snap the bar back to 0%
         progressBar.style.transition = 'none';
         progressBar.style.width = '0%';
-        void progressBar.offsetWidth;          // force reflow
-        progressBar.style.transition = '';     // restore CSS transition
+        void progressBar.offsetWidth;
+        progressBar.style.transition = '';
     }
 
     function startLoader() {
@@ -1855,7 +1760,7 @@
             if (loaderIndex >= loaderIcons.length) {
                 loaderTimer = setTimeout(() => {
                     navigateTo('screen-splash');
-                }, 300);
+                }, 350);
                 return;
             }
 
@@ -1871,21 +1776,19 @@
             }, ICON_DURATION);
         }
 
-        // Tiny delay so the first frame renders
-        loaderTimer = setTimeout(showNext, 200);
+        loaderTimer = setTimeout(showNext, 180);
     }
 
-    // Boot the loop on first load
+    // Boot loader on first load
     startLoader();
 
     /* =========================================
        GOOGLE MAPS ERROR FLOW
-       "Get Started" → error → "Try Again" → restart whole loop
+       Get Started → error → Try Again → restart loop
        ========================================= */
     const mapsErrorModal = document.getElementById('mapsErrorModal');
 
     function onGetStarted() {
-        // Simulated Google Maps failure on the landing page
         showMapsError();
     }
 
@@ -1900,21 +1803,20 @@
     function retryFromError() {
         hideMapsError();
 
-        // Restart the entire loop: go back to the loader and play it again
+        // Restart the whole loop: back to loader, play again
         navigateTo('screen-loader');
         setTimeout(() => {
             startLoader();
-        }, 120);
+        }, 140);
     }
 
-    // Tap the dark backdrop to dismiss
+    // Tap dark backdrop to dismiss
     mapsErrorModal.addEventListener('click', (e) => {
         if (e.target === mapsErrorModal) hideMapsError();
     });
 
     /* =========================================
        DYNAMIC UPLOADS + VEHICLE REGISTRATION
-       FOR DELIVERY PARTNER
        ========================================= */
     document.addEventListener('DOMContentLoaded', () => {
         const vehicleRadios = document.querySelectorAll('input[name="vehicle"]');
@@ -1975,24 +1877,23 @@
     });
 
     /* =========================================
-       PWA — SERVICE WORKER REGISTRATION
+       PWA — SERVICE WORKER
        ========================================= */
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('[U-AGRI] Service worker registered:', reg.scope))
-                .catch(err => console.warn('[U-AGRI] Service worker registration failed:', err));
+                .then(reg => console.log('[U-AGRI] SW registered:', reg.scope))
+                .catch(err => console.warn('[U-AGRI] SW registration failed:', err));
         });
     }
 
     /* =========================================
-       PWA — INSTALL PROMPT BUTTON
+       PWA — INSTALL PROMPT
        ========================================= */
     let deferredInstallPrompt = null;
     const installBtn = document.getElementById('installBtn');
 
     window.addEventListener('beforeinstallprompt', (e) => {
-        // Stop the mini-infobar and stash the event
         e.preventDefault();
         deferredInstallPrompt = e;
         if (installBtn) installBtn.classList.add('show');
