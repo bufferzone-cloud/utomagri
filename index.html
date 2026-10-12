@@ -124,24 +124,28 @@
         }
 
         /* =========================================
-           LOADER SCREEN
+           LOADER SCREEN — fully centered
            ========================================= */
         #screen-loader {
             padding: 0;
-            background: linear-gradient(180deg, #ffffff 0%, #f3fbf5 60%, #eaf7ee 100%);
+            background: linear-gradient(180deg, #ffffff 0%, #f3fbf5 55%, #eaf7ee 100%);
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            position: relative;
         }
 
         .loader-stage {
             position: relative;
-            width: 200px;
-            height: 200px;
+            width: 260px;
+            height: 260px;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 2;
+            flex-shrink: 0;
         }
 
         .loader-icon {
@@ -151,38 +155,41 @@
             justify-content: center;
             align-items: center;
             opacity: 0;
-            transform: scale(0);
+            transform: scale(0.5);
             pointer-events: none;
+            will-change: transform, opacity;
         }
 
         .loader-icon.active {
-            animation: zoomPulse 1.2s var(--ease) forwards;
+            animation: fadeZoom 1333ms var(--ease) forwards;
         }
 
-        @keyframes zoomPulse {
-            0%   { transform: scale(0);    opacity: 0; }
-            22%  { transform: scale(1.18); opacity: 1; }
-            42%  { transform: scale(1);    opacity: 1; }
-            72%  { transform: scale(1);    opacity: 1; }
-            100% { transform: scale(0);    opacity: 0; }
+        /* Fade in + zoom in, hold, then fade out + zoom out */
+        @keyframes fadeZoom {
+            0%   { transform: scale(0.5);   opacity: 0; }
+            18%  { transform: scale(1.10);  opacity: 1; }
+            28%  { transform: scale(1);     opacity: 1; }
+            72%  { transform: scale(1);     opacity: 1; }
+            100% { transform: scale(0.42);  opacity: 0; }
         }
 
         .icon-circle {
-            width: 148px;
-            height: 148px;
+            width: 220px;
+            height: 220px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 78px;
+            font-size: 118px;
             line-height: 1;
-            border: 4px solid #ffffff;
+            border: 5px solid #ffffff;
             box-shadow:
-                0 20px 45px -14px rgba(15, 23, 42, 0.28),
-                0 6px 16px -6px rgba(15, 23, 42, 0.18),
-                inset 0 -6px 14px rgba(0, 0, 0, 0.08),
-                inset 0 4px 10px rgba(255, 255, 255, 0.35);
+                0 28px 60px -18px rgba(15, 23, 42, 0.32),
+                0 10px 24px -10px rgba(15, 23, 42, 0.22),
+                inset 0 -8px 18px rgba(0, 0, 0, 0.09),
+                inset 0 6px 14px rgba(255, 255, 255, 0.38);
             user-select: none;
+            -webkit-user-select: none;
         }
 
         .icon-circle.tomato {
@@ -197,54 +204,57 @@
         .icon-circle.onion {
             background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 55%, #6b21a8 100%);
         }
+        .icon-circle.delivery {
+            background: linear-gradient(145deg, #93c5fd 0%, #2563eb 55%, #1e40af 100%);
+        }
         .icon-circle.logo-circle {
             background: linear-gradient(145deg, #ffffff 0%, #f3fbf5 60%, #d7f0df 100%);
-            padding: 22px;
+            padding: 34px;
         }
         .icon-circle.logo-circle img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            filter: drop-shadow(0 4px 10px rgba(15, 122, 52, 0.25));
+            filter: drop-shadow(0 6px 14px rgba(15, 122, 52, 0.28));
         }
 
+        /* Brand text centered below the stage */
         .loader-brand {
-            position: absolute;
-            bottom: 90px;
-            left: 0;
-            width: 100%;
+            position: relative;
+            margin-top: 12px;
             text-align: center;
             z-index: 2;
+            width: 100%;
+            padding: 0 24px;
         }
 
         .loader-brand h1 {
-            font-size: 34px;
+            font-size: 40px;
             font-weight: 900;
             color: var(--primary);
             letter-spacing: -0.04em;
             text-transform: uppercase;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            line-height: 1;
         }
 
         .loader-brand p {
-            font-size: 12px;
+            font-size: 12.5px;
             color: var(--primary);
-            font-weight: 600;
-            letter-spacing: 2.5px;
+            font-weight: 700;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            opacity: 0.75;
+            opacity: 0.72;
             margin: 0;
         }
 
         .loader-progress {
-            position: absolute;
-            bottom: 54px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 180px;
-            height: 4px;
+            position: relative;
+            margin-top: 42px;
+            width: 200px;
+            height: 5px;
             background: rgba(15, 122, 52, 0.14);
-            border-radius: 4px;
+            border-radius: 5px;
             overflow: hidden;
             z-index: 2;
         }
@@ -253,30 +263,30 @@
             width: 0%;
             height: 100%;
             background: linear-gradient(90deg, var(--accent-soft), var(--primary));
-            border-radius: 4px;
+            border-radius: 5px;
             transition: width 1.2s linear;
-            box-shadow: 0 0 12px var(--primary-glow);
+            box-shadow: 0 0 14px var(--primary-glow);
         }
 
-        /* Ambient blobs on loader */
+        /* Ambient blobs */
         .loader-blob {
             position: absolute;
             border-radius: 50%;
-            filter: blur(70px);
+            filter: blur(80px);
             pointer-events: none;
             z-index: 0;
         }
         .loader-blob.b1 {
-            width: 260px; height: 260px;
+            width: 300px; height: 300px;
             background: radial-gradient(circle, #86efac 0%, transparent 70%);
-            top: -60px; right: -80px;
+            top: -80px; right: -100px;
             opacity: 0.55;
             animation: floatBlob 12s ease-in-out infinite;
         }
         .loader-blob.b2 {
-            width: 300px; height: 300px;
+            width: 340px; height: 340px;
             background: radial-gradient(circle, #bbf7d0 0%, transparent 70%);
-            bottom: -80px; left: -80px;
+            bottom: -100px; left: -100px;
             opacity: 0.5;
             animation: floatBlob 15s ease-in-out infinite reverse;
         }
@@ -466,7 +476,7 @@
         .link:hover { color: var(--primary-hover); text-decoration: underline; }
 
         /* =========================================
-           SPLASH SCREEN
+           SPLASH SCREEN — centered content
            ========================================= */
         #screen-splash {
             padding: 0;
@@ -517,43 +527,48 @@
         .leaf-top-left { top: -20px; left: -20px; width: 130px; transform: rotate(15deg); }
         .leaf-bottom-right { bottom: -20px; right: -20px; width: 160px; transform: rotate(-15deg); }
 
-        .splash-header {
+        .splash-inner {
+            position: relative;
+            z-index: 2;
+            flex: 1;
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
-            padding-top: max(56px, env(safe-area-inset-top));
-            z-index: 2;
-            position: relative;
+            padding: 40px 24px 140px;
             text-align: center;
-            animation: fadeInDown 1s var(--ease) both;
         }
 
         .splash-logo {
-            width: clamp(96px, 24vw, 132px);
+            width: clamp(110px, 28vw, 150px);
             height: auto;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             filter: drop-shadow(0 12px 22px rgba(15, 122, 52, 0.18));
+            animation: fadeInDown 1s var(--ease) both;
         }
 
         .splash-title {
-            font-size: clamp(34px, 8.5vw, 46px);
+            font-size: clamp(38px, 10vw, 52px);
             font-weight: 900;
             color: var(--primary);
             letter-spacing: -0.04em;
-            margin-bottom: 6px;
+            margin-bottom: 10px;
             text-transform: uppercase;
             line-height: 1;
+            animation: fadeInDown 1s var(--ease) 0.1s both;
         }
 
         .splash-tagline {
             font-size: clamp(13px, 3.8vw, 15px);
             color: var(--primary);
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: 2.5px;
             text-transform: uppercase;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
+            animation: fadeInDown 1s var(--ease) 0.2s both;
         }
 
         .splash-tagline span {
@@ -562,47 +577,40 @@
             opacity: 0.6;
         }
 
-        .splash-hero {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 52%;
-            z-index: 1;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            padding-bottom: 40px;
-        }
-
+        /* Hero icon chips — centered */
         .hero-icons-row {
             display: flex;
             gap: 14px;
             justify-content: center;
             align-items: center;
-            width: 100%;
-            padding: 0 24px;
+            margin-top: 42px;
+            flex-wrap: wrap;
             animation: slideUpFade 0.9s var(--ease) 0.4s both;
         }
 
         .hero-icon-chip {
-            width: 62px;
-            height: 62px;
+            width: 76px;
+            height: 76px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 30px;
-            border: 3px solid #ffffff;
+            font-size: 36px;
+            border: 3.5px solid #ffffff;
             box-shadow:
-                0 14px 30px -10px rgba(15, 23, 42, 0.25),
-                inset 0 -4px 10px rgba(0, 0, 0, 0.06);
+                0 16px 32px -12px rgba(15, 23, 42, 0.28),
+                inset 0 -5px 12px rgba(0, 0, 0, 0.07);
             user-select: none;
+            transition: transform 0.3s var(--ease);
         }
-        .hero-icon-chip.tomato { background: linear-gradient(145deg, #ff8a8a 0%, #e63946 100%); }
-        .hero-icon-chip.maize { background: linear-gradient(145deg, #ffe066 0%, #f4a100 100%); }
-        .hero-icon-chip.cow { background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 100%); }
-        .hero-icon-chip.onion { background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 100%); }
+
+        .hero-icon-chip:hover { transform: translateY(-4px) scale(1.06); }
+
+        .hero-icon-chip.tomato   { background: linear-gradient(145deg, #ff8a8a 0%, #e63946 100%); }
+        .hero-icon-chip.maize    { background: linear-gradient(145deg, #ffe066 0%, #f4a100 100%); }
+        .hero-icon-chip.cow      { background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 100%); }
+        .hero-icon-chip.onion    { background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 100%); }
+        .hero-icon-chip.delivery { background: linear-gradient(145deg, #93c5fd 0%, #2563eb 100%); }
 
         .splash-btn-container {
             position: absolute;
@@ -617,8 +625,8 @@
 
         .splash-btn-container .btn {
             width: auto;
-            min-width: 220px;
-            padding: 15px 34px;
+            min-width: 230px;
+            padding: 16px 36px;
             font-size: 16px;
             border: 2px solid rgba(255,255,255,0.85);
             backdrop-filter: blur(6px);
@@ -1084,21 +1092,15 @@
                 background: linear-gradient(180deg, #ffffff 0%, #f3fbf5 55%, #eaf7ee 100%);
             }
 
-            .splash-header,
-            .splash-hero,
-            .splash-btn-container {
-                max-width: 480px;
-                width: 100%;
-            }
-
-            .splash-header { margin-top: 5vh; }
-            .splash-hero { height: 50%; }
-            .splash-btn-container { bottom: 5vh; }
+            .splash-inner { max-width: 480px; }
             .leaf-top-left { left: calc(50% - 240px); top: 5vh; }
             .leaf-bottom-right { right: calc(50% - 240px); bottom: 5vh; }
 
             .blob-1 { right: calc(50% - 340px); }
             .blob-2 { left: calc(50% - 400px); }
+
+            .loader-blob.b1 { right: calc(50% - 400px); }
+            .loader-blob.b2 { left: calc(50% - 460px); }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -1115,7 +1117,9 @@
 <div class="app-container">
 
     <!-- ============================
-         0. LOADER SCREEN (5 icons × 1.2s = 6s)
+         0. LOADER SCREEN
+         Icons: tomato → maize → cow → onion → delivery → logo
+         6 icons × 1333ms ≈ 8 seconds
          ============================ -->
     <div id="screen-loader" class="screen active">
         <div class="loader-blob b1"></div>
@@ -1135,6 +1139,9 @@
                 <div class="icon-circle onion">🧅</div>
             </div>
             <div class="loader-icon" data-index="4">
+                <div class="icon-circle delivery">🚚</div>
+            </div>
+            <div class="loader-icon" data-index="5">
                 <div class="icon-circle logo-circle">
                     <img src="logo.png" alt="UTOM">
                 </div>
@@ -1169,20 +1176,19 @@
             <path d="M70 30C70 30 60 60 30 80C0 100 10 100 10 100C10 100 40 90 60 60C80 30 70 30 70 30Z" fill="#16a34a" opacity="0.4"/>
         </svg>
 
-        <div class="splash-header">
+        <div class="splash-inner">
             <img src="logo.png" alt="UTOM Logo" class="splash-logo">
             <h1 class="splash-title">UTOM</h1>
             <div class="splash-tagline">
                 Farm <span>•</span> Buy <span>•</span> Sell <span>•</span> Deliver
             </div>
-        </div>
 
-        <div class="splash-hero">
             <div class="hero-icons-row">
                 <div class="hero-icon-chip tomato">🍅</div>
                 <div class="hero-icon-chip maize">🌽</div>
                 <div class="hero-icon-chip cow">🐄</div>
                 <div class="hero-icon-chip onion">🧅</div>
+                <div class="hero-icon-chip delivery">🚚</div>
             </div>
         </div>
 
@@ -1542,28 +1548,26 @@
 
     /* =========================================
        LOADER SEQUENCE
-       - 5 icons, each 1.2s → 6s total
-       - tomato → maize → cow → onion → logo
+       - 6 icons × 1333ms ≈ 8 seconds
+       - tomato → maize → cow → onion → delivery → logo
        ========================================= */
     (function runLoader() {
         const loaderIcons = document.querySelectorAll('#screen-loader .loader-icon');
         const progressBar = document.getElementById('loaderProgressBar');
-        const ICON_DURATION = 1200; // ms per icon
+        const ICON_DURATION = 1333; // ms per icon (6 × 1333 ≈ 8s)
         let index = 0;
 
         function showNext() {
             if (index >= loaderIcons.length) {
-                // Finished — navigate to splash
                 setTimeout(() => {
                     navigateTo('screen-splash');
-                }, 250);
+                }, 300);
                 return;
             }
 
             const icon = loaderIcons[index];
             icon.classList.add('active');
 
-            // Update progress bar
             if (progressBar) {
                 progressBar.style.width = ((index + 1) / loaderIcons.length) * 100 + '%';
             }
@@ -1572,13 +1576,12 @@
 
             setTimeout(() => {
                 icon.classList.remove('active');
-                // Small gap between icons for clean separation
-                setTimeout(showNext, 80);
+                showNext();
             }, ICON_DURATION);
         }
 
         // Kick off after a tiny delay so the first frame renders
-        setTimeout(showNext, 250);
+        setTimeout(showNext, 200);
     })();
 
     /* =========================================
@@ -1636,11 +1639,9 @@
             }, 120);
         }
 
-        // Initialize with currently checked vehicle
         const checkedVehicle = document.querySelector('input[name="vehicle"]:checked');
         if (checkedVehicle) updateDeliveryFields(checkedVehicle.value);
 
-        // Listen for changes
         vehicleRadios.forEach(radio => {
             radio.addEventListener('change', function () {
                 updateDeliveryFields(this.value);
