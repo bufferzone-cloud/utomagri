@@ -40,9 +40,6 @@
             --surface-alt: #f8fafc;
             --bg: #f4f7f5;
 
-            --danger: #e63946;
-            --danger-dark: #b91c1c;
-
             --radius-sm: 10px;
             --radius: 14px;
             --radius-lg: 20px;
@@ -236,6 +233,7 @@
         .icon-circle.maize    { background: linear-gradient(145deg, #ffe066 0%, #f4a100 55%, #c47b00 100%); }
         .icon-circle.cow      { background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 55%, #5c3a22 100%); }
         .icon-circle.onion    { background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 55%, #6b21a8 100%); }
+        .icon-circle.apple    { background: linear-gradient(145deg, #fca5a5 0%, #dc2626 55%, #991b1b 100%); }
         .icon-circle.delivery { background: linear-gradient(145deg, #93c5fd 0%, #2563eb 55%, #1e40af 100%); }
         .icon-circle.pharmacy { background: linear-gradient(145deg, #6ee7b7 0%, #10b981 55%, #047857 100%); }
 
@@ -356,56 +354,17 @@
         }
 
         /* =========================================
-           SPLASH SCREEN
+           SPLASH SCREEN — PLAIN WHITE, NO SHADOWS
            ========================================= */
         #screen-splash {
             padding: 0;
             display: flex;
             flex-direction: column;
             height: 100%;
-            background: linear-gradient(180deg, #ffffff 0%, #f3fbf5 55%, #eaf7ee 100%);
+            background: #ffffff;
             position: relative;
             overflow: hidden;
         }
-
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.55;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .blob-1 {
-            width: 240px; height: 240px;
-            background: radial-gradient(circle, #86efac 0%, transparent 70%);
-            top: -80px; right: -60px;
-            animation: floatBlob 12s ease-in-out infinite;
-        }
-        .blob-2 {
-            width: 280px; height: 280px;
-            background: radial-gradient(circle, #4ade80 0%, transparent 70%);
-            bottom: 120px; left: -100px;
-            opacity: 0.35;
-            animation: floatBlob 15s ease-in-out infinite reverse;
-        }
-        .blob-3 {
-            width: 200px; height: 200px;
-            background: radial-gradient(circle, #bbf7d0 0%, transparent 70%);
-            top: 40%; right: -80px;
-            opacity: 0.6;
-            animation: floatBlob 18s ease-in-out infinite;
-        }
-
-        .leaf-top-left, .leaf-bottom-right {
-            position: absolute;
-            z-index: 1;
-            opacity: 0.7;
-            pointer-events: none;
-            filter: drop-shadow(0 4px 8px rgba(15, 122, 52, 0.08));
-        }
-        .leaf-top-left { top: -20px; left: -20px; width: 110px; transform: rotate(15deg); }
-        .leaf-bottom-right { bottom: -20px; right: -20px; width: 140px; transform: rotate(-15deg); }
 
         .splash-inner {
             position: relative;
@@ -413,18 +372,18 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
-            padding: calc(env(safe-area-inset-top, 0px) + 20px) 24px calc(env(safe-area-inset-bottom, 0px) + 150px);
+            padding: calc(env(safe-area-inset-top, 0px) + 60px) 24px calc(env(safe-area-inset-bottom, 0px) + 160px);
             text-align: center;
             min-height: 0;
         }
 
         .splash-logo {
-            width: clamp(90px, 26vw, 140px);
+            width: clamp(150px, 46vw, 240px);
             height: auto;
-            margin-bottom: 4px;
-            filter: drop-shadow(0 12px 22px rgba(15, 122, 52, 0.18));
+            margin-bottom: 8px;
+            filter: none;
             animation: fadeInDown 1s var(--ease) both;
         }
 
@@ -463,7 +422,8 @@
             gap: clamp(8px, 2.8vw, 14px);
             justify-content: center;
             align-items: center;
-            margin-top: clamp(24px, 8vw, 42px);
+            margin-top: auto;
+            padding-top: clamp(24px, 8vw, 42px);
             flex-wrap: wrap;
             animation: slideUpFade 0.9s var(--ease) 0.4s both;
             max-width: 100%;
@@ -489,6 +449,7 @@
         .hero-icon-chip.maize    { background: linear-gradient(145deg, #ffe066 0%, #f4a100 100%); }
         .hero-icon-chip.cow      { background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 100%); }
         .hero-icon-chip.onion    { background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 100%); }
+        .hero-icon-chip.apple    { background: linear-gradient(145deg, #fca5a5 0%, #dc2626 100%); }
         .hero-icon-chip.delivery { background: linear-gradient(145deg, #93c5fd 0%, #2563eb 100%); }
         .hero-icon-chip.pharmacy { background: linear-gradient(145deg, #6ee7b7 0%, #10b981 100%); }
 
@@ -1079,86 +1040,6 @@
         }
 
         /* =========================================
-           ERROR MODAL
-           ========================================= */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.52);
-            backdrop-filter: blur(7px);
-            -webkit-backdrop-filter: blur(7px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 24px;
-            z-index: 9999;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.32s var(--ease);
-        }
-        .modal-overlay.show { opacity: 1; pointer-events: auto; }
-
-        .modal-card {
-            width: 100%;
-            max-width: 340px;
-            background: #ffffff;
-            border-radius: var(--radius-xl);
-            padding: 30px 22px 22px;
-            text-align: center;
-            box-shadow: var(--shadow-xl), 0 0 0 1px rgba(15, 23, 42, 0.04);
-            transform: scale(0.9) translateY(16px);
-            transition: transform 0.42s var(--ease-out);
-        }
-        .modal-overlay.show .modal-card { transform: scale(1) translateY(0); }
-
-        .modal-icon {
-            width: 68px;
-            height: 68px;
-            margin: 0 auto 18px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #ff8a8a 0%, var(--danger) 55%, var(--danger-dark) 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 16px 32px -12px rgba(230, 57, 70, 0.55), inset 0 -3px 8px rgba(0,0,0,0.18);
-            position: relative;
-            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-        }
-        .modal-icon::before {
-            content: '';
-            position: absolute;
-            inset: -8px;
-            border-radius: 50%;
-            border: 2px solid var(--danger);
-            opacity: 0.28;
-            animation: pulseRing 2s ease-out infinite;
-        }
-        .modal-icon svg { width: 32px; height: 32px; fill: #ffffff; }
-
-        .modal-card h3 {
-            font-size: var(--fs-md);
-            font-weight: 800;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-            letter-spacing: -0.02em;
-        }
-        .modal-card p {
-            font-size: var(--fs-sm);
-            color: var(--text-light);
-            line-height: 1.55;
-            margin-bottom: 22px;
-        }
-        .modal-card .btn { font-size: var(--fs-base); }
-
-        .modal-hint {
-            display: block;
-            margin-top: 12px;
-            font-size: var(--fs-xs);
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        /* =========================================
            UTILITY
            ========================================= */
         .hidden { display: none !important; }
@@ -1183,12 +1064,6 @@
 
             #screen-splash { align-items: center; }
             .splash-inner { max-width: 480px; }
-            .leaf-top-left { left: calc(50% - 240px); top: 5vh; }
-            .leaf-bottom-right { right: calc(50% - 240px); bottom: 5vh; }
-            .blob-1 { right: calc(50% - 340px); }
-            .blob-2 { left: calc(50% - 400px); }
-            .loader-blob.b1 { right: calc(50% - 400px); }
-            .loader-blob.b2 { left: calc(50% - 460px); }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -1206,6 +1081,7 @@
 
     <!-- ============================
          0. LOADER SCREEN
+         tomato → maize → cow → onion → apple → delivery → pharmacy → logo
          ============================ -->
     <div id="screen-loader" class="screen active">
         <div class="loader-blob b1"></div>
@@ -1216,9 +1092,10 @@
             <div class="loader-icon" data-index="1"><div class="icon-circle maize">🌽</div></div>
             <div class="loader-icon" data-index="2"><div class="icon-circle cow">🐄</div></div>
             <div class="loader-icon" data-index="3"><div class="icon-circle onion">🧅</div></div>
-            <div class="loader-icon" data-index="4"><div class="icon-circle delivery">🚚</div></div>
-            <div class="loader-icon" data-index="5"><div class="icon-circle pharmacy"><span class="plus-icon"></span></div></div>
-            <div class="loader-icon" data-index="6">
+            <div class="loader-icon" data-index="4"><div class="icon-circle apple">🍎</div></div>
+            <div class="loader-icon" data-index="5"><div class="icon-circle delivery">🚚</div></div>
+            <div class="loader-icon" data-index="6"><div class="icon-circle pharmacy"><span class="plus-icon"></span></div></div>
+            <div class="loader-icon" data-index="7">
                 <div class="icon-circle logo-circle"><img src="logo.png" alt="U-AGRI"></div>
             </div>
         </div>
@@ -1235,21 +1112,9 @@
 
     <!-- ============================
          1. SPLASH / GET STARTED
+         Plain white background, big logo at top, no shadows
          ============================ -->
     <div id="screen-splash" class="screen">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-
-        <svg class="leaf-top-left" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 90C10 90 20 50 60 30C100 10 90 10 90 10C90 10 50 20 30 60C10 100 10 90 10 90Z" fill="#4ade80" opacity="0.6"/>
-            <path d="M30 70C30 70 40 40 70 20C100 0 90 0 90 0C90 0 60 10 40 40C20 70 30 70 30 70Z" fill="#16a34a" opacity="0.4"/>
-        </svg>
-        <svg class="leaf-bottom-right" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M90 10C90 10 80 50 40 70C0 90 10 90 10 90C10 90 50 80 70 40C90 0 90 10 90 10Z" fill="#4ade80" opacity="0.6"/>
-            <path d="M70 30C70 30 60 60 30 80C0 100 10 100 10 100C10 100 40 90 60 60C80 30 70 30 70 30Z" fill="#16a34a" opacity="0.4"/>
-        </svg>
-
         <div class="splash-inner">
             <img src="logo.png" alt="U-AGRI Logo" class="splash-logo">
             <h1 class="splash-title">UTOM-AGRI</h1>
@@ -1262,6 +1127,7 @@
                 <div class="hero-icon-chip maize">🌽</div>
                 <div class="hero-icon-chip cow">🐄</div>
                 <div class="hero-icon-chip onion">🧅</div>
+                <div class="hero-icon-chip apple">🍎</div>
                 <div class="hero-icon-chip delivery">🚚</div>
                 <div class="hero-icon-chip pharmacy"><span class="plus-icon"></span></div>
             </div>
@@ -1272,7 +1138,7 @@
                 <svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
                 Install U-AGRI App
             </button>
-            <button class="btn btn-primary" onclick="onGetStarted()">Get Started &rarr;</button>
+            <button class="btn btn-primary" onclick="navigateTo('screen-login')">Get Started &rarr;</button>
         </div>
     </div>
 
@@ -1686,21 +1552,6 @@
         </div>
     </div>
 
-    <!-- ============================
-         GOOGLE MAPS ERROR MODAL
-         ============================ -->
-    <div id="mapsErrorModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mapsErrorTitle">
-        <div class="modal-card">
-            <div class="modal-icon">
-                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm1 11h-2V7h2v6zm0 4h-2v-2h2v2z"/></svg>
-            </div>
-            <h3 id="mapsErrorTitle">Connection Failed</h3>
-            <p>Google Maps failed to load. Please check your connection and try again.</p>
-            <button class="btn btn-primary" type="button" onclick="retryFromError()">Try Again</button>
-            <span class="modal-hint">Restarting the app…</span>
-        </div>
-    </div>
-
 </div>
 
 <script>
@@ -1729,7 +1580,6 @@
     /* =========================================
        LOADER SEQUENCE — re-runnable
        ========================================= */
-    const loaderEl = document.getElementById('screen-loader');
     const loaderIcons = document.querySelectorAll('#screen-loader .loader-icon');
     const progressBar = document.getElementById('loaderProgressBar');
     const ICON_DURATION = 1200;
@@ -1781,39 +1631,6 @@
 
     // Boot loader on first load
     startLoader();
-
-    /* =========================================
-       GOOGLE MAPS ERROR FLOW
-       Get Started → error → Try Again → restart loop
-       ========================================= */
-    const mapsErrorModal = document.getElementById('mapsErrorModal');
-
-    function onGetStarted() {
-        showMapsError();
-    }
-
-    function showMapsError() {
-        mapsErrorModal.classList.add('show');
-    }
-
-    function hideMapsError() {
-        mapsErrorModal.classList.remove('show');
-    }
-
-    function retryFromError() {
-        hideMapsError();
-
-        // Restart the whole loop: back to loader, play again
-        navigateTo('screen-loader');
-        setTimeout(() => {
-            startLoader();
-        }, 140);
-    }
-
-    // Tap dark backdrop to dismiss
-    mapsErrorModal.addEventListener('click', (e) => {
-        if (e.target === mapsErrorModal) hideMapsError();
-    });
 
     /* =========================================
        DYNAMIC UPLOADS + VEHICLE REGISTRATION
