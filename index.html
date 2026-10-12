@@ -3,71 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>UTOM - Farm to Table</title>
+    <meta name="theme-color" content="#0f7a34">
+    <title>UTOM · Farm to Table</title>
     <style>
-        /* --- CSS Variables & Reset --- */
+        /* =========================================
+           DESIGN TOKENS
+           ========================================= */
         :root {
-            --primary: #1a8a3c;
-            --primary-hover: #146d2f;
-            --primary-light: #e8f5e9;
-            --text-dark: #1f2937;
-            --text-light: #6b7280;
-            --border: #d1d5db;
-            --bg: #ffffff;
-            --radius: 12px;
-            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            /* Brand Greens - richer, more grounded */
+            --primary: #0f7a34;
+            --primary-hover: #0b5f28;
+            --primary-dark: #084d20;
+            --primary-light: #e6f5eb;
+            --primary-lighter: #f1faf4;
+            --primary-glow: rgba(15, 122, 52, 0.28);
+            --accent: #16a34a;
+            --accent-soft: #86efac;
+
+            /* Neutrals */
+            --text-dark: #0f172a;
+            --text-body: #334155;
+            --text-light: #64748b;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --border-strong: #cbd5e1;
+            --surface: #ffffff;
+            --surface-alt: #f8fafc;
+            --bg: #f4f7f5;
+
+            /* Radius */
+            --radius-sm: 10px;
+            --radius: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --radius-pill: 999px;
+
+            /* Motion */
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition: all 0.35s var(--ease);
+            --transition-fast: all 0.2s var(--ease);
+
+            /* Layered shadows for depth */
+            --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
+            --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.07), 0 2px 4px rgba(15, 23, 42, 0.04);
+            --shadow-lg: 0 12px 28px rgba(15, 23, 42, 0.09), 0 4px 10px rgba(15, 23, 42, 0.05);
+            --shadow-xl: 0 24px 48px rgba(15, 23, 42, 0.12), 0 8px 16px rgba(15, 23, 42, 0.06);
+            --shadow-brand: 0 10px 30px -8px var(--primary-glow);
+            --shadow-brand-lg: 0 20px 45px -12px var(--primary-glow);
+
+            /* Focus ring */
+            --ring: 0 0 0 4px rgba(15, 122, 52, 0.14);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
+
+        html { -webkit-text-size-adjust: 100%; }
 
         body, html {
             width: 100%;
             height: 100%;
-            background-color: #f3f4f6;
-            overflow: hidden; 
+            background-color: var(--bg);
+            overflow: hidden;
+            color: var(--text-body);
+            font-synthesis: none;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* --- App Container --- */
+        /* =========================================
+           APP CONTAINER
+           ========================================= */
         .app-container {
             width: 100vw;
             height: 100vh;
-            background: var(--bg);
+            background: var(--surface);
             position: relative;
             overflow: hidden;
             display: flex;
             justify-content: center;
         }
 
-        /* --- Screen Management & Transitions --- */
+        /* =========================================
+           SCREEN MANAGEMENT
+           ========================================= */
         .screen {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            padding: 30px 24px;
+            padding: 28px 22px;
             overflow-y: auto;
-            background: var(--bg);
+            background: var(--surface);
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(24px) scale(0.99);
             pointer-events: none;
-            transition: var(--transition);
+            transition: opacity 0.45s var(--ease), transform 0.55s var(--ease);
             display: flex;
             flex-direction: column;
+            will-change: opacity, transform;
         }
 
         .screen.active {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
             pointer-events: auto;
             z-index: 10;
         }
@@ -81,36 +129,42 @@
             flex-grow: 1;
         }
 
-        /* --- Common UI Elements --- */
+        /* =========================================
+           LOGO / HEADINGS
+           ========================================= */
         .logo-container {
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .logo {
-            width: 60px;
-            height: 60px;
+            width: 62px;
+            height: 62px;
             object-fit: contain;
-            margin-bottom: 10px;
-            mix-blend-mode: multiply; /* Blends white background of logo */
+            margin-bottom: 12px;
+            filter: drop-shadow(0 8px 14px rgba(15, 122, 52, 0.16));
         }
 
         h1, h2, h3 {
             color: var(--text-dark);
             text-align: center;
+            letter-spacing: -0.02em;
         }
 
-        h1 { font-size: 28px; color: var(--primary); margin-bottom: 5px; }
-        h2 { font-size: 22px; margin-bottom: 8px; }
-        p { color: var(--text-light); text-align: center; font-size: 14px; line-height: 1.5; margin-bottom: 24px; }
+        h1 { font-size: 28px; color: var(--primary); margin-bottom: 6px; font-weight: 800; }
+        h2 { font-size: 23px; margin-bottom: 8px; font-weight: 800; letter-spacing: -0.03em; }
+        h3 { font-size: 16px; font-weight: 700; }
+        p { color: var(--text-light); text-align: center; font-size: 14px; line-height: 1.55; margin-bottom: 26px; }
 
-        /* --- Inputs --- */
+        /* =========================================
+           INPUTS
+           ========================================= */
         .input-group {
             position: relative;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             width: 100%;
         }
 
@@ -121,142 +175,252 @@
             transform: translateY(-50%);
             width: 18px;
             height: 18px;
-            fill: var(--text-light);
+            fill: var(--text-muted);
+            transition: fill 0.25s var(--ease);
+            pointer-events: none;
+            z-index: 2;
         }
 
-        .input-group input, .input-group select, .input-group textarea {
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
             width: 100%;
-            padding: 14px 14px 14px 42px;
-            border: 1px solid var(--border);
+            padding: 15px 14px 15px 44px;
+            border: 1.5px solid var(--border);
             border-radius: var(--radius);
-            font-size: 14px;
+            font-size: 14.5px;
+            font-weight: 500;
             color: var(--text-dark);
             outline: none;
-            transition: border-color 0.2s;
-            background: var(--bg);
+            transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease);
+            background: var(--surface);
             -webkit-appearance: none;
+            appearance: none;
         }
 
-        .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+        .input-group textarea {
+            padding-left: 16px;
+            padding-top: 14px;
+            resize: vertical;
+            min-height: 90px;
+            line-height: 1.5;
+        }
+
+        .input-group input::placeholder,
+        .input-group textarea::placeholder { color: var(--text-muted); font-weight: 400; }
+
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
             border-color: var(--primary);
+            box-shadow: var(--ring);
+            background: #fbfdfb;
         }
 
-        .input-group.no-icon input { padding-left: 14px; }
+        .input-group input:focus ~ svg,
+        .input-group textarea:focus ~ svg {
+            fill: var(--primary);
+        }
 
-        /* --- Buttons --- */
+        .input-group.no-icon input,
+        .input-group.no-icon select,
+        .input-group.no-icon textarea {
+            padding-left: 16px;
+        }
+
+        /* Custom select arrow */
+        .input-group select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 42px;
+            cursor: pointer;
+        }
+
+        /* =========================================
+           BUTTONS
+           ========================================= */
         .btn {
             width: 100%;
             padding: 16px;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: var(--radius-pill);
+            font-size: 15.5px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
             border: none;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: transform 0.2s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease);
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 8px;
             -webkit-appearance: none;
+            position: relative;
+            overflow: hidden;
         }
 
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.35) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s var(--ease);
+            pointer-events: none;
+        }
+
+        .btn:active::after { opacity: 1; transition: opacity 0s; }
+
         .btn-primary {
-            background: var(--primary);
+            background: linear-gradient(180deg, #12903e 0%, var(--primary) 100%);
             color: white;
-            box-shadow: 0 4px 14px rgba(26, 138, 60, 0.3);
+            box-shadow: var(--shadow-brand);
         }
 
         .btn-primary:hover {
-            background: var(--primary-hover);
+            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-hover) 100%);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(26, 138, 60, 0.4);
+            box-shadow: var(--shadow-brand-lg);
         }
+
+        .btn-primary:active { transform: translateY(0) scale(0.985); }
 
         .btn-outline {
             background: transparent;
             color: var(--primary);
-            border: 2px solid var(--primary);
+            border: 1.5px solid var(--primary);
         }
 
-        .btn-outline:hover { background: var(--primary-light); }
+        .btn-outline:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
 
-        .link { color: var(--primary); text-decoration: none; font-size: 13px; font-weight: 600; }
-        .link:hover { text-decoration: underline; }
+        .btn-outline:active { transform: translateY(0) scale(0.985); }
+
+        .link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: color 0.2s var(--ease);
+        }
+
+        .link:hover { color: var(--primary-hover); text-decoration: underline; }
 
         /* =========================================
-           SPLASH SCREEN (AgriConnect Style)
+           SPLASH SCREEN
            ========================================= */
         #screen-splash {
             padding: 0;
             display: flex;
             flex-direction: column;
             height: 100dvh;
-            background: #ffffff;
+            background: linear-gradient(180deg, #ffffff 0%, #f3fbf5 55%, #eaf7ee 100%);
             position: relative;
             overflow: hidden;
+        }
+
+        /* Decorative organic blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.55;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .blob-1 {
+            width: 260px; height: 260px;
+            background: radial-gradient(circle, #86efac 0%, transparent 70%);
+            top: -80px; right: -60px;
+            animation: floatBlob 12s ease-in-out infinite;
+        }
+        .blob-2 {
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, #4ade80 0%, transparent 70%);
+            bottom: 120px; left: -100px;
+            opacity: 0.35;
+            animation: floatBlob 15s ease-in-out infinite reverse;
+        }
+        .blob-3 {
+            width: 220px; height: 220px;
+            background: radial-gradient(circle, #bbf7d0 0%, transparent 70%);
+            top: 40%; right: -80px;
+            opacity: 0.6;
+            animation: floatBlob 18s ease-in-out infinite;
+        }
+
+        @keyframes floatBlob {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-12px, 20px) scale(1.08); }
         }
 
         /* Decorative Leaves */
         .leaf-top-left, .leaf-bottom-right {
             position: absolute;
             z-index: 1;
-            opacity: 0.8;
+            opacity: 0.7;
             pointer-events: none;
+            filter: drop-shadow(0 4px 8px rgba(15, 122, 52, 0.08));
         }
-        .leaf-top-left { top: -20px; left: -20px; width: 120px; transform: rotate(15deg); }
-        .leaf-bottom-right { bottom: -20px; right: -20px; width: 150px; transform: rotate(-15deg); }
+        .leaf-top-left { top: -20px; left: -20px; width: 130px; transform: rotate(15deg); }
+        .leaf-bottom-right { bottom: -20px; right: -20px; width: 160px; transform: rotate(-15deg); }
 
         /* Header Section */
         .splash-header {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: max(50px, env(safe-area-inset-top));
+            padding-top: max(56px, env(safe-area-inset-top));
             z-index: 2;
             position: relative;
             text-align: center;
-            animation: fadeInDown 1s ease-out;
+            animation: fadeInDown 1s var(--ease) both;
         }
 
         .splash-logo {
-            width: clamp(100px, 25vw, 140px);
+            width: clamp(96px, 24vw, 132px);
             height: auto;
-            margin-bottom: 5px;
-            mix-blend-mode: multiply; /* Blends logo into white background */
-            filter: drop-shadow(0 10px 15px rgba(26, 138, 60, 0.15));
+            margin-bottom: 4px;
+            filter: drop-shadow(0 12px 22px rgba(15, 122, 52, 0.18));
         }
 
         .splash-title {
-            font-size: clamp(32px, 8vw, 42px);
-            font-weight: 800;
+            font-size: clamp(34px, 8.5vw, 46px);
+            font-weight: 900;
             color: var(--primary);
-            letter-spacing: -1px;
-            margin-bottom: 5px;
+            letter-spacing: -0.04em;
+            margin-bottom: 6px;
             text-transform: uppercase;
+            line-height: 1;
         }
 
         .splash-tagline {
-            font-size: clamp(14px, 4vw, 16px);
+            font-size: clamp(13px, 3.8vw, 15px);
             color: var(--primary);
-            font-weight: 500;
-            letter-spacing: 1px;
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .splash-tagline span {
-            font-size: 8px;
+            font-size: 7px;
             color: var(--primary);
+            opacity: 0.6;
         }
 
-        /* Hero Image & Overlay Text */
+        /* Hero Image & Overlay */
         .splash-hero {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 65%;
+            height: 64%;
             z-index: 1;
         }
 
@@ -266,198 +430,298 @@
             object-fit: cover;
             object-position: top center;
             opacity: 0;
-            animation: fadeInImage 1.5s ease-out forwards;
+            animation: fadeInImage 1.6s var(--ease) 0.2s forwards;
         }
 
-        /* Gradient overlay to blend the image smoothly into the white background */
         .splash-hero::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 40%;
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+            top: 0; left: 0;
+            width: 100%; height: 45%;
+            background: linear-gradient(to bottom, rgba(243, 251, 245, 1) 0%, rgba(243, 251, 245, 0) 100%);
             pointer-events: none;
         }
 
-        /* Text moved higher and further to the right */
         .hero-text-overlay {
             position: absolute;
-            top: 5%; /* Moved higher */
-            right: 4%; /* Moved further right */
-            width: 50%;
+            top: 6%;
+            right: 5%;
+            width: 52%;
             z-index: 3;
             text-align: left;
-            animation: slideUpFade 1s ease-out 0.5s forwards;
-            opacity: 0;
+            animation: slideUpFade 0.9s var(--ease) 0.55s both;
         }
 
         .hero-text-overlay h2 {
-            font-size: clamp(24px, 7vw, 32px);
-            color: #0d4e21;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 15px;
+            font-size: clamp(26px, 7.5vw, 34px);
+            color: #083d18;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 14px;
             text-align: left;
+            letter-spacing: -0.03em;
+            text-shadow: 0 2px 20px rgba(255,255,255,0.5);
         }
 
         .hero-text-overlay p {
-            font-size: clamp(13px, 3.5vw, 15px);
-            color: #1f2937;
-            line-height: 1.5;
+            font-size: clamp(13px, 3.6vw, 15px);
+            color: #1e293b;
+            line-height: 1.55;
             margin-bottom: 0;
             text-align: left;
+            font-weight: 500;
         }
 
-        /* Decorative green line under text */
         .hero-text-overlay .line {
-            width: 60px;
+            width: 56px;
             height: 4px;
-            background: var(--primary);
-            border-radius: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent-soft));
+            border-radius: 4px;
             margin-top: 20px;
+            box-shadow: 0 3px 10px var(--primary-glow);
         }
 
-        /* Bottom Button - Smaller and Centered */
+        /* Bottom Button */
         .splash-btn-container {
             position: absolute;
-            bottom: max(30px, env(safe-area-inset-bottom));
+            bottom: max(34px, env(safe-area-inset-bottom));
             left: 0;
             width: 100%;
             display: flex;
-            justify-content: center; /* Centers the button */
+            justify-content: center;
             z-index: 4;
-            animation: slideUpFade 1s ease-out 0.8s forwards;
-            opacity: 0;
+            animation: slideUpFade 0.9s var(--ease) 0.8s both;
         }
 
         .splash-btn-container .btn {
             width: auto;
-            min-width: 200px; /* Smaller width */
-            padding: 14px 30px; /* Smaller padding */
-            font-size: 16px; /* Smaller font */
-            background: var(--primary);
-            color: white;
-            border: 2px solid white;
-            box-shadow: 0 8px 25px rgba(26, 138, 60, 0.4);
+            min-width: 220px;
+            padding: 15px 34px;
+            font-size: 16px;
+            border: 2px solid rgba(255,255,255,0.85);
+            backdrop-filter: blur(6px);
         }
 
-        /* --- Keyframe Animations --- */
+        /* Keyframes */
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
+            from { opacity: 0; transform: translateY(-28px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(28px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeInImage {
-            0% { opacity: 0; transform: scale(1.05); }
+            0% { opacity: 0; transform: scale(1.06); }
             100% { opacity: 1; transform: scale(1); }
         }
 
-        /* --- Account Selection Grid --- */
+        /* =========================================
+           ACCOUNT SELECTION GRID
+           ========================================= */
         .account-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 14px;
             margin-top: 10px;
         }
 
         .account-card {
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 22px 14px 20px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease), background 0.3s var(--ease);
             position: relative;
-            background: var(--bg);
+            background: var(--surface);
+            overflow: hidden;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .account-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--primary-light) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.35s var(--ease);
+            pointer-events: none;
         }
 
         .account-card:hover {
             border-color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
         }
+
+        .account-card:hover::before { opacity: 0.5; }
+
+        .account-card:active { transform: translateY(-1px) scale(0.985); }
 
         .account-card.active-card {
-            background: var(--primary);
-            border-color: var(--primary);
+            background: linear-gradient(150deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-color: var(--primary-dark);
             color: white;
+            box-shadow: var(--shadow-brand-lg);
         }
 
-        .account-card.active-card svg { fill: white; }
-        .account-card.active-card p { color: rgba(255,255,255,0.8); }
-        .account-card svg { width: 40px; height: 40px; fill: var(--primary); margin-bottom: 12px; }
-        .account-card h3 { font-size: 16px; margin-bottom: 8px; }
-        .account-card p { font-size: 11px; margin-bottom: 0; line-height: 1.3; }
+        .account-card.active-card::before { opacity: 0; }
+
+        .account-card svg {
+            width: 42px;
+            height: 42px;
+            fill: var(--primary);
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.4s var(--ease), fill 0.3s var(--ease);
+        }
+
+        .account-card:hover svg { transform: scale(1.08); }
+
+        .account-card.active-card svg { fill: #ffffff; }
+
+        .account-card h3 {
+            font-size: 15px;
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.01em;
+        }
+
+        .account-card.active-card h3 { color: #ffffff; }
+
+        .account-card p {
+            font-size: 11px;
+            margin-bottom: 0;
+            line-height: 1.4;
+            color: var(--text-light);
+            position: relative;
+            z-index: 1;
+        }
+
+        .account-card.active-card p { color: rgba(255,255,255,0.78); }
 
         .arrow-icon {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
-            width: 20px;
-            height: 20px;
-            background: rgba(0,0,0,0.1);
+            bottom: 12px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            background: var(--primary-light);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: transform 0.3s var(--ease), background 0.3s var(--ease);
+            z-index: 1;
         }
 
-        .arrow-icon svg { width: 12px; height: 12px; margin: 0; }
+        .account-card:hover .arrow-icon {
+            transform: translateX(2px);
+            background: var(--primary);
+        }
 
-        /* --- Checkbox Grid --- */
+        .account-card:hover .arrow-icon svg { fill: #ffffff; }
+
+        .account-card.active-card .arrow-icon { background: rgba(255,255,255,0.2); }
+
+        .arrow-icon svg {
+            width: 13px;
+            height: 13px;
+            margin: 0;
+            fill: var(--primary);
+            transition: fill 0.3s var(--ease);
+        }
+
+        .account-card.active-card .arrow-icon svg { fill: #ffffff; }
+
+        /* =========================================
+           CHECKBOXES & RADIOS
+           ========================================= */
         .checkbox-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
         .custom-checkbox {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 13px;
+            gap: 10px;
+            font-size: 13.5px;
+            font-weight: 500;
             color: var(--text-dark);
             cursor: pointer;
+            padding: 10px 12px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            transition: all 0.22s var(--ease);
+            background: var(--surface);
+            user-select: none;
+        }
+
+        .custom-checkbox:hover {
+            border-color: var(--primary);
+            background: var(--primary-lighter);
+        }
+
+        .custom-checkbox:has(input:checked) {
+            border-color: var(--primary);
+            background: var(--primary-light);
         }
 
         .custom-checkbox input { display: none; }
 
         .checkmark {
-            width: 18px;
-            height: 18px;
-            border: 2px solid var(--border);
-            border-radius: 4px;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-strong);
+            border-radius: 6px;
             display: inline-flex;
             justify-content: center;
             align-items: center;
-            transition: all 0.2s;
+            transition: all 0.22s var(--ease);
             flex-shrink: 0;
+            background: #ffffff;
         }
+
+        .custom-checkbox input[type="radio"] + .checkmark { border-radius: 50%; }
 
         .custom-checkbox input:checked + .checkmark {
             background: var(--primary);
             border-color: var(--primary);
+            transform: scale(1.05);
         }
 
         .custom-checkbox input:checked + .checkmark::after {
             content: '';
-            width: 4px;
-            height: 8px;
+            width: 5px;
+            height: 9px;
             border: solid white;
-            border-width: 0 2px 2px 0;
+            border-width: 0 2.5px 2.5px 0;
             transform: rotate(45deg);
             margin-bottom: 2px;
         }
 
-        /* --- Success Screen --- */
+        .custom-checkbox input[type="radio"]:checked + .checkmark::after {
+            content: '';
+            width: 7px;
+            height: 7px;
+            background: #ffffff;
+            border: none;
+            border-radius: 50%;
+            transform: none;
+            margin: 0;
+        }
+
+        /* =========================================
+           SUCCESS SCREEN
+           ========================================= */
         #screen-success {
             justify-content: center;
             align-items: center;
@@ -465,176 +729,298 @@
         }
 
         .success-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--primary);
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(145deg, #12903e 0%, var(--primary-dark) 100%);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 24px;
-            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            margin-bottom: 26px;
+            animation: scaleIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
             flex-shrink: 0;
+            box-shadow: 0 20px 40px -12px var(--primary-glow), inset 0 -3px 8px rgba(0,0,0,0.15);
+            position: relative;
         }
 
-        .success-icon svg { width: 40px; height: 40px; fill: white; }
+        .success-icon::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            opacity: 0.25;
+            animation: pulseRing 2s ease-out infinite;
+        }
+
+        @keyframes pulseRing {
+            0% { transform: scale(0.9); opacity: 0.4; }
+            100% { transform: scale(1.25); opacity: 0; }
+        }
+
+        .success-icon svg { width: 44px; height: 44px; fill: white; }
 
         @keyframes scaleIn {
             0% { transform: scale(0); }
             100% { transform: scale(1); }
         }
 
-        /* --- Misc --- */
+        /* =========================================
+           MISC
+           ========================================= */
         .divider {
             display: flex;
             align-items: center;
-            margin: 20px 0;
-            color: var(--text-light);
+            margin: 22px 0;
+            color: var(--text-muted);
             font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
         }
 
         .divider::before, .divider::after {
             content: '';
             flex: 1;
             height: 1px;
-            background: var(--border);
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
         }
 
-        .divider span { padding: 0 10px; }
+        .divider span { padding: 0 14px; }
 
         .top-nav {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             width: 100%;
         }
 
         .back-btn {
-            background: none;
-            border: none;
+            background: var(--surface-alt);
+            border: 1px solid var(--border);
             cursor: pointer;
-            padding: 5px;
-            margin-right: 15px;
+            padding: 10px;
+            margin-right: 14px;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.22s var(--ease);
         }
 
-        .back-btn svg { width: 24px; height: 24px; fill: var(--text-dark); }
+        .back-btn:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            transform: translateX(-2px);
+        }
+
+        .back-btn:active { transform: scale(0.94); }
+
+        .back-btn svg { width: 20px; height: 20px; fill: var(--text-dark); transition: fill 0.2s var(--ease); }
+        .back-btn:hover svg { fill: var(--primary); }
+
         .header-logo { display: flex; justify-content: center; flex-grow: 1; }
-        .header-logo img { width: 40px; height: 40px; mix-blend-mode: multiply; }
+        .header-logo img {
+            width: 42px;
+            height: 42px;
+            filter: drop-shadow(0 4px 10px rgba(15, 122, 52, 0.12));
+        }
 
         .row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 13px;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             width: 100%;
         }
 
-        .row label { display: flex; align-items: center; gap: 5px; color: var(--text-light); cursor: pointer; }
+        .row label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            cursor: pointer;
+            font-weight: 500;
+        }
 
+        .row label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* =========================================
+           FILE UPLOAD
+           ========================================= */
         .file-upload {
-            border: 2px dashed var(--border);
+            border: 2px dashed var(--border-strong);
             border-radius: var(--radius);
-            padding: 20px;
+            padding: 22px 18px;
             text-align: center;
             color: var(--text-light);
-            font-size: 13px;
+            font-size: 13.5px;
+            font-weight: 500;
             cursor: pointer;
             margin-bottom: 12px;
-            transition: all 0.2s;
+            transition: all 0.28s var(--ease);
             width: 100%;
-            background: #f9fafb;
+            background: var(--surface-alt);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-upload::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, var(--primary-light) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s var(--ease);
+            pointer-events: none;
         }
 
         .file-upload:hover {
             border-color: var(--primary);
-            background: var(--primary-light);
             color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            background: #ffffff;
         }
+
+        .file-upload:hover::before { opacity: 0.7; }
+
+        .file-upload:active { transform: translateY(0) scale(0.99); }
 
         .file-upload svg {
-            width: 28px;
-            height: 28px;
-            fill: var(--text-light);
-            transition: fill 0.2s;
+            width: 30px;
+            height: 30px;
+            fill: var(--text-muted);
+            transition: fill 0.25s var(--ease), transform 0.3s var(--ease);
+            position: relative;
+            z-index: 1;
         }
 
-        .file-upload:hover svg { fill: var(--primary); }
-        
+        .file-upload:hover svg {
+            fill: var(--primary);
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        .file-upload div { position: relative; z-index: 1; }
+
+        /* =========================================
+           SECTION TITLE
+           ========================================= */
         .section-title {
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 13px;
+            font-weight: 800;
             color: var(--text-dark);
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            margin-top: 8px;
             text-align: left;
             width: 100%;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
         }
 
         .section-title::after {
             content: '';
             flex: 1;
             height: 1px;
-            background: var(--border);
+            background: linear-gradient(90deg, var(--border-strong), transparent);
         }
 
         /* =========================================
-           RESPONSIVE DESIGN FOR PC / DESKTOP
+           RESPONSIVE FOR DESKTOP
            ========================================= */
         @media (min-width: 768px) {
+            body, html { background: linear-gradient(135deg, #eef7f0 0%, #e0f2e6 50%, #d5ecdc 100%); }
+
             .screen:not(#screen-splash) {
                 align-items: center;
             }
+
             .screen-content {
                 max-width: 520px;
                 flex-grow: 0;
-                background: white;
-                padding: 40px;
-                border-radius: 20px;
-                box-shadow: var(--shadow-lg);
+                background: #ffffff;
+                padding: 44px 40px;
+                border-radius: var(--radius-xl);
+                box-shadow: var(--shadow-xl), 0 0 0 1px rgba(15, 23, 42, 0.03);
                 margin-top: 20px;
+                position: relative;
             }
 
-            /* Center the mobile view on desktop for the splash screen */
             #screen-splash {
                 align-items: center;
-                background: #f0fdf4;
+                background: linear-gradient(180deg, #ffffff 0%, #f3fbf5 55%, #eaf7ee 100%);
             }
-            .splash-header, .splash-hero, .splash-btn-container {
+
+            .splash-header,
+            .splash-hero,
+            .splash-btn-container {
                 max-width: 480px;
                 width: 100%;
             }
+
             .splash-header { margin-top: 5vh; }
-            .splash-hero { height: 60%; border-radius: 30px 30px 0 0; overflow: hidden; }
+            .splash-hero {
+                height: 60%;
+                border-radius: 30px 30px 0 0;
+                overflow: hidden;
+                box-shadow: 0 -8px 40px rgba(15, 122, 52, 0.08);
+            }
             .splash-btn-container { bottom: 5vh; }
             .leaf-top-left { left: calc(50% - 240px); top: 5vh; }
             .leaf-bottom-right { right: calc(50% - 240px); bottom: 5vh; }
+
+            .blob-1 { right: calc(50% - 340px); }
+            .blob-2 { left: calc(50% - 400px); }
+        }
+
+        /* Reduced motion accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    
-    <!-- 1. Splash Screen (AgriConnect Style) -->
+
+    <!-- ============================
+         1. SPLASH SCREEN
+         ============================ -->
     <div id="screen-splash" class="screen active">
-        
+
+        <!-- Ambient background blobs -->
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+
         <!-- Decorative Leaves -->
         <svg class="leaf-top-left" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10 90C10 90 20 50 60 30C100 10 90 10 90 10C90 10 50 20 30 60C10 100 10 90 10 90Z" fill="#4ade80" opacity="0.6"/>
-            <path d="M30 70C30 70 40 40 70 20C100 0 90 0 90 0C90 0 60 10 40 40C20 70 30 70 30 70Z" fill="#22c55e" opacity="0.4"/>
+            <path d="M30 70C30 70 40 40 70 20C100 0 90 0 90 0C90 0 60 10 40 40C20 70 30 70 30 70Z" fill="#16a34a" opacity="0.4"/>
         </svg>
-        
+
         <svg class="leaf-bottom-right" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M90 10C90 10 80 50 40 70C0 90 10 90 10 90C10 90 50 80 70 40C90 0 90 10 90 10Z" fill="#4ade80" opacity="0.6"/>
-            <path d="M70 30C70 30 60 60 30 80C0 100 10 100 10 100C10 100 40 90 60 60C80 30 70 30 70 30Z" fill="#22c55e" opacity="0.4"/>
+            <path d="M70 30C70 30 60 60 30 80C0 100 10 100 10 100C10 100 40 90 60 60C80 30 70 30 70 30Z" fill="#16a34a" opacity="0.4"/>
         </svg>
 
         <div class="splash-header">
@@ -647,8 +1033,6 @@
 
         <div class="splash-hero">
             <img src="farmer.png" alt="Farmer in field">
-            
-            <!-- Text moved higher and further right -->
             <div class="hero-text-overlay">
                 <h2>Welcome<br>Farmer</h2>
                 <p>Grow your produce, reach more customers and build a better tomorrow.</p>
@@ -656,26 +1040,27 @@
             </div>
         </div>
 
-        <!-- Button centered and smaller -->
         <div class="splash-btn-container">
             <button class="btn btn-primary" onclick="navigateTo('screen-login')">Get Started &rarr;</button>
         </div>
     </div>
 
-    <!-- 2. Login Screen -->
+    <!-- ============================
+         2. LOGIN
+         ============================ -->
     <div id="screen-login" class="screen">
         <div class="screen-content">
             <div class="logo-container">
                 <img src="logo.png" alt="UTOM Logo" class="logo">
                 <h2>Welcome Back</h2>
-                <p>Log in to your account</p>
+                <p>Log in to your account to continue</p>
             </div>
-            
+
             <div class="input-group">
                 <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
                 <input type="tel" placeholder="Phone Number">
             </div>
-            
+
             <div class="input-group">
                 <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
                 <input type="password" placeholder="Password">
@@ -687,14 +1072,16 @@
             </div>
 
             <button class="btn btn-primary" onclick="navigateTo('screen-select')">Login &rarr;</button>
-            
+
             <div class="divider"><span>OR</span></div>
-            
+
             <button class="btn btn-outline" onclick="navigateTo('screen-select')">Create Account</button>
         </div>
     </div>
 
-    <!-- 3. Account Selection Screen -->
+    <!-- ============================
+         3. ACCOUNT SELECTION
+         ============================ -->
     <div id="screen-select" class="screen">
         <div class="screen-content">
             <div class="top-nav">
@@ -703,9 +1090,9 @@
                 </button>
                 <div class="header-logo"><img src="logo.png" alt="UTOM"></div>
             </div>
-            
+
             <h2>Create Your Account</h2>
-            <p>What type of account do you need?</p>
+            <p>Choose the account type that fits you best</p>
 
             <div class="account-grid">
                 <div class="account-card active-card" onclick="navigateTo('screen-farmer')">
@@ -714,21 +1101,21 @@
                     <p>Grow and sell your produce</p>
                     <div class="arrow-icon"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
                 </div>
-                
+
                 <div class="account-card" onclick="navigateTo('screen-customer')">
                     <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
                     <h3>Customer</h3>
                     <p>Buy fresh products and services</p>
                     <div class="arrow-icon"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
                 </div>
-                
+
                 <div class="account-card" onclick="navigateTo('screen-vendor')">
                     <svg viewBox="0 0 24 24"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></svg>
                     <h3>Vendor</h3>
-                    <p>Sell your products and grow your business</p>
+                    <p>Sell products and grow your business</p>
                     <div class="arrow-icon"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
                 </div>
-                
+
                 <div class="account-card" onclick="navigateTo('screen-delivery')">
                     <svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                     <h3>Delivery Partner</h3>
@@ -739,7 +1126,9 @@
         </div>
     </div>
 
-    <!-- 4. Farmer Account Screen (No Map Address) -->
+    <!-- ============================
+         4. FARMER
+         ============================ -->
     <div id="screen-farmer" class="screen">
         <div class="screen-content">
             <div class="top-nav">
@@ -748,9 +1137,9 @@
                 </button>
                 <div class="header-logo"><img src="logo.png" alt="UTOM"></div>
             </div>
-            
+
             <h2>Farmer Account</h2>
-            <p>Let's get you started. Please fill in your farmer details.</p>
+            <p>Let's get you started — fill in your farmer details.</p>
 
             <div class="input-group">
                 <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
@@ -799,7 +1188,9 @@
         </div>
     </div>
 
-    <!-- 5. Customer Account Screen -->
+    <!-- ============================
+         5. CUSTOMER
+         ============================ -->
     <div id="screen-customer" class="screen">
         <div class="screen-content">
             <div class="top-nav">
@@ -808,7 +1199,7 @@
                 </button>
                 <div class="header-logo"><img src="logo.png" alt="UTOM"></div>
             </div>
-            
+
             <h2>Customer Account</h2>
             <p>Shop fresh. Live healthy.</p>
 
@@ -833,7 +1224,9 @@
         </div>
     </div>
 
-    <!-- 6. Vendor Account Screen (No Map Address, ZRA & PACRA) -->
+    <!-- ============================
+         6. VENDOR
+         ============================ -->
     <div id="screen-vendor" class="screen">
         <div class="screen-content">
             <div class="top-nav">
@@ -842,7 +1235,7 @@
                 </button>
                 <div class="header-logo"><img src="logo.png" alt="UTOM"></div>
             </div>
-            
+
             <h2>Vendor Account</h2>
             <p>Grow your business with us.</p>
 
@@ -891,7 +1284,9 @@
         </div>
     </div>
 
-    <!-- 7. Delivery Partner Account Screen (Dynamic Uploads) -->
+    <!-- ============================
+         7. DELIVERY PARTNER
+         ============================ -->
     <div id="screen-delivery" class="screen">
         <div class="screen-content">
             <div class="top-nav">
@@ -900,7 +1295,7 @@
                 </button>
                 <div class="header-logo"><img src="logo.png" alt="UTOM"></div>
             </div>
-            
+
             <h2>Delivery Partner</h2>
             <p>Deliver today. Earn tomorrow.</p>
 
@@ -924,11 +1319,11 @@
 
             <div class="section-title">Vehicle Type</div>
             <div class="checkbox-grid" style="grid-template-columns: repeat(3, 1fr);">
-                <label class="custom-checkbox"><input type="radio" name="vehicle" value="bicycle" checked><span class="checkmark" style="border-radius: 50%;"></span> Bicycle</label>
-                <label class="custom-checkbox"><input type="radio" name="vehicle" value="motorcycle"><span class="checkmark" style="border-radius: 50%;"></span> Motorcycle</label>
-                <label class="custom-checkbox"><input type="radio" name="vehicle" value="car"><span class="checkmark" style="border-radius: 50%;"></span> Car</label>
-                <label class="custom-checkbox"><input type="radio" name="vehicle" value="van"><span class="checkmark" style="border-radius: 50%;"></span> Van</label>
-                <label class="custom-checkbox"><input type="radio" name="vehicle" value="truck"><span class="checkmark" style="border-radius: 50%;"></span> Truck</label>
+                <label class="custom-checkbox"><input type="radio" name="vehicle" value="bicycle" checked><span class="checkmark"></span> Bicycle</label>
+                <label class="custom-checkbox"><input type="radio" name="vehicle" value="motorcycle"><span class="checkmark"></span> Motorcycle</label>
+                <label class="custom-checkbox"><input type="radio" name="vehicle" value="car"><span class="checkmark"></span> Car</label>
+                <label class="custom-checkbox"><input type="radio" name="vehicle" value="van"><span class="checkmark"></span> Van</label>
+                <label class="custom-checkbox"><input type="radio" name="vehicle" value="truck"><span class="checkmark"></span> Truck</label>
             </div>
 
             <div class="section-title">Vehicle Registration</div>
@@ -946,33 +1341,32 @@
             </div>
 
             <div class="section-title">Upload Required Documents</div>
-            <!-- Dynamic Upload Container -->
-            <div id="dynamic-uploads">
-                <!-- Content will be injected via JavaScript based on vehicle selection -->
-            </div>
+            <div id="dynamic-uploads"></div>
 
             <button class="btn btn-primary" onclick="navigateTo('screen-success')">Create Account</button>
             <div style="height: 20px;"></div>
         </div>
     </div>
 
-    <!-- 8. Success Screen -->
+    <!-- ============================
+         8. SUCCESS
+         ============================ -->
     <div id="screen-success" class="screen">
         <div class="screen-content" style="justify-content: center; align-items: center;">
             <div class="logo-container">
                 <img src="logo.png" alt="UTOM Logo" class="logo">
             </div>
-            
+
             <div class="success-icon">
                 <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
             </div>
-            
-            <h2>Account Created!</h2>
-            <p>Your delivery partner account is awaiting approval.</p>
 
-            <div class="input-group" style="background: var(--primary-light); padding: 15px; border-radius: var(--radius); display: flex; gap: 10px; align-items: flex-start; margin-bottom: 30px;">
-                <svg viewBox="0 0 24 24" style="position: static; transform: none; fill: var(--primary); flex-shrink: 0;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                <span style="font-size: 13px; color: var(--text-dark); text-align: left;">You will be notified once your documents are verified.</span>
+            <h2>Account Created!</h2>
+            <p>Your account is awaiting approval from our team.</p>
+
+            <div class="input-group" style="background: var(--primary-light); padding: 16px; border-radius: var(--radius); display: flex; gap: 12px; align-items: flex-start; margin-bottom: 30px; border: 1px solid rgba(15, 122, 52, 0.15);">
+                <svg viewBox="0 0 24 24" style="position: static; transform: none; fill: var(--primary); flex-shrink: 0; width: 20px; height: 20px; margin-top: 1px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                <span style="font-size: 13px; color: var(--text-dark); text-align: left; line-height: 1.55; font-weight: 500;">You will be notified once your documents are verified.</span>
             </div>
 
             <button class="btn btn-primary" onclick="navigateTo('screen-login')" style="margin-top: auto; width: 100%;">Go to Login</button>
@@ -982,7 +1376,9 @@
 </div>
 
 <script>
-    // --- Screen Navigation ---
+    /* =========================================
+       SCREEN NAVIGATION
+       ========================================= */
     function navigateTo(screenId) {
         const currentScreen = document.querySelector('.screen.active');
         const targetScreen = document.getElementById(screenId);
@@ -992,56 +1388,60 @@
             setTimeout(() => {
                 targetScreen.classList.add('active');
                 targetScreen.scrollTop = 0;
-            }, 50);
+            }, 60);
         }
     }
 
-    // --- Dynamic Upload Logic for Delivery Partner ---
+    /* =========================================
+       DYNAMIC UPLOADS FOR DELIVERY PARTNER
+       ========================================= */
     document.addEventListener('DOMContentLoaded', () => {
         const vehicleRadios = document.querySelectorAll('input[name="vehicle"]');
         const uploadContainer = document.getElementById('dynamic-uploads');
 
-        // Function to generate HTML for uploads based on vehicle type
+        const uploadIcon = `<svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>`;
+
         function updateUploads(vehicleType) {
             let html = '';
-            
-            const uploadIcon = `<svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>`;
 
             if (vehicleType === 'bicycle') {
                 html = `
-                    <div class="file-upload">${uploadIcon}<div>Upload National ID (Front & Back)</div></div>
+                    <div class="file-upload">${uploadIcon}<div>Upload National ID (Front &amp; Back)</div></div>
                     <div class="file-upload">${uploadIcon}<div>Upload Bicycle Photo</div></div>
                 `;
             } else if (vehicleType === 'motorcycle') {
                 html = `
-                    <div class="file-upload">${uploadIcon}<div>Upload National ID (Front & Back)</div></div>
+                    <div class="file-upload">${uploadIcon}<div>Upload National ID (Front &amp; Back)</div></div>
                     <div class="file-upload">${uploadIcon}<div>Upload Driver's License</div></div>
                     <div class="file-upload">${uploadIcon}<div>Upload Motorcycle Photo</div></div>
                     <div class="file-upload">${uploadIcon}<div>Upload Motorcycle Registration</div></div>
                 `;
             } else {
-                // Car, Van, Truck
                 html = `
-                    <div class="file-upload">${uploadIcon}<div>Upload National ID (Front & Back)</div></div>
+                    <div class="file-upload">${uploadIcon}<div>Upload National ID (Front &amp; Back)</div></div>
                     <div class="file-upload">${uploadIcon}<div>Upload Driver's License</div></div>
                     <div class="file-upload">${uploadIcon}<div>Upload Vehicle Registration (White Book)</div></div>
-                    <div class="file-upload">${uploadIcon}<div>Upload Vehicle Photo (Front & Side)</div></div>
+                    <div class="file-upload">${uploadIcon}<div>Upload Vehicle Photo (Front &amp; Side)</div></div>
                     <div class="file-upload">${uploadIcon}<div>Upload Certificate of Fitness</div></div>
                 `;
             }
-            
-            uploadContainer.innerHTML = html;
+
+            // Smooth fade-in on swap
+            uploadContainer.style.opacity = '0';
+            uploadContainer.style.transform = 'translateY(6px)';
+            uploadContainer.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+            setTimeout(() => {
+                uploadContainer.innerHTML = html;
+                uploadContainer.style.opacity = '1';
+                uploadContainer.style.transform = 'translateY(0)';
+            }, 120);
         }
 
-        // Initialize with the default checked value (Bicycle)
         const checkedVehicle = document.querySelector('input[name="vehicle"]:checked');
-        if (checkedVehicle) {
-            updateUploads(checkedVehicle.value);
-        }
+        if (checkedVehicle) updateUploads(checkedVehicle.value);
 
-        // Add event listeners to radio buttons
         vehicleRadios.forEach(radio => {
-            radio.addEventListener('change', function() {
+            radio.addEventListener('change', function () {
                 updateUploads(this.value);
             });
         });
