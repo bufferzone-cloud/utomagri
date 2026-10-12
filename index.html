@@ -4,7 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0f7a34">
-    <title>UTOM · Farm to Table</title>
+    <title>U-AGRI · Farm to Table</title>
+
+    <!-- =========================================
+         PWA
+         ========================================= -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="U-AGRI">
+    <meta name="application-name" content="U-AGRI">
+    <meta name="description" content="U-AGRI — Farm · Buy · Sell · Deliver">
+
     <style>
         /* =========================================
            DESIGN TOKENS
@@ -28,6 +42,10 @@
             --surface: #ffffff;
             --surface-alt: #f8fafc;
             --bg: #f4f7f5;
+
+            --danger: #e63946;
+            --danger-dark: #b91c1c;
+            --danger-light: #fee2e2;
 
             --radius-sm: 10px;
             --radius: 14px;
@@ -207,6 +225,10 @@
         .icon-circle.delivery {
             background: linear-gradient(145deg, #93c5fd 0%, #2563eb 55%, #1e40af 100%);
         }
+        /* NEW — green pharmacy cross */
+        .icon-circle.pharmacy {
+            background: linear-gradient(145deg, #6ee7b7 0%, #10b981 55%, #047857 100%);
+        }
         .icon-circle.logo-circle {
             background: linear-gradient(145deg, #ffffff 0%, #f3fbf5 60%, #d7f0df 100%);
             padding: 34px;
@@ -216,6 +238,36 @@
             height: 100%;
             object-fit: contain;
             filter: drop-shadow(0 6px 14px rgba(15, 122, 52, 0.28));
+        }
+
+        /* Em-based plus so it scales in both big & small circles */
+        .plus-icon {
+            position: relative;
+            display: block;
+            width: 1em;
+            height: 1em;
+            filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
+        }
+        .plus-icon::before,
+        .plus-icon::after {
+            content: '';
+            position: absolute;
+            background: #ffffff;
+            border-radius: 0.09em;
+        }
+        .plus-icon::before {
+            left: 50%;
+            top: 0;
+            width: 0.28em;
+            height: 100%;
+            transform: translateX(-50%);
+        }
+        .plus-icon::after {
+            top: 50%;
+            left: 0;
+            height: 0.28em;
+            width: 100%;
+            transform: translateY(-50%);
         }
 
         /* Brand text centered below the stage */
@@ -535,7 +587,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px 24px 140px;
+            padding: 40px 24px 160px;
             text-align: center;
         }
 
@@ -611,6 +663,7 @@
         .hero-icon-chip.cow      { background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 100%); }
         .hero-icon-chip.onion    { background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 100%); }
         .hero-icon-chip.delivery { background: linear-gradient(145deg, #93c5fd 0%, #2563eb 100%); }
+        .hero-icon-chip.pharmacy { background: linear-gradient(145deg, #6ee7b7 0%, #10b981 100%); }
 
         .splash-btn-container {
             position: absolute;
@@ -618,7 +671,9 @@
             left: 0;
             width: 100%;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
             z-index: 4;
             animation: slideUpFade 0.9s var(--ease) 0.8s both;
         }
@@ -631,6 +686,23 @@
             border: 2px solid rgba(255,255,255,0.85);
             backdrop-filter: blur(6px);
         }
+
+        /* PWA install button (hidden until beforeinstallprompt) */
+        .btn-install {
+            display: none;
+            min-width: 230px;
+            padding: 13px 32px !important;
+            font-size: 14.5px !important;
+            background: rgba(255, 255, 255, 0.94);
+            color: var(--primary);
+            border: 1.5px solid var(--primary) !important;
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .btn-install.show { display: flex; animation: slideUpFade 0.5s var(--ease) both; }
+        .btn-install:hover { background: var(--primary-light); transform: translateY(-2px); }
+        .btn-install svg { width: 17px; height: 17px; fill: var(--primary); flex-shrink: 0; }
 
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-28px); }
@@ -1067,6 +1139,101 @@
         .hidden { display: none !important; }
 
         /* =========================================
+           ERROR MODAL — "Google Maps failed"
+           ========================================= */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.52);
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.32s var(--ease);
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 340px;
+            background: #ffffff;
+            border-radius: var(--radius-xl);
+            padding: 32px 24px 24px;
+            text-align: center;
+            box-shadow: var(--shadow-xl), 0 0 0 1px rgba(15, 23, 42, 0.04);
+            transform: scale(0.9) translateY(16px);
+            transition: transform 0.42s var(--ease-out);
+        }
+
+        .modal-overlay.show .modal-card {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ff8a8a 0%, var(--danger) 55%, var(--danger-dark) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 16px 32px -12px rgba(230, 57, 70, 0.55), inset 0 -3px 8px rgba(0,0,0,0.18);
+            position: relative;
+            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+
+        .modal-icon::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px solid var(--danger);
+            opacity: 0.28;
+            animation: pulseRing 2s ease-out infinite;
+        }
+
+        .modal-icon svg {
+            width: 34px;
+            height: 34px;
+            fill: #ffffff;
+        }
+
+        .modal-card h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .modal-card p {
+            font-size: 13.5px;
+            color: var(--text-light);
+            line-height: 1.55;
+            margin-bottom: 24px;
+        }
+
+        .modal-card .btn { font-size: 15px; }
+
+        .modal-hint {
+            display: block;
+            margin-top: 12px;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* =========================================
            RESPONSIVE FOR DESKTOP
            ========================================= */
         @media (min-width: 768px) {
@@ -1118,8 +1285,8 @@
 
     <!-- ============================
          0. LOADER SCREEN
-         Icons: tomato → maize → cow → onion → delivery → logo
-         6 icons × 1333ms ≈ 8 seconds
+         Icons: tomato → maize → cow → onion → delivery → pharmacy → logo
+         7 icons × 1333ms ≈ 9.3 seconds
          ============================ -->
     <div id="screen-loader" class="screen active">
         <div class="loader-blob b1"></div>
@@ -1142,14 +1309,17 @@
                 <div class="icon-circle delivery">🚚</div>
             </div>
             <div class="loader-icon" data-index="5">
+                <div class="icon-circle pharmacy"><span class="plus-icon"></span></div>
+            </div>
+            <div class="loader-icon" data-index="6">
                 <div class="icon-circle logo-circle">
-                    <img src="logo.png" alt="UTOM">
+                    <img src="logo.png" alt="U-AGRI">
                 </div>
             </div>
         </div>
 
         <div class="loader-brand">
-            <h1>UTOM</h1>
+            <h1>U-AGRI</h1>
             <p>Farm · Buy · Sell · Deliver</p>
         </div>
 
@@ -1159,7 +1329,7 @@
     </div>
 
     <!-- ============================
-         1. SPLASH SCREEN
+         1. SPLASH / LANDING SCREEN
          ============================ -->
     <div id="screen-splash" class="screen">
         <div class="blob blob-1"></div>
@@ -1177,8 +1347,8 @@
         </svg>
 
         <div class="splash-inner">
-            <img src="logo.png" alt="UTOM Logo" class="splash-logo">
-            <h1 class="splash-title">UTOM</h1>
+            <img src="logo.png" alt="U-AGRI Logo" class="splash-logo">
+            <h1 class="splash-title">U-AGRI</h1>
             <div class="splash-tagline">
                 Farm <span>•</span> Buy <span>•</span> Sell <span>•</span> Deliver
             </div>
@@ -1189,11 +1359,18 @@
                 <div class="hero-icon-chip cow">🐄</div>
                 <div class="hero-icon-chip onion">🧅</div>
                 <div class="hero-icon-chip delivery">🚚</div>
+                <div class="hero-icon-chip pharmacy"><span class="plus-icon"></span></div>
             </div>
         </div>
 
         <div class="splash-btn-container">
-            <button class="btn btn-primary" onclick="navigateTo('screen-login')">Get Started &rarr;</button>
+            <!-- PWA INSTALL BUTTON (auto-shows when installable) -->
+            <button id="installBtn" class="btn btn-install" type="button">
+                <svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
+                Install U-AGRI App
+            </button>
+
+            <button class="btn btn-primary" onclick="onGetStarted()">Get Started &rarr;</button>
         </div>
     </div>
 
@@ -1203,7 +1380,7 @@
     <div id="screen-login" class="screen">
         <div class="screen-content">
             <div class="logo-container">
-                <img src="logo.png" alt="UTOM Logo" class="logo">
+                <img src="logo.png" alt="U-AGRI Logo" class="logo">
                 <h2>Welcome Back</h2>
                 <p>Log in to your account to continue</p>
             </div>
@@ -1240,7 +1417,7 @@
                 <button class="back-btn" onclick="navigateTo('screen-login')">
                     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="UTOM"></div>
+                <div class="header-logo"><img src="logo.png" alt="U-AGRI"></div>
             </div>
 
             <h2>Create Your Account</h2>
@@ -1274,6 +1451,13 @@
                     <p>Deliver orders and earn</p>
                     <div class="arrow-icon"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
                 </div>
+
+                <div class="account-card" onclick="navigateTo('screen-pharmacy')">
+                    <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm8 10h-3v3h-2v-3h-3v-2h3V9h2v3h3v2z"/></svg>
+                    <h3>Pharmacy</h3>
+                    <p>Supply certified agro-inputs</p>
+                    <div class="arrow-icon"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+                </div>
             </div>
         </div>
     </div>
@@ -1287,7 +1471,7 @@
                 <button class="back-btn" onclick="navigateTo('screen-select')">
                     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="UTOM"></div>
+                <div class="header-logo"><img src="logo.png" alt="U-AGRI"></div>
             </div>
 
             <h2>Farmer Account</h2>
@@ -1349,7 +1533,7 @@
                 <button class="back-btn" onclick="navigateTo('screen-select')">
                     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="UTOM"></div>
+                <div class="header-logo"><img src="logo.png" alt="U-AGRI"></div>
             </div>
 
             <h2>Customer Account</h2>
@@ -1385,7 +1569,7 @@
                 <button class="back-btn" onclick="navigateTo('screen-select')">
                     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="UTOM"></div>
+                <div class="header-logo"><img src="logo.png" alt="U-AGRI"></div>
             </div>
 
             <h2>Vendor Account</h2>
@@ -1437,7 +1621,80 @@
     </div>
 
     <!-- ============================
-         7. DELIVERY PARTNER
+         7. PHARMACY
+         ============================ -->
+    <div id="screen-pharmacy" class="screen">
+        <div class="screen-content">
+            <div class="top-nav">
+                <button class="back-btn" onclick="navigateTo('screen-select')">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                </button>
+                <div class="header-logo"><img src="logo.png" alt="U-AGRI"></div>
+            </div>
+
+            <h2>Pharmacy Account</h2>
+            <p>Supply certified agro-inputs to farmers.</p>
+
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm8 10h-3v3h-2v-3h-3v-2h3V9h2v3h3v2z"/></svg>
+                <input type="text" placeholder="Pharmacy / Business Name">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <input type="text" placeholder="Owner / Pharmacist Name">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <input type="tel" placeholder="Phone Number">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <input type="email" placeholder="Email">
+            </div>
+            <div class="input-group">
+                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                <input type="password" placeholder="Password">
+            </div>
+
+            <div class="input-group no-icon">
+                <select>
+                    <option value="" disabled selected>Select Province</option>
+                    <option>Province 1</option>
+                    <option>Province 2</option>
+                </select>
+            </div>
+
+            <div class="section-title">Products Supplied</div>
+            <div class="checkbox-grid">
+                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Seeds</label>
+                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Fertilizers</label>
+                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Pesticides</label>
+                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Veterinary Drugs</label>
+                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Farm Tools</label>
+                <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Other</label>
+            </div>
+
+            <div class="section-title">Required Documents</div>
+            <div class="file-upload">
+                <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+                <div>Upload Pharmacy License (PDF, JPG)</div>
+            </div>
+            <div class="file-upload">
+                <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+                <div>Upload ZRA Certificate (PDF, JPG)</div>
+            </div>
+            <div class="file-upload">
+                <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+                <div>Upload PACRA Certificate (PDF, JPG)</div>
+            </div>
+
+            <button class="btn btn-primary" onclick="navigateTo('screen-success')">Create Account</button>
+            <div style="height: 20px;"></div>
+        </div>
+    </div>
+
+    <!-- ============================
+         8. DELIVERY PARTNER
          ============================ -->
     <div id="screen-delivery" class="screen">
         <div class="screen-content">
@@ -1445,7 +1702,7 @@
                 <button class="back-btn" onclick="navigateTo('screen-select')">
                     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="UTOM"></div>
+                <div class="header-logo"><img src="logo.png" alt="U-AGRI"></div>
             </div>
 
             <h2>Delivery Partner</h2>
@@ -1503,12 +1760,12 @@
     </div>
 
     <!-- ============================
-         8. SUCCESS
+         9. SUCCESS
          ============================ -->
     <div id="screen-success" class="screen">
         <div class="screen-content" style="justify-content: center; align-items: center;">
             <div class="logo-container">
-                <img src="logo.png" alt="UTOM Logo" class="logo">
+                <img src="logo.png" alt="U-AGRI Logo" class="logo">
             </div>
 
             <div class="success-icon">
@@ -1524,6 +1781,21 @@
             </div>
 
             <button class="btn btn-primary" onclick="navigateTo('screen-login')" style="margin-top: auto; width: 100%;">Go to Login</button>
+        </div>
+    </div>
+
+    <!-- ============================
+         GOOGLE MAPS ERROR MODAL
+         ============================ -->
+    <div id="mapsErrorModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mapsErrorTitle">
+        <div class="modal-card">
+            <div class="modal-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm1 11h-2V7h2v6zm0 4h-2v-2h2v2z"/></svg>
+            </div>
+            <h3 id="mapsErrorTitle">Connection Failed</h3>
+            <p>Google Maps failed to load. Please check your connection and try again.</p>
+            <button class="btn btn-primary" type="button" onclick="retryFromError()">Try Again</button>
+            <span class="modal-hint">Restarting the app…</span>
         </div>
     </div>
 
@@ -1547,42 +1819,98 @@
     }
 
     /* =========================================
-       LOADER SEQUENCE
-       - 6 icons × 1333ms ≈ 8 seconds
-       - tomato → maize → cow → onion → delivery → logo
+       LOADER SEQUENCE  (re-runnable)
+       - 7 icons × 1333ms ≈ 9.3 seconds
+       - tomato → maize → cow → onion → delivery → pharmacy → logo
        ========================================= */
-    (function runLoader() {
-        const loaderIcons = document.querySelectorAll('#screen-loader .loader-icon');
-        const progressBar = document.getElementById('loaderProgressBar');
-        const ICON_DURATION = 1333; // ms per icon (6 × 1333 ≈ 8s)
-        let index = 0;
+    const loaderIcons = document.querySelectorAll('#screen-loader .loader-icon');
+    const progressBar = document.getElementById('loaderProgressBar');
+    const ICON_DURATION = 1333;
+    let loaderIndex = 0;
+    let loaderTimer = null;
+
+    function stopLoader() {
+        if (loaderTimer) {
+            clearTimeout(loaderTimer);
+            loaderTimer = null;
+        }
+        loaderIcons.forEach(icon => icon.classList.remove('active'));
+    }
+
+    function resetLoader() {
+        stopLoader();
+        loaderIndex = 0;
+
+        // Kill the transition while we snap the bar back to 0%
+        progressBar.style.transition = 'none';
+        progressBar.style.width = '0%';
+        void progressBar.offsetWidth;          // force reflow
+        progressBar.style.transition = '';     // restore CSS transition
+    }
+
+    function startLoader() {
+        resetLoader();
 
         function showNext() {
-            if (index >= loaderIcons.length) {
-                setTimeout(() => {
+            if (loaderIndex >= loaderIcons.length) {
+                loaderTimer = setTimeout(() => {
                     navigateTo('screen-splash');
                 }, 300);
                 return;
             }
 
-            const icon = loaderIcons[index];
+            const icon = loaderIcons[loaderIndex];
             icon.classList.add('active');
 
-            if (progressBar) {
-                progressBar.style.width = ((index + 1) / loaderIcons.length) * 100 + '%';
-            }
+            progressBar.style.width = ((loaderIndex + 1) / loaderIcons.length) * 100 + '%';
+            loaderIndex++;
 
-            index++;
-
-            setTimeout(() => {
+            loaderTimer = setTimeout(() => {
                 icon.classList.remove('active');
                 showNext();
             }, ICON_DURATION);
         }
 
-        // Kick off after a tiny delay so the first frame renders
-        setTimeout(showNext, 200);
-    })();
+        // Tiny delay so the first frame renders
+        loaderTimer = setTimeout(showNext, 200);
+    }
+
+    // Boot the loop on first load
+    startLoader();
+
+    /* =========================================
+       GOOGLE MAPS ERROR FLOW
+       "Get Started" → error → "Try Again" → restart whole loop
+       ========================================= */
+    const mapsErrorModal = document.getElementById('mapsErrorModal');
+
+    function onGetStarted() {
+        // Simulated Google Maps failure on the landing page
+        showMapsError();
+    }
+
+    function showMapsError() {
+        mapsErrorModal.classList.add('show');
+    }
+
+    function hideMapsError() {
+        mapsErrorModal.classList.remove('show');
+    }
+
+    function retryFromError() {
+        hideMapsError();
+
+        // Restart the entire loop: go back to the loader and play it again
+        navigateTo('screen-loader');
+        setTimeout(() => {
+            startLoader();
+        }, 120);
+    }
+
+    // Tap the dark backdrop to dismiss
+    mapsErrorModal.addEventListener('click', (e) => {
+        if (e.target === mapsErrorModal) hideMapsError();
+    });
 
     /* =========================================
        DYNAMIC UPLOADS + VEHICLE REGISTRATION
@@ -1596,14 +1924,12 @@
         const uploadIcon = `<svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>`;
 
         function updateDeliveryFields(vehicleType) {
-            // ---- Registration section: hide for bicycle ----
             if (vehicleType === 'bicycle') {
                 regSection.classList.add('hidden');
             } else {
                 regSection.classList.remove('hidden');
             }
 
-            // ---- Uploads section ----
             let html = '';
 
             if (vehicleType === 'bicycle') {
@@ -1628,7 +1954,6 @@
                 `;
             }
 
-            // Smooth fade on swap
             uploadContainer.style.opacity = '0';
             uploadContainer.style.transform = 'translateY(6px)';
             uploadContainer.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
@@ -1647,6 +1972,49 @@
                 updateDeliveryFields(this.value);
             });
         });
+    });
+
+    /* =========================================
+       PWA — SERVICE WORKER REGISTRATION
+       ========================================= */
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('[U-AGRI] Service worker registered:', reg.scope))
+                .catch(err => console.warn('[U-AGRI] Service worker registration failed:', err));
+        });
+    }
+
+    /* =========================================
+       PWA — INSTALL PROMPT BUTTON
+       ========================================= */
+    let deferredInstallPrompt = null;
+    const installBtn = document.getElementById('installBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Stop the mini-infobar and stash the event
+        e.preventDefault();
+        deferredInstallPrompt = e;
+        if (installBtn) installBtn.classList.add('show');
+    });
+
+    if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (!deferredInstallPrompt) return;
+
+            deferredInstallPrompt.prompt();
+            const { outcome } = await deferredInstallPrompt.userChoice;
+            console.log('[U-AGRI] Install choice:', outcome);
+
+            deferredInstallPrompt = null;
+            installBtn.classList.remove('show');
+        });
+    }
+
+    window.addEventListener('appinstalled', () => {
+        console.log('[U-AGRI] App installed');
+        deferredInstallPrompt = null;
+        if (installBtn) installBtn.classList.remove('show');
     });
 </script>
 
