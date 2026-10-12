@@ -10,7 +10,6 @@
            DESIGN TOKENS
            ========================================= */
         :root {
-            /* Brand Greens - richer, more grounded */
             --primary: #0f7a34;
             --primary-hover: #0b5f28;
             --primary-dark: #084d20;
@@ -20,7 +19,6 @@
             --accent: #16a34a;
             --accent-soft: #86efac;
 
-            /* Neutrals */
             --text-dark: #0f172a;
             --text-body: #334155;
             --text-light: #64748b;
@@ -31,20 +29,17 @@
             --surface-alt: #f8fafc;
             --bg: #f4f7f5;
 
-            /* Radius */
             --radius-sm: 10px;
             --radius: 14px;
             --radius-lg: 20px;
             --radius-xl: 28px;
             --radius-pill: 999px;
 
-            /* Motion */
             --ease: cubic-bezier(0.22, 1, 0.36, 1);
             --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
             --transition: all 0.35s var(--ease);
             --transition-fast: all 0.2s var(--ease);
 
-            /* Layered shadows for depth */
             --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
             --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
             --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.07), 0 2px 4px rgba(15, 23, 42, 0.04);
@@ -53,7 +48,6 @@
             --shadow-brand: 0 10px 30px -8px var(--primary-glow);
             --shadow-brand-lg: 0 20px 45px -12px var(--primary-glow);
 
-            /* Focus ring */
             --ring: 0 0 0 4px rgba(15, 122, 52, 0.14);
         }
 
@@ -127,6 +121,169 @@
             display: flex;
             flex-direction: column;
             flex-grow: 1;
+        }
+
+        /* =========================================
+           LOADER SCREEN
+           ========================================= */
+        #screen-loader {
+            padding: 0;
+            background: linear-gradient(180deg, #ffffff 0%, #f3fbf5 60%, #eaf7ee 100%);
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .loader-stage {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .loader-icon {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0);
+            pointer-events: none;
+        }
+
+        .loader-icon.active {
+            animation: zoomPulse 1.2s var(--ease) forwards;
+        }
+
+        @keyframes zoomPulse {
+            0%   { transform: scale(0);    opacity: 0; }
+            22%  { transform: scale(1.18); opacity: 1; }
+            42%  { transform: scale(1);    opacity: 1; }
+            72%  { transform: scale(1);    opacity: 1; }
+            100% { transform: scale(0);    opacity: 0; }
+        }
+
+        .icon-circle {
+            width: 148px;
+            height: 148px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 78px;
+            line-height: 1;
+            border: 4px solid #ffffff;
+            box-shadow:
+                0 20px 45px -14px rgba(15, 23, 42, 0.28),
+                0 6px 16px -6px rgba(15, 23, 42, 0.18),
+                inset 0 -6px 14px rgba(0, 0, 0, 0.08),
+                inset 0 4px 10px rgba(255, 255, 255, 0.35);
+            user-select: none;
+        }
+
+        .icon-circle.tomato {
+            background: linear-gradient(145deg, #ff8a8a 0%, #e63946 55%, #b91c1c 100%);
+        }
+        .icon-circle.maize {
+            background: linear-gradient(145deg, #ffe066 0%, #f4a100 55%, #c47b00 100%);
+        }
+        .icon-circle.cow {
+            background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 55%, #5c3a22 100%);
+        }
+        .icon-circle.onion {
+            background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 55%, #6b21a8 100%);
+        }
+        .icon-circle.logo-circle {
+            background: linear-gradient(145deg, #ffffff 0%, #f3fbf5 60%, #d7f0df 100%);
+            padding: 22px;
+        }
+        .icon-circle.logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 10px rgba(15, 122, 52, 0.25));
+        }
+
+        .loader-brand {
+            position: absolute;
+            bottom: 90px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .loader-brand h1 {
+            font-size: 34px;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .loader-brand p {
+            font-size: 12px;
+            color: var(--primary);
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            opacity: 0.75;
+            margin: 0;
+        }
+
+        .loader-progress {
+            position: absolute;
+            bottom: 54px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 4px;
+            background: rgba(15, 122, 52, 0.14);
+            border-radius: 4px;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .loader-progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-soft), var(--primary));
+            border-radius: 4px;
+            transition: width 1.2s linear;
+            box-shadow: 0 0 12px var(--primary-glow);
+        }
+
+        /* Ambient blobs on loader */
+        .loader-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(70px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .loader-blob.b1 {
+            width: 260px; height: 260px;
+            background: radial-gradient(circle, #86efac 0%, transparent 70%);
+            top: -60px; right: -80px;
+            opacity: 0.55;
+            animation: floatBlob 12s ease-in-out infinite;
+        }
+        .loader-blob.b2 {
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, #bbf7d0 0%, transparent 70%);
+            bottom: -80px; left: -80px;
+            opacity: 0.5;
+            animation: floatBlob 15s ease-in-out infinite reverse;
+        }
+
+        @keyframes floatBlob {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-14px, 22px) scale(1.08); }
         }
 
         /* =========================================
@@ -228,7 +385,6 @@
             padding-left: 16px;
         }
 
-        /* Custom select arrow */
         .input-group select {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
@@ -322,7 +478,6 @@
             overflow: hidden;
         }
 
-        /* Decorative organic blobs */
         .blob {
             position: absolute;
             border-radius: 50%;
@@ -352,12 +507,6 @@
             animation: floatBlob 18s ease-in-out infinite;
         }
 
-        @keyframes floatBlob {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-12px, 20px) scale(1.08); }
-        }
-
-        /* Decorative Leaves */
         .leaf-top-left, .leaf-bottom-right {
             position: absolute;
             z-index: 1;
@@ -368,7 +517,6 @@
         .leaf-top-left { top: -20px; left: -20px; width: 130px; transform: rotate(15deg); }
         .leaf-bottom-right { bottom: -20px; right: -20px; width: 160px; transform: rotate(-15deg); }
 
-        /* Header Section */
         .splash-header {
             display: flex;
             flex-direction: column;
@@ -414,74 +562,48 @@
             opacity: 0.6;
         }
 
-        /* Hero Image & Overlay */
         .splash-hero {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 64%;
+            height: 52%;
             z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding-bottom: 40px;
         }
 
-        .splash-hero img {
+        .hero-icons-row {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            align-items: center;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top center;
-            opacity: 0;
-            animation: fadeInImage 1.6s var(--ease) 0.2s forwards;
+            padding: 0 24px;
+            animation: slideUpFade 0.9s var(--ease) 0.4s both;
         }
 
-        .splash-hero::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 45%;
-            background: linear-gradient(to bottom, rgba(243, 251, 245, 1) 0%, rgba(243, 251, 245, 0) 100%);
-            pointer-events: none;
+        .hero-icon-chip {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            border: 3px solid #ffffff;
+            box-shadow:
+                0 14px 30px -10px rgba(15, 23, 42, 0.25),
+                inset 0 -4px 10px rgba(0, 0, 0, 0.06);
+            user-select: none;
         }
+        .hero-icon-chip.tomato { background: linear-gradient(145deg, #ff8a8a 0%, #e63946 100%); }
+        .hero-icon-chip.maize { background: linear-gradient(145deg, #ffe066 0%, #f4a100 100%); }
+        .hero-icon-chip.cow { background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 100%); }
+        .hero-icon-chip.onion { background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 100%); }
 
-        .hero-text-overlay {
-            position: absolute;
-            top: 6%;
-            right: 5%;
-            width: 52%;
-            z-index: 3;
-            text-align: left;
-            animation: slideUpFade 0.9s var(--ease) 0.55s both;
-        }
-
-        .hero-text-overlay h2 {
-            font-size: clamp(26px, 7.5vw, 34px);
-            color: #083d18;
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 14px;
-            text-align: left;
-            letter-spacing: -0.03em;
-            text-shadow: 0 2px 20px rgba(255,255,255,0.5);
-        }
-
-        .hero-text-overlay p {
-            font-size: clamp(13px, 3.6vw, 15px);
-            color: #1e293b;
-            line-height: 1.55;
-            margin-bottom: 0;
-            text-align: left;
-            font-weight: 500;
-        }
-
-        .hero-text-overlay .line {
-            width: 56px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--accent-soft));
-            border-radius: 4px;
-            margin-top: 20px;
-            box-shadow: 0 3px 10px var(--primary-glow);
-        }
-
-        /* Bottom Button */
         .splash-btn-container {
             position: absolute;
             bottom: max(34px, env(safe-area-inset-bottom));
@@ -502,7 +624,6 @@
             backdrop-filter: blur(6px);
         }
 
-        /* Keyframes */
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-28px); }
             to { opacity: 1; transform: translateY(0); }
@@ -511,11 +632,6 @@
         @keyframes slideUpFade {
             from { opacity: 0; transform: translateY(28px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInImage {
-            0% { opacity: 0; transform: scale(1.06); }
-            100% { opacity: 1; transform: scale(1); }
         }
 
         /* =========================================
@@ -940,13 +1056,15 @@
             background: linear-gradient(90deg, var(--border-strong), transparent);
         }
 
+        .hidden { display: none !important; }
+
         /* =========================================
            RESPONSIVE FOR DESKTOP
            ========================================= */
         @media (min-width: 768px) {
             body, html { background: linear-gradient(135deg, #eef7f0 0%, #e0f2e6 50%, #d5ecdc 100%); }
 
-            .screen:not(#screen-splash) {
+            .screen:not(#screen-splash):not(#screen-loader) {
                 align-items: center;
             }
 
@@ -974,12 +1092,7 @@
             }
 
             .splash-header { margin-top: 5vh; }
-            .splash-hero {
-                height: 60%;
-                border-radius: 30px 30px 0 0;
-                overflow: hidden;
-                box-shadow: 0 -8px 40px rgba(15, 122, 52, 0.08);
-            }
+            .splash-hero { height: 50%; }
             .splash-btn-container { bottom: 5vh; }
             .leaf-top-left { left: calc(50% - 240px); top: 5vh; }
             .leaf-bottom-right { right: calc(50% - 240px); bottom: 5vh; }
@@ -988,7 +1101,6 @@
             .blob-2 { left: calc(50% - 400px); }
         }
 
-        /* Reduced motion accessibility */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: 0.01ms !important;
@@ -1003,16 +1115,50 @@
 <div class="app-container">
 
     <!-- ============================
+         0. LOADER SCREEN (5 icons × 1.2s = 6s)
+         ============================ -->
+    <div id="screen-loader" class="screen active">
+        <div class="loader-blob b1"></div>
+        <div class="loader-blob b2"></div>
+
+        <div class="loader-stage">
+            <div class="loader-icon" data-index="0">
+                <div class="icon-circle tomato">🍅</div>
+            </div>
+            <div class="loader-icon" data-index="1">
+                <div class="icon-circle maize">🌽</div>
+            </div>
+            <div class="loader-icon" data-index="2">
+                <div class="icon-circle cow">🐄</div>
+            </div>
+            <div class="loader-icon" data-index="3">
+                <div class="icon-circle onion">🧅</div>
+            </div>
+            <div class="loader-icon" data-index="4">
+                <div class="icon-circle logo-circle">
+                    <img src="logo.png" alt="UTOM">
+                </div>
+            </div>
+        </div>
+
+        <div class="loader-brand">
+            <h1>UTOM</h1>
+            <p>Farm · Buy · Sell · Deliver</p>
+        </div>
+
+        <div class="loader-progress">
+            <div class="loader-progress-bar" id="loaderProgressBar"></div>
+        </div>
+    </div>
+
+    <!-- ============================
          1. SPLASH SCREEN
          ============================ -->
-    <div id="screen-splash" class="screen active">
-
-        <!-- Ambient background blobs -->
+    <div id="screen-splash" class="screen">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
         <div class="blob blob-3"></div>
 
-        <!-- Decorative Leaves -->
         <svg class="leaf-top-left" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10 90C10 90 20 50 60 30C100 10 90 10 90 10C90 10 50 20 30 60C10 100 10 90 10 90Z" fill="#4ade80" opacity="0.6"/>
             <path d="M30 70C30 70 40 40 70 20C100 0 90 0 90 0C90 0 60 10 40 40C20 70 30 70 30 70Z" fill="#16a34a" opacity="0.4"/>
@@ -1032,11 +1178,11 @@
         </div>
 
         <div class="splash-hero">
-            <img src="farmer.png" alt="Farmer in field">
-            <div class="hero-text-overlay">
-                <h2>Welcome<br>Farmer</h2>
-                <p>Grow your produce, reach more customers and build a better tomorrow.</p>
-                <div class="line"></div>
+            <div class="hero-icons-row">
+                <div class="hero-icon-chip tomato">🍅</div>
+                <div class="hero-icon-chip maize">🌽</div>
+                <div class="hero-icon-chip cow">🐄</div>
+                <div class="hero-icon-chip onion">🧅</div>
             </div>
         </div>
 
@@ -1326,9 +1472,11 @@
                 <label class="custom-checkbox"><input type="radio" name="vehicle" value="truck"><span class="checkmark"></span> Truck</label>
             </div>
 
-            <div class="section-title">Vehicle Registration</div>
-            <div class="input-group no-icon">
-                <input type="text" placeholder="e.g. BA 1234">
+            <div id="vehicle-registration-section">
+                <div class="section-title">Vehicle Registration</div>
+                <div class="input-group no-icon">
+                    <input type="text" placeholder="e.g. BA 1234">
+                </div>
             </div>
 
             <div class="section-title">Delivery Area</div>
@@ -1393,15 +1541,66 @@
     }
 
     /* =========================================
-       DYNAMIC UPLOADS FOR DELIVERY PARTNER
+       LOADER SEQUENCE
+       - 5 icons, each 1.2s → 6s total
+       - tomato → maize → cow → onion → logo
+       ========================================= */
+    (function runLoader() {
+        const loaderIcons = document.querySelectorAll('#screen-loader .loader-icon');
+        const progressBar = document.getElementById('loaderProgressBar');
+        const ICON_DURATION = 1200; // ms per icon
+        let index = 0;
+
+        function showNext() {
+            if (index >= loaderIcons.length) {
+                // Finished — navigate to splash
+                setTimeout(() => {
+                    navigateTo('screen-splash');
+                }, 250);
+                return;
+            }
+
+            const icon = loaderIcons[index];
+            icon.classList.add('active');
+
+            // Update progress bar
+            if (progressBar) {
+                progressBar.style.width = ((index + 1) / loaderIcons.length) * 100 + '%';
+            }
+
+            index++;
+
+            setTimeout(() => {
+                icon.classList.remove('active');
+                // Small gap between icons for clean separation
+                setTimeout(showNext, 80);
+            }, ICON_DURATION);
+        }
+
+        // Kick off after a tiny delay so the first frame renders
+        setTimeout(showNext, 250);
+    })();
+
+    /* =========================================
+       DYNAMIC UPLOADS + VEHICLE REGISTRATION
+       FOR DELIVERY PARTNER
        ========================================= */
     document.addEventListener('DOMContentLoaded', () => {
         const vehicleRadios = document.querySelectorAll('input[name="vehicle"]');
         const uploadContainer = document.getElementById('dynamic-uploads');
+        const regSection = document.getElementById('vehicle-registration-section');
 
         const uploadIcon = `<svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>`;
 
-        function updateUploads(vehicleType) {
+        function updateDeliveryFields(vehicleType) {
+            // ---- Registration section: hide for bicycle ----
+            if (vehicleType === 'bicycle') {
+                regSection.classList.add('hidden');
+            } else {
+                regSection.classList.remove('hidden');
+            }
+
+            // ---- Uploads section ----
             let html = '';
 
             if (vehicleType === 'bicycle') {
@@ -1426,7 +1625,7 @@
                 `;
             }
 
-            // Smooth fade-in on swap
+            // Smooth fade on swap
             uploadContainer.style.opacity = '0';
             uploadContainer.style.transform = 'translateY(6px)';
             uploadContainer.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
@@ -1437,12 +1636,14 @@
             }, 120);
         }
 
+        // Initialize with currently checked vehicle
         const checkedVehicle = document.querySelector('input[name="vehicle"]:checked');
-        if (checkedVehicle) updateUploads(checkedVehicle.value);
+        if (checkedVehicle) updateDeliveryFields(checkedVehicle.value);
 
+        // Listen for changes
         vehicleRadios.forEach(radio => {
             radio.addEventListener('change', function () {
-                updateUploads(this.value);
+                updateDeliveryFields(this.value);
             });
         });
     });
