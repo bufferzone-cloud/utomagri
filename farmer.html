@@ -397,6 +397,11 @@ a{color:inherit;text-decoration:none}
   background:var(--sf);font-size:15px;font-weight:500;color:var(--td);
   outline:none;transition:all .2s var(--e);-webkit-appearance:none;appearance:none;
 }
+.fld select.inp{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 15px center;
+  padding-right:40px;cursor:pointer;
+}
 .fld .inp:focus{border-color:var(--p);box-shadow:var(--ring);background:#fbfdfb}
 .fld textarea.inp{resize:vertical;min-height:82px;line-height:1.5}
 
@@ -1034,7 +1039,7 @@ a{color:inherit;text-decoration:none}
 .gov-site .gs-desc{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px;line-height:1.4}
 .gov-site .gs-arrow{font-size:14px;color:var(--tm)}
 
-/* ========== NEW: Delivery dashboard (NTUMENI-inspired green) ========== */
+/* ========== Delivery dashboard ========== */
 .delivery-dash{
   position:relative;
   display:flex;flex-direction:column;
@@ -1288,6 +1293,14 @@ a{color:inherit;text-decoration:none}
 }
 .fu-card .fu-btn.unfollow{background:#fee2e2;color:var(--danger);border-color:rgba(220,38,38,.2)}
 
+/* form hidden state during route animation */
+.frm-hidden{
+  opacity:0 !important;
+  transform:translateY(20px) !important;
+  pointer-events:none !important;
+  transition:opacity .4s ease, transform .4s ease;
+}
+
 @media(min-width:560px){.cat-grid,.mk-grid{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:721px){.scroll{padding-bottom:calc(var(--nav-h) + 24px)}}
 </style>
@@ -1358,7 +1371,7 @@ a{color:inherit;text-decoration:none}
     <h3 id="searchingTitle">Searching…</h3>
     <p id="searchingSubtitle">Looking for a provider near you</p>
     <div class="sc-actions">
-      <button class="sc-cancel" onclick="cancelDeliverySearch()">Cancel</button>
+      <button class="sc-cancel" onclick="cancelDeliverySearch()">Cancel Delivery</button>
       <button class="sc-map" onclick="closeSearching();navTo('delivery')">View Map</button>
     </div>
   </div>
@@ -1405,17 +1418,14 @@ const S = {
   supplierProductsUnsub: null, postCommentsUnsubs: {},
   liveClockTimer: null, weatherRefreshTimer: null,
   locationPermissionAsked: false,
-  // New listening state for notifications
   lastSeen: { community: 0, market: 0, myComments: 0, orders: 0, deliveries: 0 },
   notifListeners: [],
-  // Delivery flow state
   delPickup: null, delDropoff: null, delRoute: null,
   delVehicle: null, delDriver: null, delSearchMode: null, delSearchAbort: null,
   delMap: null, delPickupMarker: null, delDropoffMarker: null,
   delRouteLayer: null, delDriverMarker: null, delDriverPoll: null,
   delActiveId: null, delActiveUnsub: null,
   heroMap: null, heroDriverMarkers: {}, heroDriverListener: null,
-  // Follow
   followUnsub: null
 };
 
@@ -1607,6 +1617,69 @@ function gradFor(str){
 }
 
 /* ============================================================
+   PRESET UNITS
+   ============================================================ */
+const UNIT_OPTIONS = {
+  crop: [
+    {v:'ha', l:'Hectare (ha)'},
+    {v:'acre', l:'Acre'},
+    {v:'m2', l:'Square metre (m²)'},
+    {v:'kg', l:'Kilogram (kg)'},
+    {v:'tonne', l:'Tonne (t)'},
+    {v:'bag', l:'Bag (50kg)'},
+    {v:'sack', l:'Sack'},
+    {v:'crate', l:'Crate'},
+    {v:'tray', l:'Tray'},
+    {v:'bunch', l:'Bunch'},
+    {v:'piece', l:'Piece'},
+    {v:'plant', l:'Plant'},
+    {v:'row', l:'Row'},
+    {v:'bed', l:'Bed'}
+  ],
+  livestock: [
+    {v:'head', l:'Head (animal count)'},
+    {v:'herd', l:'Herd'},
+    {v:'kg', l:'Kilogram (kg)'},
+    {v:'tonne', l:'Tonne (t)'}
+  ],
+  poultry: [
+    {v:'birds', l:'Birds'},
+    {v:'chicks', l:'Chicks'},
+    {v:'layers', l:'Layers'},
+    {v:'tray', l:'Tray (30 eggs)'},
+    {v:'crate', l:'Crate'},
+    {v:'kg', l:'Kilogram (kg)'}
+  ],
+  fisheries: [
+    {v:'pond', l:'Pond'},
+    {v:'cage', l:'Cage'},
+    {v:'ha', l:'Hectare (ha)'},
+    {v:'m2', l:'Square metre (m²)'},
+    {v:'fish', l:'Fish'},
+    {v:'fingerlings', l:'Fingerlings'},
+    {v:'kg', l:'Kilogram (kg)'},
+    {v:'tonne', l:'Tonne (t)'}
+  ],
+  market: [
+    {v:'kg', l:'Kilogram (kg)'},
+    {v:'tonne', l:'Tonne (t)'},
+    {v:'bag', l:'Bag (50kg)'},
+    {v:'sack', l:'Sack'},
+    {v:'crate', l:'Crate'},
+    {v:'tray', l:'Tray'},
+    {v:'bunch', l:'Bunch'},
+    {v:'piece', l:'Piece'},
+    {v:'head', l:'Head'},
+    {v:'litre', l:'Litre (L)'},
+    {v:'bottle', l:'Bottle'},
+    {v:'pack', l:'Pack'}
+  ]
+};
+function unitOptionsFor(cat){
+  return UNIT_OPTIONS[cat] || UNIT_OPTIONS.market;
+}
+
+/* ============================================================
    LOCATION PERMISSION + CITY DETECTION
    ============================================================ */
 async function reverseGeocodeCity(lat, lng){
@@ -1793,7 +1866,6 @@ function showScreen(id, data={}, pushHistory=true){
   if(sc) sc.scrollTop = 0;
   updateCartFloat();
   startLiveClock();
-  // Cleanup delivery hero map when leaving delivery screen
   if(id !== 'delivery' && S.heroMap){
     try{ S.heroMap.remove(); }catch(e){}
     S.heroMap = null;
@@ -1988,13 +2060,12 @@ async function pushNotification(payload){
 }
 
 /* ============================================================
-   NOTIFICATION LISTENERS (community, market, comments, orders, deliveries)
+   NOTIFICATION LISTENERS
    ============================================================ */
 function startContentNotificationListeners(){
   if(!S.user) return;
   const me = S.user.uid;
 
-  // Load last seen timestamps
   try{
     get(ref(db, `users/${me}/lastSeen`)).then(s=>{
       if(s.exists()){
@@ -2005,7 +2076,6 @@ function startContentNotificationListeners(){
         S.lastSeen.orders = v.orders || 0;
         S.lastSeen.deliveries = v.deliveries || 0;
       } else {
-        // Initialize as now
         const now = Date.now();
         S.lastSeen = { community: now, market: now, myComments: now, orders: now, deliveries: now };
         update(ref(db, `users/${me}/lastSeen`), S.lastSeen).catch(()=>{});
@@ -2013,7 +2083,6 @@ function startContentNotificationListeners(){
     }).catch(()=>{});
   }catch(e){}
 
-  // 1. New community posts by others
   const unsubCommunity = onValue(ref(db, 'communityPosts'), (snap)=>{
     const data = snap.val() || {};
     const lastSeen = S.lastSeen.community || 0;
@@ -2038,7 +2107,6 @@ function startContentNotificationListeners(){
     }
   }, ()=>{});
 
-  // 2. New market listings by others
   const unsubMarket = onValue(ref(db, 'marketListings'), (snap)=>{
     const data = snap.val() || {};
     const lastSeen = S.lastSeen.market || 0;
@@ -2064,7 +2132,6 @@ function startContentNotificationListeners(){
     }
   }, ()=>{});
 
-  // 3. New comments on my posts
   const unsubMyComments = onValue(ref(db, 'communityPosts'), (snap)=>{
     const data = snap.val() || {};
     const lastSeen = S.lastSeen.myComments || 0;
@@ -2093,7 +2160,6 @@ function startContentNotificationListeners(){
     }
   }, ()=>{});
 
-  // 4. Order status changes (both orders and supplierOrders)
   const unsubOrders = onValue(ref(db, 'orders'), (snap)=>{
     const data = snap.val() || {};
     const lastSeen = S.lastSeen.orders || 0;
@@ -2144,7 +2210,6 @@ function startContentNotificationListeners(){
     }
   }, ()=>{});
 
-  // 5. Delivery status changes
   const unsubDeliv = onValue(ref(db, 'deliveryRequests'), (snap)=>{
     const data = snap.val() || {};
     const lastSeen = S.lastSeen.deliveries || 0;
@@ -2399,7 +2464,6 @@ function computeStageInfo(activity){
 window.toggleFollow = async (targetId, targetType, targetName, targetPhoto)=>{
   if(!S.user || !targetId) return;
   if(targetId === S.user.uid){ toast('You cannot follow yourself'); return; }
-  const key = `${targetType}:${targetId}`;
   const followingRef = ref(db, `users/${S.user.uid}/following/${targetId}`);
   const existing = S.following[targetId];
   try{
@@ -2414,7 +2478,6 @@ window.toggleFollow = async (targetId, targetType, targetName, targetPhoto)=>{
       });
       S.following[targetId] = { targetId, targetType: targetType||'farmer', targetName, targetPhoto, followedAt: Date.now() };
       toast('Following ✓');
-      // Notify target
       try{
         const nref = push(ref(db, `users/${targetId}/notifications`));
         await set(nref, {
@@ -2473,7 +2536,6 @@ function renderFollowUps(){
 
 window.openFollowTarget = (id, type)=>{
   if(type === 'farmer'){
-    // Show their activities
     const acts = (S.allActivities||[]).filter(a=>a.owner_user_id === id);
     if(acts.length){
       navTo('activity-detail', {id: acts[0].id});
@@ -2486,11 +2548,6 @@ window.openFollowTarget = (id, type)=>{
     toast('Profile');
   }
 };
-
-/* ============================================================
-   SCREEN: FOLLOW UPS
-   ============================================================ */
-function renderFollowUpsScreen(){ return renderFollowUps(); }
 
 /* ============================================================
    ROUTER
@@ -2844,17 +2901,18 @@ function renderMyFarm(){
 }
 
 /* ============================================================
-   SCREEN: CREATE ACTIVITY
+   SCREEN: CREATE ACTIVITY — with preset units
    ============================================================ */
 function renderCreateActivity(preset){
   preset = preset || {};
   const cats = [
-    {id:'crops',   label:'Crops',   icon:'🌱'},
-    {id:'livestock', label:'Livestock', icon:'🐄'},
-    {id:'poultry', label:'Poultry', icon:'🐔'},
-    {id:'fisheries', label:'Fisheries', icon:'🐟'}
+    {id:'crops',   label:'Crops',   icon:'🌱', unitKey:'crop'},
+    {id:'livestock', label:'Livestock', icon:'🐄', unitKey:'livestock'},
+    {id:'poultry', label:'Poultry', icon:'🐔', unitKey:'poultry'},
+    {id:'fisheries', label:'Fisheries', icon:'🐟', unitKey:'fisheries'}
   ];
   const activeCat = preset.category || 'crops';
+  const catDef = cats.find(c=>c.id===activeCat) || cats[0];
   const options = (S.catalogue||[]).filter(c=>{
     if(activeCat==='crops') return ['Field Crops','Pulses','Vegetables','Fruits'].includes(c.category);
     if(activeCat==='livestock') return c.category==='Livestock';
@@ -2862,6 +2920,8 @@ function renderCreateActivity(preset){
     if(activeCat==='fisheries') return c.category==='Fisheries';
     return true;
   });
+  const unitOpts = unitOptionsFor(catDef.unitKey);
+  const unitSelect = unitOpts.map(u=>`<option value="${esc(u.v)}">${esc(u.l)}</option>`).join('');
 
   return `
   <div class="scroll">
@@ -2910,7 +2970,9 @@ function renderCreateActivity(preset){
         </div>
         <div>
           <label>Unit</label>
-          <input id="act-unit" class="inp" type="text" placeholder="e.g. ha" required>
+          <select id="act-unit" class="inp" required>
+            ${unitSelect}
+          </select>
         </div>
       </div>
       <div class="fld">
@@ -3080,7 +3142,7 @@ window.submitActivity = async (ev)=>{
 };
 
 /* ============================================================
-   SCREEN: ACTIVITY DETAIL (with follow)
+   SCREEN: ACTIVITY DETAIL
    ============================================================ */
 window.openActivity = (id)=>{ navTo('activity-detail', {id}); };
 
@@ -3613,7 +3675,6 @@ window.submitPost = async (ev)=>{
       createdAt: Date.now()
     };
     await set(newRef, data);
-    // Update last seen for community so we don't self-notify
     S.lastSeen.community = Date.now();
     update(ref(db, `users/${S.user.uid}/lastSeen`), { community: Date.now() }).catch(()=>{});
     toast('Posted ✓');
@@ -3933,11 +3994,12 @@ window.placeOrder = async (ev)=>{
 };
 
 /* ============================================================
-   SCREEN: POST READY GOODS
+   SCREEN: POST READY GOODS — with preset units
    ============================================================ */
 function renderPostReadyGoods(data){
   data = data || {};
   const options = (S.catalogue||[]).map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
+  const unitSelect = unitOptionsFor('market').map(u=>`<option value="${esc(u.v)}">${esc(u.l)}</option>`).join('');
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -3967,7 +4029,7 @@ function renderPostReadyGoods(data){
       <div class="fld" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div><label>Quantity</label><input id="pl-qty" class="inp" type="number" step="0.1" required></div>
         <div><label>Unit</label>
-          <select id="pl-unit" class="inp"><option>kg</option><option>crate</option><option>bag</option><option>head</option><option>tray</option><option>piece</option></select>
+          <select id="pl-unit" class="inp" required>${unitSelect}</select>
         </div>
       </div>
       <div class="fld"><label>Price (ZMK)</label><input id="pl-price" class="inp" type="number" step="0.01" required></div>
@@ -4086,7 +4148,6 @@ window.submitListing = async (ev)=>{
     await set(newRef, data);
     S.marketplace.unshift({id:newRef.key, ...data});
     S.myListings.unshift({id:newRef.key, ...data});
-    // Update last seen for market
     S.lastSeen.market = Date.now();
     update(ref(db, `users/${S.user.uid}/lastSeen`), { market: Date.now() }).catch(()=>{});
     toast('Listing published ✓');
@@ -4124,7 +4185,6 @@ function computeDeliveryFare(vehicleId, distanceM, durationS){
    SCREEN: DELIVERY (dashboard with map)
    ============================================================ */
 function renderDelivery(){
-  // Build ongoing/history preview from allDeliveries filtered by me
   const all = (S.allDeliveries || []).filter(d=>d.requester_id === S.user.uid);
   const ongoing = all.filter(d=>['searching','accepted','in_progress','arrived','picked_up'].includes(d.status));
   const recent = all.slice(0, 3);
@@ -4204,19 +4264,16 @@ function wireDeliveryHeroMap(){
     const coords = S.userCoords || {lat: -15.4167, lng: 28.2833};
     S.heroMap = L.map('deliveryHeroMap', {zoomControl:false, attributionControl:false}).setView([coords.lat, coords.lng], 15);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, subdomains:'abc'}).addTo(S.heroMap);
-    // User marker
     const userIcon = L.divIcon({
       className:'',
       html:'<div style="width:18px;height:18px;border-radius:50%;background:#0f7a34;border:3px solid #fff;box-shadow:0 2px 10px rgba(15,122,52,.5)"></div>',
       iconSize:[18,18], iconAnchor:[9,9]
     });
     L.marker([coords.lat, coords.lng], {icon:userIcon, zIndexOffset:1000}).addTo(S.heroMap);
-    // Green circle pulse
     L.circle([coords.lat, coords.lng], {
       radius: 800, color:'#0f7a34', fillColor:'#0f7a34',
       fillOpacity:.08, weight:1.5, opacity:.35
     }).addTo(S.heroMap);
-    // Listen for nearby drivers
     const driversGroup = L.layerGroup().addTo(S.heroMap);
     const nearby = ref(db, 'providers');
     const unsub = onValue(nearby, (snap)=>{
@@ -4353,7 +4410,7 @@ function deliveryCardHTML(d, isHistory){
 }
 
 /* ============================================================
-   SCREEN: REQUEST DELIVERY (full flow)
+   SCREEN: REQUEST DELIVERY
    ============================================================ */
 function renderRequestDelivery(){
   const defaultPickup = S.userLocation || '';
@@ -4365,18 +4422,20 @@ function renderRequestDelivery(){
       </button>
       <div class="tb-title">Request Delivery</div>
     </div>
-    <div style="padding:14px 18px 0">
-      <div class="location-input" id="del-pickup-row">
-        <span class="loc-dot"></span>
-        <input type="text" id="del-pickup" placeholder="Pickup — building, house, road, area" value="${esc(defaultPickup)}" autocomplete="off">
-        <button type="button" class="loc-clear" onclick="useCurrentForDelivery('pickup')">📍</button>
+    <div id="del-locations-block">
+      <div style="padding:14px 18px 0">
+        <div class="location-input" id="del-pickup-row">
+          <span class="loc-dot"></span>
+          <input type="text" id="del-pickup" placeholder="Pickup — building, house, road, area" value="${esc(defaultPickup)}" autocomplete="off">
+          <button type="button" class="loc-clear" onclick="useCurrentForDelivery('pickup')">📍</button>
+        </div>
+        <div class="location-input" id="del-dropoff-row">
+          <span class="loc-dot dest"></span>
+          <input type="text" id="del-dropoff" placeholder="Drop-off — building, house, road, area" autocomplete="off">
+        </div>
       </div>
-      <div class="location-input" id="del-dropoff-row">
-        <span class="loc-dot dest"></span>
-        <input type="text" id="del-dropoff" placeholder="Drop-off — building, house, road, area" autocomplete="off">
-      </div>
+      <div class="map-search-results" id="del-search-results"></div>
     </div>
-    <div class="map-search-results" id="del-search-results"></div>
     <div class="map-wrap" id="del-map-wrap">
       <div class="map-badge" id="del-map-badge"><i>📍</i> Tap map or search to set locations</div>
       <div id="deliveryMap"></div>
@@ -4385,7 +4444,7 @@ function renderRequestDelivery(){
         <button id="del-fit-btn" title="Fit route">🔍</button>
       </div>
     </div>
-    <form class="frm" onsubmit="submitDelivery(event)" style="padding-top:0">
+    <form class="frm" id="del-form" onsubmit="submitDelivery(event)" style="padding-top:0">
       <div class="fld">
         <label>Sender Name</label>
         <input id="del-sender" class="inp" placeholder="Who is sending?" required>
@@ -4446,14 +4505,12 @@ function initDeliveryMap(){
   if(!mapEl) return;
   if(delMap){ try{ delMap.remove(); }catch(e){} delMap = null; }
   delMap = L.map('deliveryMap', {zoomControl:false, attributionControl:false}).setView([-15.4167, 28.2833], 12);
-  // Green-tinted tiles
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, subdomains:'abc'}).addTo(delMap);
   delMap.on('click', (e)=>{
     if(delSearchMode === 'pickup') setDeliveryPoint('pickup', e.latlng.lat, e.latlng.lng);
     else if(delSearchMode === 'dropoff') setDeliveryPoint('dropoff', e.latlng.lat, e.latlng.lng);
   });
   if(S.userCoords) delMap.setView([S.userCoords.lat, S.userCoords.lng], 14);
-  // Restore existing
   if(delPickupLoc) setDeliveryPoint('pickup', delPickupLoc.lat, delPickupLoc.lng, delPickupLoc.label);
   if(delDropoffLoc) setDeliveryPoint('dropoff', delDropoffLoc.lat, delDropoffLoc.lng, delDropoffLoc.label);
   document.getElementById('del-locate-btn')?.addEventListener('click', ()=>{
@@ -4485,7 +4542,6 @@ function setupDeliverySearch(){
     if(delSearchAbort) delSearchAbort.abort();
     delSearchAbort = new AbortController();
     try{
-      // Restrict to user's city by appending it to query
       let query = q;
       if(S.weatherCity && !q.toLowerCase().includes(S.weatherCity.toLowerCase())){
         query = q + ', ' + S.weatherCity;
@@ -4547,7 +4603,10 @@ async function setDeliveryPoint(mode, lat, lng, label){
       })}).addTo(delMap);
     }
   }
-  drawDeliveryRoute();
+  // Only draw the route if BOTH points exist. Do NOT animate here - only on submit.
+  if(delPickupLoc && delDropoffLoc){
+    try{ await fetchDeliveryRoute(); drawStaticRoute(); }catch(e){}
+  }
 }
 
 window.useCurrentForDelivery = async (mode)=>{
@@ -4564,25 +4623,90 @@ window.useCurrentForDelivery = async (mode)=>{
   setDeliveryPoint(mode, S.userCoords.lat, S.userCoords.lng);
 };
 
-async function drawDeliveryRoute(){
-  if(!delMap || !delPickupLoc || !delDropoffLoc) return;
+async function fetchDeliveryRoute(){
+  if(!delPickupLoc || !delDropoffLoc) return null;
   try{
     const url = `https://router.project-osrm.org/route/v1/driving/${delPickupLoc.lng},${delPickupLoc.lat};${delDropoffLoc.lng},${delDropoffLoc.lat}?overview=full&geometries=geojson`;
     const r = await fetch(url);
     const j = await r.json();
-    if(!j.routes || !j.routes.length) return;
+    if(!j.routes || !j.routes.length) return null;
     delRouteInfo = { distance: j.routes[0].distance, duration: j.routes[0].duration };
     const coords = j.routes[0].geometry.coordinates.map(([lng, lat])=>[lat, lng]);
+    return coords;
+  }catch(e){ console.warn('route', e); return null; }
+}
+
+function drawStaticRoute(){
+  if(!delMap || !delPickupLoc || !delDropoffLoc) return;
+  fetchDeliveryRoute().then(coords=>{
+    if(!coords) return;
     if(delRouteLayer) delMap.removeLayer(delRouteLayer);
     delRouteLayer = L.layerGroup().addTo(delMap);
     L.polyline(coords, {color:'#ffffff', weight:8, opacity:.95, lineJoin:'round', lineCap:'round'}).addTo(delRouteLayer);
     L.polyline(coords, {color:'#0f7a34', weight:4.5, opacity:1, lineJoin:'round', lineCap:'round'}).addTo(delRouteLayer);
     const badge = document.getElementById('del-map-badge');
-    const distKm = (j.routes[0].distance/1000).toFixed(1);
-    const durMin = Math.round(j.routes[0].duration/60);
+    const distKm = (delRouteInfo.distance/1000).toFixed(1);
+    const durMin = Math.round(delRouteInfo.duration/60);
     if(badge) badge.innerHTML = `<i>🛣️</i> ${distKm} km · ~${durMin} min`;
     delMap.fitBounds(L.latLngBounds(coords), {padding: [30, 30]});
-  }catch(e){ console.warn('route', e); }
+  });
+}
+
+async function drawDeliveryRoute(){
+  if(!delMap || !delPickupLoc || !delDropoffLoc) return;
+  const coords = await fetchDeliveryRoute();
+  if(!coords) return;
+  if(delRouteLayer) delMap.removeLayer(delRouteLayer);
+  delRouteLayer = L.layerGroup().addTo(delMap);
+  L.polyline(coords, {color:'#ffffff', weight:8, opacity:.95, lineJoin:'round', lineCap:'round'}).addTo(delRouteLayer);
+  L.polyline(coords, {color:'#0f7a34', weight:4.5, opacity:1, lineJoin:'round', lineCap:'round'}).addTo(delRouteLayer);
+  const badge = document.getElementById('del-map-badge');
+  const distKm = (delRouteInfo.distance/1000).toFixed(1);
+  const durMin = Math.round(delRouteInfo.duration/60);
+  if(badge) badge.innerHTML = `<i>🛣️</i> ${distKm} km · ~${durMin} min`;
+  delMap.fitBounds(L.latLngBounds(coords), {padding: [30, 30]});
+}
+
+/* ============================================================
+   Animate the route drawing slowly, then show vehicle sheet
+   ============================================================ */
+function animateRouteThenShowVehicles(delData, coords){
+  if(!delMap){ showVehicleSheet(delData); return; }
+  if(delRouteLayer){ try{ delMap.removeLayer(delRouteLayer); }catch(e){} }
+  delRouteLayer = L.layerGroup().addTo(delMap);
+
+  const bgLine = L.polyline([], {color:'#ffffff', weight:9, opacity:.95, lineJoin:'round', lineCap:'round'}).addTo(delRouteLayer);
+  const fgLine = L.polyline([], {color:'#0f7a34', weight:5, opacity:1, lineJoin:'round', lineCap:'round'}).addTo(delRouteLayer);
+
+  delMap.fitBounds(L.latLngBounds(coords), {padding: [40, 40]});
+
+  // Number of animation frames — 60 frames over ~2s
+  const totalFrames = 60;
+  const step = Math.max(1, Math.floor(coords.length / totalFrames));
+  const frameMs = 30;
+  let i = 0;
+
+  const timer = setInterval(()=>{
+    i += step;
+    if(i >= coords.length){
+      i = coords.length;
+      clearInterval(timer);
+      bgLine.setLatLngs(coords);
+      fgLine.setLatLngs(coords);
+      const badge = document.getElementById('del-map-badge');
+      if(badge && delRouteInfo){
+        const distKm = (delRouteInfo.distance/1000).toFixed(1);
+        const durMin = Math.round(delRouteInfo.duration/60);
+        badge.innerHTML = `<i>🛣️</i> ${distKm} km · ~${durMin} min`;
+      }
+      // After route drawn, wait then show vehicle sheet
+      setTimeout(()=>showVehicleSheet(delData), 500);
+      return;
+    }
+    const slice = coords.slice(0, i);
+    bgLine.setLatLngs(slice);
+    fgLine.setLatLngs(slice);
+  }, frameMs);
 }
 
 function fitDeliveryRoute(){
@@ -4599,6 +4723,8 @@ window.submitDelivery = async (ev)=>{
   err.style.display='none';
   const btn = document.getElementById('del-submit');
   btn.disabled = true;
+
+  // Ensure both locations
   if(!delPickupLoc){
     const v = document.getElementById('del-pickup').value.trim();
     if(v){
@@ -4624,14 +4750,16 @@ window.submitDelivery = async (ev)=>{
     err.style.display='block';
     btn.disabled=false; return;
   }
+
+  // Make sure we have route info
   if(!delRouteInfo){
-    try{ await drawDeliveryRoute(); }catch(e){}
+    try{ await fetchDeliveryRoute(); }catch(e){}
   }
   if(!delRouteInfo){
-    // Fallback: straight line
     const straight = haversineMeters(delPickupLoc.lat, delPickupLoc.lng, delDropoffLoc.lat, delDropoffLoc.lng);
     delRouteInfo = { distance: straight, duration: (straight/1000) / 30 * 3600 };
   }
+
   const sender = document.getElementById('del-sender').value.trim();
   const senderPhone = document.getElementById('del-sender-phone').value.trim();
   const receiver = document.getElementById('del-receiver').value.trim();
@@ -4645,14 +4773,40 @@ window.submitDelivery = async (ev)=>{
     err.style.display='block';
     btn.disabled=false; return;
   }
-  // Show vehicle selection sheet
-  showVehicleSheet({
+
+  const delData = {
     sender, senderPhone, receiver, receiverPhone, cargo, weight: Number(weight),
     date, notes,
     pickup: delPickupLoc, dropoff: delDropoffLoc,
     distance: delRouteInfo.distance, duration: delRouteInfo.duration
-  });
-  btn.disabled = false;
+  };
+
+  // 1. Hide the form fields (fade out) so map becomes the focus
+  const frmEl = document.getElementById('del-form');
+  const locBlock = document.getElementById('del-locations-block');
+  const searchRes = document.getElementById('del-search-results');
+  if(searchRes) searchRes.classList.remove('open');
+  if(frmEl) frmEl.classList.add('frm-hidden');
+  if(locBlock) locBlock.classList.add('frm-hidden');
+
+  // 2. Scroll map into view
+  const mapWrap = document.getElementById('del-map-wrap');
+  if(mapWrap) {
+    try{ mapWrap.scrollIntoView({behavior:'smooth', block:'center'}); }catch(e){}
+  }
+
+  // 3. Fetch route coords and animate the drawing
+  let coords = await fetchDeliveryRoute();
+  if(!coords){
+    // Fallback: straight line
+    coords = [[delPickupLoc.lat, delPickupLoc.lng], [delDropoffLoc.lat, delDropoffLoc.lng]];
+  }
+
+  // 4. After a short pause for the scroll, animate
+  setTimeout(()=>{
+    animateRouteThenShowVehicles(delData, coords);
+    btn.disabled = false;
+  }, 500);
 };
 
 function showVehicleSheet(delData){
@@ -4674,7 +4828,14 @@ function showVehicleSheet(delData){
   $vsheetList.innerHTML = rows;
   $vsheetOverlay.classList.add('open');
 }
-window.closeVsheet = ()=>{ $vsheetOverlay.classList.remove('open'); };
+window.closeVsheet = ()=>{ 
+  $vsheetOverlay.classList.remove('open'); 
+  // Restore form visibility
+  const frmEl = document.getElementById('del-form');
+  const locBlock = document.getElementById('del-locations-block');
+  if(frmEl) frmEl.classList.remove('frm-hidden');
+  if(locBlock) locBlock.classList.remove('frm-hidden');
+};
 
 window.chooseDeliveryVehicle = async (vehicleId)=>{
   const delData = window._pendingDel;
@@ -4720,7 +4881,6 @@ window.chooseDeliveryVehicle = async (vehicleId)=>{
     $searchingSubtitle.textContent = `Looking for a ${vehicle.label.toLowerCase()} near ${delData.pickup.label || 'you'}…`;
     $searchingOverlay.classList.add('open');
     S.delActiveId = id;
-    // Save reference
     if(!S.allDeliveries) S.allDeliveries = [];
     S.allDeliveries.unshift({
       id, requester_id: S.user.uid,
@@ -4734,7 +4894,7 @@ window.chooseDeliveryVehicle = async (vehicleId)=>{
       receiverName: delData.receiver, receiverPhone: delData.receiverPhone,
       status:'searching', createdAt: Date.now()
     });
-    // Reset form
+    // Reset
     window._pendingDel = null;
     delPickupLoc = null; delDropoffLoc = null; delRouteInfo = null;
     try{
@@ -4744,7 +4904,7 @@ window.chooseDeliveryVehicle = async (vehicleId)=>{
     }catch(e){}
     // Watch for acceptance
     watchDeliveryAcceptance(id);
-    // Navigate to delivery dashboard after a beat
+    // Auto-navigate after a beat
     setTimeout(()=>{ 
       closeSearching();
       navTo('ongoing-deliveries');
@@ -4772,7 +4932,6 @@ function watchDeliveryAcceptance(id){
   S.delActiveUnsub = onValue(r, (snap)=>{
     if(!snap.exists()) return;
     const d = snap.val();
-    // Update local cache
     const idx = (S.allDeliveries||[]).findIndex(x=>x.id===id);
     if(idx >= 0){
       S.allDeliveries[idx] = {id, ...d};
@@ -4781,7 +4940,6 @@ function watchDeliveryAcceptance(id){
       $searchingIcon.textContent = '✅';
       $searchingTitle.textContent = `${d.providerName} accepted!`;
       $searchingSubtitle.textContent = `${d.providerRole || 'Provider'} is on the way to pickup`;
-      // Notify
       pushNotification({
         type:'delivery',
         title:'🚚 Delivery accepted',
@@ -4796,7 +4954,6 @@ function watchDeliveryAcceptance(id){
     } else if(d.status === 'cancelled'){
       pushNotification({type:'delivery', title:'❌ Delivery cancelled', text:`Your delivery was cancelled`, link:'screen:delivery-history'});
     }
-    // Update screens
     if(S.screen === 'ongoing-deliveries') route();
     if(S.screen === 'delivery-history') route();
     if(S.screen === 'delivery') route();
@@ -5252,7 +5409,7 @@ function renderAnalysis(){
 }
 
 /* ============================================================
-   SCREEN: PROFILE (with NRC pics)
+   SCREEN: PROFILE — NRC read from nrcFront/nrcBack (matching UTOM-AGRI registration)
    ============================================================ */
 function renderProfile(){
   const p = S.profile||{};
@@ -5261,8 +5418,13 @@ function renderProfile(){
   const listings = S.myListings || [];
   const posts = (S.community||[]).filter(x=>x.authorId === S.user.uid);
   const following = Object.keys(S.following||{}).length;
-  const hasNrc = !!(p.nrcUrl || p.idDocumentUrl);
+
+  // NRC: read from both modern (nrcFront/nrcBack) and legacy (nrcFrontUrl/nrcBackUrl) keys
+  const nrcFront = p.nrcFront || p.nrcFrontUrl || '';
+  const nrcBack = p.nrcBack || p.nrcBackUrl || '';
+  const hasNrc = !!(nrcFront || nrcBack);
   const verified = hasNrc || p.verified;
+
   return `
   <div class="scroll">
     <div class="topbar bordered" style="background:transparent;border-bottom:none">
@@ -5286,21 +5448,20 @@ function renderProfile(){
       </div>
     </div>
 
-    <!-- NRC Pictures -->
     <div style="padding:0 18px 6px">
       <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">National Registration Card (NRC)</div>
     </div>
     <div class="nrc-strip">
-      <div class="nrc-tile" onclick="uploadNrcPic('nrcFrontUrl')">
+      <div class="nrc-tile" onclick="uploadNrcPic('nrcFront')">
         <div class="nrc-img">
-          ${p.nrcFrontUrl || p.nrcUrl ? `<img src="${esc(p.nrcFrontUrl||p.nrcUrl)}" alt="NRC Front">` : '🪪'}
+          ${nrcFront ? `<img src="${esc(nrcFront)}" alt="NRC Front">` : '🪪'}
         </div>
         <div class="nrc-lbl">NRC — Front</div>
         <div class="nrc-edit">✎</div>
       </div>
-      <div class="nrc-tile" onclick="uploadNrcPic('nrcBackUrl')">
+      <div class="nrc-tile" onclick="uploadNrcPic('nrcBack')">
         <div class="nrc-img">
-          ${p.nrcBackUrl ? `<img src="${esc(p.nrcBackUrl)}" alt="NRC Back">` : '🪪'}
+          ${nrcBack ? `<img src="${esc(nrcBack)}" alt="NRC Back">` : '🪪'}
         </div>
         <div class="nrc-lbl">NRC — Back</div>
         <div class="nrc-edit">✎</div>
@@ -5357,13 +5518,18 @@ function renderProfile(){
   ${bottomNavHTML()}`;
 }
 
+/* Store NRC using the same keys as the UTOM-AGRI registration flow */
 window.uploadNrcPic = async (field)=>{
+  // field is 'nrcFront' or 'nrcBack' — matching UTOM-AGRI registration storage
   try{
     const url = await uploadImage('nrc');
     if(!url) return;
-    await update(ref(db, 'users/'+S.user.uid), { [field]: url, verified: true, updatedAt: Date.now() });
-    S.profile[field] = url;
-    S.profile.verified = true;
+    const patch = { [field]: url, verified: true, updatedAt: Date.now() };
+    // Also mirror to legacy keys for backwards compat
+    if(field === 'nrcFront') patch.nrcFrontUrl = url;
+    if(field === 'nrcBack')  patch.nrcBackUrl = url;
+    await update(ref(db, 'users/'+S.user.uid), patch);
+    Object.assign(S.profile, patch);
     toast('NRC picture uploaded ✓');
     setTimeout(()=>navTo('profile'), 300);
   }catch(e){ if(!String(e).includes('cancel')) toast('Upload failed'); }
@@ -5389,13 +5555,13 @@ window.confirmLogout = async ()=>{
 };
 
 /* ============================================================
-   SCREEN: DOCS
+   SCREEN: DOCS — read from nrcFront/nrcBack
    ============================================================ */
 function renderDocs(){
   const p = S.profile || {};
   const docs = [
-    {id:'nrc', label:'NRC Front', icon:'🪪', url: p.nrcFrontUrl || p.nrcUrl},
-    {id:'nrcBack', label:'NRC Back', icon:'🪪', url: p.nrcBackUrl},
+    {id:'nrc', label:'NRC Front', icon:'🪪', url: p.nrcFront || p.nrcFrontUrl},
+    {id:'nrcBack', label:'NRC Back', icon:'🪪', url: p.nrcBack || p.nrcBackUrl},
     {id:'farm_permit', label:'Farm Permit', icon:'📜', url: p.farmPermitUrl},
     {id:'land_title', label:'Land Title', icon:'🏞️', url: p.landTitleUrl}
   ];
@@ -5424,15 +5590,18 @@ function renderDocs(){
 }
 
 window.uploadDoc = async (type)=>{
-  const fieldMap = {nrc:'nrcFrontUrl', nrcBack:'nrcBackUrl', farm_permit:'farmPermitUrl', land_title:'landTitleUrl', farmer_cert:'farmerCertUrl'};
+  // NRC stored under same keys as UTOM-AGRI registration
+  const fieldMap = {nrc:'nrcFront', nrcBack:'nrcBack', farm_permit:'farmPermitUrl', land_title:'landTitleUrl', farmer_cert:'farmerCertUrl'};
   const field = fieldMap[type];
   if(!field) return;
   try{
     const url = await uploadImage('docs');
     if(!url) return;
-    await update(ref(db, 'users/'+S.user.uid), { [field]: url, verified: true, updatedAt: Date.now() });
-    S.profile[field] = url;
-    S.profile.verified = true;
+    const patch = { [field]: url, verified: true, updatedAt: Date.now() };
+    if(field === 'nrcFront') patch.nrcFrontUrl = url;
+    if(field === 'nrcBack')  patch.nrcBackUrl = url;
+    await update(ref(db, 'users/'+S.user.uid), patch);
+    Object.assign(S.profile, patch);
     toast('Document uploaded ✓');
     setTimeout(()=>navTo('docs'), 300);
   }catch(e){ if(!String(e).includes('cancel')) toast('Upload failed'); }
@@ -5762,7 +5931,6 @@ async function startApp(){
     const [acts, mkt, sup] = await Promise.all([loadAllActivities(), loadMarketplace(), loadSuppliers()]);
     S.allActivities = acts; S.marketplace = mkt; S.suppliers = sup;
 
-    // Load deliveries
     loadAllDeliveries();
 
     startCommunityListener();
@@ -5870,7 +6038,6 @@ window.startFromCatalogue = (id)=>{
 };
 window.openCatalogueItem = (id)=>{ navTo('catalogue-detail', {id}); };
 
-/* Cleanup on unload */
 window.addEventListener('beforeunload', ()=>{
   S.notifListeners.forEach(u=>{ try{u();}catch(e){} });
   if(S.heroDriverListener){ try{S.heroDriverListener();}catch(e){} }
