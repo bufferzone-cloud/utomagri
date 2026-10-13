@@ -146,7 +146,6 @@ a{color:inherit;text-decoration:none}
 }
 .topbar .tb-avatar img{width:100%;height:100%;object-fit:cover}
 
-/* Badge counter */
 .badge-count{
   position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;
   background:var(--danger);color:#fff;font-size:10px;font-weight:800;
@@ -159,7 +158,6 @@ a{color:inherit;text-decoration:none}
 .greet h2 span{color:var(--p)}
 .greet p{font-size:12.5px;color:var(--tl);margin-top:2px;font-weight:500}
 
-/* Live clock */
 .live-clock{
   display:flex;align-items:center;gap:8px;padding:0 18px 10px;
   font-size:12px;color:var(--tl);font-weight:700;
@@ -171,7 +169,6 @@ a{color:inherit;text-decoration:none}
 }
 @keyframes lcPulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-/* Weather */
 .weather-card{
   margin:0 18px 16px;position:relative;overflow:hidden;
   background:linear-gradient(135deg,#0f7a34 0%,#0b5f28 60%,#084d20 100%);
@@ -304,7 +301,7 @@ a{color:inherit;text-decoration:none}
   padding:2px 7px;border-radius:var(--r-p);background:var(--p-l);color:var(--p-d);margin-left:auto;
 }
 
-/* ============ BOTTOM NAV — GREEN ACTIVE, ONLY ACTIVE ICON BIGGER ============ */
+/* ============ BOTTOM NAV — GREEN ACTIVE ============ */
 .bnav{
   position:absolute;left:0;right:0;bottom:0;height:calc(var(--nav-h) + var(--safe-b));
   padding-bottom:var(--safe-b);
@@ -402,13 +399,37 @@ a{color:inherit;text-decoration:none}
 }
 .fld .inp:focus{border-color:var(--p);box-shadow:var(--ring);background:#fbfdfb}
 .fld textarea.inp{resize:vertical;min-height:82px;line-height:1.5}
-.fld select.inp{
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 15px center;padding-right:42px;
-  background-color:#fff;
+
+/* ============ WHITE STYLED SELECT ============ */
+.select-trigger{
+  width:100%;padding:13px 15px;border:1.5px solid var(--bd);border-radius:var(--r);
+  background:var(--sf);font-size:15px;font-weight:500;color:var(--td);
+  outline:none;transition:all .2s var(--e);text-align:left;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  cursor:pointer;
 }
-.fld .hint{font-size:11px;color:var(--tm);margin-top:5px;line-height:1.4}
-.fld .hint.warn{color:var(--warn)}
+.select-trigger:focus{border-color:var(--p);box-shadow:var(--ring)}
+.select-trigger .st-arrow{font-size:11px;color:var(--tm);transition:transform .25s var(--e)}
+.select-trigger.open .st-arrow{transform:rotate(180deg)}
+.select-options{
+  position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:50;
+  background:#fff;border:1.5px solid var(--bd);border-radius:var(--r);
+  box-shadow:0 16px 40px -8px rgba(15,23,42,.18);
+  max-height:280px;overflow-y:auto;
+  opacity:0;visibility:hidden;transform:translateY(-6px);
+  transition:all .22s var(--e);
+}
+.select-options.open{opacity:1;visibility:visible;transform:translateY(0)}
+.select-option{
+  padding:12px 15px;font-size:14px;font-weight:600;color:var(--td);
+  cursor:pointer;transition:background .15s var(--e);
+  display:flex;align-items:center;gap:10px;
+}
+.select-option:active{background:var(--p-l)}
+.select-option.selected{background:var(--p-l);color:var(--p-d);font-weight:800}
+.select-option .so-ic{font-size:18px}
+.select-option .so-check{margin-left:auto;color:var(--p);font-weight:800;display:none}
+.select-option.selected .so-check{display:block}
 
 .btn{
   width:100%;padding:14px 18px;border-radius:var(--r-p);
@@ -493,7 +514,7 @@ a{color:inherit;text-decoration:none}
 }
 .fa-card .fa-acts button:active{transform:scale(.96);background:var(--p-l);color:var(--p-d)}
 
-/* ============ COMMUNITY POSTS (live, with comments) ============ */
+/* ============ COMMUNITY POSTS ============ */
 .post{
   background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);
   padding:13px;margin-bottom:12px;box-shadow:var(--sh-xs);
@@ -538,7 +559,6 @@ a{color:inherit;text-decoration:none}
 .post .p-acts svg{width:15px;height:15px;fill:currentColor}
 .post .p-acts .p-acts-right{margin-left:auto;display:flex;gap:6px}
 
-/* Comments */
 .comments-wrap{
   margin-top:10px;padding-top:10px;border-top:1px solid var(--bd);
   display:none;
@@ -747,7 +767,7 @@ a{color:inherit;text-decoration:none}
 .notif-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 0}
 .notif-item{
   display:flex;gap:12px;padding:14px 18px;border-bottom:1px solid var(--bd);
-  transition:background .2s var(--e);cursor:pointer;
+  transition:background .2s var(--e);cursor:pointer;position:relative;
 }
 .notif-item:active{background:var(--sf2)}
 .notif-item.unread{background:var(--p-ll)}
@@ -755,7 +775,6 @@ a{color:inherit;text-decoration:none}
   content:'';position:absolute;left:8px;top:50%;transform:translateY(-50%);
   width:6px;height:6px;border-radius:50%;background:var(--p);
 }
-.notif-item{position:relative}
 .notif-item .n-ic{
   width:40px;height:40px;border-radius:50%;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;font-size:18px;
@@ -773,25 +792,35 @@ a{color:inherit;text-decoration:none}
 }
 .notif-empty .ne-ic{font-size:52px;opacity:.4;margin-bottom:12px}
 
+/* ============ WHITE MODAL (FIXED) ============ */
 .modal{
-  position:fixed;inset:0;background:rgba(15,23,42,.55);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  position:fixed;inset:0;background:rgba(15,23,42,.45);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
   display:none;align-items:center;justify-content:center;padding:20px;z-index:500;
   animation:fadeIn .22s ease;
 }
 .modal.open{display:flex}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .modal-card{
-  background:#fff;border-radius:var(--r-xl);width:100%;max-width:400px;
+  background:#ffffff !important;border-radius:var(--r-xl);width:100%;max-width:420px;
   padding:24px;text-align:center;
-  box-shadow:0 30px 70px -20px rgba(15,23,42,.4);
+  box-shadow:0 30px 70px -20px rgba(15,23,42,.35);
   animation:modalIn .32s cubic-bezier(.34,1.4,.64,1);
-  max-height:90vh;overflow-y:auto;
+  max-height:85vh;overflow-y:auto;
+  color:var(--td);
 }
 @keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(14px)}to{opacity:1;transform:scale(1) translateY(0)}}
 .modal-card h3{font-size:17px;font-weight:900;color:var(--td);margin-bottom:8px;letter-spacing:-.02em}
 .modal-card p{font-size:13px;color:var(--tl);line-height:1.55;margin-bottom:16px}
+.modal-card .inp{
+  width:100%;padding:13px 15px;border:1.5px solid var(--bd);border-radius:var(--r);
+  background:#fff;font-size:15px;font-weight:500;color:var(--td);
+  outline:none;transition:all .2s var(--e);text-align:left;
+}
+.modal-card .inp:focus{border-color:var(--p);box-shadow:var(--ring)}
+.modal-card .select-trigger{background:#fff}
 
+/* ============ TOAST ============ */
 .toast{
   position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 20px);left:50%;
   transform:translate(-50%,30px);background:rgba(15,23,42,.94);color:#fff;
@@ -814,10 +843,6 @@ a{color:inherit;text-decoration:none}
 .st-ic.danger{background:linear-gradient(145deg,#fecaca,#dc2626);color:#fff}
 .st-ic.warn{background:linear-gradient(145deg,#fde68a,#d97706);color:#fff}
 .st-ic.ok{background:linear-gradient(145deg,#a7f3d0,#0f7a34);color:#fff}
-
-.sk{background:linear-gradient(90deg,#e2e8f0 25%,#f1f5f9 50%,#e2e8f0 75%);
-  background-size:200% 100%;animation:sk 1.4s infinite;border-radius:8px;}
-@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 .empty{padding:40px 24px;text-align:center;color:var(--tl)}
 .empty .e-ic{font-size:56px;margin-bottom:12px;opacity:.5}
@@ -947,6 +972,49 @@ a{color:inherit;text-decoration:none}
 .doc-card .dc-st.miss{background:#fee2e2;color:#991b1b}
 .doc-card .dc-st.pend{background:#fef3c7;color:#92400e}
 
+/* Analysis */
+.analysis-stat{
+  display:flex;align-items:center;gap:12px;padding:14px;
+  background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);
+  margin-bottom:10px;box-shadow:var(--sh-xs);
+}
+.analysis-stat .as-rank{
+  width:28px;height:28px;border-radius:50%;background:var(--p-l);
+  color:var(--p-d);display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:900;flex-shrink:0;
+}
+.analysis-stat .as-rank.gold{background:linear-gradient(145deg,#fef3c7,#f59e0b);color:#fff}
+.analysis-stat .as-rank.silver{background:linear-gradient(145deg,#e2e8f0,#94a3b8);color:#fff}
+.analysis-stat .as-rank.bronze{background:linear-gradient(145deg,#fed7aa,#c2410c);color:#fff}
+.analysis-stat .as-body{flex:1;min-width:0}
+.analysis-stat .as-name{font-size:13px;font-weight:800;color:var(--td);letter-spacing:-.01em}
+.analysis-stat .as-sub{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px}
+.analysis-stat .as-value{font-size:15px;font-weight:900;color:var(--p-d);flex-shrink:0}
+.bar-row{
+  display:flex;align-items:center;gap:10px;padding:9px 14px;
+  background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-sm);
+  margin-bottom:7px;
+}
+.bar-row .br-label{flex:1;font-size:12px;font-weight:700;color:var(--td);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-row .br-bar{flex:1;height:8px;border-radius:4px;background:var(--bd);overflow:hidden;max-width:120px}
+.bar-row .br-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--p),var(--acc));transition:width .8s var(--e)}
+.bar-row .br-val{font-size:11px;font-weight:800;color:var(--p-d);min-width:32px;text-align:right}
+
+.gov-site{
+  display:flex;align-items:center;gap:12px;padding:14px;
+  background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);
+  margin-bottom:8px;transition:all .2s var(--e);cursor:pointer;
+}
+.gov-site:active{background:var(--p-l);border-color:var(--p)}
+.gov-site .gs-ic{
+  width:42px;height:42px;border-radius:12px;background:var(--p-l);
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;
+}
+.gov-site .gs-body{flex:1;min-width:0}
+.gov-site .gs-name{font-size:13px;font-weight:800;color:var(--td);letter-spacing:-.01em}
+.gov-site .gs-desc{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px;line-height:1.4}
+.gov-site .gs-arrow{font-size:14px;color:var(--tm)}
+
 @media(min-width:560px){.cat-grid,.mk-grid{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:721px){.scroll{padding-bottom:calc(var(--nav-h) + 24px)}}
 </style>
@@ -1021,32 +1089,19 @@ const UPLOAD_PRESET = 'h3eyhc2o';
    STATE
    ============================================================ */
 const S = {
-  user: null,
-  profile: null,
-  agri: null,
-  screen: 'splash',
-  screenData: {},
-  catalogue: [],
-  myActivities: [],
-  myListings: [],
-  allActivities: [],
-  marketplace: [],
-  community: [],
-  suppliers: [],
-  supplierProducts: [],
-  cart: [], // supplier cart: [{productId, qty}]
-  weather: null,
-  weatherCity: '',
-  userCoords: null,
-  userLocation: 'Lusaka',
-  notifications: [],
-  unreadNotifCount: 0,
-  communityUnsub: null,
-  notificationsUnsub: null,
-  supplierProductsUnsub: null,
-  postCommentsUnsubs: {},
-  liveClockTimer: null,
-  weatherRefreshTimer: null
+  user: null, profile: null, agri: null,
+  screen: 'splash', screenData: {},
+  catalogue: [], myActivities: [], myListings: [],
+  allActivities: [], marketplace: [], community: [],
+  suppliers: [], supplierProducts: [],
+  cart: [], weather: null, weatherCity: '',
+  userCoords: null, userLocation: 'Lusaka',
+  notifications: [], unreadNotifCount: 0,
+  myDeliveries: [],
+  communityUnsub: null, notificationsUnsub: null,
+  supplierProductsUnsub: null, postCommentsUnsubs: {},
+  liveClockTimer: null, weatherRefreshTimer: null,
+  locationPermissionAsked: false
 };
 
 const $app = document.getElementById('app');
@@ -1071,6 +1126,31 @@ function toast(msg, ms=2400){
 function modal(html){
   $modalCard.innerHTML = html;
   $modal.classList.add('open');
+  // Wire select triggers inside modal
+  setTimeout(()=>{
+    $modalCard.querySelectorAll('.select-trigger').forEach(t=>{
+      t.addEventListener('click', ()=>{
+        const opts = t.nextElementSibling;
+        if(!opts) return;
+        opts.classList.toggle('open');
+        t.classList.toggle('open', opts.classList.contains('open'));
+      });
+    });
+    $modalCard.querySelectorAll('.select-option').forEach(o=>{
+      o.addEventListener('click', ()=>{
+        const parent = o.closest('.select-options');
+        const trigger = parent.previousElementSibling;
+        trigger.querySelector('.st-value').textContent = o.textContent.trim();
+        trigger.dataset.value = o.dataset.value || o.textContent.trim();
+        parent.querySelectorAll('.select-option').forEach(x=>x.classList.remove('selected'));
+        o.classList.add('selected');
+        parent.classList.remove('open');
+        trigger.classList.remove('open');
+        // Dispatch change
+        trigger.dispatchEvent(new CustomEvent('selectchange', {detail: trigger.dataset.value}));
+      });
+    });
+  }, 50);
 }
 function closeModal(){ $modal.classList.remove('open'); }
 $modal.addEventListener('click', e=>{ if(e.target===$modal) closeModal(); });
@@ -1100,9 +1180,6 @@ function fmtDate(ts){
   if(!ts) return '—';
   const d = typeof ts === 'number' ? new Date(ts) : new Date(ts);
   return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-}
-function daysBetween(ts1, ts2){
-  return Math.floor(Math.abs(ts2 - ts1) / 86400000);
 }
 function daysSince(ts){
   if(!ts) return 0;
@@ -1211,7 +1288,7 @@ function gradFor(str){
 }
 
 /* ============================================================
-   LIVE LOCATION → CITY (precise reverse geocoding)
+   LOCATION PERMISSION + CITY DETECTION
    ============================================================ */
 async function reverseGeocodeCity(lat, lng){
   try{
@@ -1222,8 +1299,7 @@ async function reverseGeocodeCity(lat, lng){
     const a = j.address || {};
     const city = a.city || a.town || a.village || a.municipality || a.county || a.state_district || '';
     const country = a.country || '';
-    const full = j.display_name || '';
-    return { city, country, full, address: j.address || {} };
+    return { city, country, full: j.display_name || '', address: a };
   }catch(e){ return null; }
 }
 
@@ -1259,7 +1335,7 @@ async function reverseGeocodePrecise(lat, lng){
 }
 
 /* ============================================================
-   WEATHER (by coordinates)
+   WEATHER
    ============================================================ */
 async function loadWeatherByCoords(lat, lng){
   try{
@@ -1284,7 +1360,6 @@ async function loadWeatherByCoords(lat, lng){
   }catch(e){ console.warn('weather', e); return null; }
 }
 function weatherIconFor(code, isDay){
-  // WMO weather interpretation codes
   if(code === 0) return isDay ? '☀️' : '🌙';
   if(code === 1) return isDay ? '🌤️' : '🌙';
   if(code === 2) return isDay ? '⛅' : '☁️';
@@ -1320,7 +1395,7 @@ function weatherDescFor(code){
 }
 
 /* ============================================================
-   LIVE CLOCK — "14:56 Wednesday, March 13 2026"
+   LIVE CLOCK
    ============================================================ */
 function formatLiveClock(d){
   const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -1337,16 +1412,6 @@ function startLiveClock(){
   tick();
   clearInterval(S.liveClockTimer);
   S.liveClockTimer = setInterval(tick, 30000);
-}
-function startWeatherRefresh(){
-  clearInterval(S.weatherRefreshTimer);
-  S.weatherRefreshTimer = setInterval(async ()=>{
-    if(S.userCoords){
-      S.weather = await loadWeatherByCoords(S.userCoords.lat, S.userCoords.lng);
-      const el = document.getElementById('screen-home');
-      if(el && S.screen === 'home') el.innerHTML = renderHome();
-    }
-  }, 30 * 60 * 1000);
 }
 
 /* ============================================================
@@ -1377,7 +1442,7 @@ function uploadImage(folder='agri', resourceType='image'){
 }
 
 /* ============================================================
-   BUILD SCREEN
+   SCREEN ROUTER
    ============================================================ */
 let activeScreenEl = null;
 function buildScreen(id){
@@ -1395,9 +1460,7 @@ function buildScreen(id){
 function showScreen(id, data={}, pushHistory=true){
   S.screenData = data || {};
   const target = buildScreen(id);
-  if(activeScreenEl && activeScreenEl !== target){
-    activeScreenEl.classList.remove('active');
-  }
+  if(activeScreenEl && activeScreenEl !== target) activeScreenEl.classList.remove('active');
   void target.offsetWidth;
   target.classList.add('active');
   activeScreenEl = target;
@@ -1409,9 +1472,7 @@ function showScreen(id, data={}, pushHistory=true){
   updateNav(id);
   const sc = target.querySelector('.scroll');
   if(sc) sc.scrollTop = 0;
-  // Cart float visibility
   updateCartFloat();
-  // Clock
   startLiveClock();
 }
 
@@ -1419,10 +1480,7 @@ window.addEventListener('popstate', e=>{
   if($modal.classList.contains('open')){ closeModal(); return; }
   const st = e.state || {};
   const id = st.screen || 'home';
-  if(!document.getElementById('screen-'+id)){
-    showScreen('home', {}, false);
-    return;
-  }
+  if(!document.getElementById('screen-'+id)){ showScreen('home', {}, false); return; }
   showScreen(id, st.data || {}, false);
 });
 
@@ -1476,19 +1534,17 @@ window.goProfile   = ()=> navTo('profile');
 window.goBack = ()=>{ try{ history.back(); }catch(e){ navTo('home'); } };
 
 /* ============================================================
-   CART (supplier products)
+   CART
    ============================================================ */
 function updateCartFloat(){
   const count = S.cart.reduce((s,c)=>s+c.qty,0);
   $cartCount.textContent = count;
-  // Show only when we have items and we're not on checkout page
   if(count > 0 && S.screen !== 'supplier-cart' && S.screen !== 'supplier-checkout'){
     $cartFloat.classList.add('show');
   } else {
     $cartFloat.classList.remove('show');
   }
 }
-
 window.addToSupplierCart = (productId)=>{
   const existing = S.cart.find(c=>c.productId === productId);
   if(existing) existing.qty++;
@@ -1496,26 +1552,19 @@ window.addToSupplierCart = (productId)=>{
   updateCartFloat();
   toast('Added to cart 🛒');
 };
-
 window.removeFromSupplierCart = (productId)=>{
   S.cart = S.cart.filter(c=>c.productId !== productId);
   updateCartFloat();
-  if(S.screen === 'supplier-cart'){
-    document.getElementById('screen-supplier-cart').innerHTML = renderSupplierCart();
-  }
+  if(S.screen === 'supplier-cart') document.getElementById('screen-supplier-cart').innerHTML = renderSupplierCart();
 };
-
 window.changeCartQty = (productId, delta)=>{
   const item = S.cart.find(c=>c.productId === productId);
   if(!item) return;
   item.qty += delta;
   if(item.qty <= 0) S.cart = S.cart.filter(c=>c.productId !== productId);
   updateCartFloat();
-  if(S.screen === 'supplier-cart'){
-    document.getElementById('screen-supplier-cart').innerHTML = renderSupplierCart();
-  }
+  if(S.screen === 'supplier-cart') document.getElementById('screen-supplier-cart').innerHTML = renderSupplierCart();
 };
-
 window.openSupplierCart = ()=>{
   if(S.cart.length === 0){ toast('Cart is empty'); return; }
   navTo('supplier-cart');
@@ -1540,32 +1589,23 @@ function renderNotifications(){
     return;
   }
   $notifBody.innerHTML = S.notifications.map(n=>{
-    const ic = n.type === 'order' ? '📦' :
-               n.type === 'delivery' ? '🚚' :
-               n.type === 'community' ? '💬' :
-               n.type === 'weather' ? '⛅' :
-               n.type === 'market' ? '🛒' : '🔔';
-    const cls = n.severity === 'warn' ? 'warn' :
-                n.severity === 'info' ? 'info' :
-                n.severity === 'danger' ? 'danger' : '';
-    return `
-      <div class="notif-item ${n.read ? '' : 'unread'}" onclick="markNotifRead('${esc(n.id)}')">
-        <div class="n-ic ${cls}">${ic}</div>
-        <div class="n-body">
-          <div class="n-title">${esc(n.title || 'Notification')}</div>
-          <div class="n-text">${esc(n.text || '')}</div>
-          <div class="n-time">${timeAgo(n.createdAt)}</div>
-        </div>
-      </div>`;
+    const ic = n.type === 'order' ? '📦' : n.type === 'delivery' ? '🚚' : n.type === 'community' ? '💬' : n.type === 'weather' ? '⛅' : n.type === 'market' ? '🛒' : '🔔';
+    const cls = n.severity === 'warn' ? 'warn' : n.severity === 'info' ? 'info' : n.severity === 'danger' ? 'danger' : '';
+    return `<div class="notif-item ${n.read ? '' : 'unread'}" onclick="markNotifRead('${esc(n.id)}')">
+      <div class="n-ic ${cls}">${ic}</div>
+      <div class="n-body">
+        <div class="n-title">${esc(n.title || 'Notification')}</div>
+        <div class="n-text">${esc(n.text || '')}</div>
+        <div class="n-time">${timeAgo(n.createdAt)}</div>
+      </div>
+    </div>`;
   }).join('');
 }
-
 window.markNotifRead = async (id)=>{
   const n = S.notifications.find(x=>x.id === id);
   if(!n || n.read) return;
   try{ await update(ref(db, `users/${S.user.uid}/notifications/${id}`), {read: true}); }catch(e){}
 };
-
 function startNotificationsListener(){
   if(!S.user) return;
   if(S.notificationsUnsub) S.notificationsUnsub();
@@ -1577,21 +1617,19 @@ function startNotificationsListener(){
     S.notifications = arr;
     S.unreadNotifCount = arr.filter(n=>!n.read).length;
     renderNotifications();
-    // Update community badge
     const nav = document.getElementById('bnav');
     if(nav){
-      const communityBtn = nav.querySelector('[data-nav="community"]');
-      if(communityBtn){
-        const existing = communityBtn.querySelector('.bn-badge');
+      const btn = nav.querySelector('[data-nav="community"]');
+      if(btn){
+        const existing = btn.querySelector('.bn-badge');
         if(S.unreadNotifCount){
           if(existing) existing.textContent = S.unreadNotifCount > 9 ? '9+' : S.unreadNotifCount;
-          else communityBtn.insertAdjacentHTML('beforeend', `<span class="bn-badge">${S.unreadNotifCount > 9 ? '9+' : S.unreadNotifCount}</span>`);
+          else btn.insertAdjacentHTML('beforeend', `<span class="bn-badge">${S.unreadNotifCount > 9 ? '9+' : S.unreadNotifCount}</span>`);
         } else if(existing) existing.remove();
       }
     }
   });
 }
-
 async function pushNotification(payload){
   if(!S.user) return;
   try{
@@ -1699,8 +1737,6 @@ async function loadMarketplace(){
   }catch(e){}
   return out.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
 }
-
-/* Live community */
 function startCommunityListener(){
   if(S.communityUnsub) S.communityUnsub();
   const r = ref(db, 'communityPosts');
@@ -1719,8 +1755,6 @@ function startCommunityListener(){
     }
   });
 }
-
-/* Live supplier products */
 function startSupplierProductsListener(){
   if(S.supplierProductsUnsub) S.supplierProductsUnsub();
   const r = ref(db, 'supplierProducts');
@@ -1739,7 +1773,6 @@ function startSupplierProductsListener(){
     }
   });
 }
-
 async function loadSuppliers(){
   const out = [];
   try{
@@ -1779,16 +1812,14 @@ function autoPredict(activity){
 }
 
 /* ============================================================
-   STAGE TIMELINE (days from planting)
+   STAGE TIMELINE
    ============================================================ */
 const STAGE_ORDER = ['planned','planted','growing','flowering','fruiting','harvesting','ready_for_sale','completed'];
 const STAGE_DAYS_FRACTION = {
-  // fraction of lifecycle per stage transition (approx)
   planned:0, planted:0.05, growing:0.2, flowering:0.5, fruiting:0.7, harvesting:0.9, ready_for_sale:1.0, completed:1.1
 };
 function getLifecycleDays(activity){
   const ag = S.catalogue.find(c=>c.id === activity.species_or_crop_id);
-  // Try to parse from indicativeDuration
   if(ag && ag.indicativeDuration){
     const m = String(ag.indicativeDuration).match(/(\d+)\s*(day|week|month)/i);
     if(m){
@@ -1801,7 +1832,6 @@ function getLifecycleDays(activity){
     const m2 = String(ag.indicativeDuration).match(/(\d+)\s*[-–]\s*(\d+)/);
     if(m2) return parseInt(m2[2]);
   }
-  // Default by enterprise type
   const t = (activity.enterprise_type || '').toLowerCase();
   if(t.includes('poultry')) return 45;
   if(t.includes('livestock')) return 180;
@@ -1814,7 +1844,6 @@ function computeStageInfo(activity){
   const total = getLifecycleDays(activity);
   const currentStage = activity.stage_key || 'growing';
   const currentIdx = STAGE_ORDER.indexOf(currentStage);
-  // Compute next stage and days to it
   let nextStage = null, daysToNext = null;
   if(currentIdx >= 0 && currentIdx < STAGE_ORDER.length - 1){
     nextStage = STAGE_ORDER[currentIdx + 1];
@@ -1833,7 +1862,6 @@ function route(){
   const id = S.screen;
   const el = document.getElementById('screen-'+id);
   if(!el) return;
-
   switch(id){
     case 'home': el.innerHTML = renderHome(); break;
     case 'explore': el.innerHTML = renderExplore(S.screenData.filter); break;
@@ -1842,7 +1870,7 @@ function route(){
     case 'create-activity': el.innerHTML = renderCreateActivity(S.screenData); wireCreateActivity(); break;
     case 'activity-detail': el.innerHTML = renderActivityDetail(S.screenData.id); break;
     case 'farm-activity': el.innerHTML = renderFarmActivity(S.screenData.filter); break;
-    case 'community': el.innerHTML = renderCommunity(); wireCommunityPosts(); break;
+    case 'community': el.innerHTML = renderCommunity(); break;
     case 'create-post': el.innerHTML = renderCreatePost(); wireCreatePost(); break;
     case 'post-detail': el.innerHTML = renderPostDetail(S.screenData.id); wirePostDetail(); break;
     case 'marketplace': el.innerHTML = renderMarketplace(); break;
@@ -1859,7 +1887,8 @@ function route(){
     case 'profile': el.innerHTML = renderProfile(); break;
     case 'my-posts': el.innerHTML = renderMyPosts(S.screenData.tab); break;
     case 'revenue': el.innerHTML = renderRevenue(); break;
-    case 'docs': el.innerHTML = renderDocs(); wireDocs(); break;
+    case 'docs': el.innerHTML = renderDocs(); break;
+    case 'analysis': el.innerHTML = renderAnalysis(); break;
     default: el.innerHTML = renderHome();
   }
 }
@@ -1871,15 +1900,15 @@ function renderHome(){
   const p = S.profile || {};
   const firstName = p.firstName || p.displayName || (p.name||'').split(' ')[0] || 'Farmer';
   const initial = initials(p.firstName ? (p.firstName + ' ' + (p.lastName||'')) : (p.displayName||p.name||'F'));
-
   const w = S.weather;
+  const cityDisplay = S.weatherCity || S.userLocation;
   const weatherHTML = w ? `
     <div class="weather-card">
       <div class="wc-icon">${weatherIconFor(w.code, w.isDay)}</div>
       <div class="wc-head">
         <div class="wc-loc">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-          ${esc(S.weatherCity || S.userLocation)}
+          ${esc(cityDisplay)}
         </div>
       </div>
       <div class="wc-temp">${w.temp}°C</div>
@@ -1895,17 +1924,10 @@ function renderHome(){
   const mf = (S.myActivities||[]).slice(0,6);
   const mfHTML = mf.length ? mf.map(a=>{
     const ic = pickIcon(a.species_or_crop_id || a.title || '');
-    const tag = a.status === 'ready_for_sale' ? 'ready'
-              : a.status === 'health_watch' ? 'warn'
-              : a.status === 'completed' ? 'ok' : '';
-    const tagText = a.status === 'ready_for_sale' ? 'Ready'
-              : a.status === 'health_watch' ? 'Watch'
-              : a.status === 'completed' ? 'Done'
-              : (a.stage_key || 'Active').replace(/_/g,' ');
+    const tag = a.status === 'ready_for_sale' ? 'ready' : a.status === 'health_watch' ? 'warn' : a.status === 'completed' ? 'ok' : '';
+    const tagText = a.status === 'ready_for_sale' ? 'Ready' : a.status === 'health_watch' ? 'Watch' : a.status === 'completed' ? 'Done' : (a.stage_key || 'Active').replace(/_/g,' ');
     const info = computeStageInfo(a);
-    const daysLabel = info.daysToNext != null
-      ? (info.daysToNext === 0 ? 'Stage due today' : `${info.daysToNext}d to ${(info.nextStage||'').replace(/_/g,' ')}`)
-      : `${info.daysIn}d in`;
+    const daysLabel = info.daysToNext != null ? (info.daysToNext === 0 ? 'Stage due today' : `${info.daysToNext}d to ${(info.nextStage||'').replace(/_/g,' ')}`) : `${info.daysIn}d in`;
     return `
       <div class="mf-card" onclick="openActivity('${a.id}')">
         <div class="mf-img">${a.coverUrl ? `<img src="${esc(a.coverUrl)}" alt="">` : ic}</div>
@@ -1998,6 +2020,16 @@ function renderHome(){
       </div>
     </div>
 
+    <div class="cta-banner" style="background:linear-gradient(135deg,#ede9fe 0%,#ddd6fe 100%);border-color:rgba(124,58,237,.16)" onclick="navTo('analysis')">
+      <div class="cta-txt">
+        <h4 style="color:#5b21b6">📊 Farm Analysis</h4>
+        <p style="color:#7c3aed">See what's trending, top crops, market insights &amp; government resources.</p>
+      </div>
+      <div class="cta-arrow" style="background:#7c3aed">
+        <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+      </div>
+    </div>
+
     <div class="sec-h">
       <h3>What's Happening Around You</h3>
       <button onclick="navTo('farm-activity')">See all ›</button>
@@ -2039,13 +2071,11 @@ function renderExplore(filter){
         <p>Seed the agriKnowledge database to populate this catalogue.</p>
       </div>
     </div>`;
-
   return `
   <div class="scroll" id="exploreScroll">
     <div class="topbar bordered">
       <div class="tb-title">Explore</div>
     </div>
-
     <div class="chips-row" style="padding-top:12px">
       <button class="chip ${!filter||filter==='all'?'active':''}" onclick="navTo('explore',{filter:'all'})">All</button>
       ${groups.map(g=>`
@@ -2053,7 +2083,6 @@ function renderExplore(filter){
           ${g.icon} ${esc(g.label)}
         </button>`).join('')}
     </div>
-
     <div class="cat-grid">${cardsHTML}</div>
   </div>
   ${bottomNavHTML()}`;
@@ -2071,11 +2100,9 @@ function renderCatalogueDetail(itemId){
   const isFish = item.enterpriseType==='Aquaculture' || item.enterpriseType==='Capture fisheries';
   const ctaLabel = isAnimal ? 'Raise These Animals' : isFish ? 'Start Fish Farming' : 'Plant This';
   const ctaIcon = isAnimal ? '🐄' : isFish ? '🐟' : '🌱';
-
   const stages = (item.stages||[]).map(s=>`<li>${esc(s)}</li>`).join('');
   const risks = (item.risks||[]).map(r=>`<li>${esc(r)}</li>`).join('');
   const units = (item.outputUnits||[]).join(', ');
-
   return `
   <div class="scroll">
     <div class="topbar bordered" style="position:sticky;top:0;z-index:6;background:rgba(255,255,255,.94);backdrop-filter:blur(14px)">
@@ -2084,19 +2111,15 @@ function renderCatalogueDetail(itemId){
       </button>
       <div class="tb-title">${esc(item.name)}</div>
     </div>
-
     <div class="detail-hero" style="background:${item.grad}">${item.icon}</div>
-
     <div class="detail-body">
       <h1>${esc(item.name)}</h1>
       <div class="d-sc">${esc(item.scientificName||'')}</div>
-
       <div class="detail-tags">
         <span class="dtag">${esc(item.group||item.category||'')}</span>
         <span class="dtag blue">${esc(item.enterpriseType||'')}</span>
         ${item.indicativeDuration?`<span class="dtag amber">${esc(item.indicativeDuration)}</span>`:''}
       </div>
-
       ${item.managementNotes?`<div class="d-section"><h3>Management</h3><p>${esc(item.managementNotes)}</p></div>`:''}
       ${item.systems && item.systems.length?`<div class="d-section"><h3>Production Systems</h3><ul class="d-list">${item.systems.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></div>`:''}
       ${stages?`<div class="d-section"><h3>Lifecycle Stages</h3><ul class="d-list">${stages}</ul></div>`:''}
@@ -2105,7 +2128,6 @@ function renderCatalogueDetail(itemId){
       ${item.outputIndicators && item.outputIndicators.length?`<div class="d-section"><h3>Output Indicators</h3><ul class="d-list">${item.outputIndicators.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></div>`:''}
       ${item.forecastApproach?`<div class="d-section"><h3>Production Forecast</h3><p>${esc(item.forecastApproach)}</p></div>`:''}
       ${units?`<div class="d-section"><h3>Output Units</h3><p>${esc(units)}</p></div>`:''}
-
       <div style="height:16px"></div>
       <button class="btn btn-p" onclick="startFromCatalogue('${esc(item.id)}')">
         ${ctaIcon} ${ctaLabel}
@@ -2121,13 +2143,8 @@ function renderMyFarm(){
   const acts = S.myActivities || [];
   const list = acts.length ? acts.map(a=>{
     const ic = pickIcon(a.species_or_crop_id||a.title||'');
-    const tagText = a.status === 'ready_for_sale' ? 'Ready for sale'
-      : a.status === 'health_watch' ? 'Health watch'
-      : a.status === 'completed' ? 'Completed'
-      : (a.stage_key || 'Active').replace(/_/g,' ');
-    const tagCls = a.status === 'ready_for_sale' ? 'ready'
-      : a.status === 'health_watch' ? 'warn'
-      : a.status === 'completed' ? 'ok' : '';
+    const tagText = a.status === 'ready_for_sale' ? 'Ready for sale' : a.status === 'health_watch' ? 'Health watch' : a.status === 'completed' ? 'Completed' : (a.stage_key || 'Active').replace(/_/g,' ');
+    const tagCls = a.status === 'ready_for_sale' ? 'ready' : a.status === 'health_watch' ? 'warn' : a.status === 'completed' ? 'ok' : '';
     const info = computeStageInfo(a);
     return `
     <div class="fa-card" onclick="openActivity('${a.id}')">
@@ -2158,7 +2175,6 @@ function renderMyFarm(){
       <div style="height:14px"></div>
       <button class="btn btn-p" style="max-width:220px;margin:0 auto" onclick="navTo('create-activity')">+ Start New Activity</button>
     </div>`;
-
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -2178,7 +2194,7 @@ function renderMyFarm(){
 }
 
 /* ============================================================
-   SCREEN: CREATE ACTIVITY
+   SCREEN: CREATE ACTIVITY (with white select dropdowns)
    ============================================================ */
 function renderCreateActivity(preset){
   preset = preset || {};
@@ -2195,7 +2211,7 @@ function renderCreateActivity(preset){
     if(activeCat==='poultry') return c.category==='Poultry';
     if(activeCat==='fisheries') return c.category==='Fisheries';
     return true;
-  }).map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
+  });
 
   return `
   <div class="scroll">
@@ -2214,12 +2230,16 @@ function renderCreateActivity(preset){
 
     <form class="frm" onsubmit="submitActivity(event)">
       <input type="hidden" id="act-cat" value="${esc(activeCat)}">
-      <div class="fld">
+      <div class="fld" style="position:relative">
         <label>What are you growing / raising?</label>
-        <select id="act-species" class="inp" required>
-          <option value="">Select…</option>
-          ${options}
-        </select>
+        <button type="button" class="select-trigger" id="act-species-trigger" onclick="toggleSelect('act-species')">
+          <span class="st-value">Select…</span>
+          <span class="st-arrow">▼</span>
+        </button>
+        <div class="select-options" id="act-species-options">
+          ${options.map(c=>`<div class="select-option" data-value="${esc(c.id)}"><span class="so-ic">${pickIcon(c.name)}</span>${esc(c.name)}<span class="so-check">✓</span></div>`).join('')}
+        </div>
+        <input type="hidden" id="act-species" value="">
       </div>
       <div class="fld">
         <label>Title</label>
@@ -2231,7 +2251,7 @@ function renderCreateActivity(preset){
       </div>
       <div class="fld">
         <label>Location</label>
-        <input id="act-location" class="inp" type="text" value="${esc(S.userLocation)}" required>
+        <input id="act-location" class="inp" type="text" value="${esc(S.weatherCity || S.userLocation)}" required>
       </div>
       <div class="fld" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div>
@@ -2240,10 +2260,7 @@ function renderCreateActivity(preset){
         </div>
         <div>
           <label>Unit</label>
-          <select id="act-unit" class="inp">
-            <option>ha</option><option>m²</option><option>kg</option>
-            <option>head</option><option>birds</option><option>fish</option>
-          </select>
+          <input id="act-unit" class="inp" type="text" placeholder="e.g. ha" required>
         </div>
       </div>
       <div class="fld">
@@ -2287,14 +2304,49 @@ function renderCreateActivity(preset){
   </div>`;
 }
 
+window.toggleSelect = (id)=>{
+  const opts = document.getElementById(id+'-options');
+  const trigger = document.getElementById(id+'-trigger');
+  if(!opts) return;
+  opts.classList.toggle('open');
+  trigger.classList.toggle('open', opts.classList.contains('open'));
+};
+
+window.selectOption = (id, value, label)=>{
+  const opts = document.getElementById(id+'-options');
+  const trigger = document.getElementById(id+'-trigger');
+  if(trigger) trigger.querySelector('.st-value').textContent = label;
+  document.getElementById(id).value = value;
+  if(opts){
+    opts.querySelectorAll('.select-option').forEach(o=>o.classList.remove('selected'));
+    const match = opts.querySelector(`[data-value="${value}"]`);
+    if(match) match.classList.add('selected');
+    opts.classList.remove('open');
+    trigger.classList.remove('open');
+  }
+};
+
 window.switchCat = (id)=>{
   const el = document.getElementById('screen-create-activity');
   if(el) el.innerHTML = renderCreateActivity({category:id});
   wireCreateActivity();
   showScreen('create-activity', {category:id}, false);
+  wireSelectOptions();
 };
 
+function wireSelectOptions(){
+  document.querySelectorAll('.select-options').forEach(opts=>{
+    opts.querySelectorAll('.select-option').forEach(o=>{
+      o.addEventListener('click', ()=>{
+        const id = opts.id.replace('-options','');
+        window.selectOption(id, o.dataset.value, o.textContent.replace('✓','').trim());
+      });
+    });
+  });
+}
+
 function wireCreateActivity(){
+  wireSelectOptions();
   const box = document.getElementById('act-photo');
   if(!box) return;
   box.addEventListener('click', async()=>{
@@ -2377,11 +2429,9 @@ window.submitActivity = async (ev)=>{
 };
 
 /* ============================================================
-   SCREEN: ACTIVITY DETAIL (with days-to-next-stage)
+   SCREEN: ACTIVITY DETAIL
    ============================================================ */
-window.openActivity = (id)=>{
-  navTo('activity-detail', {id});
-};
+window.openActivity = (id)=>{ navTo('activity-detail', {id}); };
 
 function renderActivityDetail(id){
   const act = (S.myActivities||[]).find(a=>a.id===id) || (S.allActivities||[]).find(a=>a.id===id);
@@ -2391,7 +2441,6 @@ function renderActivityDetail(id){
   const stages = ['planned','planted','growing','flowering','fruiting','harvesting','ready_for_sale','completed'];
   const currIdx = stages.indexOf(act.stage_key||'growing');
   const info = computeStageInfo(act);
-
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -2400,21 +2449,17 @@ function renderActivityDetail(id){
       </button>
       <div class="tb-title">${esc(act.title||'Activity')}</div>
     </div>
-
     <div class="detail-hero" style="background:${gradFor(act.title||'')}">
       ${act.coverUrl ? `<img src="${esc(act.coverUrl)}" alt="">` : ic}
     </div>
-
     <div class="detail-body">
       <h1>${esc(act.title||act.speciesName||'Activity')}</h1>
       <div class="d-sc">${esc(act.speciesName||'')} ${act.variety_breed?'· '+esc(act.variety_breed):''}</div>
-
       <div class="detail-tags">
         <span class="dtag">${esc(act.enterprise_type||'Crop')}</span>
         <span class="dtag blue">${esc((act.stage_key||'growing').replace(/_/g,' '))}</span>
         ${act.location?`<span class="dtag amber">📍 ${esc(act.location)}</span>`:''}
       </div>
-
       <div class="d-section">
         <h3>Growth Progress</h3>
         <div style="background:var(--p-ll);border:1px solid rgba(15,122,52,.14);border-radius:var(--r);padding:14px;margin-bottom:10px">
@@ -2448,7 +2493,6 @@ function renderActivityDetail(id){
           }).join('')}
         </div>
       </div>
-
       ${act.forecast_base?`
         <div class="d-section">
           <h3>Auto Forecast</h3>
@@ -2461,7 +2505,6 @@ function renderActivityDetail(id){
             <div style="font-size:11px;color:var(--tl);margin-top:6px;line-height:1.5">${esc(act.forecast_note||'')}</div>
           </div>
         </div>`:''}
-
       ${act.planted_date?`
         <div class="d-section">
           <h3>Dates</h3>
@@ -2470,7 +2513,6 @@ function renderActivityDetail(id){
             ${act.expected_ready_from?`<li>Expected ready ~${fmtDate(act.expected_ready_from)}</li>`:''}
           </ul>
         </div>`:''}
-
       ${isMine?`
         <div class="d-section">
           <h3>Update Stage</h3>
@@ -2504,7 +2546,6 @@ window.updateActivityStage = async (id, stage)=>{
     toast('Stage updated ✓');
   }catch(e){ toast('Failed: '+(e.message||e)); }
 };
-
 window.deleteActivity = (id)=>{
   modal(`
     <h3>Delete activity?</h3>
@@ -2570,7 +2611,6 @@ function renderFarmActivity(filter){
       <h3>No public activities</h3>
       <p>Share your first activity to inspire others.</p>
     </div>`;
-
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -2651,7 +2691,6 @@ function renderCommunity(){
       <h3>No posts yet</h3>
       <p>Share something with the community.</p>
     </div>`;
-
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -2671,24 +2710,16 @@ function renderCommunity(){
   ${bottomNavHTML()}`;
 }
 
-function wireCommunityPosts(){
-  // Comments are wired lazily on toggle
-}
-
 window.toggleComments = (postId)=>{
   const el = document.getElementById('comments-'+postId);
   if(!el) return;
   const isOpen = el.classList.contains('open');
   if(isOpen){
     el.classList.remove('open');
-    if(S.postCommentsUnsubs[postId]){
-      S.postCommentsUnsubs[postId]();
-      delete S.postCommentsUnsubs[postId];
-    }
+    if(S.postCommentsUnsubs[postId]){ S.postCommentsUnsubs[postId](); delete S.postCommentsUnsubs[postId]; }
     return;
   }
   el.classList.add('open');
-  // Live listener on comments
   if(S.postCommentsUnsubs[postId]) S.postCommentsUnsubs[postId]();
   const r = ref(db, `communityPosts/${postId}/comments`);
   S.postCommentsUnsubs[postId] = onValue(r, (snap)=>{
@@ -2733,21 +2764,12 @@ window.submitComment = async (postId)=>{
       authorPhoto: S.profile.profileUrl||'',
       text, createdAt: Date.now()
     });
-    // Increment commentCount
     const post = S.community.find(p=>p.id===postId);
-    if(post){
-      await update(ref(db, `communityPosts/${postId}`), { commentCount: (post.commentCount||0)+1 });
-    }
-    // Notify post owner
+    if(post) await update(ref(db, `communityPosts/${postId}`), { commentCount: (post.commentCount||0)+1 });
     if(post && post.authorId && post.authorId !== S.user.uid){
       try{
         const notifRef = push(ref(db, `users/${post.authorId}/notifications`));
-        await set(notifRef, {
-          type:'community',
-          title:'New comment',
-          text:`${(S.profile.firstName||'')} ${(S.profile.lastName||'')} commented on your post`,
-          createdAt: Date.now(), read: false
-        });
+        await set(notifRef, { type:'community', title:'New comment', text:`${(S.profile.firstName||'')} ${(S.profile.lastName||'')} commented on your post`, createdAt: Date.now(), read: false });
       }catch(e){}
     }
   }catch(e){ toast('Failed to comment'); }
@@ -2757,9 +2779,7 @@ window.deleteComment = async (postId, commentId)=>{
   try{
     await remove(ref(db, `communityPosts/${postId}/comments/${commentId}`));
     const post = S.community.find(p=>p.id===postId);
-    if(post){
-      await update(ref(db, `communityPosts/${postId}`), { commentCount: Math.max(0, (post.commentCount||1)-1) });
-    }
+    if(post) await update(ref(db, `communityPosts/${postId}`), { commentCount: Math.max(0, (post.commentCount||1)-1) });
     toast('Comment deleted');
   }catch(e){ toast('Failed'); }
 };
@@ -2777,16 +2797,10 @@ window.toggleLike = async (postId)=>{
     } else {
       updates[`communityPosts/${postId}/likedBy/${S.user.uid}`] = true;
       updates[`communityPosts/${postId}/likes`] = (post.likes||0)+1;
-      // Notify author
       if(post.authorId && post.authorId !== S.user.uid){
         try{
           const notifRef = push(ref(db, `users/${post.authorId}/notifications`));
-          await set(notifRef, {
-            type:'community',
-            title:'New like',
-            text:`${(S.profile.firstName||'')} ${(S.profile.lastName||'')} liked your post`,
-            createdAt: Date.now(), read: false
-          });
+          await set(notifRef, { type:'community', title:'New like', text:`${(S.profile.firstName||'')} ${(S.profile.lastName||'')} liked your post`, createdAt: Date.now(), read: false });
         }catch(e){}
       }
     }
@@ -2806,9 +2820,10 @@ window.sharePost = (postId)=>{
 };
 
 /* ============================================================
-   SCREEN: CREATE POST (photos + video + location)
+   SCREEN: CREATE POST (with detected city)
    ============================================================ */
 function renderCreatePost(){
+  const detectedCity = S.weatherCity || S.userLocation;
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -2841,12 +2856,13 @@ function renderCreatePost(){
         </div>
       </div>
       <div class="fld">
-        <label>Location</label>
+        <label>Location (auto-detected)</label>
         <div class="location-input">
           <span class="loc-dot"></span>
-          <input type="text" id="post-location" placeholder="Where is this?" value="${esc(S.weatherCity || S.userLocation)}">
+          <input type="text" id="post-location" placeholder="Where is this?" value="${esc(detectedCity)}">
           <button type="button" class="loc-clear" onclick="useCurrentPostLocation()">📍</button>
         </div>
+        <div class="hint">Your city was detected automatically. Tap 📍 to pin a precise location.</div>
       </div>
       <button type="submit" class="btn btn-p" id="post-submit">Publish Post</button>
     </form>
@@ -2862,7 +2878,6 @@ window.useCurrentPostLocation = async ()=>{
 };
 
 function wireCreatePost(){
-  // Photo slots
   document.querySelectorAll('#screen-create-post .up-box[data-slot]').forEach(box=>{
     box.addEventListener('click', async(ev)=>{
       if(ev.target.classList.contains('up-del')){
@@ -2881,7 +2896,6 @@ function wireCreatePost(){
       }catch(e){ if(!String(e).includes('cancel')) toast('Upload failed'); }
     });
   });
-  // Video box
   const vbox = document.getElementById('post-video-box');
   if(vbox){
     vbox.addEventListener('click', async(ev)=>{
@@ -2914,7 +2928,7 @@ window.submitPost = async (ev)=>{
   document.querySelectorAll('#screen-create-post .up-box[data-slot]').forEach(b=>{ if(b.dataset.url) photos.push(b.dataset.url); });
   const vbox = document.getElementById('post-video-box');
   const videoUrl = vbox?.dataset.url || '';
-  const locationLabel = document.getElementById('post-location')?.value.trim() || '';
+  const locationLabel = document.getElementById('post-location')?.value.trim() || S.weatherCity || S.userLocation;
   try{
     const newRef = push(ref(db,'communityPosts'));
     const data = {
@@ -2936,7 +2950,7 @@ window.submitPost = async (ev)=>{
 };
 
 /* ============================================================
-   SCREEN: POST DETAIL (single post + comments)
+   SCREEN: POST DETAIL
    ============================================================ */
 function renderPostDetail(id){
   const p = S.community.find(x=>x.id===id);
@@ -2999,7 +3013,6 @@ function renderPostDetail(id){
 function wirePostDetail(){
   const id = S.screenData.id;
   if(!id) return;
-  // Attach live comments listener
   if(S.postCommentsUnsubs[id]) S.postCommentsUnsubs[id]();
   const r = ref(db, `communityPosts/${id}/comments`);
   S.postCommentsUnsubs[id] = onValue(r, (snap)=>{
@@ -3055,7 +3068,6 @@ function renderMarketplace(){
         <button class="btn btn-p" style="max-width:220px;margin:0 auto" onclick="navTo('post-ready-goods')">+ Post Ready Goods</button>
       </div>
     </div>`;
-
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -3070,13 +3082,11 @@ function renderMarketplace(){
         </button>
       </div>
     </div>
-
     <div class="chips-row" style="padding-top:12px">
       ${['All','Crops','Animals','Fish','Seeds','Fertilizers','Tools','Feed'].map((c,i)=>`
         <button class="chip ${i===0?'active':''}">${c}</button>
       `).join('')}
     </div>
-
     <div class="mk-grid">${cards}</div>
   </div>
   ${bottomNavHTML()}`;
@@ -3235,7 +3245,7 @@ window.placeOrder = async (ev)=>{
 };
 
 /* ============================================================
-   SCREEN: POST READY GOODS (more details + precise location)
+   SCREEN: POST READY GOODS
    ============================================================ */
 function renderPostReadyGoods(data){
   data = data || {};
@@ -3302,7 +3312,6 @@ function renderPostReadyGoods(data){
       <div class="fld"><label>Fulfilment</label>
         <select id="pl-fulfil" class="inp"><option>Buyer collection</option><option>Seller delivery</option><option>AgriCare delivery</option></select>
       </div>
-
       <div id="pl-error" style="color:var(--danger);font-size:13px;font-weight:600;display:none;padding:10px 12px;background:#fef2f2;border:1px solid rgba(220,38,38,.2);border-radius:var(--r-sm)"></div>
       <button type="submit" class="btn btn-p" id="pl-submit">Publish Listing</button>
     </form>
@@ -3317,7 +3326,6 @@ window.useCurrentListingLocation = async ()=>{
   if(el) el.value = place ? place.label : S.userLocation;
   toast('Location added');
 };
-
 window.postReadyGoods = (actId)=> navTo('post-ready-goods', {actId});
 
 function wirePostReadyGoods(){
@@ -3401,7 +3409,7 @@ window.submitListing = async (ev)=>{
 };
 
 /* ============================================================
-   SCREEN: DELIVERY (with OpenStreetMap)
+   SCREEN: DELIVERY
    ============================================================ */
 let deliveryMap = null;
 let deliveryPickupMarker = null;
@@ -3431,7 +3439,6 @@ function renderDelivery(){
       <h3>No deliveries yet</h3>
       <p>Tap "New Delivery" to arrange transport for your produce.</p>
     </div>`;
-
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -3443,7 +3450,6 @@ function renderDelivery(){
         </button>
       </div>
     </div>
-
     <div class="cta-banner" style="background:linear-gradient(135deg,#dbeafe 0%,#bfdbfe 100%);cursor:pointer" onclick="navTo('request-delivery')">
       <div class="cta-txt">
         <h4 style="color:#1e40af">Request a Delivery</h4>
@@ -3453,7 +3459,6 @@ function renderDelivery(){
         <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
       </div>
     </div>
-
     <div class="sec-h"><h3>My Delivery Requests</h3></div>
     <div style="padding:0 18px 18px">${list}</div>
   </div>
@@ -3461,7 +3466,7 @@ function renderDelivery(){
 }
 
 function renderRequestDelivery(){
-  const defaultPickup = S.userLocation || '';
+  const defaultPickup = S.weatherCity || S.userLocation || '';
   return `
   <div class="scroll no-nav">
     <div class="topbar bordered">
@@ -3470,7 +3475,6 @@ function renderRequestDelivery(){
       </button>
       <div class="tb-title">Request Delivery</div>
     </div>
-
     <div style="padding:14px 18px 0">
       <div class="location-input" id="del-pickup-row">
         <span class="loc-dot"></span>
@@ -3482,9 +3486,7 @@ function renderRequestDelivery(){
         <input type="text" id="del-dropoff" placeholder="Drop-off location" autocomplete="off">
       </div>
     </div>
-
     <div class="map-search-results" id="del-search-results"></div>
-
     <div class="map-wrap" id="del-map-wrap">
       <div class="map-badge" id="del-map-badge"><i>📍</i> Tap the map or search to set locations</div>
       <div id="deliveryMap"></div>
@@ -3493,7 +3495,6 @@ function renderRequestDelivery(){
         <button id="del-fit-btn" title="Fit route">🔍</button>
       </div>
     </div>
-
     <form class="frm" onsubmit="submitDelivery(event)" style="padding-top:0">
       <div class="fld" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div>
@@ -3535,42 +3536,25 @@ function renderRequestDelivery(){
 }
 
 function wireDeliveryMap(){
-  setTimeout(()=>{
-    initDeliveryMap();
-    setupDeliverySearch();
-  }, 200);
+  setTimeout(()=>{ initDeliveryMap(); setupDeliverySearch(); }, 200);
 }
-
 function initDeliveryMap(){
   const mapEl = document.getElementById('deliveryMap');
   if(!mapEl) return;
   if(deliveryMap){ try{ deliveryMap.remove(); }catch(e){} deliveryMap = null; }
   deliveryMap = L.map('deliveryMap', {zoomControl: false, attributionControl: false}).setView([-15.4167, 28.2833], 12);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19, subdomains: 'abc', crossOrigin: true
-  }).addTo(deliveryMap);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, subdomains: 'abc', crossOrigin: true}).addTo(deliveryMap);
   deliveryMap.on('click', (e)=>{
     if(deliverySearchMode === 'pickup') setDeliveryPoint('pickup', e.latlng.lat, e.latlng.lng);
     else if(deliverySearchMode === 'dropoff') setDeliveryPoint('dropoff', e.latlng.lat, e.latlng.lng);
   });
-  // If user has coords, show them
-  if(S.userCoords){
-    deliveryMap.setView([S.userCoords.lat, S.userCoords.lng], 14);
-  } else if(navigator.geolocation){
-    navigator.geolocation.getCurrentPosition((pos)=>{
-      const lat = pos.coords.latitude, lng = pos.coords.longitude;
-      S.userCoords = {lat, lng};
-      if(deliveryMap) deliveryMap.setView([lat, lng], 14);
-    });
-  }
-  // Buttons
+  if(S.userCoords) deliveryMap.setView([S.userCoords.lat, S.userCoords.lng], 14);
   document.getElementById('del-locate-btn')?.addEventListener('click', ()=>{
     if(!S.userCoords) return;
     deliveryMap.setView([S.userCoords.lat, S.userCoords.lng], 16);
   });
   document.getElementById('del-fit-btn')?.addEventListener('click', fitDeliveryRoute);
 }
-
 function setupDeliverySearch(){
   const pickupInput = document.getElementById('del-pickup');
   const dropoffInput = document.getElementById('del-dropoff');
@@ -3578,7 +3562,6 @@ function setupDeliverySearch(){
   const dropoffRow = document.getElementById('del-dropoff-row');
   const results = document.getElementById('del-search-results');
   if(!pickupInput || !dropoffInput) return;
-
   const onFocus = (mode)=>{
     deliverySearchMode = mode;
     pickupRow?.classList.toggle('active', mode === 'pickup');
@@ -3588,11 +3571,7 @@ function setupDeliverySearch(){
   };
   pickupInput.addEventListener('focus', ()=>onFocus('pickup'));
   dropoffInput.addEventListener('focus', ()=>onFocus('dropoff'));
-
-  const debounce = (fn, ms)=>{
-    let t; return (...a)=>{ clearTimeout(t); t = setTimeout(()=>fn(...a), ms); };
-  };
-
+  const debounce = (fn, ms)=>{ let t; return (...a)=>{ clearTimeout(t); t = setTimeout(()=>fn(...a), ms); }; };
   const runSearch = async (q, mode)=>{
     if(!q || q.length < 3){ results.classList.remove('open'); return; }
     if(deliverySearchAbort) deliverySearchAbort.abort();
@@ -3623,11 +3602,9 @@ function setupDeliverySearch(){
       });
     }catch(e){ if(e.name !== 'AbortError') console.warn(e); }
   };
-
   pickupInput.addEventListener('input', debounce(()=>runSearch(pickupInput.value.trim(), 'pickup'), 320));
   dropoffInput.addEventListener('input', debounce(()=>runSearch(dropoffInput.value.trim(), 'dropoff'), 320));
 }
-
 async function setDeliveryPoint(mode, lat, lng, label){
   const place = await reverseGeocodePrecise(lat, lng);
   const finalLabel = label || (place ? place.label : `${lat.toFixed(4)}, ${lng.toFixed(4)}`);
@@ -3652,7 +3629,6 @@ async function setDeliveryPoint(mode, lat, lng, label){
   }
   drawDeliveryRoute();
 }
-
 window.useCurrentForDelivery = async (mode)=>{
   if(!S.userCoords){
     if(navigator.geolocation){
@@ -3666,7 +3642,6 @@ window.useCurrentForDelivery = async (mode)=>{
   }
   setDeliveryPoint(mode, S.userCoords.lat, S.userCoords.lng);
 };
-
 async function drawDeliveryRoute(){
   if(!deliveryMap || !deliveryPickup || !deliveryDropoff) return;
   try{
@@ -3693,14 +3668,12 @@ function fitDeliveryRoute(){
   if(deliveryDropoff) pts.push([deliveryDropoff.lat, deliveryDropoff.lng]);
   if(pts.length === 2) deliveryMap.fitBounds(L.latLngBounds(pts), {padding: [40, 40]});
 }
-
 window.submitDelivery = async (ev)=>{
   ev.preventDefault();
   const err = document.getElementById('del-error');
   err.style.display='none';
   const btn = document.getElementById('del-submit');
   btn.disabled = true;
-  // If inputs have text but no markers, geocode them
   if(!deliveryPickup){
     const v = document.getElementById('del-pickup').value.trim();
     if(v){
@@ -3747,12 +3720,7 @@ window.submitDelivery = async (ev)=>{
       status: 'searching',
       createdAt: Date.now()
     });
-    // Push notification
-    await pushNotification({
-      type:'delivery',
-      title:'Delivery requested',
-      text:`Your delivery (${id}) is being matched with a driver.`
-    });
+    await pushNotification({type:'delivery', title:'Delivery requested', text:`Your delivery (${id}) is being matched with a driver.`});
     modal(`<h3>Delivery requested 🚚</h3><p>Reference: <strong>${esc(id)}</strong><br>We're finding a driver near you.</p><button class="btn btn-p" onclick="closeModal();navTo('delivery')">View Deliveries</button>`);
   }catch(e){
     err.textContent = 'Error: ' + (e.message||e);
@@ -3762,28 +3730,21 @@ window.submitDelivery = async (ev)=>{
 };
 
 /* ============================================================
-   SCREEN: BUY SUPPLIES (real supplier products + cart)
+   SCREEN: BUY SUPPLIES
    ============================================================ */
 function renderBuySupplies(cat){
   cat = cat || 'all';
-  // Build categories from real products
   const catSet = new Set();
-  (S.supplierProducts || []).forEach(p=>{
-    if(p.category) catSet.add(p.category);
-  });
+  (S.supplierProducts || []).forEach(p=>{ if(p.category) catSet.add(p.category); });
   const cats = [{id:'all', label:'All', icon:'🛒'}];
   const catIcon = {seeds:'🌱', fertilizer:'💧', pesticide:'🧴', tools:'🔧', feed:'🌾', medicine:'💊', equipment:'⚙️'};
-  Array.from(catSet).forEach(c=>{
-    cats.push({id:c, label:c.charAt(0).toUpperCase()+c.slice(1), icon: catIcon[c] || '📦'});
-  });
-  // Fallback categories if no products yet
+  Array.from(catSet).forEach(c=>{ cats.push({id:c, label:c.charAt(0).toUpperCase()+c.slice(1), icon: catIcon[c] || '📦'}); });
   if(cats.length === 1){
     ['seeds','fertilizer','pesticide','tools','feed','medicine'].forEach(c=>{
       cats.push({id:c, label:c.charAt(0).toUpperCase()+c.slice(1), icon: catIcon[c] || '📦'});
     });
   }
   const filtered = cat === 'all' ? S.supplierProducts : S.supplierProducts.filter(p=>p.category === cat);
-
   const cards = filtered.length ? filtered.map(p=>{
     const inCart = S.cart.find(c=>c.productId === p.id);
     return `
@@ -3806,7 +3767,6 @@ function renderBuySupplies(cat){
       <h3>No products in this category yet</h3>
       <p>Suppliers will list their products here as they upload them.</p>
     </div>`;
-
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -3821,7 +3781,6 @@ function renderBuySupplies(cat){
         </button>
       </div>
     </div>
-
     <div class="sup-row" style="padding-top:12px">
       ${cats.map(c=>`
         <button class="sup-btn ${cat===c.id?'active':''}" onclick="navTo('buy-supplies',{cat:'${c.id}'})">
@@ -3829,7 +3788,6 @@ function renderBuySupplies(cat){
           <div class="sup-lb">${c.label}</div>
         </button>`).join('')}
     </div>
-
     <div style="padding:0 18px 18px">${cards}</div>
   </div>
   ${bottomNavHTML()}`;
@@ -3889,7 +3847,7 @@ function renderSupplierCart(){
 }
 
 /* ============================================================
-   SCREEN: SUPPLIER CHECKOUT (upload payment proof → wait for approval)
+   SCREEN: SUPPLIER CHECKOUT
    ============================================================ */
 function renderSupplierCheckout(){
   const subtotal = S.cart.reduce((s,c)=>{
@@ -3916,7 +3874,6 @@ function renderSupplierCheckout(){
           <option>Cash on Delivery</option>
         </select>
       </div>
-
       <div class="fld">
         <label>Upload Payment Proof</label>
         <div class="up-grid" style="grid-template-columns:1fr">
@@ -3929,18 +3886,15 @@ function renderSupplierCheckout(){
         <input type="hidden" id="sc-proof-url">
         <div class="hint warn">⚠️ Your order will only be processed once the supplier approves the payment.</div>
       </div>
-
       <div class="card">
         <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:900;color:var(--p-d)"><span>Total</span><span>${fmtZMK(subtotal)}</span></div>
       </div>
-
       <div id="sc-error" style="color:var(--danger);font-size:13px;font-weight:600;display:none;padding:10px 12px;background:#fef2f2;border:1px solid rgba(220,38,38,.2);border-radius:var(--r-sm)"></div>
       <button type="submit" class="btn btn-p" id="sc-submit">Submit Order for Approval</button>
     </form>
   </div>
   ${bottomNavHTML()}`;
 }
-
 function wireSupplierCheckout(){
   const box = document.getElementById('sc-proof-box');
   if(!box) return;
@@ -3960,7 +3914,6 @@ function wireSupplierCheckout(){
     }catch(e){ if(!String(e).includes('cancel')) toast('Upload failed'); }
   });
 }
-
 window.submitSupplierOrder = async (ev)=>{
   ev.preventDefault();
   const err = document.getElementById('sc-error');
@@ -3976,22 +3929,13 @@ window.submitSupplierOrder = async (ev)=>{
   }
   const items = S.cart.map(c=>{
     const p = S.supplierProducts.find(x=>x.id === c.productId);
-    return {
-      productId: c.productId,
-      name: p?.name || '',
-      price: Number(p?.price || 0),
-      qty: c.qty,
-      unit: p?.unit || '',
-      supplierId: p?.supplierId || p?.supplier_id || '',
-      supplierName: p?.supplierName || ''
-    };
+    return { productId: c.productId, name: p?.name || '', price: Number(p?.price || 0), qty: c.qty, unit: p?.unit || '', supplierId: p?.supplierId || p?.supplier_id || '', supplierName: p?.supplierName || '' };
   });
   const total = items.reduce((s,i)=>s + i.price*i.qty, 0);
   const id = 'SUP-' + Date.now().toString(36).toUpperCase();
   try{
     await set(ref(db, 'supplierOrders/'+id), {
-      orderId: id,
-      buyerId: S.user.uid,
+      orderId: id, buyerId: S.user.uid,
       buyerName: document.getElementById('sc-name').value,
       buyerPhone: document.getElementById('sc-phone').value,
       address: document.getElementById('sc-addr').value,
@@ -4001,17 +3945,11 @@ window.submitSupplierOrder = async (ev)=>{
       status: 'pending_approval',
       createdAt: Date.now()
     });
-    // Notify suppliers
     const supplierIds = new Set(items.map(i=>i.supplierId).filter(Boolean));
     for(const sid of supplierIds){
       try{
         const nref = push(ref(db, `users/${sid}/notifications`));
-        await set(nref, {
-          type:'order', severity:'warn',
-          title:'New order awaiting approval',
-          text:`${document.getElementById('sc-name').value} placed order ${id}. Review payment proof.`,
-          createdAt: Date.now(), read:false
-        });
+        await set(nref, { type:'order', severity:'warn', title:'New order awaiting approval', text:`${document.getElementById('sc-name').value} placed order ${id}. Review payment proof.`, createdAt: Date.now(), read:false });
       }catch(e){}
     }
     S.cart = [];
@@ -4076,6 +4014,175 @@ function renderWeather(){
 }
 
 /* ============================================================
+   SCREEN: ANALYSIS (NEW)
+   ============================================================ */
+function renderAnalysis(){
+  const activities = S.allActivities || [];
+  const listings = S.marketplace || [];
+
+  // Top planted crops this year
+  const yearStart = new Date(new Date().getFullYear(), 0, 1).getTime();
+  const thisYearActivities = activities.filter(a => (a.planted_date || a.createdAt || 0) >= yearStart);
+  const cropCounts = {};
+  thisYearActivities.forEach(a=>{
+    const name = a.speciesName || a.species_or_crop_id || 'Unknown';
+    cropCounts[name] = (cropCounts[name] || 0) + 1;
+  });
+  const topCrops = Object.entries(cropCounts).sort((a,b)=>b[1]-a[1]).slice(0, 8);
+  const maxCropCount = topCrops.length ? topCrops[0][1] : 1;
+
+  // Most bought on market
+  const boughtCounts = {};
+  listings.forEach(l=>{
+    const name = l.productName || l.title || 'Unknown';
+    boughtCounts[name] = (boughtCounts[name] || 0) + 1;
+  });
+  const topBought = Object.entries(boughtCounts).sort((a,b)=>b[1]-a[1]).slice(0, 6);
+
+  // City distribution
+  const cityCounts = {};
+  activities.forEach(a=>{
+    const c = a.location || 'Unknown';
+    cityCounts[c] = (cityCounts[c] || 0) + 1;
+  });
+  const topCities = Object.entries(cityCounts).sort((a,b)=>b[1]-a[1]).slice(0, 6);
+
+  // Stats
+  const totalActivities = activities.length;
+  const totalListings = listings.length;
+  const activeCrops = activities.filter(a => a.status === 'active' || a.status === 'ready_for_sale').length;
+  const totalFarmers = new Set(activities.map(a => a.owner_user_id)).size;
+
+  const govSites = [
+    {name:'Ministry of Agriculture', url:'https://www.agriculture.gov.zm/', desc:'Market bulletins, FISP, e-Voucher, SAFF & policy updates', icon:'🏛️'},
+    {name:'ZARI – Research Institute', url:'https://www.zari.gov.zm/', desc:'Crop research, pest & disease diagnostics, seed varieties', icon:'🔬'},
+    {name:'ZIAMIS – Farmer Registry', url:'https://www.agriculture.gov.zm/', desc:'Register as a farmer, access inputs & extension services', icon:'📋'},
+    {name:'ZamStats – Crop Forecast', url:'http://nada.zamstats.gov.zm/', desc:'National crop production & area planted statistics', icon:'📊'},
+    {name:'Mulimi360 e-Extension', url:'https://www.agriculture.gov.zm/', desc:'Real-time early warnings, market prices & advisory services', icon:'📱'},
+    {name:'AMIC – Market Info Centre', url:'https://www.agriculture.gov.zm/', desc:'Weekly/monthly commodity price bulletins by district', icon:'💰'},
+    {name:'Zambia Drought Monitor', url:'https://www.zamstats.gov.zm/', desc:'Satellite-based drought monitoring & early warning', icon:'🛰️'},
+    {name:'FRA – Food Reserve Agency', url:'https://fra.org.zm/', desc:'Crop marketing, floor prices & strategic reserves', icon:'🌾'}
+  ];
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Farm Analysis</div>
+    </div>
+
+    <div style="padding:14px 18px 0">
+      <p style="font-size:13px;color:var(--tl);font-weight:600;line-height:1.55">Insights based on farmer activities &amp; marketplace data across Zambia.</p>
+    </div>
+
+    <div class="rev-grid" style="padding-top:14px">
+      <div class="rev-tile dark">
+        <div class="rt-l">Total Activities</div>
+        <div class="rt-v">${totalActivities}</div>
+        <div class="rt-s">${activeCrops} active</div>
+      </div>
+      <div class="rev-tile">
+        <div class="rt-l">Marketplace Listings</div>
+        <div class="rt-v">${totalListings}</div>
+        <div class="rt-s">products listed</div>
+      </div>
+      <div class="rev-tile">
+        <div class="rt-l">Active Farmers</div>
+        <div class="rt-v">${totalFarmers}</div>
+        <div class="rt-s">sharing data</div>
+      </div>
+      <div class="rev-tile">
+        <div class="rt-l">Cities Covered</div>
+        <div class="rt-v">${Object.keys(cityCounts).length}</div>
+        <div class="rt-s">across Zambia</div>
+      </div>
+    </div>
+
+    <div class="sec-h"><h3>🌱 Most Planted This Year</h3></div>
+    <div style="padding:0 18px 18px">
+      ${topCrops.length ? topCrops.map(([name, count], i)=>{
+        const pct = Math.round((count / maxCropCount) * 100);
+        const rankCls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+        return `
+          <div class="bar-row">
+            <div class="as-rank ${rankCls}">${i+1}</div>
+            <div class="br-label">${esc(name)}</div>
+            <div class="br-bar"><div class="br-fill" style="width:${pct}%"></div></div>
+            <div class="br-val">${count}</div>
+          </div>`;
+      }).join('') : `
+        <div class="empty" style="padding:20px">
+          <div class="e-ic">🌱</div>
+          <h3>No planting data yet</h3>
+          <p>Activities shared by farmers will appear here.</p>
+        </div>`}
+    </div>
+
+    <div class="sec-h"><h3>🛒 Most Listed on Market</h3></div>
+    <div style="padding:0 18px 18px">
+      ${topBought.length ? topBought.map(([name, count], i)=>{
+        const maxB = topBought[0][1];
+        const pct = Math.round((count / maxB) * 100);
+        const rankCls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+        return `
+          <div class="bar-row">
+            <div class="as-rank ${rankCls}">${i+1}</div>
+            <div class="br-label">${esc(name)}</div>
+            <div class="br-bar"><div class="br-fill" style="width:${pct}%"></div></div>
+            <div class="br-val">${count}</div>
+          </div>`;
+      }).join('') : `
+        <div class="empty" style="padding:20px">
+          <div class="e-ic">🛒</div>
+          <h3>No market data yet</h3>
+          <p>Listings from the marketplace will appear here.</p>
+        </div>`}
+    </div>
+
+    <div class="sec-h"><h3>📍 Farmers by City</h3></div>
+    <div style="padding:0 18px 18px">
+      ${topCities.length ? topCities.map(([city, count], i)=>{
+        const maxC = topCities[0][1];
+        const pct = Math.round((count / maxC) * 100);
+        return `
+          <div class="bar-row">
+            <div class="as-rank">${i+1}</div>
+            <div class="br-label">${esc(city)}</div>
+            <div class="br-bar"><div class="br-fill" style="width:${pct}%"></div></div>
+            <div class="br-val">${count}</div>
+          </div>`;
+      }).join('') : `
+        <div class="empty" style="padding:20px">
+          <div class="e-ic">📍</div>
+          <h3>No city data yet</h3>
+          <p>Share your location to see this analysis.</p>
+        </div>`}
+    </div>
+
+    <div class="sec-h"><h3>🇿🇲 Free Government Resources</h3></div>
+    <div style="padding:0 18px 18px">
+      ${govSites.map(s=>`
+        <a class="gov-site" href="${esc(s.url)}" target="_blank" rel="noopener">
+          <div class="gs-ic">${s.icon}</div>
+          <div class="gs-body">
+            <div class="gs-name">${esc(s.name)}</div>
+            <div class="gs-desc">${esc(s.desc)}</div>
+          </div>
+          <div class="gs-arrow">→</div>
+        </a>
+      `).join('')}
+      <div style="margin-top:12px;padding:14px;background:var(--p-ll);border:1px solid rgba(15,122,52,.14);border-radius:var(--r)">
+        <div style="font-size:11px;font-weight:800;color:var(--p);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">💡 Pro Tip</div>
+        <p style="font-size:12px;color:var(--p-d);line-height:1.55;font-weight:600">Check the Ministry of Agriculture monthly market bulletins before selling. Prices for maize, soya, and groundnuts change significantly between December and April.</p>
+      </div>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
    SCREEN: PROFILE
    ============================================================ */
 function renderProfile(){
@@ -4097,7 +4204,6 @@ function renderProfile(){
         </button>
       </div>
     </div>
-
     <div class="prof-hero">
       <div class="p-av">${p.profileUrl?`<img src="${esc(p.profileUrl)}" alt="">`:initial}</div>
       <h2>${esc(fullName)}</h2>
@@ -4109,7 +4215,6 @@ function renderProfile(){
         <div><div class="ps-n">${posts.length}</div><div class="ps-l">Posts</div></div>
       </div>
     </div>
-
     <div class="menu-list">
       <div class="menu-item" onclick="navTo('myfarm')">
         <div class="mi-ic">🌱</div>
@@ -4124,6 +4229,11 @@ function renderProfile(){
       <div class="menu-item" onclick="navTo('revenue')">
         <div class="mi-ic">💰</div>
         <div class="mi-tx"><div class="mi-tt">Revenue Report</div><div class="mi-sb">Sales, payouts & earnings</div></div>
+        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+      <div class="menu-item" onclick="navTo('analysis')">
+        <div class="mi-ic">📊</div>
+        <div class="mi-tx"><div class="mi-tt">Farm Analysis</div><div class="mi-sb">Trends, top crops & market insights</div></div>
         <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
       </div>
       <div class="menu-item" onclick="navTo('docs')">
@@ -4159,7 +4269,6 @@ window.refreshLocation = async ()=>{
   toast('Refreshing location…');
   detectUserCityAndWeather();
 };
-
 window.doLogout = ()=>{
   modal(`
     <h3>Sign out?</h3>
@@ -4176,7 +4285,7 @@ window.confirmLogout = async ()=>{
 };
 
 /* ============================================================
-   SCREEN: DOCS (NRC etc)
+   SCREEN: DOCS
    ============================================================ */
 function renderDocs(){
   const p = S.profile || {};
@@ -4225,8 +4334,6 @@ function renderDocs(){
   ${bottomNavHTML()}`;
 }
 
-function wireDocs(){}
-
 window.uploadDoc = async (type)=>{
   const fieldMap = {nrc:'nrcUrl', farm_permit:'farmPermitUrl', land_title:'landTitleUrl', farmer_cert:'farmerCertUrl'};
   const field = fieldMap[type];
@@ -4243,7 +4350,7 @@ window.uploadDoc = async (type)=>{
 };
 
 /* ============================================================
-   SCREEN: MY POSTS (edit/delete/mark done/reports)
+   SCREEN: MY POSTS
    ============================================================ */
 function renderMyPosts(tab){
   tab = tab || 'active';
@@ -4281,7 +4388,6 @@ function renderMyPosts(tab){
       <div style="height:12px"></div>
       <button class="btn btn-p" style="max-width:220px;margin:0 auto" onclick="navTo('post-ready-goods')">+ Post Ready Goods</button>
     </div>`;
-
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -4306,26 +4412,23 @@ window.editListing = (id)=>{
   modal(`
     <h3>Edit Listing</h3>
     <p style="text-align:left;font-size:12px;color:var(--tl);margin-bottom:8px">Title</p>
-    <input id="edit-title" class="inp" style="width:100%;padding:12px;border:1.5px solid var(--bd);border-radius:12px;font-size:14px;margin-bottom:10px" value="${esc(m.title||'')}">
-    <p style="text-align:left;font-size:12px;color:var(--tl);margin-bottom:8px">Price (ZMK)</p>
-    <input id="edit-price" class="inp" type="number" style="width:100%;padding:12px;border:1.5px solid var(--bd);border-radius:12px;font-size:14px;margin-bottom:10px" value="${esc(m.priceAmount||0)}">
-    <p style="text-align:left;font-size:12px;color:var(--tl);margin-bottom:8px">Quantity</p>
-    <input id="edit-qty" class="inp" type="number" style="width:100%;padding:12px;border:1.5px solid var(--bd);border-radius:12px;font-size:14px;margin-bottom:14px" value="${esc(m.quantity||'')}">
-    <div style="display:flex;gap:8px">
+    <input id="edit-title" class="inp" value="${esc(m.title||'')}">
+    <p style="text-align:left;font-size:12px;color:var(--tl);margin:10px 0 8px">Price (ZMK)</p>
+    <input id="edit-price" class="inp" type="number" value="${esc(m.priceAmount||0)}">
+    <p style="text-align:left;font-size:12px;color:var(--tl);margin:10px 0 8px">Quantity</p>
+    <input id="edit-qty" class="inp" type="number" value="${esc(m.quantity||'')}">
+    <div style="display:flex;gap:8px;margin-top:16px">
       <button class="btn btn-s" onclick="closeModal()">Cancel</button>
       <button class="btn btn-p" onclick="saveEditListing('${esc(id)}')">Save</button>
     </div>
   `);
 };
-
 window.saveEditListing = async (id)=>{
   const title = document.getElementById('edit-title').value.trim();
   const price = document.getElementById('edit-price').value;
   const qty = document.getElementById('edit-qty').value;
   try{
-    await update(ref(db, 'marketListings/'+id), {
-      title, priceAmount: Number(price), quantity: qty, updatedAt: Date.now()
-    });
+    await update(ref(db, 'marketListings/'+id), { title, priceAmount: Number(price), quantity: qty, updatedAt: Date.now() });
     const m = S.myListings.find(x=>x.id === id);
     if(m){ m.title = title; m.priceAmount = Number(price); m.quantity = qty; }
     toast('Listing updated ✓');
@@ -4333,7 +4436,6 @@ window.saveEditListing = async (id)=>{
     route();
   }catch(e){ toast('Failed: '+e.message); }
 };
-
 window.deleteListing = (id)=>{
   modal(`
     <h3>Delete listing?</h3>
@@ -4354,13 +4456,11 @@ window.confirmDeleteListing = async (id)=>{
     route();
   }catch(e){ toast('Failed'); }
 };
-
 window.markListingSold = async (id)=>{
   try{
     await update(ref(db, 'marketListings/'+id), { status:'sold', soldAt: Date.now() });
     const m = S.myListings.find(x=>x.id === id);
     if(m) m.status = 'sold';
-    // Notification
     await pushNotification({type:'market', title:'Item marked sold', text:'Your listing is now marked as sold.'});
     toast('Marked as sold ✓');
     route();
@@ -4385,7 +4485,6 @@ function renderRevenue(){
       </button>
       <div class="tb-title">Revenue Report</div>
     </div>
-
     <div class="rev-grid" style="padding-top:14px">
       <div class="rev-tile dark">
         <div class="rt-l">Total Revenue</div>
@@ -4408,7 +4507,6 @@ function renderRevenue(){
         <div class="rt-s">all time</div>
       </div>
     </div>
-
     <div class="sec-h"><h3>Recent Sales</h3></div>
     <div style="padding:0 18px 18px">
       ${sold.length ? sold.slice(0, 20).map(m=>`
@@ -4434,11 +4532,50 @@ function renderRevenue(){
 }
 
 /* ============================================================
-   LOCATION + WEATHER BOOTSTRAP
+   LOCATION PERMISSION + CITY DETECTION (ASK FIRST)
    ============================================================ */
-async function detectUserCityAndWeather(){
+function showLocationPermissionModal(){
+  return new Promise((resolve)=>{
+    modal(`
+      <div style="text-align:center">
+        <div style="font-size:48px;margin-bottom:12px">📍</div>
+        <h3>Enable Location</h3>
+        <p>AgriCare needs your location to show accurate weather, detect your city, and connect you with nearby farmers and markets.</p>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+          <button class="btn btn-p" id="loc-allow-btn">Allow Location</button>
+          <button class="btn btn-s" id="loc-skip-btn">Not Now</button>
+        </div>
+        <p style="font-size:11px;color:var(--tm);margin-top:12px;margin-bottom:0">Your location is only used to improve your experience. You can change this anytime in your device settings.</p>
+      </div>
+    `);
+    document.getElementById('loc-allow-btn').addEventListener('click', ()=>{
+      closeModal();
+      resolve(true);
+    });
+    document.getElementById('loc-skip-btn').addEventListener('click', ()=>{
+      closeModal();
+      resolve(false);
+    });
+  });
+}
+
+async function detectUserCityAndWeather(forcePrompt){
+  // Ask permission first
+  if(!S.locationPermissionAsked && !forcePrompt){
+    S.locationPermissionAsked = true;
+    const allowed = await showLocationPermissionModal();
+    if(!allowed){
+      // Fallback
+      S.weather = await loadWeatherByCoords(-15.4167, 28.2833);
+      S.weatherCity = S.userLocation;
+      if(S.screen === 'home'){
+        const el = document.getElementById('screen-home');
+        if(el) el.innerHTML = renderHome();
+      }
+      return;
+    }
+  }
   if(!navigator.geolocation){
-    // fallback
     S.weather = await loadWeatherByCoords(-15.4167, 28.2833);
     S.weatherCity = S.userLocation;
     return;
@@ -4447,7 +4584,6 @@ async function detectUserCityAndWeather(){
     navigator.geolocation.getCurrentPosition(async (pos)=>{
       const lat = pos.coords.latitude, lng = pos.coords.longitude;
       S.userCoords = {lat, lng};
-      // Reverse geocode city
       const place = await reverseGeocodeCity(lat, lng);
       if(place && place.city){
         S.weatherCity = place.city;
@@ -4455,9 +4591,7 @@ async function detectUserCityAndWeather(){
       } else {
         S.weatherCity = S.userLocation;
       }
-      // Weather
       S.weather = await loadWeatherByCoords(lat, lng);
-      // Re-render home if visible
       if(S.screen === 'home'){
         const el = document.getElementById('screen-home');
         if(el) el.innerHTML = renderHome();
@@ -4465,7 +4599,6 @@ async function detectUserCityAndWeather(){
       resolve();
     }, async (err)=>{
       console.warn('geo', err);
-      // Try with last known location name
       S.weather = await loadWeatherByCoords(-15.4167, 28.2833);
       S.weatherCity = S.userLocation;
       if(S.screen === 'home'){
@@ -4501,7 +4634,6 @@ function renderMaintenance(){
       </div>
     </div>`;
 }
-
 async function checkSystemState(){
   let maint = false, banned = false, banReason = '';
   try{
@@ -4522,20 +4654,14 @@ async function checkSystemState(){
 async function startApp(){
   const splash = document.getElementById('splash');
   requestAnimationFrame(()=> splash.classList.add('show'));
-
   onAuthStateChanged(auth, async (user)=>{
     await new Promise(r=>setTimeout(r, 2600));
-    if(!user){
-      window.location.href = 'index.html';
-      return;
-    }
+    if(!user){ window.location.href = 'index.html'; return; }
     S.user = user;
-
     const st = await checkSystemState();
     if(st.maint){ document.getElementById('app').innerHTML = renderMaintenance(); return; }
     if(st.banned){ document.getElementById('app').innerHTML = renderBanned(st.banReason); return; }
 
-    // Load data
     const agri = await loadAgriKnowledge();
     S.agri = agri;
     S.catalogue = agri?.catalogue || [];
@@ -4547,44 +4673,42 @@ async function startApp(){
     if(S.profile.location) S.userLocation = S.profile.location;
     if(S.profile.city) S.weatherCity = S.profile.city;
 
-    const [acts, mkt, sup] = await Promise.all([
-      loadAllActivities(),
-      loadMarketplace(),
-      loadSuppliers()
-    ]);
-    S.allActivities = acts;
-    S.marketplace = mkt;
-    S.suppliers = sup;
+    const [acts, mkt, sup] = await Promise.all([loadAllActivities(), loadMarketplace(), loadSuppliers()]);
+    S.allActivities = acts; S.marketplace = mkt; S.suppliers = sup;
 
-    // Live listeners
     startCommunityListener();
     startSupplierProductsListener();
     startNotificationsListener();
 
-    // Build shell
     const app = document.getElementById('app');
     app.innerHTML = `<div class="screen-wrap"></div>`;
     const wrap = app.querySelector('.screen-wrap');
     const home = document.createElement('div');
-    home.className = 'screen';
-    home.id = 'screen-home';
+    home.className = 'screen'; home.id = 'screen-home';
     wrap.appendChild(home);
-    activeScreenEl = home;
-    S.screen = 'home';
+    activeScreenEl = home; S.screen = 'home';
     home.classList.add('active');
     route();
-
     try{ history.replaceState({screen:'home'}, '', '#home'); }catch(e){}
 
-    // Fire location + weather
-    detectUserCityAndWeather();
+    // Ask location permission FIRST, then detect city + weather
+    await detectUserCityAndWeather();
     startWeatherRefresh();
-
-    // Load my deliveries count (for badge)
     loadMyDeliveries();
   });
 }
-
+function startWeatherRefresh(){
+  clearInterval(S.weatherRefreshTimer);
+  S.weatherRefreshTimer = setInterval(async ()=>{
+    if(S.userCoords){
+      S.weather = await loadWeatherByCoords(S.userCoords.lat, S.userCoords.lng);
+      if(S.screen === 'home'){
+        const el = document.getElementById('screen-home');
+        if(el) el.innerHTML = renderHome();
+      }
+    }
+  }, 30 * 60 * 1000);
+}
 async function loadMyDeliveries(){
   if(!S.user) return;
   try{
@@ -4602,26 +4726,18 @@ async function loadMyDeliveries(){
 
 startApp();
 
-/* Splash cleanup */
 setTimeout(()=>{
   const splash = document.getElementById('splash');
   if(splash && splash.parentNode){
     setTimeout(()=>{
       splash.classList.remove('show');
-      setTimeout(()=>{
-        if(splash.parentNode) splash.parentNode.removeChild(splash);
-      }, 1000);
+      setTimeout(()=>{ if(splash.parentNode) splash.parentNode.removeChild(splash); }, 1000);
     }, 300);
   }
 }, 2700);
 
-window.addEventListener('unhandledrejection', e=>{
-  console.warn('Unhandled:', e.reason);
-});
+window.addEventListener('unhandledrejection', e=>{ console.warn('Unhandled:', e.reason); });
 
-/* ============================================================
-   START FROM CATALOGUE
-   ============================================================ */
 window.startFromCatalogue = (id)=>{
   const item = S.catalogue.find(c=>c.id === id);
   if(!item){ toast('Not found'); return; }
@@ -4635,7 +4751,6 @@ window.startFromCatalogue = (id)=>{
     if(tt) tt.value = item.name;
   }, 100);
 };
-
 window.openCatalogueItem = (id)=>{ navTo('catalogue-detail', {id}); };
 </script>
 
