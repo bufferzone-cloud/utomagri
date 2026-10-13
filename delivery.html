@@ -59,9 +59,7 @@ a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
 .hidden{display:none !important}
 
-/* ============================================================
-   LOADING
-   ============================================================ */
+/* LOADING */
 #loadingScreen{
   position:fixed;inset:0;z-index:9000;background:linear-gradient(160deg,#0f7a34 0%,#084d20 100%);
   color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
@@ -74,7 +72,6 @@ img{display:block;max-width:100%}
   box-shadow:0 0 0 8px rgba(255,255,255,.16);position:relative;
 }
 #loadingScreen .l-logo img{width:60px;height:60px;object-fit:contain}
-#loadingScreen .l-logo span{color:var(--p);font-weight:900;font-size:.7rem}
 #loadingScreen .l-name{font-weight:900;letter-spacing:3px;font-size:1rem;text-transform:uppercase}
 #loadingScreen .l-sub{font-size:.7rem;color:rgba(255,255,255,.7);letter-spacing:1.6px;text-transform:uppercase;margin-top:-12px}
 #loadingScreen .l-spinner{
@@ -84,9 +81,7 @@ img{display:block;max-width:100%}
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ============================================================
-   GATE
-   ============================================================ */
+/* GATE */
 .gate{
   position:fixed;inset:0;z-index:8000;background:#fff;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -103,9 +98,7 @@ img{display:block;max-width:100%}
 .gate p{font-size:.9rem;color:var(--tl);line-height:1.55;max-width:400px;font-weight:500}
 .gate .g-actions{display:flex;gap:10px;width:100%;max-width:340px;margin-top:12px}
 
-/* ============================================================
-   MAP
-   ============================================================ */
+/* MAP */
 #map{flex:1 1 auto;min-height:0;position:relative;background:#e8eaed;z-index:1}
 .leaflet-tile-pane{filter:saturate(1) contrast(1.04) brightness(1.01)}
 .leaflet-container{font-family:inherit;background:#e8eaed}
@@ -115,36 +108,29 @@ img{display:block;max-width:100%}
 }
 .leaflet-control-attribution a{color:#475569 !important}
 
-/* ============================================================
-   VEHICLE MARKER (per vehicle type)
-   ============================================================ */
+/* VEHICLE MARKER */
 .veh-marker-wrap{background:none !important;border:none !important}
 .veh-marker{
   width:52px;height:52px;display:flex;align-items:center;justify-content:center;
-  transform-origin:50% 50%;
-  transition:transform .5s var(--e);
-  filter:drop-shadow(0 4px 10px rgba(0,0,0,.32));
-  position:relative;
+  transform-origin:50% 50%;transition:transform .5s var(--e);
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.32));position:relative;
 }
 .veh-marker .veh-bubble{
   width:42px;height:42px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  color:#fff;font-size:1.1rem;
-  border:3px solid #fff;
+  color:#fff;font-size:1.1rem;border:3px solid #fff;
   box-shadow:0 0 0 2px rgba(15,23,42,.08),0 6px 14px -4px rgba(0,0,0,.35);
 }
 .veh-marker .veh-pulse{
   position:absolute;inset:0;border-radius:50%;
   border:2px solid rgba(15,122,52,.35);
-  animation:vehPulse 2s var(--e) infinite;
-  pointer-events:none;
+  animation:vehPulse 2s var(--e) infinite;pointer-events:none;
 }
 @keyframes vehPulse{
   0%{transform:scale(.7);opacity:.9}
   100%{transform:scale(1.5);opacity:0}
 }
 
-/* Pickup/Dropoff markers */
 .mk-pickup{
   width:22px;height:22px;background:var(--p);border:3.5px solid #fff;
   border-radius:50% 50% 50% 0;transform:rotate(-45deg);
@@ -160,9 +146,7 @@ img{display:block;max-width:100%}
   box-shadow:0 3px 10px rgba(0,0,0,.42);box-sizing:border-box;
 }
 
-/* ============================================================
-   FLOATING NAME CHIP
-   ============================================================ */
+/* NAME CHIP */
 .name-chip{
   position:fixed;top:calc(var(--safe-t) + 14px);left:66px;z-index:600;
   background:#fff;border-radius:999px;padding:7px 14px 7px 8px;
@@ -175,23 +159,17 @@ img{display:block;max-width:100%}
 .name-chip .nc-av{
   width:30px;height:30px;border-radius:50%;overflow:hidden;flex-shrink:0;
   background:linear-gradient(135deg,var(--p),var(--p-d));color:#fff;
-  display:flex;align-items:center;justify-content:center;
-  font-weight:800;font-size:.7rem;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.7rem;
 }
 .name-chip .nc-av img{width:100%;height:100%;object-fit:cover}
 .name-chip .nc-txt{display:flex;flex-direction:column;line-height:1.1;min-width:0}
-.name-chip .nc-txt small{
-  font-size:.55rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;
-  color:var(--tm);
-}
+.name-chip .nc-txt small{font-size:.55rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--tm)}
 .name-chip .nc-txt strong{
   font-size:.75rem;font-weight:800;letter-spacing:-.2px;color:var(--td);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px;
 }
 
-/* ============================================================
-   FLOAT BALANCE PILL
-   ============================================================ */
+/* FLOAT PILL */
 .float-balance-pill{
   position:fixed;top:calc(var(--safe-t) + 14px);right:14px;z-index:600;
   display:inline-flex;align-items:center;gap:9px;
@@ -203,10 +181,8 @@ img{display:block;max-width:100%}
 }
 .float-balance-pill:active{transform:scale(.96)}
 .float-balance-pill .fb-ico{
-  width:26px;height:26px;border-radius:50%;
-  background:rgba(255,255,255,.18);
-  display:flex;align-items:center;justify-content:center;
-  font-size:.72rem;flex-shrink:0;
+  width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;font-size:.72rem;flex-shrink:0;
 }
 .float-balance-pill .fb-txt{display:flex;flex-direction:column;align-items:flex-start;line-height:1}
 .float-balance-pill .fb-txt small{
@@ -214,8 +190,7 @@ img{display:block;max-width:100%}
   color:rgba(255,255,255,.6);margin-bottom:3px;
 }
 .float-balance-pill .fb-txt strong{
-  font-size:.9rem;font-weight:900;letter-spacing:-.3px;
-  font-variant-numeric:tabular-nums;
+  font-size:.9rem;font-weight:900;letter-spacing:-.3px;font-variant-numeric:tabular-nums;
 }
 .float-balance-pill .fb-txt strong small{
   font-size:.62rem;font-weight:700;color:rgba(255,255,255,.78);
@@ -224,23 +199,18 @@ img{display:block;max-width:100%}
 .float-balance-pill.is-low{background:linear-gradient(135deg,#b91c1c 0%,#7f1d1d 100%)}
 .float-balance-pill.is-warn{background:linear-gradient(135deg,#b45309 0%,#78350f 100%)}
 
-/* ============================================================
-   SIDEBAR TOGGLE
-   ============================================================ */
+/* SIDEBAR BTN */
 .float-btn{
   position:fixed;width:46px;height:46px;border-radius:14px;
   background:#fff;display:flex;align-items:center;justify-content:center;
   font-size:1.05rem;color:var(--td);
   box-shadow:0 6px 18px -6px rgba(15,23,42,.22),0 0 0 1px rgba(15,23,42,.05);
-  transition:transform .3s var(--spring),background .25s;
-  z-index:600;
+  transition:transform .3s var(--spring),background .25s;z-index:600;
 }
 .float-btn:active{transform:scale(.92);background:var(--p-l)}
 #sidebarBtn{top:calc(var(--safe-t) + 14px);left:14px}
 
-/* ============================================================
-   ONLINE / OFFLINE SLIDE
-   ============================================================ */
+/* ONLINE SLIDE */
 #onlineSlideWrap{
   position:fixed;left:50%;bottom:calc(var(--safe-b) + 16px);
   transform:translateX(-50%);z-index:600;
@@ -248,7 +218,6 @@ img{display:block;max-width:100%}
   transition:opacity .3s var(--e),transform .42s var(--panel),visibility .3s;
 }
 body.has-panel #onlineSlideWrap,
-body.has-floating-card #onlineSlideWrap,
 body.has-modal #onlineSlideWrap{
   opacity:0;visibility:hidden;pointer-events:none;
   transform:translateX(-50%) translateY(18px);
@@ -279,16 +248,13 @@ body.has-modal #onlineSlideWrap{
   background:#fff;display:flex;align-items:center;justify-content:center;
   font-size:1.1rem;cursor:grab;
   box-shadow:0 8px 18px -5px rgba(0,0,0,.4);
-  transition:transform .24s var(--spring),color .3s;
-  touch-action:none;z-index:2;
+  transition:transform .24s var(--spring),color .3s;touch-action:none;z-index:2;
 }
 .online-slide.offline .os-handle{color:#0b5f28}
 .online-slide.online  .os-handle{color:#b91c1c}
 .online-slide .os-handle.dragging{transition:none}
 
-/* ============================================================
-   DETAIL PANEL
-   ============================================================ */
+/* DETAIL PANEL */
 #detailPanel{
   flex:0 0 0;max-height:0;overflow:hidden;background:#fff;
   transition:flex-basis .4s var(--panel),max-height .4s var(--panel),box-shadow .3s;
@@ -298,9 +264,7 @@ body.has-panel #detailPanel{
   flex:0 0 auto;max-height:76vh;overflow:hidden;
   box-shadow:0 -10px 28px rgba(15,23,42,.08);border-top:1px solid var(--bd);
 }
-#detailPanel .dp-inner{
-  max-width:640px;margin:0 auto;padding:12px 14px 14px;
-}
+#detailPanel .dp-inner{max-width:640px;margin:0 auto;padding:12px 14px 14px}
 
 .dp-c-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
 .dp-c-tag{
@@ -316,15 +280,15 @@ body.has-panel #detailPanel{
   background:var(--sf2);border-radius:11px;margin-bottom:8px;
 }
 .dp-c-avatar{
-  width:36px;height:36px;border-radius:50%;background:#fff;overflow:hidden;
+  width:38px;height:38px;border-radius:50%;background:#fff;overflow:hidden;
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
   box-shadow:0 0 0 1px var(--bd);
 }
 .dp-c-avatar img{width:100%;height:100%;object-fit:cover}
-.dp-c-avatar i{color:var(--tm);font-size:.9rem}
+.dp-c-avatar i{color:var(--tm);font-size:.95rem}
 .dp-c-info{flex:1;min-width:0}
 .dp-c-info strong{
-  display:block;font-size:.85rem;font-weight:800;letter-spacing:-.2px;
+  display:block;font-size:.86rem;font-weight:800;letter-spacing:-.2px;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .dp-c-info span{
@@ -332,8 +296,8 @@ body.has-panel #detailPanel{
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .dp-c-call{
-  width:36px;height:36px;border-radius:50%;background:var(--ok);color:#fff;
-  display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;
+  width:38px;height:38px;border-radius:50%;background:var(--ok);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:.88rem;flex-shrink:0;
   box-shadow:0 5px 12px -4px rgba(22,163,74,.5);
 }
 
@@ -503,9 +467,7 @@ body.has-panel #detailPanel{
 .slide-btn .slide-handle.dragging{transition:none}
 .slide-btn.is-busy{opacity:.7;pointer-events:none}
 
-/* ============================================================
-   SIDEBAR
-   ============================================================ */
+/* SIDEBAR */
 #sidebarOverlay{
   position:fixed;inset:0;z-index:1900;background:rgba(15,23,42,.42);
   backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
@@ -577,9 +539,7 @@ body.has-panel #detailPanel{
 .logout-btn:hover{background:var(--danger-soft)}
 .logout-btn i{width:22px;text-align:center;font-size:1rem}
 
-/* ============================================================
-   PAGES
-   ============================================================ */
+/* PAGES */
 .page{
   position:fixed;inset:0;z-index:3000;background:#fff;
   display:flex;flex-direction:column;
@@ -609,13 +569,10 @@ body.has-panel #detailPanel{
 }
 .icon-btn:active{transform:scale(.92);background:var(--p-l)}
 
-/* ============================================================
-   SHARED UI
-   ============================================================ */
+/* SHARED UI */
 .section-label{
   font-size:.72rem;font-weight:800;color:var(--tl);
-  text-transform:uppercase;letter-spacing:.6px;
-  margin:1.1rem 0 .55rem;
+  text-transform:uppercase;letter-spacing:.6px;margin:1.1rem 0 .55rem;
 }
 .section-label:first-child{margin-top:0}
 .input-icon-group{position:relative;width:100%;margin-bottom:.85rem}
@@ -623,7 +580,6 @@ body.has-panel #detailPanel{
   position:absolute;left:15px;top:50%;transform:translateY(-50%);
   color:var(--tm);font-size:.95rem;pointer-events:none;z-index:1;
 }
-.input-icon-group.textarea-group > i{top:22px;transform:none}
 .input-icon-group:focus-within > i{color:var(--p)}
 .pill-input{
   width:100%;padding:13px 16px 13px 42px;
@@ -635,7 +591,6 @@ body.has-panel #detailPanel{
 .pill-input::placeholder{color:var(--tm);font-weight:400}
 .pill-input:hover{background:#eef2f7}
 .pill-input:focus{background:#fff;border-color:var(--p);box-shadow:var(--ring)}
-.pill-textarea{resize:vertical;min-height:96px;line-height:1.5}
 .btn{
   font-size:.94rem;font-weight:700;border:none;border-radius:var(--r-sm);
   padding:14px 20px;width:100%;cursor:pointer;
@@ -649,9 +604,6 @@ body.has-panel #detailPanel{
 .btn-primary:active:not(:disabled){transform:translateY(0) scale(.975)}
 .btn:disabled{opacity:.55;cursor:not-allowed}
 .btn-ghost{background:var(--sf2);color:var(--td)}
-.btn-green{background:linear-gradient(135deg,#16a34a 0%,var(--p-d) 100%);color:#fff}
-.btn-blue{background:linear-gradient(135deg,#2563eb 0%,#1e40af 100%);color:#fff}
-.btn-red{background:linear-gradient(135deg,#ef4444 0%,#b91c1c 100%);color:#fff}
 .error-msg{
   color:var(--danger);font-size:.78rem;font-weight:500;
   margin:.4rem 0 .75rem 4px;line-height:1.45;white-space:pre-wrap;
@@ -785,15 +737,13 @@ body.has-panel #detailPanel{
 .summary-strip{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 16px}
 .summary-tile{background:var(--sf2);border-radius:14px;padding:14px 16px}
 .summary-tile.dark{background:var(--p-d);color:#fff}
-.summary-tile.green{background:linear-gradient(135deg,#16a34a 0%,var(--p-d) 100%);color:#fff}
 .summary-tile small{
   display:block;font-size:.62rem;font-weight:800;letter-spacing:1.1px;
   text-transform:uppercase;color:var(--tm);margin-bottom:6px;
 }
 .summary-tile.dark small{color:rgba(255,255,255,.55)}
-.summary-tile.green small{color:rgba(255,255,255,.75)}
 .summary-tile strong{display:block;font-size:1.35rem;font-weight:800;letter-spacing:-.6px}
-.summary-tile.dark strong,.summary-tile.green strong{color:#fff}
+.summary-tile.dark strong{color:#fff}
 
 .hist-card{
   background:#fff;border-radius:14px;
@@ -807,12 +757,9 @@ body.has-panel #detailPanel{
 }
 .hist-summary:hover,.hist-summary:active{background:var(--sf2)}
 .hist-summary .h-ico{
-  width:44px;height:44px;border-radius:12px;
-  background:var(--p-d);color:#fff;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1rem;flex-shrink:0;
+  width:44px;height:44px;border-radius:12px;background:var(--p-d);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;
 }
-.hist-summary .h-ico.delivery{background:var(--p-d)}
 .hist-summary .h-ico.float{background:var(--warn)}
 .hist-summary .h-ico.claim{background:var(--ok)}
 .hist-summary .h-body{flex:1;min-width:0}
@@ -878,8 +825,7 @@ body.has-panel #detailPanel{
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .hist-details .hd-actions{display:flex;gap:8px;margin-top:10px}
-.hist-details .hd-actions button,
-.hist-details .hd-actions a{
+.hist-details .hd-actions button{
   flex:1;padding:10px 14px;border-radius:10px;
   background:var(--p-d);color:#fff;
   font-size:.8rem;font-weight:700;
@@ -889,9 +835,7 @@ body.has-panel #detailPanel{
 .hist-details .hd-actions button:active{transform:scale(.97)}
 .hist-details .hd-actions button.ghost{background:var(--sf2);color:var(--td)}
 
-/* ============================================================
-   REQUEST POPUP
-   ============================================================ */
+/* REQUEST POPUP */
 #requestModal{z-index:5500;padding:18px;align-items:center;justify-content:center}
 .req-modal{
   width:100%;max-width:520px;height:86vh;max-height:820px;
@@ -1026,9 +970,7 @@ body.has-panel #detailPanel{
 .dual-slide-wrap.dragging .ds-center-hint{opacity:0}
 .dual-slide-wrap.dragging .ds-label{opacity:.35}
 
-/* ============================================================
-   MODAL OVERLAY
-   ============================================================ */
+/* MODAL OVERLAY */
 .modal-overlay{
   position:fixed;inset:0;z-index:5000;background:rgba(15,23,42,.55);
   backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
@@ -1163,84 +1105,6 @@ body.has-panel #detailPanel{
   width:100%;padding:14px;border-radius:14px;
   background:var(--sf2);color:var(--td);font-size:.88rem;font-weight:700;
 }
-
-.floating-customer-card{
-  position:fixed;left:12px;right:12px;bottom:calc(var(--safe-b) + 16px);
-  z-index:700;background:var(--p-d);color:#fff;border-radius:18px;
-  padding:14px 16px;
-  box-shadow:0 20px 44px -16px rgba(15,23,42,.65),0 0 0 1px rgba(255,255,255,.06) inset;
-  display:none;animation:floatCardIn .5s var(--spring);
-}
-.floating-customer-card.open{display:block}
-@keyframes floatCardIn{from{opacity:0;transform:translateY(40px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
-.floating-customer-card .fcc-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.floating-customer-card .fcc-avatar{
-  width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);
-  overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;
-  font-size:1rem;color:rgba(255,255,255,.7);
-}
-.floating-customer-card .fcc-avatar img{width:100%;height:100%;object-fit:cover}
-.floating-customer-card .fcc-info{flex:1;min-width:0}
-.floating-customer-card .fcc-info small{
-  display:block;font-size:.56rem;font-weight:800;letter-spacing:1.1px;
-  text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:3px;
-}
-.floating-customer-card .fcc-info strong{
-  display:block;font-size:.94rem;font-weight:800;letter-spacing:-.25px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.floating-customer-card .fcc-call{
-  width:44px;height:44px;border-radius:50%;
-  background:linear-gradient(135deg,#16a34a 0%,#0b5f28 100%);
-  color:#fff;display:flex;align-items:center;justify-content:center;
-  font-size:1rem;flex-shrink:0;text-decoration:none;
-  box-shadow:0 8px 18px -6px rgba(22,163,74,.7);
-  transition:transform .28s var(--spring);
-}
-.floating-customer-card .fcc-call:active{transform:scale(.92)}
-.floating-customer-card .fcc-title{
-  font-size:.78rem;color:rgba(255,255,255,.72);margin-bottom:12px;line-height:1.4;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-}
-.floating-customer-card .fcc-actions{display:flex;gap:8px}
-.floating-customer-card .fcc-actions button{
-  flex:1;padding:12px;border-radius:12px;font-size:.72rem;font-weight:800;
-  letter-spacing:.6px;text-transform:uppercase;
-  display:inline-flex;align-items:center;justify-content:center;gap:6px;
-  transition:transform .28s var(--spring);
-}
-.floating-customer-card .fcc-actions button:active{transform:scale(.97)}
-.floating-customer-card .fcc-chat{background:rgba(255,255,255,.14);color:#fff}
-.floating-customer-card .fcc-view{
-  background:linear-gradient(135deg,#16a34a 0%,#0b5f28 100%);color:#fff;
-  box-shadow:0 10px 24px -10px rgba(22,163,74,.75);
-}
-
-.chat-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px 12px;background:#f7f8fa}
-.chat-messages{display:flex;flex-direction:column;gap:8px;max-width:620px;margin:0 auto}
-.chat-msg{max-width:78%;padding:10px 14px;border-radius:18px;font-size:.88rem;line-height:1.45;word-break:break-word;white-space:pre-wrap}
-.chat-msg.them{background:#fff;align-self:flex-start;border-bottom-left-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.chat-msg.me{background:var(--p-d);color:#fff;align-self:flex-end;border-bottom-right-radius:6px}
-.chat-msg-meta{font-size:.62rem;font-weight:700;opacity:.55;margin-top:4px;display:block}
-.chat-empty{text-align:center;padding:40px 20px;color:var(--tl);font-size:.86rem}
-.chat-empty i{display:block;font-size:2.4rem;color:#d8d8dc;margin-bottom:14px}
-.chat-input-row{
-  flex:0 0 auto;display:flex;align-items:flex-end;gap:10px;
-  padding:12px 16px calc(var(--safe-b) + 16px);background:#fff;
-  border-top:1px solid var(--bd);
-}
-.chat-input-row textarea{
-  flex:1;min-height:44px;max-height:120px;padding:11px 14px;border-radius:22px;
-  border:1.5px solid transparent;background:var(--sf2);outline:none;
-  font-size:.9rem;resize:none;line-height:1.4;
-}
-.chat-input-row textarea:focus{background:#fff;border-color:var(--p)}
-.chat-send-btn{
-  width:44px;height:44px;border-radius:50%;background:var(--p-d);color:#fff;
-  display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;
-  transition:transform .28s var(--spring);
-}
-.chat-send-btn:active{transform:scale(.92)}
 
 .upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px}
 .upload-box{
@@ -1395,8 +1259,7 @@ body.has-panel #toast{bottom:76vh}
 
 <div id="loadingScreen">
   <div class="l-logo">
-    <img src="logo.png" alt="AgriCare" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-    <span style="display:none;">🌿</span>
+    <img src="logo.png" alt="AgriCare" onerror="this.style.display='none'">
   </div>
   <div class="l-name">AgriCare</div>
   <div class="l-sub">Delivery Partner</div>
@@ -1434,24 +1297,6 @@ body.has-panel #toast{bottom:76vh}
     <div class="os-fill" id="osFill"></div>
     <span class="os-label" id="osLabel"><i class="fas fa-power-off"></i> Slide to go online</span>
     <div class="os-handle" id="osHandle"><i class="fas fa-chevron-right"></i></div>
-  </div>
-</div>
-
-<div class="floating-customer-card" id="floatingCustomerCard">
-  <div class="fcc-row">
-    <div class="fcc-avatar" id="fccAvatar"><i class="fas fa-user"></i></div>
-    <div class="fcc-info">
-      <small>Current Customer</small>
-      <strong id="fccName">—</strong>
-    </div>
-    <a class="fcc-call" id="fccCall" href="#" style="display:none">
-      <i class="fas fa-phone"></i>
-    </a>
-  </div>
-  <div class="fcc-title" id="fccTitle">—</div>
-  <div class="fcc-actions">
-    <button class="fcc-chat" id="fccChat"><i class="fas fa-comments"></i> Chat</button>
-    <button class="fcc-view" id="fccView"><i class="fas fa-clipboard-list"></i> View Trip</button>
   </div>
 </div>
 
@@ -1658,23 +1503,6 @@ body.has-panel #toast{bottom:76vh}
   </div>
 </div>
 
-<div class="page" id="chatPage">
-  <div class="page-head">
-    <button class="icon-btn" id="chatBackBtn"><i class="fas fa-arrow-left"></i></button>
-    <div style="flex:1;">
-      <h2 id="chatTitle">Chat</h2>
-      <div class="page-head-sub" id="chatSubtitle">Customer</div>
-    </div>
-  </div>
-  <div class="chat-body">
-    <div class="chat-messages" id="chatMessages"></div>
-  </div>
-  <div class="chat-input-row">
-    <textarea id="chatInput" placeholder="Type a message…" rows="1"></textarea>
-    <button class="chat-send-btn" id="chatSendBtn"><i class="fas fa-paper-plane"></i></button>
-  </div>
-</div>
-
 <div class="modal-overlay" id="requestModal">
   <div class="req-modal">
     <div class="req-map-wrap">
@@ -1720,25 +1548,6 @@ body.has-panel #toast{bottom:76vh}
       <i class="fas fa-phone"></i> Call Customer
     </a>
     <button type="button" class="arrival-ok-btn" id="arrivalOkBtn">Okay, got it</button>
-  </div>
-</div>
-
-<div class="modal-overlay" id="mapModal">
-  <div class="modal">
-    <div class="modal-head">
-      <h3 id="mapModalTitle">Route to pickup</h3>
-      <button class="modal-close" id="mapModalClose"><i class="fas fa-xmark"></i></button>
-    </div>
-    <div id="modalMap"></div>
-    <div class="modal-foot">
-      <div class="legend">
-        <div class="l-row"><span class="l-dot me"></span> You (current location)</div>
-        <div class="l-row"><span class="l-dot target"></span> Target</div>
-      </div>
-      <button class="btn btn-primary" id="mapModalRecenter" style="width:auto;margin-top:0;padding:12px 20px;">
-        <i class="fas fa-crosshairs"></i> Fit
-      </button>
-    </div>
   </div>
 </div>
 
@@ -1808,12 +1617,6 @@ let destMarker = null;
 let currentHeading = 0;
 let lastPositionForHeading = null;
 
-let modalMap = null;
-let modalUserMarker = null;
-let modalTargetMarker = null;
-let modalRouteLayer = null;
-let currentModalTarget = null;
-
 let reqMap = null;
 let reqRouteLayer = null;
 let reqMarkers = [];
@@ -1845,17 +1648,18 @@ let currentRatingValue = 0;
 let claimsUnsub = null;
 let claimsCache = [];
 
-let chatUnsub = null;
-let activeChatTripId = null;
-
 let floatCreditUnsub = null;
+
+// LIVE ROUTE TRACKING
+let liveRouteTimer = null;
+let liveRouteTarget = null;
+let liveRouteLastFrom = null;
+let liveRouteRefreshBusy = false;
 
 const $ = (id) => document.getElementById(id);
 const loadingScreen = $('loadingScreen');
 
-/* ============================================================
-   HELPERS
-   ============================================================ */
+/* HELPERS */
 function showToast(msg, ms = 2600) {
   const t = $('toast');
   t.textContent = msg;
@@ -1948,9 +1752,7 @@ function starsHtml(rating, sz) {
   return html;
 }
 
-/* ============================================================
-   VEHICLE ICON BUILDER
-   ============================================================ */
+/* VEHICLE ICON */
 function buildVehicleIconHtml(heading, vehicleType) {
   const v = String(vehicleType || '').toLowerCase();
   let iconClass, bg, pulseColor;
@@ -1983,9 +1785,7 @@ function buildVehicleIconHtml(heading, vehicleType) {
   </div>`;
 }
 
-/* ============================================================
-   FLOAT RULES
-   ============================================================ */
+/* FLOAT RULES */
 function minFloatFor(kind) {
   if (kind === 'delivery') return Number(FLOAT_RULES.minFloatPerDelivery || 0);
   return 0;
@@ -2022,9 +1822,7 @@ function renderFloatRulesView() {
   `;
 }
 
-/* ============================================================
-   FLOAT BALANCE
-   ============================================================ */
+/* FLOAT BALANCE */
 function renderFloatBalance() {
   $('floatBalanceValue').textContent = fmtPrice(floatBalance);
   const pill = $('floatBalancePill');
@@ -2047,9 +1845,7 @@ function listenFloatBalance(uid) {
   }, err => console.warn('float listener', err));
 }
 
-/* ============================================================
-   FLOAT CREDIT — auto-credit approved float requests
-   ============================================================ */
+/* FLOAT CREDIT */
 function listenFloatRequestsForCredit(uid) {
   if (floatCreditUnsub) { floatCreditUnsub(); floatCreditUnsub = null; }
   floatCreditUnsub = onValue(ref(db, 'floatRequests'), async (snap) => {
@@ -2065,17 +1861,14 @@ function listenFloatRequestsForCredit(uid) {
       if (!amount || amount <= 0) continue;
 
       try {
-        // Atomically claim the credit — if another client/admin already claimed it, we skip.
         let claimed = false;
         const claimResult = await runTransaction(ref(db, `floatRequests/${id}/creditedToBalance`), (current) => {
-          if (current === true) return; // abort
+          if (current === true) return;
           claimed = true;
           return true;
         });
-
         if (!claimResult.committed || !claimed) continue;
 
-        // Now safely credit balance
         await runTransaction(ref(db, `users/${uid}/floatBalance`), (bal) => {
           const cur = Number(bal) || 0;
           return cur + amount;
@@ -2085,7 +1878,6 @@ function listenFloatRequestsForCredit(uid) {
           creditedAt: Date.now(),
           creditedByClient: true
         });
-
         showToast(`✅ K${amount} added to your float`);
       } catch (err) {
         console.warn('credit err', err);
@@ -2094,17 +1886,12 @@ function listenFloatRequestsForCredit(uid) {
   }, err => console.warn('float credit listener', err));
 }
 
-/* ============================================================
-   MAP
-   ============================================================ */
+/* MAP */
 function initMap() {
   if (map) return;
   map = L.map('map', {
-    zoomControl: false,
-    attributionControl: true,
-    preferCanvas: true,
-    maxZoom: 19,
-    minZoom: 3
+    zoomControl: false, attributionControl: true, preferCanvas: true,
+    maxZoom: 19, minZoom: 3
   }).setView([DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng], ZOOM);
   L.tileLayer(TILE_URL, { attribution: OSM_ATTR, subdomains: 'abc', maxZoom: 19 }).addTo(map);
   setTimeout(() => { if (map) map.invalidateSize(); }, 220);
@@ -2117,7 +1904,6 @@ function setUserMarker(lat, lng, heading) {
   h = ((h % 360) + 360) % 360;
   const vType = (userRecord && userRecord.vehicleType) || 'bike';
 
-  // If vehicle type changed, rebuild marker with new icon
   if (userMarker && currentVehicleTypeRendered !== vType) {
     try { map.removeLayer(userMarker); } catch (e) {}
     userMarker = null;
@@ -2157,6 +1943,9 @@ function updateUserLocation(lat, lng, rawHeading) {
   currentHeading = ((heading % 360) + 360) % 360;
   lastPositionForHeading = { lat, lng };
   setUserMarker(lat, lng, currentHeading);
+
+  // Notify live route tracker to potentially refresh
+  maybeRefreshLiveRoute();
 }
 
 function setPickupMarker(lat, lng) {
@@ -2198,15 +1987,16 @@ async function fetchRouteCoords(wps, profile) {
   return data.routes[0].geometry.coordinates.map(([lng, lat]) => [lat, lng]);
 }
 
-async function drawRouteThrough(wps, profile, padding) {
+async function drawRouteThrough(wps, profile, padding, options = {}) {
   if (!map || !wps || wps.length < 2) return;
+  const skipFitBounds = options.skipFitBounds === true;
   clearMainRoute();
   try {
     const coords = await fetchRouteCoords(wps, profile);
     mainRouteLayer = L.layerGroup().addTo(map);
     L.polyline(coords, { color: '#ffffff', weight: 8, opacity: .95, lineJoin: 'round', lineCap: 'round' }).addTo(mainRouteLayer);
     L.polyline(coords, { color: '#0f7a34', weight: 4.5, opacity: 1, lineJoin: 'round', lineCap: 'round' }).addTo(mainRouteLayer);
-    if (coords.length > 1) {
+    if (!skipFitBounds && coords.length > 1) {
       map.fitBounds(L.latLngBounds(coords), { padding: padding || [60, 60], maxZoom: 17, animate: true });
     }
   } catch (err) {
@@ -2214,7 +2004,7 @@ async function drawRouteThrough(wps, profile, padding) {
     const coords = wps.map(w => [w.lat, w.lng]);
     mainRouteLayer = L.layerGroup().addTo(map);
     L.polyline(coords, { color: '#0f7a34', weight: 3, opacity: .85, dashArray: '6 8', lineCap: 'round' }).addTo(mainRouteLayer);
-    map.fitBounds(L.latLngBounds(coords), { padding: padding || [60, 60], maxZoom: 16 });
+    if (!skipFitBounds) map.fitBounds(L.latLngBounds(coords), { padding: padding || [60, 60], maxZoom: 16 });
   }
 }
 
@@ -2251,9 +2041,58 @@ async function drawRouteAnimated(wps, profile) {
   try { map.fitBounds(main.getBounds(), { padding: [60, 60], maxZoom: 17, animate: true, duration: .9 }); } catch (e) {}
 }
 
-/* ============================================================
-   GEOLOCATION
-   ============================================================ */
+/* LIVE ROUTE TRACKING */
+function startLiveRoute(target) {
+  stopLiveRoute();
+  liveRouteTarget = target;
+  liveRouteLastFrom = userLocation ? { ...userLocation } : null;
+  drawLiveRoute();
+
+  // Periodic refresh every 12s (also triggered by position updates)
+  liveRouteTimer = setInterval(() => {
+    if (!liveRouteTarget || !userLocation) return;
+    drawLiveRoute();
+  }, 12000);
+}
+
+function stopLiveRoute() {
+  if (liveRouteTimer) { clearInterval(liveRouteTimer); liveRouteTimer = null; }
+  liveRouteTarget = null;
+  liveRouteLastFrom = null;
+  liveRouteRefreshBusy = false;
+}
+
+function maybeRefreshLiveRoute() {
+  if (!liveRouteTarget || !userLocation) return;
+  if (liveRouteRefreshBusy) return;
+  if (liveRouteLastFrom) {
+    const moved = haversine(liveRouteLastFrom.lat, liveRouteLastFrom.lng, userLocation.lat, userLocation.lng);
+    if (moved < 50) return;
+  }
+  drawLiveRoute();
+}
+
+async function drawLiveRoute() {
+  if (!liveRouteTarget || !userLocation) return;
+  if (liveRouteRefreshBusy) return;
+  liveRouteRefreshBusy = true;
+  liveRouteLastFrom = { ...userLocation };
+  try {
+    await drawRouteThrough([userLocation, liveRouteTarget], 'driving', [60, 60], { skipFitBounds: true });
+    // Fit once at start (or when re-anchored). Subsequent refreshes don't re-zoom so map stays put.
+    if (!map._liveRouteFitted) {
+      const pts = [userLocation, liveRouteTarget];
+      try { map.fitBounds(L.latLngBounds(pts), { padding: [70, 70], maxZoom: 16, animate: true }); } catch (e) {}
+      map._liveRouteFitted = true;
+    }
+  } catch (err) {
+    console.warn('live route err', err);
+  } finally {
+    liveRouteRefreshBusy = false;
+  }
+}
+
+/* GEOLOCATION */
 function locateUser({ center = true, silent = false } = {}) {
   if (!navigator.geolocation) {
     if (!silent) showToast('Geolocation not supported');
@@ -2329,9 +2168,7 @@ function stopLocationPing() {
   }
 }
 
-/* ============================================================
-   PAGE NAV
-   ============================================================ */
+/* PAGE NAV */
 function openPage(id) { const el = $(id); if (el) el.classList.add('open'); }
 function closePage(id) { const el = $(id); if (el) el.classList.remove('open'); }
 document.querySelectorAll('[data-close-page]').forEach(btn => {
@@ -2360,9 +2197,7 @@ document.querySelectorAll('.nav-item').forEach(btn => {
 
 $('floatBalancePill').addEventListener('click', openBuyFloatPage);
 
-/* ============================================================
-   ONLINE TOGGLE
-   ============================================================ */
+/* ONLINE TOGGLE */
 let osDragging = false, osStartX = 0, osMaxX = 0, osBusy = false;
 function osBaseWidth() { const h = $('osHandle'); return h ? h.offsetWidth + 6 : 62; }
 
@@ -2485,9 +2320,7 @@ async function toggleOnline() {
   }
 }
 
-/* ============================================================
-   REQUEST LISTENERS
-   ============================================================ */
+/* REQUEST LISTENERS */
 function detachRequestListeners() {
   if (requestsUnsub) { requestsUnsub(); requestsUnsub = null; }
 }
@@ -2548,9 +2381,7 @@ function evaluateQueue() {
   showIncomingRequest(candidates[0].id, candidates[0].data);
 }
 
-/* ============================================================
-   PANEL VISIBILITY
-   ============================================================ */
+/* PANEL VISIBILITY */
 function setPanelVisible(v) {
   const c = document.body.classList.contains('has-panel');
   if (c === v) return;
@@ -2577,9 +2408,7 @@ function renderDetailPanel() {
   lastRenderedStage = null;
 }
 
-/* ============================================================
-   PROMO HELPERS
-   ============================================================ */
+/* PROMO HELPERS */
 function getDiscountInfo(data) {
   const fare = Number(data.fare || 0);
   const discount = Number(data.discountAmount || 0);
@@ -2606,9 +2435,7 @@ function buildPromoBlock(data) {
   `;
 }
 
-/* ============================================================
-   INCOMING REQUEST POPUP
-   ============================================================ */
+/* INCOMING REQUEST POPUP */
 function openRequestModal() {
   if (!activeTrip) return;
   const data = activeTrip.data;
@@ -2854,9 +2681,7 @@ async function buildReqMap(data) {
   }
 }
 
-/* ============================================================
-   ACTIVE TRIP PANEL
-   ============================================================ */
+/* ACTIVE TRIP PANEL */
 function renderActiveTrip() {
   if (!activeTrip) return;
   const data = activeTrip.data;
@@ -2885,13 +2710,13 @@ function renderActiveTrip() {
     tagText = 'At pickup';
     navTarget = data.pickup;
     slideStageClass = 'start';
-    slideStageLabel = '<i class="fas fa-play"></i> Slide to start';
+    slideStageLabel = '<i class="fas fa-play"></i> Slide to start trip';
   } else if (activeStage === 'in_progress' || activeStage === 'picked_up') {
     tagIcon = 'fa-route';
     tagText = 'In progress';
-    navTarget = data.stop ? data.stop : data.dropoff;
+    navTarget = data.dropoff;
     slideStageClass = 'end';
-    slideStageLabel = '<i class="fas fa-flag-checkered"></i> Slide to complete';
+    slideStageLabel = '<i class="fas fa-flag-checkered"></i> Slide to end trip';
   } else {
     return;
   }
@@ -3050,7 +2875,6 @@ function renderActiveTrip() {
   }
 
   wireSlideButton();
-  updateFloatingCustomerCard();
 
   const navBtn = $('dpNavigateBtn');
   if (navBtn && navTarget) {
@@ -3142,38 +2966,7 @@ async function triggerSlideAction() {
   }
 }
 
-function updateFloatingCustomerCard() {
-  if (!activeTrip || !activeStage || activeStage === 'incoming') {
-    hideFloatingCustomerCard();
-    return;
-  }
-  const data = activeTrip.data;
-  const name = data.senderName || data.requesterName || 'Customer';
-  const photo = data.senderPhoto || data.requesterPhoto || '';
-  const phone = data.senderPhone || data.requesterPhone || '';
-
-  $('fccName').textContent = name;
-  if (photo) $('fccAvatar').innerHTML = `<img src="${esc(photo)}" alt="">`;
-  else $('fccAvatar').innerHTML = `<i class="fas fa-user"></i>`;
-
-  if (phone) {
-    $('fccCall').href = 'tel:' + phone;
-    $('fccCall').style.display = 'flex';
-  } else {
-    $('fccCall').style.display = 'none';
-  }
-  $('fccTitle').textContent = `${data.cargo || 'Goods'} · ${data.pickup?.label || 'Pickup'}`;
-
-  $('floatingCustomerCard').classList.add('open');
-  document.body.classList.add('has-floating-card');
-  setTimeout(() => { if (map) map.invalidateSize(); }, 150);
-}
-function hideFloatingCustomerCard() {
-  $('floatingCustomerCard').classList.remove('open');
-  document.body.classList.remove('has-floating-card');
-  setTimeout(() => { if (map) map.invalidateSize(); }, 150);
-}
-
+/* ARRIVAL MODAL */
 function openArrivalModal(data) {
   const name = data.senderName || data.requesterName || 'Customer';
   const phone = data.senderPhone || data.requesterPhone || '—';
@@ -3197,6 +2990,7 @@ function closeArrivalModal() { $('arrivalModal').classList.remove('open'); }
 $('arrivalOkBtn').addEventListener('click', closeArrivalModal);
 $('arrivalModal').addEventListener('click', (e) => { if (e.target === $('arrivalModal')) closeArrivalModal(); });
 
+/* RATING MODAL */
 function updateStarDisplay(v) {
   document.querySelectorAll('#ratingStars button').forEach((b, i) => b.classList.toggle('active', i < v));
   $('ratingLabel').textContent = RATING_LABELS[v] || '';
@@ -3265,6 +3059,7 @@ document.querySelectorAll('#ratingStars button').forEach(btn => {
 $('ratingSkipBtn').addEventListener('click', closeRatingModal);
 $('ratingSubmitBtn').addEventListener('click', submitRating);
 
+/* TRIP ACTIONS */
 async function handleAccept() {
   const tripSnapshot = activeTrip;
   if (!tripSnapshot) { isAcceptingRequest = false; return; }
@@ -3297,15 +3092,24 @@ async function handleAccept() {
     closeRequestModal();
     renderDetailPanel();
 
-    const from = userLocation || DEFAULT_LOCATION;
+    // Place pickup marker (and stop if present)
     const pickup = data.pickup;
     if (pickup && isFinite(pickup.lat) && isFinite(pickup.lng)) {
       setPickupMarker(pickup.lat, pickup.lng);
       if (data.stop && isFinite(data.stop.lat) && isFinite(data.stop.lng)) {
         setStopMarker(data.stop.lat, data.stop.lng);
       }
-      await drawRouteThrough([from, { lat: pickup.lat, lng: pickup.lng }], 'driving');
     }
+
+    // Start live route tracking to pickup
+    map._liveRouteFitted = false;
+    if (userLocation && pickup) {
+      // Draw immediately, then start live refresh
+      await drawRouteThrough([userLocation, { lat: pickup.lat, lng: pickup.lng }], 'driving');
+      map._liveRouteFitted = true;
+    }
+    startLiveRoute({ lat: pickup.lat, lng: pickup.lng, label: pickup.label });
+
     attachTripWatcher(id);
     showToast('Delivery accepted — heading to pickup');
   } catch (err) {
@@ -3323,6 +3127,10 @@ async function handleArrive() {
     arrivedAt: Date.now()
   });
   activeStage = 'arrived';
+
+  // Stop live tracking while at pickup
+  stopLiveRoute();
+
   renderDetailPanel();
   showToast('Marked as arrived');
   setTimeout(() => openArrivalModal(data), 350);
@@ -3347,10 +3155,19 @@ async function handleStartTrip() {
     if (stop && isFinite(stop.lat) && isFinite(stop.lng)) setStopMarker(stop.lat, stop.lng);
     setDestMarker(dropoff.lat, dropoff.lng);
 
+    // Animated preview of the route to dropoff
     const wps = [{ lat: pickup.lat, lng: pickup.lng }];
     if (stop && isFinite(stop.lat) && isFinite(stop.lng)) wps.push({ lat: stop.lat, lng: stop.lng });
     wps.push({ lat: dropoff.lat, lng: dropoff.lng });
     await drawRouteAnimated(wps, 'driving');
+
+    // Then switch to LIVE tracking from driver's current position to dropoff
+    map._liveRouteFitted = false;
+    setTimeout(() => {
+      if (userLocation && dropoff) {
+        startLiveRoute({ lat: dropoff.lat, lng: dropoff.lng, label: dropoff.label });
+      }
+    }, 500);
   }
   showToast('Delivery started');
 }
@@ -3359,6 +3176,9 @@ async function handleEndTrip() {
   if (!activeTrip) return;
   const { id, data } = activeTrip;
   setSlideBusy('<i class="fas fa-spinner fa-spin"></i> Completing…');
+
+  // Stop live tracking
+  stopLiveRoute();
 
   const fare = Math.round(data.fare || 0);
   const discount = Math.round(Number(data.discountAmount || 0));
@@ -3451,6 +3271,7 @@ async function cancelActiveTrip() {
           cancelledByProviderAt: Date.now()
         });
       } catch (err) { console.warn(err); }
+      stopLiveRoute();
       detachTripWatcher();
       clearTripLayers();
       activeTrip = null;
@@ -3472,6 +3293,7 @@ function attachTripWatcher(id) {
     if (!t) return;
     if (t.status === 'cancelled') {
       showToast('Delivery was cancelled');
+      stopLiveRoute();
       detachTripWatcher();
       clearTripLayers();
       activeTrip = null;
@@ -3483,6 +3305,7 @@ function attachTripWatcher(id) {
       return;
     }
     if (t.status === 'searching' && t.providerId !== currentUser.uid) {
+      stopLiveRoute();
       detachTripWatcher();
       activeTrip = null;
       activeStage = null;
@@ -3535,12 +3358,19 @@ async function resumeActiveTrip() {
     }
 
     if (activeStage === 'accepted' || activeStage === 'arrived') {
-      if (pickup && userLocation) await drawRouteThrough([userLocation, { lat: pickup.lat, lng: pickup.lng }], 'driving');
-    } else if (pickup && dropoff) {
-      const wps = [{ lat: pickup.lat, lng: pickup.lng }];
-      if (stop && isFinite(stop.lat) && isFinite(stop.lng)) wps.push({ lat: stop.lat, lng: stop.lng });
-      wps.push({ lat: dropoff.lat, lng: dropoff.lng });
-      await drawRouteThrough(wps, 'driving');
+      // Route to pickup
+      if (pickup && userLocation) {
+        map._liveRouteFitted = false;
+        await drawRouteThrough([userLocation, { lat: pickup.lat, lng: pickup.lng }], 'driving');
+        map._liveRouteFitted = true;
+        startLiveRoute({ lat: pickup.lat, lng: pickup.lng, label: pickup.label });
+      }
+    } else if (pickup && dropoff && userLocation) {
+      // Live route to dropoff
+      map._liveRouteFitted = false;
+      await drawRouteThrough([userLocation, { lat: dropoff.lat, lng: dropoff.lng }], 'driving');
+      map._liveRouteFitted = true;
+      startLiveRoute({ lat: dropoff.lat, lng: dropoff.lng, label: dropoff.label });
     }
     renderDetailPanel();
     attachTripWatcher(found.id);
@@ -3548,93 +3378,7 @@ async function resumeActiveTrip() {
   } catch (e) { console.warn('resume err', e); }
 }
 
-/* ============================================================
-   CHAT
-   ============================================================ */
-function openChatWithCustomer() {
-  if (!activeTrip) return;
-  const data = activeTrip.data;
-  activeChatTripId = activeTrip.id;
-
-  $('chatTitle').textContent = data.senderName || data.requesterName || 'Customer';
-  $('chatSubtitle').textContent = data.cargo || 'Delivery chat';
-  $('chatMessages').innerHTML = '<div class="chat-empty"><i class="fas fa-comments"></i>Start chatting with the customer…</div>';
-  openPage('chatPage');
-  setTimeout(() => { $('chatInput').focus(); scrollChatToBottom(); }, 480);
-
-  if (chatUnsub) { chatUnsub(); chatUnsub = null; }
-  chatUnsub = onValue(ref(db, `deliveryRequests/${activeTrip.id}/chat`), (snap) => {
-    const d = snap.val() || {};
-    const msgs = Object.entries(d).map(([id, m]) => ({ ...m, id }))
-      .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
-    renderChatMessages(msgs);
-  });
-}
-function closeChatPage() {
-  closePage('chatPage');
-  if (chatUnsub) { chatUnsub(); chatUnsub = null; }
-  activeChatTripId = null;
-}
-function renderChatMessages(messages) {
-  if (!messages.length) {
-    $('chatMessages').innerHTML = '<div class="chat-empty"><i class="fas fa-comments"></i>Start chatting with the customer…</div>';
-    return;
-  }
-  let html = '';
-  messages.forEach(m => {
-    const mine = m.senderId === currentUser.uid;
-    html += `<div class="chat-msg ${mine ? 'me' : 'them'}">${esc(m.text || '')}<span class="chat-msg-meta">${esc(timeAgo(m.createdAt))}</span></div>`;
-  });
-  $('chatMessages').innerHTML = html;
-  scrollChatToBottom();
-}
-function scrollChatToBottom() {
-  const body = $('chatMessages').parentElement;
-  if (body) body.scrollTop = body.scrollHeight;
-}
-async function sendChatMessage() {
-  const text = $('chatInput').value.trim();
-  if (!text || !activeChatTripId || !currentUser) return;
-  $('chatInput').value = '';
-  $('chatInput').style.height = 'auto';
-  try {
-    const name = userRecord?.firstName ? `${userRecord.firstName} ${userRecord.lastName || ''}`.trim() : (userRecord?.name || 'Delivery Partner');
-    const ref2 = push(ref(db, `deliveryRequests/${activeChatTripId}/chat`));
-    await set(ref2, {
-      senderId: currentUser.uid,
-      senderName: name,
-      senderRole: 'provider',
-      text,
-      createdAt: Date.now()
-    });
-  } catch (err) {
-    console.error(err);
-    showToast('Could not send message.');
-  }
-}
-
-$('fccChat').addEventListener('click', openChatWithCustomer);
-$('fccView').addEventListener('click', () => {
-  if (!activeTrip) return;
-  detailsOpen = true;
-  renderDetailPanel();
-});
-$('chatBackBtn').addEventListener('click', closeChatPage);
-$('chatSendBtn').addEventListener('click', sendChatMessage);
-$('chatInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendChatMessage();
-  }
-});
-$('chatInput').addEventListener('input', () => {
-  $('chatInput').style.height = 'auto';
-  $('chatInput').style.height = Math.min(120, $('chatInput').scrollHeight) + 'px';
-});
-
-/* ============================================================
-   INFO / CONFIRM MODAL
-   ============================================================ */
+/* INFO MODAL */
 function showInfo(title, body, type = 'ok', buttons) {
   const ic = $('infoIcon');
   ic.classList.remove('ok', 'err', 'warn');
@@ -3679,9 +3423,7 @@ function openExternalNav(lat, lng, label) {
   window.open(url, '_blank', 'noopener');
 }
 
-/* ============================================================
-   USER UI
-   ============================================================ */
+/* USER UI */
 function applyUserUI() {
   if (!userRecord) return;
   const firstName = userRecord.firstName || '';
@@ -3744,15 +3486,12 @@ function applyUserUI() {
     $('nrcBackImg').innerHTML = `<img src="${esc(userRecord.nrcBack || userRecord.nrcBackUrl)}" alt="">`;
   }
 
-  // Refresh vehicle marker if type changed
   if (userLocation) setUserMarker(userLocation.lat, userLocation.lng, currentHeading);
 }
 
 function renderAccountPage() { applyUserUI(); }
 
-/* ============================================================
-   CLOUDINARY
-   ============================================================ */
+/* CLOUDINARY */
 function openCloudUpload(opts) {
   return new Promise((resolve, reject) => {
     if (typeof cloudinary === 'undefined' || !cloudinary.openUploadWidget) {
@@ -3796,9 +3535,7 @@ async function uploadNrcPic(field) {
 }
 window.uploadNrcPic = uploadNrcPic;
 
-/* ============================================================
-   CLAIMS
-   ============================================================ */
+/* CLAIMS */
 function listenClaims(uid) {
   if (claimsUnsub) { claimsUnsub(); claimsUnsub = null; }
   claimsUnsub = onValue(ref(db, `users/${uid}/claims`), (snap) => {
@@ -3950,9 +3687,7 @@ async function submitAllClaims() {
   }
 }
 
-/* ============================================================
-   HISTORY
-   ============================================================ */
+/* HISTORY */
 let historyCache = { trips: [], floats: [] };
 let historyUnsub = null;
 let currentFilter = 'all';
@@ -4199,9 +3934,7 @@ function renderFloatCard(f) {
   `;
 }
 
-/* ============================================================
-   BUY FLOAT
-   ============================================================ */
+/* BUY FLOAT */
 const FALLBACK_DEPOSIT_NUMBERS = [
   { label: 'Airtel Money', number: '0977 000 000' },
   { label: 'MTN Money',    number: '0966 000 000' },
@@ -4317,9 +4050,7 @@ $('submitFloatBtn').addEventListener('click', async () => {
   }
 });
 
-/* ============================================================
-   SETTINGS
-   ============================================================ */
+/* SETTINGS */
 $('settingsRefreshLocation').addEventListener('click', () => {
   locateUser({ center: true, silent: false });
   pingLocationOnce();
@@ -4366,35 +4097,19 @@ async function doLogout() {
   closeRatingModal();
   closeArrivalModal();
   stopLocationPing();
+  stopLiveRoute();
   detachRequestListeners();
   detachTripWatcher();
   if (floatRulesUnsub) floatRulesUnsub();
   if (claimsUnsub) claimsUnsub();
   if (historyUnsub) historyUnsub();
-  if (chatUnsub) chatUnsub();
   if (floatCreditUnsub) floatCreditUnsub();
   try { await signOut(auth); } catch (err) { console.warn(err); }
   localStorage.removeItem('deliveryUid');
   window.location.href = 'index.html';
 }
 
-/* ============================================================
-   MAP MODAL
-   ============================================================ */
-$('mapModalClose').addEventListener('click', () => $('mapModal').classList.remove('open'));
-$('mapModal').addEventListener('click', (e) => { if (e.target === $('mapModal')) $('mapModal').classList.remove('open'); });
-$('mapModalRecenter').addEventListener('click', () => {
-  if (!modalMap) return;
-  const pts = [];
-  if (currentModalTarget) pts.push([currentModalTarget.lat, currentModalTarget.lng]);
-  if (userLocation) pts.push([userLocation.lat, userLocation.lng]);
-  if (pts.length > 1) modalMap.fitBounds(pts, { padding: [40, 40], maxZoom: 16 });
-  else if (pts.length === 1) modalMap.setView(pts[0], MODAL_ZOOM);
-});
-
-/* ============================================================
-   BOOT
-   ============================================================ */
+/* BOOT */
 onAuthStateChanged(auth, async (user) => {
   if (!user) { window.location.href = 'index.html'; return; }
   currentUser = user;
@@ -4512,8 +4227,6 @@ document.addEventListener('keydown', (e) => {
     if ($('infoModal').classList.contains('open')) $('infoModal').classList.remove('open');
     else if ($('ratingModal').classList.contains('open')) closeRatingModal();
     else if ($('arrivalModal').classList.contains('open')) closeArrivalModal();
-    else if ($('mapModal').classList.contains('open')) $('mapModal').classList.remove('open');
-    else if ($('chatPage').classList.contains('open')) closeChatPage();
     else if ($('buyFloatPage').classList.contains('open')) closePage('buyFloatPage');
     else if ($('settingsPage').classList.contains('open')) closePage('settingsPage');
     else if ($('historyPage').classList.contains('open')) closePage('historyPage');
@@ -4526,13 +4239,11 @@ document.addEventListener('keydown', (e) => {
 window.addEventListener('orientationchange', () => {
   setTimeout(() => {
     if (map) map.invalidateSize();
-    if (modalMap) modalMap.invalidateSize();
     if (reqMap) reqMap.invalidateSize();
   }, 320);
 });
 window.addEventListener('resize', () => {
   if (map) map.invalidateSize();
-  if (modalMap) modalMap.invalidateSize();
   if (reqMap) reqMap.invalidateSize();
 });
 
