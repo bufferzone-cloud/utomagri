@@ -1,0 +1,3294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0f7a34">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>AgriCare · Farmer</title>
+
+<script src="https://upload-widget.cloudinary.com/global/all.js"></script>
+
+<script type="importmap">
+{
+  "imports": {
+    "firebase/app": "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js",
+    "firebase/auth": "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js",
+    "firebase/database": "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js"
+  }
+}
+</script>
+
+<style>
+:root{
+  --p:#0f7a34; --p-h:#0b5f28; --p-d:#084d20;
+  --p-l:#e6f5eb; --p-ll:#f1faf4;
+  --p-glow:rgba(15,122,52,.28);
+  --acc:#16a34a; --acc-soft:#86efac;
+  --td:#0f172a; --tb:#334155; --tl:#64748b; --tm:#94a3b8;
+  --bd:#e2e8f0; --bd-s:#cbd5e1;
+  --sf:#ffffff; --sf2:#f8fafc; --bg:#f4f7f5;
+  --danger:#dc2626; --warn:#b45309; --ok:#16a34a;
+  --r-sm:10px; --r:14px; --r-lg:20px; --r-xl:26px; --r-p:999px;
+  --e:cubic-bezier(.22,1,.36,1);
+  --e-out:cubic-bezier(.16,1,.3,1);
+  --sh-xs:0 1px 2px rgba(15,23,42,.05);
+  --sh-sm:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04);
+  --sh:0 4px 12px rgba(15,23,42,.07),0 2px 4px rgba(15,23,42,.04);
+  --sh-lg:0 12px 28px rgba(15,23,42,.09),0 4px 10px rgba(15,23,42,.05);
+  --sh-brand:0 10px 30px -8px var(--p-glow);
+  --ring:0 0 0 4px rgba(15,122,52,.14);
+  --nav-h:64px;
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);color:var(--tb);height:100dvh;overflow:hidden;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overscroll-behavior:none;user-select:none;-webkit-user-select:none;
+}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+
+/* ============ APP SHELL ============ */
+#app{position:fixed;inset:0;overflow:hidden;display:flex;justify-content:center}
+.screen-wrap{
+  width:100%;max-width:720px;height:100%;position:relative;
+  display:flex;flex-direction:column;background:var(--sf);
+  box-shadow:0 0 60px rgba(15,23,42,.06);
+}
+@media(min-width:721px){
+  body{background:linear-gradient(135deg,#eef7f0 0%,#e0f2e6 50%,#d5ecdc 100%)}
+  .screen-wrap{margin:0 auto;height:100dvh;border-radius:0}
+}
+.screen{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  background:var(--sf);opacity:0;transform:translateY(14px);
+  transition:opacity .35s var(--e),transform .4s var(--e);
+  pointer-events:none;will-change:opacity,transform;
+}
+.screen.active{opacity:1;transform:translateY(0);pointer-events:auto;z-index:5}
+.scroll{
+  flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
+  padding-bottom:calc(var(--nav-h) + var(--safe-b) + 12px);
+  scrollbar-width:none;
+}
+.scroll::-webkit-scrollbar{display:none}
+.scroll.no-nav{padding-bottom:var(--safe-b)}
+
+/* ============ SPLASH ============ */
+#splash{
+  background:#000;z-index:100;
+  display:flex;align-items:center;justify-content:center;
+  opacity:1;transform:none;pointer-events:auto;
+}
+#splash img{
+  width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity 1s ease-in-out;
+}
+#splash.show img{opacity:1}
+#splash .brand-overlay{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  justify-content:space-between;padding:calc(var(--safe-t) + 40px) 24px calc(var(--safe-b) + 40px);
+  background:linear-gradient(180deg,rgba(0,0,0,.15) 0%,transparent 40%,transparent 60%,rgba(0,0,0,.55) 100%);
+  pointer-events:none;
+  opacity:0;transition:opacity 1s ease-in-out;
+}
+#splash.show .brand-overlay{opacity:1}
+#splash .brand-top{text-align:center;color:#fff}
+#splash .brand-top .leaf{
+  width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.95);
+  display:flex;align-items:center;justify-content:center;font-size:34px;
+  margin:0 auto 12px;box-shadow:0 12px 30px rgba(0,0,0,.3);
+}
+#splash .brand-top h1{font-size:34px;font-weight:900;letter-spacing:-.03em;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+#splash .brand-top p{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.95;margin-top:6px}
+#splash .brand-bottom{text-align:center;color:#fff}
+#splash .brand-bottom h2{font-size:22px;font-weight:900;letter-spacing:-.02em;line-height:1.25;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+
+/* ============ TOP BAR ============ */
+.topbar{
+  padding:calc(var(--safe-t) + 14px) 18px 10px;
+  display:flex;align-items:center;gap:12px;
+  background:var(--sf);flex-shrink:0;
+}
+.topbar.bordered{border-bottom:1px solid var(--bd)}
+.topbar .tb-back{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--sf2);border:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .2s var(--e);
+}
+.topbar .tb-back:active{transform:scale(.92);background:var(--p-l);border-color:var(--p)}
+.topbar .tb-back svg{width:18px;height:18px;fill:var(--td)}
+.topbar .tb-title{
+  flex:1;font-size:17px;font-weight:800;letter-spacing:-.02em;color:var(--td);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.topbar .tb-actions{display:flex;gap:8px;align-items:center}
+.topbar .tb-btn{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--sf2);border:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s var(--e);position:relative;
+}
+.topbar .tb-btn:active{transform:scale(.92);background:var(--p-l)}
+.topbar .tb-btn svg{width:18px;height:18px;fill:var(--td)}
+.topbar .tb-btn .dot{
+  position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;
+  background:var(--danger);border:1.5px solid #fff;
+}
+.topbar .tb-avatar{
+  width:38px;height:38px;border-radius:50%;overflow:hidden;
+  background:linear-gradient(135deg,var(--p),var(--p-d));
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:15px;flex-shrink:0;cursor:pointer;
+  border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+.topbar .tb-avatar img{width:100%;height:100%;object-fit:cover}
+
+/* ============ GREETING ============ */
+.greet{padding:4px 18px 12px}
+.greet h2{font-size:22px;font-weight:900;letter-spacing:-.03em;color:var(--td);line-height:1.2}
+.greet h2 span{color:var(--p)}
+.greet p{font-size:12.5px;color:var(--tl);margin-top:2px;font-weight:500}
+
+/* ============ SEARCH ============ */
+.search-wrap{padding:0 18px 12px}
+.search{
+  display:flex;align-items:center;gap:10px;
+  background:var(--sf2);border:1.5px solid var(--bd);
+  border-radius:var(--r-p);padding:11px 16px;
+  transition:all .2s var(--e);
+}
+.search:focus-within{border-color:var(--p);background:#fff;box-shadow:var(--ring)}
+.search svg{width:17px;height:17px;fill:var(--tm);flex-shrink:0}
+.search input{flex:1;border:none;background:none;outline:none;font-size:14px;font-weight:500;color:var(--td)}
+.search input::placeholder{color:var(--tm);font-weight:400}
+
+/* ============ WEATHER CARD ============ */
+.weather-card{
+  margin:0 18px 16px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#0f7a34 0%,#0b5f28 60%,#084d20 100%);
+  border-radius:var(--r-lg);padding:18px 18px 16px;color:#fff;
+  box-shadow:var(--sh-brand);
+}
+.weather-card::before{
+  content:'';position:absolute;top:-30px;right:-20px;width:140px;height:140px;
+  background:radial-gradient(circle,rgba(255,255,255,.22) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;
+}
+.weather-card::after{
+  content:'';position:absolute;bottom:-40px;left:-30px;width:120px;height:120px;
+  background:radial-gradient(circle,rgba(134,239,172,.25) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;
+}
+.wc-head{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1}
+.wc-loc{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;opacity:.95}
+.wc-loc svg{width:13px;height:13px;fill:#fff}
+.wc-temp{font-size:38px;font-weight:900;letter-spacing:-.04em;line-height:1;margin:8px 0 4px;position:relative;z-index:1}
+.wc-desc{font-size:13px;font-weight:600;opacity:.92;position:relative;z-index:1}
+.wc-range{font-size:12px;font-weight:600;opacity:.85;margin-top:3px;position:relative;z-index:1}
+.wc-icon{
+  position:absolute;top:14px;right:16px;font-size:44px;
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,.2));
+  animation:bob 3s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+/* ============ QUICK ACCESS ============ */
+.qa-row{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
+  padding:0 18px 18px;
+}
+.qa{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:12px 4px 10px;border-radius:var(--r);
+  background:var(--sf2);border:1px solid var(--bd);
+  transition:all .22s var(--e);
+}
+.qa:active{transform:scale(.94);background:var(--p-l);border-color:var(--p)}
+.qa .qa-ic{
+  width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:20px;line-height:1;
+}
+.qa .qa-lb{font-size:9.5px;font-weight:800;letter-spacing:.02em;color:var(--td);text-transform:uppercase;text-align:center}
+.qa-ic.c1{background:linear-gradient(145deg,#fef3c7,#f59e0b)}
+.qa-ic.c2{background:linear-gradient(145deg,#fee2e2,#dc2626)}
+.qa-ic.c3{background:linear-gradient(145deg,#dbeafe,#2563eb)}
+.qa-ic.c4{background:linear-gradient(145deg,#fef3c7,#d97706)}
+.qa-ic.c5{background:linear-gradient(145deg,#d1fae5,#10b981)}
+
+/* ============ SECTION HEADER ============ */
+.sec-h{padding:4px 18px 10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sec-h h3{font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--td)}
+.sec-h button{
+  font-size:12px;font-weight:700;color:var(--p);
+  display:inline-flex;align-items:center;gap:4px;padding:4px 6px;border-radius:8px;
+}
+.sec-h button:active{background:var(--p-l)}
+
+/* ============ MY FARM CARD ROW ============ */
+.mf-row{
+  display:flex;gap:10px;padding:0 18px 6px;overflow-x:auto;
+  scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.mf-row::-webkit-scrollbar{display:none}
+.mf-card{
+  flex:0 0 138px;background:var(--sf);border:1px solid var(--bd);
+  border-radius:var(--r);overflow:hidden;scroll-snap-align:start;
+  transition:transform .22s var(--e);
+  box-shadow:var(--sh-xs);cursor:pointer;
+}
+.mf-card:active{transform:scale(.97)}
+.mf-card .mf-img{
+  height:84px;background:var(--sf2);position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;font-size:38px;
+}
+.mf-card .mf-img img{width:100%;height:100%;object-fit:cover}
+.mf-card .mf-body{padding:9px 10px 10px}
+.mf-card .mf-name{font-size:12.5px;font-weight:800;color:var(--td);letter-spacing:-.01em;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mf-card .mf-sub{font-size:10.5px;color:var(--tl);font-weight:600;line-height:1.35}
+.mf-card .mf-tag{
+  display:inline-block;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+  padding:3px 8px;border-radius:var(--r-p);margin-top:6px;
+  background:var(--p-l);color:var(--p-d);
+}
+.mf-card .mf-tag.warn{background:#fef3c7;color:#92400e}
+.mf-card .mf-tag.ok{background:#d1fae5;color:#065f46}
+.mf-card .mf-tag.ready{background:#dbeafe;color:#1e40af}
+
+/* ============ CTA BANNER ============ */
+.cta-banner{
+  margin:14px 18px 16px;padding:16px 18px;border-radius:var(--r-lg);
+  background:linear-gradient(135deg,#d1fae5 0%,#a7f3d0 100%);
+  border:1px solid rgba(15,122,52,.14);
+  display:flex;align-items:center;gap:12px;position:relative;overflow:hidden;
+}
+.cta-banner .cta-txt{flex:1;min-width:0}
+.cta-banner h4{font-size:14px;font-weight:900;color:var(--p-d);letter-spacing:-.02em;margin-bottom:3px}
+.cta-banner p{font-size:11.5px;color:var(--p);font-weight:600;line-height:1.4}
+.cta-banner .cta-arrow{
+  width:36px;height:36px;border-radius:50%;background:var(--p);color:#fff;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  box-shadow:0 6px 14px -4px var(--p-glow);
+}
+.cta-banner .cta-arrow svg{width:16px;height:16px;fill:#fff}
+
+/* ============ ACTIVITY FEED (Home mini) ============ */
+.feed-mini{padding:0 18px 18px;display:flex;flex-direction:column;gap:10px}
+.feed-mini .fm-item{
+  display:flex;gap:10px;padding:10px;border-radius:var(--r);
+  background:var(--sf);border:1px solid var(--bd);box-shadow:var(--sh-xs);
+  cursor:pointer;transition:transform .2s var(--e);
+}
+.feed-mini .fm-item:active{transform:scale(.98)}
+.feed-mini .fm-thumb{
+  width:52px;height:52px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:24px;
+  background:var(--sf2);overflow:hidden;
+}
+.feed-mini .fm-thumb img{width:100%;height:100%;object-fit:cover}
+.feed-mini .fm-body{flex:1;min-width:0}
+.feed-mini .fm-name{font-size:12.5px;font-weight:800;color:var(--td);letter-spacing:-.01em}
+.feed-mini .fm-sub{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px;line-height:1.4}
+.feed-mini .fm-meta{display:flex;gap:8px;margin-top:5px;font-size:10px;color:var(--tm);font-weight:600}
+.feed-mini .fm-tag{
+  display:inline-block;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+  padding:2px 7px;border-radius:var(--r-p);background:var(--p-l);color:var(--p-d);margin-left:auto;
+}
+
+/* ============ BOTTOM NAV ============ */
+.bnav{
+  position:absolute;left:0;right:0;bottom:0;height:calc(var(--nav-h) + var(--safe-b));
+  padding-bottom:var(--safe-b);
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:space-around;
+  z-index:20;
+}
+.bnav.hidden{display:none}
+.bnav .bn{
+  flex:1;height:var(--nav-h);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  color:var(--tm);transition:color .2s var(--e);position:relative;padding:0 2px;
+}
+.bnav .bn svg{width:20px;height:20px;fill:currentColor;transition:transform .25s var(--e)}
+.bnav .bn .bn-lb{font-size:9px;font-weight:800;letter-spacing:.03em;text-transform:uppercase}
+.bnav .bn.active{color:var(--p)}
+.bnav .bn.active svg{transform:translateY(-1px) scale(1.08)}
+.bnav .bn.active::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:24px;height:3px;border-radius:0 0 3px 3px;background:var(--p);
+}
+.bnav .bn:active svg{transform:scale(.9)}
+
+/* ============ GENERIC CARD ============ */
+.card{
+  background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);
+  padding:14px;box-shadow:var(--sh-xs);
+}
+.card + .card{margin-top:10px}
+
+/* ============ EXPLORE CATALOGUE ============ */
+.cat-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:10px;
+  padding:0 18px 18px;
+}
+.cat-card{
+  background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);
+  overflow:hidden;transition:transform .2s var(--e);cursor:pointer;
+  box-shadow:var(--sh-xs);
+}
+.cat-card:active{transform:scale(.97)}
+.cat-card .cc-top{
+  height:86px;display:flex;align-items:center;justify-content:center;
+  font-size:44px;position:relative;overflow:hidden;
+}
+.cat-card .cc-top img{width:100%;height:100%;object-fit:cover}
+.cat-card .cc-body{padding:10px 11px 12px}
+.cat-card .cc-name{font-size:13px;font-weight:800;color:var(--td);letter-spacing:-.01em;line-height:1.2}
+.cat-card .cc-sub{font-size:10.5px;color:var(--tl);font-weight:600;margin-top:3px;line-height:1.35}
+.cat-card .cc-tag{
+  display:inline-block;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+  padding:2px 7px;border-radius:var(--r-p);background:var(--p-l);color:var(--p-d);margin-top:6px;
+}
+
+/* ============ FILTER CHIPS ============ */
+.chips-row{
+  display:flex;gap:7px;padding:0 18px 12px;overflow-x:auto;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.chips-row::-webkit-scrollbar{display:none}
+.chip{
+  flex-shrink:0;padding:8px 14px;border-radius:var(--r-p);
+  background:var(--sf2);border:1px solid var(--bd);
+  font-size:12px;font-weight:700;color:var(--tb);
+  transition:all .2s var(--e);white-space:nowrap;
+}
+.chip:active{transform:scale(.95)}
+.chip.active{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 4px 10px -2px var(--p-glow)}
+
+/* ============ FORM ELEMENTS ============ */
+.frm{padding:0 18px 18px;display:flex;flex-direction:column;gap:12px}
+.fld{position:relative}
+.fld label{
+  display:block;font-size:11.5px;font-weight:800;color:var(--tl);
+  text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;
+}
+.fld .inp{
+  width:100%;padding:13px 15px;border:1.5px solid var(--bd);border-radius:var(--r);
+  background:var(--sf);font-size:15px;font-weight:500;color:var(--td);
+  outline:none;transition:all .2s var(--e);-webkit-appearance:none;appearance:none;
+}
+.fld .inp:focus{border-color:var(--p);box-shadow:var(--ring);background:#fbfdfb}
+.fld textarea.inp{resize:vertical;min-height:82px;line-height:1.5}
+.fld select.inp{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 15px center;padding-right:42px;
+  background-color:#fff;
+}
+.fld .hint{font-size:11px;color:var(--tm);margin-top:5px;line-height:1.4}
+.fld .hint.warn{color:var(--warn)}
+
+/* ============ BUTTONS ============ */
+.btn{
+  width:100%;padding:14px 18px;border-radius:var(--r-p);
+  font-size:14.5px;font-weight:800;letter-spacing:-.01em;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  transition:all .22s var(--e);
+}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn-p{background:linear-gradient(180deg,#12903e 0%,var(--p) 100%);color:#fff;box-shadow:var(--sh-brand)}
+.btn-p:active:not(:disabled){transform:scale(.97)}
+.btn-o{background:transparent;color:var(--p);border:1.5px solid var(--p)}
+.btn-o:active:not(:disabled){background:var(--p-l)}
+.btn-s{background:var(--sf);color:var(--td);border:1.5px solid var(--bd)}
+.btn-s:active:not(:disabled){background:var(--sf2)}
+.btn-danger{background:var(--sf);color:var(--danger);border:1.5px solid var(--danger)}
+.btn-sm{padding:10px 14px;font-size:13px}
+.btn-ico{width:44px;height:44px;padding:0;flex-shrink:0}
+
+/* ============ UPLOAD BOXES ============ */
+.up-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.up-box{
+  aspect-ratio:1/1;border:2px dashed var(--bd-s);border-radius:var(--r);
+  background:var(--sf2);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;cursor:pointer;position:relative;overflow:hidden;
+  transition:all .22s var(--e);padding:8px;text-align:center;
+}
+.up-box:active{transform:scale(.97);border-color:var(--p)}
+.up-box.has-img{border-style:solid;border-color:var(--p);background:#fff}
+.up-box .up-prev{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+.up-box.has-img .up-prev{display:block}
+.up-box.has-img .up-ic,.up-box.has-img .up-lb{display:none}
+.up-box .up-ic{font-size:24px;line-height:1}
+.up-box .up-lb{font-size:10px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.04em;line-height:1.25}
+.up-box .up-del{
+  position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;
+  background:rgba(220,38,38,.9);color:#fff;display:none;
+  align-items:center;justify-content:center;font-size:14px;font-weight:800;z-index:2;
+}
+.up-box.has-img .up-del{display:flex}
+
+/* ============ ACTIVITY CARDS (Farm Activity) ============ */
+.fa-card{
+  background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);
+  overflow:hidden;margin-bottom:12px;box-shadow:var(--sh-xs);cursor:pointer;
+  transition:transform .2s var(--e);
+}
+.fa-card:active{transform:scale(.99)}
+.fa-card .fa-imgs{
+  display:grid;grid-template-columns:2fr 1fr;gap:2px;height:140px;background:var(--sf2);
+}
+.fa-card .fa-imgs.single{grid-template-columns:1fr}
+.fa-card .fa-imgs > div{
+  display:flex;align-items:center;justify-content:center;font-size:38px;
+  background:var(--sf2);overflow:hidden;
+}
+.fa-card .fa-imgs img{width:100%;height:100%;object-fit:cover}
+.fa-card .fa-head{
+  display:flex;align-items:center;gap:9px;padding:11px 12px 6px;
+}
+.fa-card .fa-av{
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--p),var(--p-d));color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:13px;overflow:hidden;
+}
+.fa-card .fa-av img{width:100%;height:100%;object-fit:cover}
+.fa-card .fa-who{flex:1;min-width:0}
+.fa-card .fa-nm{font-size:13px;font-weight:800;color:var(--td);letter-spacing:-.01em}
+.fa-card .fa-lc{font-size:10.5px;color:var(--tl);font-weight:600;margin-top:1px}
+.fa-card .fa-tag{
+  font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+  padding:3px 8px;border-radius:var(--r-p);background:var(--p-l);color:var(--p-d);
+  flex-shrink:0;
+}
+.fa-card .fa-tag.grow{background:#fef3c7;color:#92400e}
+.fa-card .fa-tag.ready{background:#d1fae5;color:#065f46}
+.fa-card .fa-bd{padding:6px 12px 12px}
+.fa-card .fa-desc{font-size:12px;color:var(--tb);font-weight:600;line-height:1.5}
+.fa-card .fa-meta{
+  display:flex;gap:12px;margin-top:8px;font-size:10.5px;color:var(--tl);font-weight:700;
+}
+.fa-card .fa-meta svg{width:12px;height:12px;fill:var(--tm);vertical-align:-2px;margin-right:3px}
+.fa-card .fa-acts{
+  display:flex;gap:6px;padding:0 12px 12px;
+}
+.fa-card .fa-acts button{
+  flex:1;padding:8px;border-radius:var(--r-p);background:var(--sf2);
+  font-size:11.5px;font-weight:700;color:var(--tb);border:1px solid var(--bd);
+  transition:all .18s var(--e);
+}
+.fa-card .fa-acts button:active{transform:scale(.96);background:var(--p-l);color:var(--p-d)}
+
+/* ============ COMMUNITY POST ============ */
+.post{
+  background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);
+  padding:13px;margin-bottom:12px;box-shadow:var(--sh-xs);
+}
+.post .p-head{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.post .p-av{
+  width:38px;height:38px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--p),var(--p-d));color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;overflow:hidden;
+}
+.post .p-av img{width:100%;height:100%;object-fit:cover}
+.post .p-who{flex:1;min-width:0}
+.post .p-nm{font-size:13px;font-weight:800;color:var(--td);letter-spacing:-.01em}
+.post .p-tm{font-size:10.5px;color:var(--tm);font-weight:600;margin-top:1px}
+.post .p-body{font-size:13.5px;color:var(--tb);line-height:1.55;margin-bottom:9px}
+.post .p-imgs{display:grid;gap:2px;grid-template-columns:1fr;border-radius:10px;overflow:hidden;margin-bottom:9px}
+.post .p-imgs.multi{grid-template-columns:1fr 1fr}
+.post .p-imgs > div{
+  aspect-ratio:16/10;background:var(--sf2);display:flex;align-items:center;justify-content:center;
+  font-size:34px;overflow:hidden;
+}
+.post .p-imgs img{width:100%;height:100%;object-fit:cover}
+.post .p-acts{
+  display:flex;gap:16px;padding-top:9px;border-top:1px solid var(--bd);
+  font-size:12px;font-weight:700;color:var(--tl);
+}
+.post .p-acts button{display:flex;align-items:center;gap:5px;padding:4px;color:inherit}
+.post .p-acts button:active{color:var(--p)}
+.post .p-acts svg{width:15px;height:15px;fill:currentColor}
+
+/* ============ MARKETPLACE ============ */
+.mk-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 18px 18px}
+.mk-card{
+  background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);
+  overflow:hidden;transition:transform .2s var(--e);cursor:pointer;
+  box-shadow:var(--sh-xs);
+}
+.mk-card:active{transform:scale(.97)}
+.mk-card .mk-img{
+  height:104px;background:var(--sf2);display:flex;align-items:center;justify-content:center;
+  font-size:44px;overflow:hidden;position:relative;
+}
+.mk-card .mk-img img{width:100%;height:100%;object-fit:cover}
+.mk-card .mk-img .mk-status{
+  position:absolute;top:8px;left:8px;font-size:9px;font-weight:800;text-transform:uppercase;
+  padding:3px 8px;border-radius:var(--r-p);background:rgba(15,122,52,.95);color:#fff;
+  letter-spacing:.04em;
+}
+.mk-card .mk-bd{padding:10px 11px 12px}
+.mk-card .mk-nm{font-size:12.5px;font-weight:800;color:var(--td);line-height:1.25;letter-spacing:-.01em}
+.mk-card .mk-sz{font-size:10.5px;color:var(--tl);font-weight:600;margin-top:3px}
+.mk-card .mk-pr{font-size:14px;font-weight:900;color:var(--p-d);letter-spacing:-.02em;margin-top:6px}
+.mk-card .mk-ct{font-size:10px;color:var(--tm);font-weight:600;margin-top:2px}
+
+/* ============ SUPPLIER CATEGORIES ============ */
+.sup-row{
+  display:flex;gap:9px;padding:0 18px 12px;overflow-x:auto;scrollbar-width:none;
+}
+.sup-row::-webkit-scrollbar{display:none}
+.sup-btn{
+  flex:0 0 auto;min-width:76px;padding:11px 8px;border-radius:var(--r);
+  background:var(--sf);border:1px solid var(--bd);
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  transition:all .2s var(--e);cursor:pointer;
+}
+.sup-btn:active{transform:scale(.95)}
+.sup-btn.active{background:var(--p-l);border-color:var(--p)}
+.sup-btn .sup-ic{
+  width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+}
+.sup-btn .sup-lb{font-size:9.5px;font-weight:800;color:var(--td);text-transform:uppercase;text-align:center;letter-spacing:.02em}
+
+/* ============ PROFILE ============ */
+.prof-hero{
+  margin:0 18px 16px;padding:20px;border-radius:var(--r-lg);
+  background:linear-gradient(135deg,#0f7a34 0%,#0b5f28 100%);
+  color:#fff;text-align:center;position:relative;overflow:hidden;
+  box-shadow:var(--sh-brand);
+}
+.prof-hero::before{
+  content:'';position:absolute;top:-50px;right:-30px;width:160px;height:160px;
+  background:radial-gradient(circle,rgba(255,255,255,.2) 0%,transparent 70%);border-radius:50%;
+}
+.prof-hero .p-av{
+  width:76px;height:76px;border-radius:50%;margin:0 auto 12px;
+  background:rgba(255,255,255,.2);border:3px solid #fff;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;
+  position:relative;z-index:1;
+}
+.prof-hero .p-av img{width:100%;height:100%;object-fit:cover}
+.prof-hero h2{font-size:19px;font-weight:900;letter-spacing:-.03em;position:relative;z-index:1}
+.prof-hero .p-ver{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;
+  background:rgba(255,255,255,.2);padding:4px 10px;border-radius:var(--r-p);
+  margin-top:6px;position:relative;z-index:1;
+}
+.prof-hero .p-loc{font-size:12px;font-weight:600;opacity:.92;margin-top:8px;position:relative;z-index:1}
+.prof-stats{
+  display:flex;justify-content:space-around;margin-top:16px;padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.16);position:relative;z-index:1;
+}
+.prof-stats > div{text-align:center;flex:1}
+.prof-stats .ps-n{font-size:20px;font-weight:900;letter-spacing:-.03em}
+.prof-stats .ps-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.85;margin-top:2px}
+
+/* ============ MENU LIST ============ */
+.menu-list{padding:0 18px 18px}
+.menu-item{
+  display:flex;align-items:center;gap:12px;padding:14px 14px;
+  background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);
+  margin-bottom:8px;cursor:pointer;transition:all .2s var(--e);
+}
+.menu-item:active{background:var(--p-l);border-color:var(--p)}
+.menu-item .mi-ic{
+  width:36px;height:36px;border-radius:50%;background:var(--p-l);
+  display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;
+}
+.menu-item .mi-tx{flex:1;min-width:0}
+.menu-item .mi-tt{font-size:13.5px;font-weight:800;color:var(--td);letter-spacing:-.01em}
+.menu-item .mi-sb{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px}
+.menu-item .mi-ar svg{width:16px;height:16px;fill:var(--tm)}
+
+/* ============ DETAIL VIEW ============ */
+.detail-hero{
+  height:200px;background:var(--sf2);position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;font-size:96px;
+}
+.detail-hero img{width:100%;height:100%;object-fit:cover}
+.detail-hero .dh-grad{
+  position:absolute;bottom:0;left:0;right:0;height:80px;
+  background:linear-gradient(180deg,transparent,rgba(255,255,255,.96));
+}
+.detail-body{padding:16px 18px 24px}
+.detail-body h1{font-size:22px;font-weight:900;letter-spacing:-.03em;color:var(--td);margin-bottom:5px}
+.detail-body .d-sc{font-size:13px;color:var(--tl);font-weight:600;font-style:italic;margin-bottom:12px}
+.detail-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.dtag{
+  font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+  padding:5px 11px;border-radius:var(--r-p);background:var(--p-l);color:var(--p-d);
+}
+.dtag.amber{background:#fef3c7;color:#92400e}
+.dtag.blue{background:#dbeafe;color:#1e40af}
+.dtag.red{background:#fee2e2;color:#991b1b}
+
+.d-section{margin-bottom:16px}
+.d-section h3{
+  font-size:13px;font-weight:900;color:var(--td);letter-spacing:-.01em;
+  text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;
+}
+.d-section h3::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--bd),transparent)}
+.d-section p{font-size:13px;color:var(--tb);line-height:1.6;font-weight:500}
+.d-list{list-style:none}
+.d-list li{
+  padding:8px 12px;background:var(--sf2);border:1px solid var(--bd);
+  border-radius:var(--r-sm);font-size:12.5px;color:var(--tb);font-weight:600;
+  margin-bottom:6px;line-height:1.45;display:flex;gap:8px;
+}
+.d-list li::before{
+  content:'●';color:var(--p);font-size:9px;margin-top:5px;flex-shrink:0;
+}
+
+/* ============ CART BADGE ============ */
+.cart-badge{
+  position:absolute;top:-4px;right:-4px;background:var(--danger);color:#fff;
+  min-width:17px;height:17px;border-radius:9px;font-size:9.5px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;padding:0 4px;
+  border:2px solid #fff;
+}
+
+/* ============ MODAL ============ */
+.modal{
+  position:fixed;inset:0;background:rgba(15,23,42,.55);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;padding:20px;z-index:200;
+  animation:fadeIn .22s ease;
+}
+.modal.open{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-card{
+  background:#fff;border-radius:var(--r-xl);width:100%;max-width:400px;
+  padding:24px;text-align:center;
+  box-shadow:0 30px 70px -20px rgba(15,23,42,.4);
+  animation:modalIn .32s cubic-bezier(.34,1.4,.64,1);
+  max-height:90vh;overflow-y:auto;
+}
+@keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(14px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-card h3{font-size:17px;font-weight:900;color:var(--td);margin-bottom:8px;letter-spacing:-.02em}
+.modal-card p{font-size:13px;color:var(--tl);line-height:1.55;margin-bottom:16px}
+
+/* ============ TOAST ============ */
+.toast{
+  position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 20px);left:50%;
+  transform:translate(-50%,30px);background:rgba(15,23,42,.94);color:#fff;
+  padding:11px 20px;border-radius:var(--r-p);font-size:13px;font-weight:700;
+  opacity:0;pointer-events:none;transition:all .3s var(--e);z-index:300;
+  box-shadow:0 12px 30px -8px rgba(0,0,0,.4);max-width:calc(100vw - 40px);text-align:center;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ============ SPLASH / BANNED / MAINT ============ */
+.state-screen{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:40px 28px;text-align:center;gap:16px;
+}
+.state-screen .st-ic{
+  width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:42px;
+}
+.state-screen h1{font-size:22px;font-weight:900;color:var(--td);letter-spacing:-.03em;line-height:1.25}
+.state-screen p{font-size:14px;color:var(--tl);line-height:1.6;max-width:360px}
+.st-ic.danger{background:linear-gradient(145deg,#fecaca,#dc2626);color:#fff}
+.st-ic.warn{background:linear-gradient(145deg,#fde68a,#d97706);color:#fff}
+.st-ic.ok{background:linear-gradient(145deg,#a7f3d0,#0f7a34);color:#fff}
+
+/* ============ SKELETON ============ */
+.sk{background:linear-gradient(90deg,#e2e8f0 25%,#f1f5f9 50%,#e2e8f0 75%);
+  background-size:200% 100%;animation:sk 1.4s infinite;border-radius:8px;}
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ============ EMPTY ============ */
+.empty{padding:40px 24px;text-align:center;color:var(--tl)}
+.empty .e-ic{font-size:56px;margin-bottom:12px;opacity:.5}
+.empty h3{font-size:15px;font-weight:800;color:var(--td);margin-bottom:6px}
+.empty p{font-size:12.5px;line-height:1.5}
+
+/* ============ RESPONSIVE ============ */
+@media(min-width:560px){
+  .cat-grid,.mk-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(min-width:721px){
+  .scroll{padding-bottom:calc(var(--nav-h) + 24px)}
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- SPLASH -->
+  <div class="screen-wrap">
+    <div class="screen active" id="splash">
+      <img src="farmer.png" alt="AgriCare" onerror="this.style.display='none'">
+      <div class="brand-overlay">
+        <div class="brand-top">
+          <div class="leaf">🌿</div>
+          <h1>AgriCare</h1>
+          <p>Grow · Raise · Fish · Thrive</p>
+        </div>
+        <div class="brand-bottom">
+          <h2>Better Farming<br>Brighter Future</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-card" id="modalCard"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getDatabase, ref, get, set, update, push, child, onValue, serverTimestamp, remove, query, orderByChild, limitToLast } from "firebase/database";
+
+/* ============================================================
+   FIREBASE CONFIG — reaper-7b33d
+   ============================================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyDye0P37QYNjtRRKh2_At84QCkKCqjceAQ",
+  authDomain: "reaper-7b33d.firebaseapp.com",
+  databaseURL: "https://reaper-7b33d-default-rtdb.firebaseio.com",
+  projectId: "reaper-7b33d",
+  storageBucket: "reaper-7b33d.firebasestorage.app",
+  messagingSenderId: "1023523985110",
+  appId: "1:1023523985110:web:889e2200fad1fa5b98db77"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getDatabase(app);
+
+const CLOUD_NAME = 'dd3lcymrk';
+const UPLOAD_PRESET = 'h3eyhc2o';
+
+/* ============================================================
+   APP STATE
+   ============================================================ */
+const S = {
+  user: null,          // auth user
+  profile: null,       // users/{uid}
+  agri: null,          // agriKnowledge
+  screen: 'splash',
+  navStack: [],        // history stack of screen ids
+  screenData: {},      // params for current screen
+  catalogue: [],       // flattened agriKnowledge catalogue
+  myActivities: [],
+  myListings: [],
+  myPosts: [],
+  allActivities: [],
+  marketplace: [],
+  community: [],
+  suppliers: [],
+  cart: [],            // [{id, qty}]
+  weather: null,
+  userLocation: 'Lusaka'
+};
+
+/* ============================================================
+   UI HELPERS
+   ============================================================ */
+const $app = document.getElementById('app');
+const $modal = document.getElementById('modal');
+const $modalCard = document.getElementById('modalCard');
+const $toast = document.getElementById('toast');
+
+function toast(msg, ms=2400){
+  $toast.textContent = msg;
+  $toast.classList.add('show');
+  clearTimeout($toast._t);
+  $toast._t = setTimeout(()=>$toast.classList.remove('show'), ms);
+}
+
+function modal(html){
+  $modalCard.innerHTML = html;
+  $modal.classList.add('open');
+}
+function closeModal(){ $modal.classList.remove('open'); }
+$modal.addEventListener('click', e=>{ if(e.target===$modal) closeModal(); });
+
+function esc(s){
+  if(s==null) return '';
+  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function initials(name){
+  if(!name) return '?';
+  return name.trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase();
+}
+function timeAgo(ts){
+  if(!ts) return 'just now';
+  const s = Math.floor((Date.now()-ts)/1000);
+  if(s<60) return 'just now';
+  if(s<3600) return Math.floor(s/60)+'m ago';
+  if(s<86400) return Math.floor(s/3600)+'h ago';
+  if(s<604800) return Math.floor(s/86400)+'d ago';
+  return new Date(ts).toLocaleDateString();
+}
+function fmtZMK(n){
+  if(n==null||isNaN(n)) return '—';
+  return 'ZMK ' + Number(n).toLocaleString('en-ZM');
+}
+function fmtDate(ts){
+  if(!ts) return '—';
+  const d = typeof ts === 'number' ? new Date(ts) : new Date(ts);
+  return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+}
+
+/* ============================================================
+   SCREEN ROUTER (with device back-button support)
+   ============================================================ */
+let activeScreenEl = null;
+
+function buildScreen(id, html, opts={}){
+  const wrap = document.querySelector('.screen-wrap');
+  let el = document.getElementById('screen-'+id);
+  if(!el){
+    el = document.createElement('div');
+    el.className = 'screen';
+    el.id = 'screen-'+id;
+    wrap.appendChild(el);
+  }
+  el.innerHTML = html;
+  return el;
+}
+
+function showScreen(id, data={}, pushHistory=true){
+  if(S.screen === id && activeScreenEl){
+    // re-render anyway
+  }
+  S.screenData = data || {};
+  const wrap = document.querySelector('.screen-wrap');
+  const target = document.getElementById('screen-'+id);
+  if(!target){ console.warn('no screen', id); return; }
+
+  if(activeScreenEl && activeScreenEl !== target){
+    activeScreenEl.classList.remove('active');
+  }
+  // Force reflow then activate
+  void target.offsetWidth;
+  target.classList.add('active');
+  activeScreenEl = target;
+  S.screen = id;
+
+  // Scroll top
+  const sc = target.querySelector('.scroll');
+  if(sc) sc.scrollTop = 0;
+
+  // History management
+  if(pushHistory){
+    try{
+      history.pushState({screen:id, data}, '', '#'+id);
+    }catch(e){}
+  }
+  // Update bottom nav
+  updateNav(id);
+}
+
+/* Nav stack via popstate */
+window.addEventListener('popstate', e=>{
+  if($modal.classList.contains('open')){ closeModal(); return; }
+  const st = e.state || {};
+  const id = st.screen || 'home';
+  // find existing screen
+  const target = document.getElementById('screen-'+id);
+  if(!target){
+    // fallback
+    showScreen('home', {}, false);
+    return;
+  }
+  if(activeScreenEl && activeScreenEl !== target) activeScreenEl.classList.remove('active');
+  void target.offsetWidth;
+  target.classList.add('active');
+  activeScreenEl = target;
+  S.screen = id;
+  S.screenData = st.data || {};
+  updateNav(id);
+});
+
+function updateNav(id){
+  const nav = document.getElementById('bnav');
+  if(!nav) return;
+  const map = {home:'home', explore:'explore', community:'community', delivery:'delivery', profile:'profile'};
+  nav.querySelectorAll('.bn').forEach(b=>{
+    const s = b.dataset.nav;
+    b.classList.toggle('active', map[id] === s || (id==='myfarm' && s==='home'));
+  });
+}
+
+/* ============================================================
+   BOTTOM NAV
+   ============================================================ */
+function bottomNavHTML(){
+  return `
+  <nav class="bnav" id="bnav">
+    <button class="bn" data-nav="home" onclick="goHome()">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span class="bn-lb">Home</span>
+    </button>
+    <button class="bn" data-nav="explore" onclick="goExplore()">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      <span class="bn-lb">Explore</span>
+    </button>
+    <button class="bn" data-nav="community" onclick="goCommunity()">
+      <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      <span class="bn-lb">Community</span>
+    </button>
+    <button class="bn" data-nav="delivery" onclick="goDelivery()">
+      <svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+      <span class="bn-lb">Delivery</span>
+    </button>
+    <button class="bn" data-nav="profile" onclick="goProfile()">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <span class="bn-lb">Profile</span>
+    </button>
+  </nav>`;
+}
+
+function navTo(id, data){ showScreen(id, data); }
+
+window.goHome      = ()=> navTo('home');
+window.goExplore   = ()=> navTo('explore');
+window.goCommunity = ()=> navTo('community');
+window.goDelivery  = ()=> navTo('delivery');
+window.goProfile   = ()=> navTo('profile');
+
+window.goBack = ()=>{ try{ history.back(); }catch(e){ navTo('home'); } };
+
+/* ============================================================
+   ICON SET (matching login page)
+   ============================================================ */
+const ICONS = {
+  tomato:'🍅', maize:'🌽', cow:'🐄', onion:'🧅', apple:'🍎', truck:'🚚',
+  wheat:'🌾', rice:'🍚', sorghum:'🌾', millet:'🌾', peas:'🫛', soy:'🫘', groundnut:'🥜',
+  beans:'🫘', cowpea:'🫘', carrot:'🥕', cabbage:'🥬', kale:'🥬', spinach:'🥬',
+  lettuce:'🥬', beetroot:'🟣', potato:'🥔', pepper:'🫑', chilli:'🌶️', eggplant:'🍆',
+  okra:'🥒', sweetCorn:'🌽', mushroom:'🍄',
+  banana:'🍌', mango:'🥭', avocado:'🥑', citrus:'🍊', papaya:'🍈', cashew:'🌰',
+  goat:'🐐', sheep:'🐑', pig:'🐖', rabbit:'🐇', donkey:'🫏', horse:'🐴', dog:'🐕', bee:'🐝',
+  chicken:'🐔', hen:'🐔', duck:'🦆', turkey:'🦃', guineaFowl:'🐦', quail:'🐦',
+  pigeon:'🕊️', goose:'🦢',
+  fish:'🐟', catfish:'🐟', trout:'🐟', carp:'🐟', prawn:'🦐',
+  beekeeping:'🍯', seeds:'🌱', fertilizer:'💧', pesticide:'🧴', tools:'🔧', feed:'🌾',
+  medicine:'💊', vet:'💉',
+  crop:'🌱', livestock:'🐄', fisheries:'🐟', market:'🛒', delivery:'🚚',
+  default:'🌿'
+};
+
+function pickIcon(name){
+  if(!name) return ICONS.default;
+  const n = name.toLowerCase();
+  // Exact and fuzzy matches
+  if(n.includes('tomato')) return ICONS.tomato;
+  if(n.includes('maize')||n.includes('corn')) return ICONS.maize;
+  if(n.includes('cow')||n.includes('cattle')||n.includes('beef')||n.includes('dairy')) return ICONS.cow;
+  if(n.includes('onion')) return ICONS.onion;
+  if(n.includes('apple')) return ICONS.apple;
+  if(n.includes('wheat')) return ICONS.wheat;
+  if(n.includes('rice')) return ICONS.rice;
+  if(n.includes('sorghum')) return ICONS.sorghum;
+  if(n.includes('millet')) return ICONS.millet;
+  if(n.includes('pea')) return ICONS.peas;
+  if(n.includes('soy')) return ICONS.soy;
+  if(n.includes('groundnut')||n.includes('peanut')) return ICONS.groundnut;
+  if(n.includes('bean')) return ICONS.beans;
+  if(n.includes('cowpea')) return ICONS.cowpea;
+  if(n.includes('carrot')) return ICONS.carrot;
+  if(n.includes('cabbage')) return ICONS.cabbage;
+  if(n.includes('kale')||n.includes('rape')) return ICONS.kale;
+  if(n.includes('spinach')||n.includes('amaranth')) return ICONS.spinach;
+  if(n.includes('lettuce')) return ICONS.lettuce;
+  if(n.includes('beet')) return ICONS.beetroot;
+  if(n.includes('potato')) return ICONS.potato;
+  if(n.includes('pepper')&&!n.includes('chilli')) return ICONS.pepper;
+  if(n.includes('chilli')||n.includes('chili')) return ICONS.chilli;
+  if(n.includes('eggplant')||n.includes('aubergine')) return ICONS.eggplant;
+  if(n.includes('okra')) return ICONS.okra;
+  if(n.includes('sweet corn')) return ICONS.sweetCorn;
+  if(n.includes('mushroom')) return ICONS.mushroom;
+  if(n.includes('banana')||n.includes('plantain')) return ICONS.banana;
+  if(n.includes('mango')) return ICONS.mango;
+  if(n.includes('avocado')) return ICONS.avocado;
+  if(n.includes('citrus')||n.includes('orange')||n.includes('lemon')||n.includes('lime')) return ICONS.citrus;
+  if(n.includes('papaya')||n.includes('pawpaw')) return ICONS.papaya;
+  if(n.includes('cashew')) return ICONS.cashew;
+  if(n.includes('goat')) return ICONS.goat;
+  if(n.includes('sheep')) return ICONS.sheep;
+  if(n.includes('pig')) return ICONS.pig;
+  if(n.includes('rabbit')) return ICONS.rabbit;
+  if(n.includes('donkey')) return ICONS.donkey;
+  if(n.includes('horse')) return ICONS.horse;
+  if(n.includes('dog')) return ICONS.dog;
+  if(n.includes('bee')&&!n.includes('keep')) return ICONS.bee;
+  if(n.includes('beekeep')) return ICONS.beekeeping;
+  if(n.includes('broiler')||n.includes('chicken')||n.includes('poultry')) return ICONS.chicken;
+  if(n.includes('layer')||n.includes('hen')) return ICONS.hen;
+  if(n.includes('duck')) return ICONS.duck;
+  if(n.includes('turkey')) return ICONS.turkey;
+  if(n.includes('guinea')) return ICONS.guineaFowl;
+  if(n.includes('quail')) return ICONS.quail;
+  if(n.includes('pigeon')) return ICONS.pigeon;
+  if(n.includes('goose')||n.includes('geese')) return ICONS.goose;
+  if(n.includes('tilapia')||n.includes('fish')||n.includes('fisher')) return ICONS.fish;
+  if(n.includes('catfish')) return ICONS.catfish;
+  if(n.includes('trout')) return ICONS.trout;
+  if(n.includes('carp')) return ICONS.carp;
+  if(n.includes('prawn')) return ICONS.prawn;
+  if(n.includes('seed')) return ICONS.seeds;
+  if(n.includes('fertiliz')) return ICONS.fertilizer;
+  if(n.includes('pesticide')||n.includes('herbicide')) return ICONS.pesticide;
+  if(n.includes('tool')||n.includes('equipment')) return ICONS.tools;
+  if(n.includes('feed')) return ICONS.feed;
+  if(n.includes('medicine')||n.includes('drug')) return ICONS.medicine;
+  if(n.includes('vaccin')||n.includes('vet')) return ICONS.vet;
+  return ICONS.default;
+}
+
+/* ============================================================
+   HASH / COLOR FOR CATALOGUE CARDS
+   ============================================================ */
+const GRADS = [
+  'linear-gradient(145deg,#fef3c7,#f59e0b)',
+  'linear-gradient(145deg,#fee2e2,#dc2626)',
+  'linear-gradient(145deg,#dbeafe,#2563eb)',
+  'linear-gradient(145deg,#d1fae5,#10b981)',
+  'linear-gradient(145deg,#fce7f3,#db2777)',
+  'linear-gradient(145deg,#ede9fe,#7c3aed)',
+  'linear-gradient(145deg,#ffedd5,#ea580c)',
+  'linear-gradient(145deg,#ccfbf1,#0d9488)'
+];
+function gradFor(str){
+  let h=0; for(let i=0;i<(str||'').length;i++) h = (h*31 + str.charCodeAt(i))>>>0;
+  return GRADS[h % GRADS.length];
+}
+
+/* ============================================================
+   CLOUDINARY UPLOAD
+   ============================================================ */
+function uploadImage(folder='agri'){
+  return new Promise((resolve, reject)=>{
+    if(typeof cloudinary === 'undefined' || !cloudinary.openUploadWidget){
+      reject(new Error('Upload widget not loaded'));
+      return;
+    }
+    cloudinary.openUploadWidget({
+      cloudName: CLOUD_NAME,
+      uploadPreset: UPLOAD_PRESET,
+      sources:['local','camera'],
+      multiple:false,
+      maxFiles:1,
+      maxFileSize:15000000,
+      clientAllowedFormats:['jpg','jpeg','png','webp','heic'],
+      cropping:false,
+      folder:'agri/'+folder
+    }, (err, res)=>{
+      if(err) return reject(err);
+      if(res && res.event==='success' && res.info) resolve(res.info.secure_url);
+    });
+  });
+}
+
+/* ============================================================
+   WEATHER (Open-Meteo, no API key)
+   ============================================================ */
+async function loadWeather(location){
+  const coords = {
+    'Lusaka':{lat:-15.4167,lon:28.2833},
+    'Kitwe':{lat:-12.8024,lon:28.2132},
+    'Ndola':{lat:-12.9587,lon:28.6366},
+    'Chingola':{lat:-12.5333,lon:27.85},
+    'Kasama':{lat:-10.2129,lon:31.1808},
+    'Livingstone':{lat:-17.8419,lon:25.8544},
+    'Chipata':{lat:-13.6333,lon:32.65},
+    'Kabwe':{lat:-14.4469,lon:28.4464},
+    'Solwezi':{lat:-12.1833,lon:26.4},
+    'Mongu':{lat:-15.25,lon:23.1333}
+  };
+  const c = coords[location] || coords['Lusaka'];
+  try{
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Africa/Lusaka&forecast_days=4`;
+    const r = await fetch(url);
+    const j = await r.json();
+    return {
+      temp: Math.round(j.current.temperature_2m),
+      hum: j.current.relative_humidity_2m,
+      wind: Math.round(j.current.wind_speed_10m),
+      code: j.current.weather_code,
+      hi: Math.round(j.daily.temperature_2m_max[0]),
+      lo: Math.round(j.daily.temperature_2m_min[0]),
+      daily: j.daily.time.slice(1,4).map((d,i)=>({
+        day: new Date(d).toLocaleDateString('en-GB',{weekday:'short'}),
+        hi: Math.round(j.daily.temperature_2m_max[i+1]),
+        lo: Math.round(j.daily.temperature_2m_min[i+1]),
+        code: j.daily.weather_code[i+1]
+      }))
+    };
+  }catch(e){
+    console.warn('weather error', e);
+    return null;
+  }
+}
+function weatherEmoji(code){
+  if(code===0) return '☀️';
+  if(code<=3) return '⛅';
+  if(code<=48) return '🌫️';
+  if(code<=67) return '🌧️';
+  if(code<=77) return '❄️';
+  if(code<=82) return '🌧️';
+  return '⛈️';
+}
+function weatherDesc(code){
+  if(code===0) return 'Sunny';
+  if(code===1) return 'Mainly clear';
+  if(code===2) return 'Partly cloudy';
+  if(code===3) return 'Overcast';
+  if(code<=48) return 'Foggy';
+  if(code<=55) return 'Drizzle';
+  if(code<=67) return 'Rain';
+  if(code<=77) return 'Snow';
+  if(code<=82) return 'Showers';
+  return 'Thunderstorm';
+}
+
+/* ============================================================
+   LOAD AGRIKNOWLEDGE
+   ============================================================ */
+async function loadAgriKnowledge(){
+  try{
+    const snap = await get(ref(db,'agriKnowledge'));
+    if(!snap.exists()) return null;
+    const data = snap.val();
+    // Flatten catalogue
+    const cat = [];
+    const push = (obj, groupLabel, subgroup)=>{
+      if(!obj) return;
+      Object.entries(obj).forEach(([k,v])=>{
+        if(v && v.name){
+          cat.push({
+            id: k,
+            key: k,
+            name: v.name,
+            scientificName: v.scientificName || '',
+            group: v.group || groupLabel || '',
+            category: groupLabel,
+            subgroup: subgroup || '',
+            enterpriseType: v.enterpriseType || groupLabel || 'Crop',
+            icon: pickIcon(v.name),
+            grad: gradFor(v.name),
+            stages: v.stages || [],
+            indicativeDuration: v.indicativeDuration || '',
+            managementNotes: v.managementNotes || '',
+            risks: v.risks || [],
+            harvestSignal: v.harvestSignal || '',
+            outputUnits: v.outputUnits || [],
+            forecastMethod: v.forecastMethod || '',
+            systems: v.systems || [],
+            purpose: v.purpose || '',
+            outputIndicators: v.outputIndicators || [],
+            forecastInputs: v.forecastInputs || [],
+            forecastApproach: v.forecastApproach || '',
+            localNames: v.localNames || []
+          });
+        }
+      });
+    };
+    if(data.crops?.fieldCrops) push(data.crops.fieldCrops, 'Field Crops', 'cereals');
+    if(data.crops?.pulses)     push(data.crops.pulses, 'Pulses', 'legumes');
+    if(data.crops?.vegetables) push(data.crops.vegetables, 'Vegetables', 'vegetables');
+    if(data.crops?.fruits)     push(data.crops.fruits, 'Fruits', 'fruits');
+    if(data.livestock)         push(data.livestock, 'Livestock', 'livestock');
+    if(data.poultry)           push(data.poultry, 'Poultry', 'poultry');
+    if(data.fisheries?.aquaculture) push(data.fisheries.aquaculture, 'Fisheries', 'aquaculture');
+    if(data.fisheries?.capture)     push(data.fisheries.capture, 'Fisheries', 'capture');
+    return { raw:data, catalogue:cat };
+  }catch(e){
+    console.warn('agriKnowledge load failed', e);
+    return null;
+  }
+}
+
+/* ============================================================
+   LOAD USER DATA
+   ============================================================ */
+async function loadUserData(uid){
+  const out = { profile:null, activities:[], listings:[] };
+  try{
+    const p = await get(ref(db,'users/'+uid));
+    if(p.exists()) out.profile = p.val();
+    // Activities
+    const a = await get(ref(db,'farmActivities'));
+    if(a.exists()){
+      const all = a.val();
+      Object.entries(all).forEach(([k,v])=>{
+        if(v && v.owner_user_id === uid) out.activities.push({id:k, ...v});
+      });
+    }
+    // Listings
+    const l = await get(ref(db,'marketListings'));
+    if(l.exists()){
+      const all = l.val();
+      Object.entries(all).forEach(([k,v])=>{
+        if(v && v.seller_id === uid) out.listings.push({id:k, ...v});
+      });
+    }
+  }catch(e){ console.warn('loadUserData', e); }
+  return out;
+}
+
+/* ============================================================
+   LOAD PUBLIC FEEDS
+   ============================================================ */
+async function loadAllActivities(){
+  const out = [];
+  try{
+    const a = await get(ref(db,'farmActivities'));
+    if(a.exists()){
+      Object.entries(a.val()).forEach(([k,v])=>{
+        if(v && (v.visibility||'public')==='public') out.push({id:k, ...v});
+      });
+    }
+  }catch(e){}
+  return out.sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+}
+
+async function loadMarketplace(){
+  const out = [];
+  try{
+    const l = await get(ref(db,'marketListings'));
+    if(l.exists()){
+      Object.entries(l.val()).forEach(([k,v])=>{
+        if(v && v.status !== 'removed') out.push({id:k, ...v});
+      });
+    }
+  }catch(e){}
+  return out.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+}
+
+async function loadCommunity(){
+  const out = [];
+  try{
+    const c = await get(ref(db,'communityPosts'));
+    if(c.exists()){
+      Object.entries(c.val()).forEach(([k,v])=>{
+        if(v && v.visibility !== 'private') out.push({id:k, ...v});
+      });
+    }
+  }catch(e){}
+  return out.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+}
+
+async function loadSuppliers(){
+  const out = [];
+  try{
+    const u = await get(ref(db,'users'));
+    if(u.exists()){
+      Object.entries(u.val()).forEach(([k,v])=>{
+        if(v && v.role === 'supplier' && v.status === 'approved'){
+          out.push({id:k, ...v});
+        }
+      });
+    }
+  }catch(e){}
+  return out;
+}
+
+/* ============================================================
+   FORECAST ENGINE (uses agriKnowledge rules)
+   ============================================================ */
+function autoPredict(activity){
+  if(!activity) return null;
+  const k = (activity.species_or_crop_id||'').toLowerCase();
+  const ag = S.agri?.catalogue?.find(c=>c.id===k);
+  if(!ag) return null;
+
+  const scale = parseFloat(activity.scale_value) || 0;
+  const unit = activity.scale_unit || '';
+
+  // Default conservative scenario for area-based crops
+  if(ag.forecastMethod === 'area_based' && scale>0 && /ha|hectare/i.test(unit)){
+    const low = scale * 1.5 * 1000;    // kg/ha conservative
+    const typ = scale * 2.5 * 1000;
+    const hi  = scale * 4.0 * 1000;
+    return {
+      low, base: typ, high: hi, unit: 'kg',
+      confidence: 'preliminary',
+      note: 'Planning range based on typical district scenarios. Not a guarantee.'
+    };
+  }
+  if(ag.forecastMethod === 'repeated_harvest' && scale>0){
+    return {
+      low: scale * 2, base: scale * 4, high: scale * 6, unit: 'kg',
+      confidence: 'preliminary',
+      note: 'Repeated harvest crop. Weekly output from plant count.'
+    };
+  }
+  if(ag.enterpriseType === 'Livestock' || ag.enterpriseType === 'Poultry'){
+    return {
+      low: null, base: null, high: null, unit: 'head',
+      confidence: 'management-dependent',
+      note: ag.forecastApproach || 'Liveweight range and sale-readiness date.'
+    };
+  }
+  if(ag.enterpriseType === 'Aquaculture'){
+    return {
+      low: null, base: null, high: null, unit: 'kg biomass',
+      confidence: 'low',
+      note: 'Biomass = surviving fish × average sampled weight.'
+    };
+  }
+  return null;
+}
+
+/* ============================================================
+   CHECK BANNED / MAINTENANCE
+   ============================================================ */
+async function checkSystemState(){
+  let maint = false, banned = false, banReason = '';
+  try{
+    const m = await get(ref(db,'system/maintenance'));
+    if(m.exists() && m.val().enabled) maint = true;
+  }catch(e){}
+  try{
+    const u = await get(ref(db,'users/'+S.user.uid));
+    if(u.exists()){
+      const v = u.val();
+      if(v.banned) { banned = true; banReason = v.banReason || 'Contact support'; }
+      if(v.role === 'farmer' && v.status === 'banned'){ banned = true; banReason = v.banReason || 'Account banned'; }
+    }
+  }catch(e){}
+  return { maint, banned, banReason };
+}
+
+/* ============================================================
+   SCREEN: HOME
+   ============================================================ */
+function renderHome(){
+  const p = S.profile || {};
+  const firstName = p.firstName || p.displayName || (p.name||'').split(' ')[0] || 'Farmer';
+  const initial = initials(p.firstName ? (p.firstName + ' ' + (p.lastName||'')) : (p.displayName||p.name||'F'));
+
+  const w = S.weather;
+  const weatherHTML = w ? `
+    <div class="weather-card">
+      <div class="wc-icon">${weatherEmoji(w.code)}</div>
+      <div class="wc-head">
+        <div class="wc-loc">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          ${esc(S.userLocation)}
+        </div>
+      </div>
+      <div class="wc-temp">${w.temp}°C</div>
+      <div class="wc-desc">${weatherDesc(w.code)}</div>
+      <div class="wc-range">H: ${w.hi}°  L: ${w.lo}°</div>
+    </div>` : `
+    <div class="weather-card">
+      <div class="wc-head"><div class="wc-loc">📍 ${esc(S.userLocation)}</div></div>
+      <div class="wc-temp">—°C</div>
+      <div class="wc-desc">Loading weather…</div>
+    </div>`;
+
+  // My Farm cards (max 6)
+  const mf = (S.myActivities||[]).slice(0,6);
+  const mfHTML = mf.length ? mf.map(a=>{
+    const ic = pickIcon(a.species_or_crop_id || a.title || '');
+    const tag = a.status === 'ready_for_sale' ? 'ready'
+              : a.status === 'health_watch' ? 'warn'
+              : a.status === 'completed' ? 'ok' : '';
+    const tagText = a.status === 'ready_for_sale' ? 'Ready'
+              : a.status === 'health_watch' ? 'Watch'
+              : a.status === 'completed' ? 'Done'
+              : (a.stage_key || 'Active').replace(/_/g,' ');
+    return `
+      <div class="mf-card" onclick="openActivity('${a.id}')">
+        <div class="mf-img">${a.coverUrl ? `<img src="${esc(a.coverUrl)}" alt="">` : ic}</div>
+        <div class="mf-body">
+          <div class="mf-name">${esc(a.title || a.species_or_crop_id || 'Activity')}</div>
+          <div class="mf-sub">${esc(a.stage_key ? a.stage_key.replace(/_/g,' ') : 'Growing')} · ${esc(a.scale_value||'')} ${esc(a.scale_unit||'')}</div>
+          <span class="mf-tag ${tag}">${esc(tagText)}</span>
+        </div>
+      </div>`;
+  }).join('') : `
+    <div class="mf-card" onclick="navTo('create-activity')" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px 8px;text-align:center;border-style:dashed;">
+      <div style="font-size:32px;margin-bottom:6px;">➕</div>
+      <div style="font-size:11.5px;font-weight:800;color:var(--p);">Add your first activity</div>
+    </div>`;
+
+  // Nearby activities
+  const nearby = (S.allActivities||[]).filter(a=>a.owner_user_id !== S.user.uid).slice(0,3);
+  const nearbyHTML = nearby.length ? nearby.map(a=>{
+    const nm = a.ownerName || 'Farmer';
+    return `
+      <div class="fm-item" onclick="openActivity('${a.id}')">
+        <div class="fm-thumb">${a.coverUrl ? `<img src="${esc(a.coverUrl)}" alt="">` : pickIcon(a.species_or_crop_id||'')}</div>
+        <div class="fm-body">
+          <div class="fm-name">${esc(a.title || a.species_or_crop_id || 'Activity')}</div>
+          <div class="fm-sub">${esc(nm)} · ${esc(a.location || 'Zambia')}</div>
+          <div class="fm-meta"><span>📅 ${esc(a.planted_date ? fmtDate(a.planted_date) : '—')}</span></div>
+        </div>
+        <span class="fm-tag">${esc((a.stage_key||'Growing').replace(/_/g,' '))}</span>
+      </div>`;
+  }).join('') : `
+    <div class="empty" style="padding:24px 8px">
+      <div class="e-ic">🌾</div>
+      <h3>No public activities yet</h3>
+      <p>Be the first to share what you're growing.</p>
+    </div>`;
+
+  return `
+  <div class="scroll" id="homeScroll">
+    <div class="topbar" style="padding-bottom:4px">
+      <div class="tb-avatar" onclick="goProfile()">${p.profileUrl ? `<img src="${esc(p.profileUrl)}" alt="">` : initial}</div>
+      <div style="flex:1;min-width:0">
+        <div class="greet" style="padding:0">
+          <h2>Good ${new Date().getHours()<12?'morning':new Date().getHours()<17?'afternoon':'evening'},<br><span>${esc(firstName)}</span></h2>
+        </div>
+      </div>
+      <button class="tb-btn" onclick="openCart()" style="position:relative">
+        <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+        ${S.cart.length?`<span class="cart-badge">${S.cart.length}</span>`:''}
+      </button>
+    </div>
+
+    <div class="search-wrap">
+      <div class="search">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14z"/></svg>
+        <input type="text" placeholder="Search crops, animals, fish or farmers…" onkeydown="if(event.key==='Enter')doSearch(this.value)">
+      </div>
+    </div>
+
+    ${weatherHTML}
+
+    <div class="qa-row">
+      <button class="qa" onclick="navTo('explore',{filter:'crops'})">
+        <div class="qa-ic c1">🌱</div><div class="qa-lb">Crops</div>
+      </button>
+      <button class="qa" onclick="navTo('explore',{filter:'livestock'})">
+        <div class="qa-ic c2">🐄</div><div class="qa-lb">Livestock</div>
+      </button>
+      <button class="qa" onclick="navTo('explore',{filter:'fisheries'})">
+        <div class="qa-ic c3">🐟</div><div class="qa-lb">Fisheries</div>
+      </button>
+      <button class="qa" onclick="navTo('marketplace')">
+        <div class="qa-ic c4">🛒</div><div class="qa-lb">Market</div>
+      </button>
+      <button class="qa" onclick="navTo('delivery')">
+        <div class="qa-ic c5">🚚</div><div class="qa-lb">Delivery</div>
+      </button>
+    </div>
+
+    <div class="sec-h">
+      <h3>My Farm</h3>
+      <button onclick="navTo('myfarm')">View all ›</button>
+    </div>
+    <div class="mf-row">${mfHTML}</div>
+
+    <div class="cta-banner" onclick="navTo('buy-supplies')">
+      <div class="cta-txt">
+        <h4>Buy farm inputs</h4>
+        <p>Seeds, fertilizers, pesticides, tools &amp; animal feeds from verified suppliers.</p>
+      </div>
+      <div class="cta-arrow">
+        <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+      </div>
+    </div>
+
+    <div class="sec-h">
+      <h3>What's Happening Around You</h3>
+      <button onclick="navTo('farm-activity')">See all ›</button>
+    </div>
+    <div class="feed-mini">${nearbyHTML}</div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   SCREEN: EXPLORE
+   ============================================================ */
+function renderExplore(filter){
+  const groups = [
+    {id:'crops',   label:'Crops',   icon:'🌱', match:['Field Crops','Pulses','Vegetables','Fruits']},
+    {id:'livestock', label:'Livestock', icon:'🐄', match:['Livestock']},
+    {id:'poultry', label:'Poultry', icon:'🐔', match:['Poultry']},
+    {id:'fisheries', label:'Fisheries', icon:'🐟', match:['Fisheries']},
+    {id:'beekeeping', label:'Beekeeping', icon:'🍯', match:['Beekeeping']}
+  ];
+
+  let items = S.catalogue || [];
+  if(filter && filter !== 'all'){
+    const g = groups.find(x=>x.id===filter);
+    if(g) items = items.filter(i=> g.match.includes(i.category));
+  }
+
+  const cardsHTML = items.length ? items.map(i=>`
+    <div class="cat-card" onclick="openCatalogueItem('${esc(i.id)}')">
+      <div class="cc-top" style="background:${i.grad}">${i.icon}</div>
+      <div class="cc-body">
+        <div class="cc-name">${esc(i.name)}</div>
+        <div class="cc-sub">${esc(i.group||i.category||'')}</div>
+        <span class="cc-tag">${esc(i.enterpriseType||'Crop')}</span>
+      </div>
+    </div>`).join('') : `
+    <div style="grid-column:1/-1">
+      <div class="empty">
+        <div class="e-ic">🔍</div>
+        <h3>No items yet</h3>
+        <p>Seed the agriKnowledge database from the seeder tool to populate this catalogue.</p>
+      </div>
+    </div>`;
+
+  return `
+  <div class="scroll" id="exploreScroll">
+    <div class="topbar bordered">
+      <div class="tb-title">Explore</div>
+      <div class="tb-actions">
+        <button class="tb-btn" onclick="openSearch()">
+          <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="chips-row" style="padding-top:12px">
+      <button class="chip ${!filter||filter==='all'?'active':''}" onclick="navTo('explore',{filter:'all'})">All</button>
+      ${groups.map(g=>`
+        <button class="chip ${filter===g.id?'active':''}" onclick="navTo('explore',{filter:'${g.id}'})">
+          ${g.icon} ${esc(g.label)}
+        </button>`).join('')}
+    </div>
+
+    <div class="cat-grid">${cardsHTML}</div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   SCREEN: CATALOGUE DETAIL
+   ============================================================ */
+function renderCatalogueDetail(itemId){
+  const item = (S.catalogue||[]).find(c=>c.id===itemId);
+  if(!item){
+    return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button><div class="tb-title">Not found</div></div></div>`;
+  }
+  const isAnimal = item.enterpriseType==='Livestock' || item.enterpriseType==='Poultry';
+  const isFish = item.enterpriseType==='Aquaculture' || item.enterpriseType==='Capture fisheries';
+  const ctaLabel = isAnimal ? 'Raise These Animals' : isFish ? 'Start Fish Farming' : 'Plant This';
+  const ctaIcon = isAnimal ? '🐄' : isFish ? '🐟' : '🌱';
+
+  const stages = (item.stages||[]).map(s=>`<li>${esc(s)}</li>`).join('');
+  const risks = (item.risks||[]).map(r=>`<li>${esc(r)}</li>`).join('');
+  const units = (item.outputUnits||[]).join(', ');
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered" style="position:sticky;top:0;z-index:6;background:rgba(255,255,255,.94);backdrop-filter:blur(14px)">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">${esc(item.name)}</div>
+    </div>
+
+    <div class="detail-hero" style="background:${item.grad}">${item.icon}</div>
+
+    <div class="detail-body">
+      <h1>${esc(item.name)}</h1>
+      <div class="d-sc">${esc(item.scientificName||'')}</div>
+
+      <div class="detail-tags">
+        <span class="dtag">${esc(item.group||item.category||'')}</span>
+        <span class="dtag blue">${esc(item.enterpriseType||'')}</span>
+        ${item.indicativeDuration?`<span class="dtag amber">${esc(item.indicativeDuration)}</span>`:''}
+      </div>
+
+      ${item.managementNotes?`
+        <div class="d-section">
+          <h3>Management</h3>
+          <p>${esc(item.managementNotes)}</p>
+        </div>`:''}
+
+      ${item.systems && item.systems.length?`
+        <div class="d-section">
+          <h3>Production Systems</h3>
+          <ul class="d-list">${item.systems.map(s=>`<li>${esc(s)}</li>`).join('')}</ul>
+        </div>`:''}
+
+      ${stages?`
+        <div class="d-section">
+          <h3>Lifecycle Stages</h3>
+          <ul class="d-list">${stages}</ul>
+        </div>`:''}
+
+      ${risks?`
+        <div class="d-section">
+          <h3>Common Risks</h3>
+          <ul class="d-list">${risks}</ul>
+        </div>`:''}
+
+      ${item.harvestSignal?`
+        <div class="d-section">
+          <h3>Harvest / Sale Readiness</h3>
+          <p>${esc(item.harvestSignal)}</p>
+        </div>`:''}
+
+      ${item.outputIndicators && item.outputIndicators.length?`
+        <div class="d-section">
+          <h3>Output Indicators</h3>
+          <ul class="d-list">${item.outputIndicators.map(s=>`<li>${esc(s)}</li>`).join('')}</ul>
+        </div>`:''}
+
+      ${item.forecastApproach?`
+        <div class="d-section">
+          <h3>Production Forecast</h3>
+          <p>${esc(item.forecastApproach)}</p>
+        </div>`:''}
+
+      ${units?`
+        <div class="d-section">
+          <h3>Output Units</h3>
+          <p>${esc(units)}</p>
+        </div>`:''}
+
+      <div style="height:16px"></div>
+      <button class="btn btn-p" onclick="startFromCatalogue('${esc(item.id)}')">
+        ${ctaIcon} ${ctaLabel}
+      </button>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   SCREEN: MY FARM
+   ============================================================ */
+function renderMyFarm(){
+  const acts = S.myActivities || [];
+  const list = acts.length ? acts.map(a=>{
+    const ic = pickIcon(a.species_or_crop_id||a.title||'');
+    const tagText = a.status === 'ready_for_sale' ? 'Ready for sale'
+      : a.status === 'health_watch' ? 'Health watch'
+      : a.status === 'completed' ? 'Completed'
+      : (a.stage_key || 'Active').replace(/_/g,' ');
+    const tagCls = a.status === 'ready_for_sale' ? 'ready'
+      : a.status === 'health_watch' ? 'warn'
+      : a.status === 'completed' ? 'ok' : '';
+    return `
+    <div class="fa-card" onclick="openActivity('${a.id}')">
+      <div class="fa-head" style="padding-top:12px">
+        <div class="fa-av">${a.coverUrl ? `<img src="${esc(a.coverUrl)}" alt="">` : ic}</div>
+        <div class="fa-who">
+          <div class="fa-nm">${esc(a.title||a.species_or_crop_id||'Activity')}</div>
+          <div class="fa-lc">${esc(a.variety_breed||'')} ${a.scale_value?`· ${a.scale_value} ${a.scale_unit||''}`:''}</div>
+        </div>
+        <span class="fa-tag ${tagCls}">${esc(tagText)}</span>
+      </div>
+      <div class="fa-bd">
+        <div class="fa-meta">
+          ${a.planted_date?`<span>📅 Planted ${fmtDate(a.planted_date)}</span>`:''}
+          ${a.expected_ready_from?`<span>🎯 Ready ~${fmtDate(a.expected_ready_from)}</span>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('') : `
+    <div class="empty">
+      <div class="e-ic">🌱</div>
+      <h3>No activities yet</h3>
+      <p>Start tracking your crops, animals and fish.</p>
+      <div style="height:14px"></div>
+      <button class="btn btn-p" style="max-width:220px;margin:0 auto" onclick="navTo('create-activity')">+ Start New Activity</button>
+    </div>`;
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">My Farm</div>
+      <div class="tb-actions">
+        <button class="tb-btn" onclick="navTo('create-activity')">
+          <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>
+        </button>
+      </div>
+    </div>
+    <div style="padding:14px 18px 0">${list}</div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   SCREEN: CREATE ACTIVITY
+   ============================================================ */
+function renderCreateActivity(preset){
+  preset = preset || {};
+  const cats = [
+    {id:'crops',   label:'Crops',   icon:'🌱'},
+    {id:'livestock', label:'Livestock', icon:'🐄'},
+    {id:'poultry', label:'Poultry', icon:'🐔'},
+    {id:'fisheries', label:'Fisheries', icon:'🐟'}
+  ];
+  const activeCat = preset.category || 'crops';
+  const options = (S.catalogue||[]).filter(c=>{
+    if(activeCat==='crops') return ['Field Crops','Pulses','Vegetables','Fruits'].includes(c.category);
+    if(activeCat==='livestock') return c.category==='Livestock';
+    if(activeCat==='poultry') return c.category==='Poultry';
+    if(activeCat==='fisheries') return c.category==='Fisheries';
+    return true;
+  }).map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Start New Activity</div>
+    </div>
+
+    <div class="chips-row" style="padding-top:12px">
+      ${cats.map(c=>`
+        <button class="chip ${activeCat===c.id?'active':''}" onclick="switchCat('${c.id}')">${c.icon} ${c.label}</button>
+      `).join('')}
+    </div>
+
+    <form class="frm" onsubmit="submitActivity(event)">
+      <input type="hidden" id="act-cat" value="${esc(activeCat)}">
+
+      <div class="fld">
+        <label>What are you growing / raising?</label>
+        <select id="act-species" class="inp" required>
+          <option value="">Select…</option>
+          ${options}
+        </select>
+      </div>
+
+      <div class="fld">
+        <label>Title</label>
+        <input id="act-title" class="inp" type="text" placeholder="e.g. Maize 2025 – Plot A" required>
+      </div>
+
+      <div class="fld">
+        <label>Variety / Breed</label>
+        <input id="act-variety" class="inp" type="text" placeholder="Optional">
+      </div>
+
+      <div class="fld">
+        <label>Location</label>
+        <input id="act-location" class="inp" type="text" value="${esc(S.userLocation)}" required>
+      </div>
+
+      <div class="fld" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div>
+          <label>Size / Count</label>
+          <input id="act-scale" class="inp" type="number" step="0.01" min="0" placeholder="e.g. 2" required>
+        </div>
+        <div>
+          <label>Unit</label>
+          <select id="act-unit" class="inp">
+            <option>ha</option><option>m²</option><option>kg</option>
+            <option>head</option><option>birds</option><option>fish</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fld">
+        <label>Start date</label>
+        <input id="act-start" class="inp" type="date" value="${new Date().toISOString().slice(0,10)}" required>
+      </div>
+
+      <div class="fld">
+        <label>Current stage</label>
+        <select id="act-stage" class="inp">
+          <option value="planned">Planned</option>
+          <option value="planted" selected>Planted / Stocked</option>
+          <option value="growing">Growing / Rearing</option>
+          <option value="flowering">Flowering</option>
+          <option value="fruiting">Fruiting / Filling</option>
+          <option value="harvesting">Harvesting</option>
+          <option value="ready_for_sale">Ready for sale</option>
+        </select>
+      </div>
+
+      <div class="fld">
+        <label>Cover photo</label>
+        <div class="up-grid" style="grid-template-columns:1fr">
+          <div class="up-box" id="act-photo">
+            <img class="up-prev" alt="">
+            <div class="up-ic">📷</div>
+            <div class="up-lb">Tap to upload</div>
+          </div>
+        </div>
+        <input type="hidden" id="act-photo-url">
+      </div>
+
+      <div class="fld">
+        <label>Visibility</label>
+        <select id="act-vis" class="inp">
+          <option value="public">Public – show in Farm Activity</option>
+          <option value="private">Private – just for me</option>
+        </select>
+      </div>
+
+      <div class="form-error" id="act-error" style="color:var(--danger);font-size:13px;font-weight:600;display:none;padding:10px 12px;background:#fef2f2;border:1px solid rgba(220,38,38,.2);border-radius:var(--r-sm)"></div>
+
+      <button type="submit" class="btn btn-p" id="act-submit">Create Activity</button>
+    </form>
+  </div>`;
+}
+
+window.switchCat = (id)=>{
+  // Re-render create screen with new cat
+  const el = document.getElementById('screen-create-activity');
+  if(el) el.innerHTML = renderCreateActivity({category:id});
+  wireCreateActivity();
+  showScreen('create-activity', {category:id}, false);
+};
+function wireCreateActivity(){
+  const box = document.getElementById('act-photo');
+  if(!box) return;
+  box.addEventListener('click', async()=>{
+    try{
+      const url = await uploadImage('activities');
+      box.querySelector('.up-prev').src = url;
+      box.classList.add('has-img');
+      document.getElementById('act-photo-url').value = url;
+    }catch(e){ if(!String(e).includes('cancel')) toast('Upload failed'); }
+  });
+}
+window.submitActivity = async (ev)=>{
+  ev.preventDefault();
+  const err = document.getElementById('act-error');
+  err.style.display='none';
+  const btn = document.getElementById('act-submit');
+  btn.disabled = true;
+
+  const cat = document.getElementById('act-cat').value;
+  const species = document.getElementById('act-species').value;
+  const title = document.getElementById('act-title').value.trim();
+  const variety = document.getElementById('act-variety').value.trim();
+  const location = document.getElementById('act-location').value.trim();
+  const scale = document.getElementById('act-scale').value;
+  const unit = document.getElementById('act-unit').value;
+  const start = document.getElementById('act-start').value;
+  const stage = document.getElementById('act-stage').value;
+  const photo = document.getElementById('act-photo-url').value;
+  const vis = document.getElementById('act-vis').value;
+
+  if(!species || !title || !scale || !start){
+    err.textContent = 'Please fill in all required fields.';
+    err.style.display='block';
+    btn.disabled = false;
+    return;
+  }
+
+  const catItem = (S.catalogue||[]).find(c=>c.id===species);
+  const startTs = new Date(start).getTime();
+  const durationDays = 120;
+  const expectedReady = startTs + durationDays*86400000;
+
+  const payload = {
+    owner_user_id: S.user.uid,
+    ownerName: (S.profile.firstName||'') + ' ' + (S.profile.lastName||''),
+    enterprise_type: catItem?.enterpriseType || 'Crop',
+    category: cat,
+    species_or_crop_id: species,
+    speciesName: catItem?.name || species,
+    title, variety_breed: variety, location,
+    scale_value: scale, scale_unit: unit,
+    planted_date: startTs,
+    stage_key: stage,
+    status: stage === 'ready_for_sale' ? 'ready_for_sale' : 'active',
+    visibility: vis,
+    coverUrl: photo,
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+    expected_ready_from: expectedReady
+  };
+
+  // Auto forecast
+  const forecast = autoPredict(payload);
+  if(forecast){
+    payload.forecast_low = forecast.low;
+    payload.forecast_base = forecast.base;
+    payload.forecast_high = forecast.high;
+    payload.forecast_unit = forecast.unit;
+    payload.forecast_confidence = forecast.confidence;
+    payload.forecast_note = forecast.note;
+  }
+
+  try{
+    const newRef = push(ref(db,'farmActivities'));
+    await set(newRef, payload);
+    S.myActivities.unshift({id:newRef.key, ...payload});
+    toast('Activity created ✓');
+    setTimeout(()=>{ navTo('myfarm'); }, 400);
+  }catch(e){
+    err.textContent = 'Error: ' + (e.message||e);
+    err.style.display='block';
+    btn.disabled = false;
+  }
+};
+
+/* ============================================================
+   SCREEN: ACTIVITY DETAIL
+   ============================================================ */
+window.openActivity = (id)=>{
+  const act = (S.myActivities||[]).find(a=>a.id===id) || (S.allActivities||[]).find(a=>a.id===id);
+  if(!act){ toast('Activity not found'); return; }
+  navTo('activity-detail', {id});
+};
+
+function renderActivityDetail(id){
+  const act = (S.myActivities||[]).find(a=>a.id===id) || (S.allActivities||[]).find(a=>a.id===id);
+  if(!act) return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button><div class="tb-title">Not found</div></div></div>`;
+  const isMine = act.owner_user_id === S.user.uid;
+  const ic = pickIcon(act.species_or_crop_id||act.title||'');
+  const stages = ['planned','planted','growing','flowering','fruiting','harvesting','ready_for_sale','completed'];
+  const currIdx = stages.indexOf(act.stage_key||'growing');
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">${esc(act.title||'Activity')}</div>
+    </div>
+
+    <div class="detail-hero" style="background:${gradFor(act.title||'')}">
+      ${act.coverUrl ? `<img src="${esc(act.coverUrl)}" alt="">` : ic}
+    </div>
+
+    <div class="detail-body">
+      <h1>${esc(act.title||act.speciesName||'Activity')}</h1>
+      <div class="d-sc">${esc(act.speciesName||'')} ${act.variety_breed?'· '+esc(act.variety_breed):''}</div>
+
+      <div class="detail-tags">
+        <span class="dtag">${esc(act.enterprise_type||'Crop')}</span>
+        <span class="dtag blue">${esc((act.stage_key||'growing').replace(/_/g,' '))}</span>
+        ${act.location?`<span class="dtag amber">📍 ${esc(act.location)}</span>`:''}
+      </div>
+
+      <div class="d-section">
+        <h3>Progress Timeline</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+          ${stages.map((s,i)=>{
+            const done = i<=currIdx;
+            const active = i===currIdx;
+            return `
+              <div style="display:flex;align-items:center;gap:10px;opacity:${done?1:.42}">
+                <div style="width:22px;height:22px;border-radius:50%;background:${done?'var(--p)':'var(--bd)'};color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">${done?'✓':(i+1)}</div>
+                <div style="font-size:12.5px;font-weight:${active?'800':'600'};color:${active?'var(--p-d)':'var(--tb)'};text-transform:capitalize">${s.replace(/_/g,' ')}</div>
+              </div>`;
+          }).join('')}
+        </div>
+      </div>
+
+      ${act.forecast_base?`
+        <div class="d-section">
+          <h3>Auto Forecast</h3>
+          <div style="background:var(--p-ll);border:1px solid rgba(15,122,52,.14);border-radius:var(--r);padding:14px">
+            <div style="font-size:11px;font-weight:800;color:var(--p);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Planning Range</div>
+            <div style="display:flex;align-items:baseline;gap:6px">
+              <span style="font-size:22px;font-weight:900;color:var(--p-d);letter-spacing:-.03em">${Math.round(act.forecast_low/1000*10)/10}–${Math.round(act.forecast_high/1000*10)/10}t</span>
+              <span style="font-size:11px;color:var(--tl);font-weight:700">${esc(act.forecast_unit||'kg')}</span>
+            </div>
+            <div style="font-size:11px;color:var(--tl);margin-top:6px;line-height:1.5">${esc(act.forecast_note||'')}</div>
+            <div style="margin-top:8px"><span class="dtag" style="font-size:9.5px">Confidence: ${esc(act.forecast_confidence||'—')}</span></div>
+          </div>
+        </div>`:''}
+
+      ${act.planted_date?`
+        <div class="d-section">
+          <h3>Dates</h3>
+          <ul class="d-list">
+            <li>Started ${fmtDate(act.planted_date)}</li>
+            ${act.expected_ready_from?`<li>Expected ready ~${fmtDate(act.expected_ready_from)}</li>`:''}
+          </ul>
+        </div>`:''}
+
+      ${isMine?`
+        <div class="d-section">
+          <h3>Update Stage</h3>
+          <select class="inp" onchange="updateActivityStage('${esc(act.id)}', this.value)">
+            ${stages.map(s=>`<option value="${s}" ${s===act.stage_key?'selected':''}>${s.replace(/_/g,' ')}</option>`).join('')}
+          </select>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:16px">
+          <button class="btn btn-o" onclick="postReadyGoods('${esc(act.id)}')">💰 Sell Goods</button>
+          <button class="btn btn-s" onclick="deleteActivity('${esc(act.id)}')">🗑 Delete</button>
+        </div>
+      `:`
+        <div style="display:flex;gap:8px;margin-top:16px">
+          <button class="btn btn-p" onclick="toast('Following '+ '${esc(act.ownerName||'farmer')}')">+ Follow</button>
+          <button class="btn btn-o" onclick="openMessage('${esc(act.owner_user_id||'')}','${esc(act.ownerName||'Farmer')}')">Message</button>
+        </div>
+      `}
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+window.updateActivityStage = async (id, stage)=>{
+  try{
+    await update(ref(db,'farmActivities/'+id), {
+      stage_key: stage,
+      status: stage === 'ready_for_sale' ? 'ready_for_sale' : 'active',
+      updatedAt: Date.now()
+    });
+    const a = S.myActivities.find(x=>x.id===id);
+    if(a){ a.stage_key = stage; }
+    toast('Stage updated ✓');
+  }catch(e){ toast('Failed: '+(e.message||e)); }
+};
+
+window.deleteActivity = (id)=>{
+  modal(`
+    <h3>Delete activity?</h3>
+    <p>This action cannot be undone.</p>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmDeleteActivity('${esc(id)}')">Delete</button>
+    </div>
+  `);
+};
+window.confirmDeleteActivity = async (id)=>{
+  try{
+    await remove(ref(db,'farmActivities/'+id));
+    S.myActivities = S.myActivities.filter(a=>a.id!==id);
+    closeModal();
+    toast('Deleted');
+    setTimeout(()=>navTo('myfarm'), 300);
+  }catch(e){ toast('Failed: '+(e.message||e)); }
+};
+
+/* ============================================================
+   SCREEN: FARM ACTIVITY (discovery)
+   ============================================================ */
+function renderFarmActivity(filter){
+  filter = filter || 'all';
+  let items = (S.allActivities||[]).filter(a=>a.owner_user_id !== S.user.uid);
+  if(filter==='crops') items = items.filter(a=>['Field Crops','Pulses','Vegetables','Fruits','Crop'].includes(a.enterprise_type) || a.category==='crops');
+  if(filter==='livestock') items = items.filter(a=>a.enterprise_type==='Livestock');
+  if(filter==='poultry') items = items.filter(a=>a.enterprise_type==='Poultry');
+  if(filter==='fisheries') items = items.filter(a=>a.enterprise_type?.includes('Aquaculture')||a.enterprise_type?.includes('Capture'));
+  if(filter==='ready') items = items.filter(a=>a.status==='ready_for_sale');
+
+  const cards = items.length ? items.map(a=>{
+    const ic = pickIcon(a.species_or_crop_id||a.title||'');
+    const tagCls = a.status==='ready_for_sale'?'ready': (a.stage_key==='growing'?'grow':'');
+    const tagText = a.status==='ready_for_sale'?'Ready for sale':(a.stage_key||'Growing').replace(/_/g,' ');
+    return `
+      <div class="fa-card" onclick="openActivity('${esc(a.id)}')">
+        <div class="fa-imgs single">
+          <div>${a.coverUrl?`<img src="${esc(a.coverUrl)}" alt="">`:ic}</div>
+        </div>
+        <div class="fa-head">
+          <div class="fa-av">${initials(a.ownerName||'F')}</div>
+          <div class="fa-who">
+            <div class="fa-nm">${esc(a.ownerName||'Farmer')}</div>
+            <div class="fa-lc">📍 ${esc(a.location||'Zambia')}</div>
+          </div>
+          <span class="fa-tag ${tagCls}">${esc(tagText)}</span>
+        </div>
+        <div class="fa-bd">
+          <div class="fa-desc"><strong>${esc(a.title||a.speciesName||'')}</strong></div>
+          <div class="fa-meta">
+            ${a.scale_value?`<span>📏 ${esc(a.scale_value)} ${esc(a.scale_unit||'')}</span>`:''}
+            ${a.planted_date?`<span>📅 ${fmtDate(a.planted_date)}</span>`:''}
+          </div>
+        </div>
+        <div class="fa-acts">
+          <button onclick="event.stopPropagation();toast('Following')">+ Follow</button>
+          <button onclick="event.stopPropagation();openMessage('${esc(a.owner_user_id||'')}','${esc(a.ownerName||'Farmer')}')">Message</button>
+        </div>
+      </div>`;
+  }).join('') : `
+    <div class="empty">
+      <div class="e-ic">🌾</div>
+      <h3>No public activities</h3>
+      <p>Share your first activity to inspire others.</p>
+    </div>`;
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Farm Activity</div>
+    </div>
+    <div class="chips-row" style="padding-top:12px">
+      ${['all','crops','livestock','poultry','fisheries','ready'].map(f=>`
+        <button class="chip ${filter===f?'active':''}" onclick="navTo('farm-activity',{filter:'${f}'})">${f==='all'?'All':f[0].toUpperCase()+f.slice(1)}</button>
+      `).join('')}
+    </div>
+    <div style="padding:0 18px 18px">${cards}</div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   SCREEN: COMMUNITY
+   ============================================================ */
+function renderCommunity(){
+  const posts = (S.community||[]).slice(0,20);
+  const list = posts.length ? posts.map(p=>{
+    const imgs = (p.photoUrls||[]).length ? `
+      <div class="p-imgs ${p.photoUrls.length>1?'multi':''}">
+        ${p.photoUrls.slice(0,4).map(u=>`<div><img src="${esc(u)}" alt=""></div>`).join('')}
+      </div>` : '';
+    return `
+    <div class="post">
+      <div class="p-head">
+        <div class="p-av">${p.authorPhoto?`<img src="${esc(p.authorPhoto)}" alt="">`:initials(p.authorName||'F')}</div>
+        <div class="p-who">
+          <div class="p-nm">${esc(p.authorName||'Farmer')}</div>
+          <div class="p-tm">${timeAgo(p.createdAt)}</div>
+        </div>
+      </div>
+      <div class="p-body">${esc(p.body||'')}</div>
+      ${imgs}
+      <div class="p-acts">
+        <button onclick="reactPost('${esc(p.id)}','like')">
+          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          ${(p.likes||0)}
+        </button>
+        <button onclick="openComments('${esc(p.id)}')">
+          <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+          ${(p.commentCount||0)}
+        </button>
+      </div>
+    </div>`;
+  }).join('') : `
+    <div class="empty">
+      <div class="e-ic">💬</div>
+      <h3>No posts yet</h3>
+      <p>Share something with the community.</p>
+    </div>`;
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <div class="tb-title">Community</div>
+      <div class="tb-actions">
+        <button class="tb-btn" onclick="navTo('create-post')">
+          <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>
+        </button>
+      </div>
+    </div>
+    <div style="padding:14px 18px 18px">${list}</div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   SCREEN: CREATE POST
+   ============================================================ */
+function renderCreatePost(){
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">New Post</div>
+    </div>
+    <form class="frm" onsubmit="submitPost(event)" style="padding-top:14px">
+      <div class="fld">
+        <textarea id="post-body" class="inp" rows="4" placeholder="What's happening on your farm? Ask a question, share a tip…" required></textarea>
+      </div>
+      <div class="fld">
+        <label>Photos</label>
+        <div class="up-grid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="up-box" data-slot="0"><img class="up-prev" alt=""><div class="up-ic">📷</div><div class="up-lb">Add</div><div class="up-del">×</div></div>
+          <div class="up-box" data-slot="1"><img class="up-prev" alt=""><div class="up-ic">📷</div><div class="up-lb">Add</div><div class="up-del">×</div></div>
+          <div class="up-box" data-slot="2"><img class="up-prev" alt=""><div class="up-ic">📷</div><div class="up-lb">Add</div><div class="up-del">×</div></div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-p" id="post-submit">Publish Post</button>
+    </form>
+  </div>`;
+}
+function wireCreatePost(){
+  document.querySelectorAll('#screen-create-post .up-box').forEach(box=>{
+    box.addEventListener('click', async(ev)=>{
+      if(ev.target.classList.contains('up-del')){
+        box.classList.remove('has-img');
+        box.querySelector('.up-prev').removeAttribute('src');
+        box.dataset.url='';
+        ev.stopPropagation();
+        return;
+      }
+      try{
+        const url = await uploadImage('community');
+        box.querySelector('.up-prev').src = url;
+        box.classList.add('has-img');
+        box.dataset.url = url;
+      }catch(e){ if(!String(e).includes('cancel')) toast('Upload failed'); }
+    });
+  });
+}
+window.submitPost = async (ev)=>{
+  ev.preventDefault();
+  const btn = document.getElementById('post-submit');
+  btn.disabled = true;
+  const body = document.getElementById('post-body').value.trim();
+  if(!body){ btn.disabled = false; return; }
+  const photos = [];
+  document.querySelectorAll('#screen-create-post .up-box').forEach(b=>{ if(b.dataset.url) photos.push(b.dataset.url); });
+  try{
+    const newRef = push(ref(db,'communityPosts'));
+    const data = {
+      author_id: S.user.uid,
+      authorName: (S.profile.firstName||'')+' '+(S.profile.lastName||''),
+      authorPhoto: S.profile.profileUrl || '',
+      body, photoUrls: photos,
+      likes: 0, commentCount: 0,
+      visibility: 'public',
+      createdAt: Date.now()
+    };
+    await set(newRef, data);
+    S.community.unshift({id:newRef.key, ...data});
+    toast('Posted ✓');
+    setTimeout(()=>navTo('community'), 400);
+  }catch(e){ toast('Failed: '+(e.message||e)); btn.disabled=false; }
+};
+
+window.reactPost = async (id, type)=>{
+  const p = S.community.find(x=>x.id===id);
+  if(!p) return;
+  p.likes = (p.likes||0)+1;
+  try{ await update(ref(db,'communityPosts/'+id), {likes:p.likes}); }catch(e){}
+  // local re-render
+  const el = document.getElementById('screen-community');
+  if(el) el.innerHTML = renderCommunity();
+};
+
+window.openComments = (id)=>{ toast('Comments coming soon'); };
+
+/* ============================================================
+   SCREEN: MARKETPLACE
+   ============================================================ */
+function renderMarketplace(){
+  const items = S.marketplace || [];
+  const cards = items.length ? items.map(m=>`
+    <div class="mk-card" onclick="openProduct('${esc(m.id)}')">
+      <div class="mk-img">
+        ${m.photoUrls?.[0]?`<img src="${esc(m.photoUrls[0])}" alt="">`:pickIcon(m.productName||m.title||'')}
+        <span class="mk-status">${esc(m.status==='sold'?'Sold':(m.status||'Available'))}</span>
+      </div>
+      <div class="mk-bd">
+        <div class="mk-nm">${esc(m.title||m.productName||'Product')}</div>
+        <div class="mk-sz">${esc(m.quantity||'')} ${esc(m.unit||'')}</div>
+        <div class="mk-pr">${fmtZMK(m.priceAmount)}</div>
+        <div class="mk-ct">📍 ${esc(m.city||'Zambia')}</div>
+      </div>
+    </div>
+  `).join('') : `
+    <div style="grid-column:1/-1">
+      <div class="empty">
+        <div class="e-ic">🛒</div>
+        <h3>No listings yet</h3>
+        <p>Be the first to post goods for sale.</p>
+        <div style="height:14px"></div>
+        <button class="btn btn-p" style="max-width:220px;margin:0 auto" onclick="navTo('post-ready-goods')">+ Post Ready Goods</button>
+      </div>
+    </div>`;
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Marketplace</div>
+      <div class="tb-actions">
+        <button class="tb-btn" onclick="openCart()" style="position:relative">
+          <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+          ${S.cart.length?`<span class="cart-badge">${S.cart.length}</span>`:''}
+        </button>
+      </div>
+    </div>
+
+    <div class="search-wrap" style="padding-top:12px">
+      <div class="search" onclick="toast('Search marketplace')">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14z"/></svg>
+        <input type="text" placeholder="Search produce, seeds, tools…" readonly>
+      </div>
+    </div>
+
+    <div class="chips-row">
+      ${['All','Crops','Animals','Fish','Seeds','Fertilizers','Tools','Feed'].map((c,i)=>`
+        <button class="chip ${i===0?'active':''}">${c}</button>
+      `).join('')}
+    </div>
+
+    <div class="mk-grid">${cards}</div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   SCREEN: PRODUCT DETAIL
+   ============================================================ */
+function renderProduct(id){
+  const m = (S.marketplace||[]).find(x=>x.id===id);
+  if(!m) return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button></div></div>`;
+  const ic = pickIcon(m.title||m.productName||'');
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">${esc(m.title||'Product')}</div>
+    </div>
+    <div class="detail-hero" style="background:${gradFor(m.title||'')}">
+      ${m.photoUrls?.[0]?`<img src="${esc(m.photoUrls[0])}" alt="">`:ic}
+    </div>
+    <div class="detail-body">
+      <h1>${esc(m.title||'')}</h1>
+      <div class="d-sc">${esc(m.quantity||'')} ${esc(m.unit||'')} available</div>
+      <div class="detail-tags">
+        <span class="dtag">${esc(m.category||'Produce')}</span>
+        <span class="dtag blue">📍 ${esc(m.city||'Zambia')}</span>
+        <span class="dtag amber">${esc(m.status||'Available')}</span>
+      </div>
+      <div style="font-size:26px;font-weight:900;color:var(--p-d);letter-spacing:-.03em;margin-bottom:10px">${fmtZMK(m.priceAmount)}${m.priceBasis?' / '+esc(m.priceBasis):''}</div>
+      ${m.description?`<div class="d-section"><h3>Description</h3><p>${esc(m.description)}</p></div>`:''}
+      ${m.targetMarket?`<div class="d-section"><h3>Target Buyers</h3><p>${esc(m.targetMarket)}</p></div>`:''}
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-o" onclick="addToCart('${esc(m.id)}')">Add to Cart</button>
+        <button class="btn btn-p" onclick="buyNow('${esc(m.id)}')">Buy Now</button>
+      </div>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+window.openProduct = (id)=>{ navTo('product-detail', {id}); };
+
+window.addToCart = (id)=>{
+  const existing = S.cart.find(c=>c.id===id);
+  if(existing) existing.qty++;
+  else S.cart.push({id, qty:1});
+  toast('Added to cart');
+  const el = document.getElementById('screen-product-detail');
+  if(el) el.innerHTML = renderProduct(id);
+};
+window.buyNow = (id)=>{
+  S.cart = [{id, qty:1}];
+  navTo('checkout');
+};
+
+function renderCart(){
+  const items = S.cart.map(c=>{
+    const m = (S.marketplace||[]).find(x=>x.id===c.id);
+    if(!m) return '';
+    return `
+      <div class="card" style="display:flex;gap:10px;align-items:center">
+        <div style="width:52px;height:52px;border-radius:10px;background:${gradFor(m.title||'')};display:flex;align-items:center;justify-content:center;font-size:24px;overflow:hidden;flex-shrink:0">
+          ${m.photoUrls?.[0]?`<img src="${esc(m.photoUrls[0])}" style="width:100%;height:100%;object-fit:cover">`:pickIcon(m.title||'')}
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:800;color:var(--td)">${esc(m.title||'')}</div>
+          <div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:2px">${fmtZMK(m.priceAmount)}</div>
+        </div>
+        <div style="font-size:12px;font-weight:800">×${c.qty}</div>
+      </div>`;
+  }).join('');
+
+  const subtotal = S.cart.reduce((s,c)=>{
+    const m = (S.marketplace||[]).find(x=>x.id===c.id);
+    return s + (m ? Number(m.priceAmount||0)*c.qty : 0);
+  },0);
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Cart</div>
+    </div>
+    <div style="padding:14px 18px">
+      ${S.cart.length ? items : `<div class="empty"><div class="e-ic">🛒</div><h3>Cart is empty</h3><p>Browse the marketplace to add items.</p></div>`}
+      ${S.cart.length ? `
+        <div style="margin-top:16px;padding:14px;background:var(--sf2);border-radius:var(--r);border:1px solid var(--bd)">
+          <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:6px"><span>Subtotal</span><span>${fmtZMK(subtotal)}</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--tl);font-weight:600;margin-bottom:6px"><span>Delivery</span><span>Calculated at checkout</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:900;color:var(--p-d);padding-top:8px;border-top:1px solid var(--bd);margin-top:8px"><span>Total</span><span>${fmtZMK(subtotal)}</span></div>
+        </div>
+        <div style="height:14px"></div>
+        <button class="btn btn-p" onclick="navTo('checkout')">Proceed to Checkout</button>
+      `:''}
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+window.openCart = ()=> navTo('cart');
+
+function renderCheckout(){
+  const subtotal = S.cart.reduce((s,c)=>{
+    const m = (S.marketplace||[]).find(x=>x.id===c.id);
+    return s + (m ? Number(m.priceAmount||0)*c.qty : 0);
+  },0);
+  const delivery = 60;
+  const fees = 5;
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Checkout</div>
+    </div>
+    <form class="frm" onsubmit="placeOrder(event)" style="padding-top:14px">
+      <div class="fld"><label>Full Name</label><input id="co-name" class="inp" required value="${esc((S.profile.firstName||'')+' '+(S.profile.lastName||''))}"></div>
+      <div class="fld"><label>Phone</label><input id="co-phone" class="inp" type="tel" required value="${esc(S.profile.phone||'')}"></div>
+      <div class="fld"><label>Delivery Address</label><input id="co-addr" class="inp" required placeholder="Street, town, city"></div>
+      <div class="fld">
+        <label>Fulfilment</label>
+        <select id="co-method" class="inp" onchange="document.getElementById('co-fee').textContent = this.value==='delivery'?'ZMK 60':'ZMK 0'">
+          <option value="delivery">Delivery</option>
+          <option value="pickup">Pickup / Collection</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label>Payment Method</label>
+        <select id="co-pay" class="inp">
+          <option>Mobile Money</option>
+          <option>Bank Transfer</option>
+          <option>Cash on Delivery</option>
+        </select>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;color:var(--tb);margin-bottom:6px"><span>Subtotal</span><span>${fmtZMK(subtotal)}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;color:var(--tb);margin-bottom:6px"><span>Delivery</span><span id="co-fee">ZMK 60</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;color:var(--tb);margin-bottom:8px"><span>Fees</span><span>${fmtZMK(fees)}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:900;color:var(--p-d);padding-top:8px;border-top:1px solid var(--bd)"><span>Total</span><span>${fmtZMK(subtotal+delivery+fees)}</span></div>
+      </div>
+
+      <button type="submit" class="btn btn-p">Place Order</button>
+    </form>
+  </div>
+  ${bottomNavHTML()}`;
+}
+window.placeOrder = async (ev)=>{
+  ev.preventDefault();
+  const id = 'ORD-' + Date.now().toString(36).toUpperCase();
+  toast('Order placed: ' + id);
+  try{
+    await set(ref(db,'orders/'+id), {
+      buyer_id: S.user.uid,
+      items: S.cart,
+      name: document.getElementById('co-name').value,
+      phone: document.getElementById('co-phone').value,
+      address: document.getElementById('co-addr').value,
+      method: document.getElementById('co-method').value,
+      payment: document.getElementById('co-pay').value,
+      status: 'pending',
+      createdAt: Date.now()
+    });
+    S.cart = [];
+    modal(`
+      <h3>Order placed 🎉</h3>
+      <p>Reference: <strong>${esc(id)}</strong><br>Your order is being processed.</p>
+      <button class="btn btn-p" onclick="closeModal();navTo('home')">Back to Home</button>
+    `);
+  }catch(e){ toast('Failed: '+(e.message||e)); }
+};
+
+/* ============================================================
+   SCREEN: POST READY GOODS
+   ============================================================ */
+function renderPostReadyGoods(){
+  const options = (S.catalogue||[]).map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Post Ready Goods</div>
+    </div>
+    <form class="frm" onsubmit="submitListing(event)" style="padding-top:14px">
+      <div class="fld">
+        <label>Category</label>
+        <select id="pl-cat" class="inp">
+          <option value="crops">🌾 Crops</option>
+          <option value="animals">🐄 Animals</option>
+          <option value="fish">🐟 Fish</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label>Product</label>
+        <select id="pl-product" class="inp" required>
+          <option value="">Select…</option>
+          ${options}
+        </select>
+      </div>
+      <div class="fld"><label>Title</label><input id="pl-title" class="inp" required placeholder="e.g. Fresh Tomatoes – 20 crates"></div>
+      <div class="fld" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div><label>Quantity</label><input id="pl-qty" class="inp" type="number" step="0.1" required></div>
+        <div><label>Unit</label>
+          <select id="pl-unit" class="inp"><option>kg</option><option>crate</option><option>bag</option><option>head</option><option>tray</option><option>piece</option></select>
+        </div>
+      </div>
+      <div class="fld"><label>Price (ZMK)</label><input id="pl-price" class="inp" type="number" step="0.01" required></div>
+      <div class="fld"><label>City</label><input id="pl-city" class="inp" value="${esc(S.userLocation)}" required></div>
+      <div class="fld"><label>Target Market</label>
+        <select id="pl-target" class="inp">
+          <option>Wholesalers</option><option>Retailers</option><option>Households</option><option>Restaurants</option><option>Processors</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label>Photos (up to 5)</label>
+        <div class="up-grid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="up-box" data-slot="0"><img class="up-prev" alt=""><div class="up-ic">📷</div><div class="up-lb">Add</div><div class="up-del">×</div></div>
+          <div class="up-box" data-slot="1"><img class="up-prev" alt=""><div class="up-ic">📷</div><div class="up-lb">Add</div><div class="up-del">×</div></div>
+          <div class="up-box" data-slot="2"><img class="up-prev" alt=""><div class="up-ic">📷</div><div class="up-lb">Add</div><div class="up-del">×</div></div>
+        </div>
+      </div>
+      <div class="fld"><label>Description</label><textarea id="pl-desc" class="inp" rows="3" placeholder="Quality, variety, packaging, freshness…"></textarea></div>
+      <div class="fld"><label>Availability</label>
+        <select id="pl-avail" class="inp"><option value="now">Available now</option><option value="soon">Available soon</option></select>
+      </div>
+      <div class="fld"><label>Fulfilment</label>
+        <select id="pl-fulfil" class="inp"><option>Buyer collection</option><option>Seller delivery</option><option>AgriCare delivery</option></select>
+      </div>
+
+      <div id="pl-error" style="color:var(--danger);font-size:13px;font-weight:600;display:none;padding:10px 12px;background:#fef2f2;border:1px solid rgba(220,38,38,.2);border-radius:var(--r-sm)"></div>
+      <button type="submit" class="btn btn-p" id="pl-submit">Publish Listing</button>
+    </form>
+  </div>
+  ${bottomNavHTML()}`;
+}
+window.postReadyGoods = (actId)=> navTo('post-ready-goods', {actId});
+function wirePostReadyGoods(){
+  document.querySelectorAll('#screen-post-ready-goods .up-box').forEach(box=>{
+    box.addEventListener('click', async(ev)=>{
+      if(ev.target.classList.contains('up-del')){
+        box.classList.remove('has-img');
+        box.querySelector('.up-prev').removeAttribute('src');
+        box.dataset.url='';
+        ev.stopPropagation();
+        return;
+      }
+      try{
+        const url = await uploadImage('listings');
+        box.querySelector('.up-prev').src = url;
+        box.classList.add('has-img');
+        box.dataset.url = url;
+      }catch(e){ if(!String(e).includes('cancel')) toast('Upload failed'); }
+    });
+  });
+}
+window.submitListing = async (ev)=>{
+  ev.preventDefault();
+  const err = document.getElementById('pl-error');
+  err.style.display='none';
+  const btn = document.getElementById('pl-submit');
+  btn.disabled = true;
+
+  const product = document.getElementById('pl-product').value;
+  const catItem = (S.catalogue||[]).find(c=>c.id===product);
+  const title = document.getElementById('pl-title').value.trim();
+  const qty = document.getElementById('pl-qty').value;
+  const unit = document.getElementById('pl-unit').value;
+  const price = document.getElementById('pl-price').value;
+  const city = document.getElementById('pl-city').value.trim();
+  const target = document.getElementById('pl-target').value;
+  const desc = document.getElementById('pl-desc').value.trim();
+  const avail = document.getElementById('pl-avail').value;
+  const fulfil = document.getElementById('pl-fulfil').value;
+  const category = document.getElementById('pl-cat').value;
+
+  if(!product || !title || !qty || !price){
+    err.textContent = 'Fill in all required fields.';
+    err.style.display='block';
+    btn.disabled=false; return;
+  }
+
+  const photos = [];
+  document.querySelectorAll('#screen-post-ready-goods .up-box').forEach(b=>{ if(b.dataset.url) photos.push(b.dataset.url); });
+
+  try{
+    const newRef = push(ref(db,'marketListings'));
+    const data = {
+      seller_id: S.user.uid,
+      sellerName: (S.profile.firstName||'')+' '+(S.profile.lastName||''),
+      sellerPhoto: S.profile.profileUrl||'',
+      category,
+      catalog_item_id: product,
+      title,
+      productName: catItem?.name || title,
+      quantity: qty, unit,
+      priceAmount: Number(price), currency: 'ZMW', priceBasis: unit,
+      city, targetMarket: target,
+      description: desc,
+      availability: avail,
+      fulfilment: fulfil,
+      photoUrls: photos,
+      status: 'available',
+      createdAt: Date.now(),
+      expiresAt: Date.now() + 30*86400000
+    };
+    await set(newRef, data);
+    S.marketplace.unshift({id:newRef.key, ...data});
+    S.myListings.unshift({id:newRef.key, ...data});
+    toast('Listing published ✓');
+    setTimeout(()=>navTo('marketplace'), 400);
+  }catch(e){
+    err.textContent = 'Error: '+(e.message||e);
+    err.style.display='block';
+    btn.disabled=false;
+  }
+};
+
+/* ============================================================
+   SCREEN: DELIVERY
+   ============================================================ */
+function renderDelivery(){
+  const deliveries = [];
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <div class="tb-title">Delivery</div>
+    </div>
+
+    <div class="cta-banner" style="background:linear-gradient(135deg,#dbeafe 0%,#bfdbfe 100%);cursor:pointer" onclick="navTo('request-delivery')">
+      <div class="cta-txt">
+        <h4 style="color:#1e40af">Request a Delivery</h4>
+        <p style="color:#1e3a8a">Bicycle · Motorbike · Car · Van · Truck</p>
+      </div>
+      <div class="cta-arrow" style="background:#2563eb">
+        <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+      </div>
+    </div>
+
+    <div class="sec-h"><h3>My Delivery Requests</h3></div>
+    <div style="padding:0 18px 18px">
+      ${deliveries.length ? deliveries.map(d=>`<div class="card">${esc(d.title||'')}</div>`).join('') : `
+        <div class="empty">
+          <div class="e-ic">🚚</div>
+          <h3>No delivery requests</h3>
+          <p>Tap "Request a Delivery" to get started.</p>
+        </div>`}
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+function renderRequestDelivery(){
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Request Delivery</div>
+    </div>
+    <form class="frm" onsubmit="submitDelivery(event)" style="padding-top:14px">
+      <div class="fld"><label>Pickup Location</label><input id="dl-pickup" class="inp" required placeholder="Where should we collect from?"></div>
+      <div class="fld"><label>Drop-off Location</label><input id="dl-drop" class="inp" required placeholder="Where should we deliver to?"></div>
+      <div class="fld"><label>Item Category</label>
+        <select id="dl-cat" class="inp"><option>Crops / Produce</option><option>Livestock</option><option>Poultry</option><option>Fish</option><option>Farm Inputs</option></select>
+      </div>
+      <div class="fld" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div><label>Quantity</label><input id="dl-qty" class="inp" type="number" required placeholder="e.g. 500"></div>
+        <div><label>Unit</label><select id="dl-unit" class="inp"><option>kg</option><option>bag</option><option>crate</option><option>head</option></select></div>
+      </div>
+      <div class="fld"><label>Vehicle Type</label>
+        <select id="dl-vehicle" class="inp">
+          <option value="bicycle">🚲 Bicycle (light, short distance)</option>
+          <option value="bike">🏍️ Motorbike (small parcels)</option>
+          <option value="car">🚗 Car (smaller loads)</option>
+          <option value="van">🚐 Van (medium loads)</option>
+          <option value="truck">🚚 Truck (bulk / livestock)</option>
+        </select>
+      </div>
+      <div class="fld"><label>Pickup Date</label><input id="dl-date" class="inp" type="date" required></div>
+      <div class="fld"><label>Handling Requirements</label>
+        <select id="dl-handle" class="inp"><option>None</option><option>Perishable – cold-box</option><option>Live animal – humane transport</option><option>Fragile</option></select>
+      </div>
+      <button type="submit" class="btn btn-p">Request Quote</button>
+    </form>
+  </div>
+  ${bottomNavHTML()}`;
+}
+window.submitDelivery = async (ev)=>{
+  ev.preventDefault();
+  const id = 'DLV-' + Date.now().toString(36).toUpperCase();
+  try{
+    await set(ref(db,'deliveryRequests/'+id), {
+      requester_id: S.user.uid,
+      pickup: document.getElementById('dl-pickup').value,
+      dropoff: document.getElementById('dl-drop').value,
+      category: document.getElementById('dl-cat').value,
+      quantity: document.getElementById('dl-qty').value,
+      unit: document.getElementById('dl-unit').value,
+      vehicle: document.getElementById('dl-vehicle').value,
+      date: document.getElementById('dl-date').value,
+      handling: document.getElementById('dl-handle').value,
+      status: 'requested',
+      createdAt: Date.now()
+    });
+    modal(`<h3>Request submitted 🚚</h3><p>Reference: <strong>${esc(id)}</strong><br>A provider will send a quote shortly.</p><button class="btn btn-p" onclick="closeModal();navTo('delivery')">Done</button>`);
+  }catch(e){ toast('Failed: '+(e.message||e)); }
+};
+
+/* ============================================================
+   SCREEN: BUY SUPPLIES
+   ============================================================ */
+function renderBuySupplies(cat){
+  cat = cat || 'all';
+  const items = [
+    {id:'seed-maize',   cat:'seeds',       name:'Hybrid Maize Seed',    icon:'🌱', price:120, unit:'kg',  supplier:'AgriSeed Zambia'},
+    {id:'seed-tomato',  cat:'seeds',       name:'Tomato Seed (F1)',     icon:'🍅', price:180, unit:'pkt', supplier:'GreenGrow'},
+    {id:'fert-npk',     cat:'fertilizer',  name:'NPK 15:15:15',         icon:'💧', price:780, unit:'bag', supplier:'FertCo'},
+    {id:'fert-urea',    cat:'fertilizer',  name:'Urea 46%',             icon:'💧', price:720, unit:'bag', supplier:'FertCo'},
+    {id:'pest-herb',    cat:'pesticide',   name:'Herbicide (Atrazine)', icon:'🧴', price:220, unit:'L',   supplier:'CropShield'},
+    {id:'pest-fung',    cat:'pesticide',   name:'Fungicide',            icon:'🧴', price:280, unit:'L',   supplier:'CropShield'},
+    {id:'tool-hoe',     cat:'tools',       name:'Hand Hoe',             icon:'🔧', price:85,  unit:'pc',  supplier:'FarmTools'},
+    {id:'tool-spray',   cat:'tools',       name:'Knapsack Sprayer',     icon:'🔧', price:450, unit:'pc',  supplier:'FarmTools'},
+    {id:'feed-layer',   cat:'feed',        name:'Layer Feed',           icon:'🌾', price:460, unit:'bag', supplier:'FeedMaster'},
+    {id:'feed-broiler', cat:'feed',        name:'Broiler Feed',         icon:'🌾', price:480, unit:'bag', supplier:'FeedMaster'},
+    {id:'med-antibio',  cat:'medicine',    name:'Veterinary Antibiotic',icon:'💊', price:150, unit:'vial',supplier:'VetPlus'},
+    {id:'med-vacc',     cat:'medicine',    name:'Poultry Vaccine',      icon:'💉', price:95,  unit:'dose',supplier:'VetPlus'}
+  ];
+  const filtered = cat==='all' ? items : items.filter(i=>i.cat===cat);
+
+  const cards = filtered.map(i=>`
+    <div class="card" style="display:flex;gap:10px;align-items:center;margin-bottom:10px">
+      <div style="width:52px;height:52px;border-radius:10px;background:${gradFor(i.name)};display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">${i.icon}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:800;color:var(--td);letter-spacing:-.01em">${esc(i.name)}</div>
+        <div style="font-size:10.5px;color:var(--tl);font-weight:600;margin-top:2px">${esc(i.supplier)}</div>
+        <div style="font-size:13px;font-weight:900;color:var(--p-d);margin-top:4px">${fmtZMK(i.price)} <span style="font-size:10px;color:var(--tl);font-weight:600">/ ${esc(i.unit)}</span></div>
+      </div>
+      <button class="btn btn-p" style="width:auto;padding:8px 12px;font-size:12px" onclick="toast('Added: ${esc(i.name)}')">+</button>
+    </div>`).join('');
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Farm Inputs</div>
+    </div>
+
+    <div class="sup-row" style="padding-top:12px">
+      ${[
+        {id:'all',        lb:'All',         ic:'🛒'},
+        {id:'seeds',      lb:'Seeds',       ic:'🌱'},
+        {id:'fertilizer', lb:'Fertilizer',  ic:'💧'},
+        {id:'pesticide',  lb:'Pesticide',   ic:'🧴'},
+        {id:'tools',      lb:'Tools',       ic:'🔧'},
+        {id:'feed',       lb:'Feed',        ic:'🌾'},
+        {id:'medicine',   lb:'Medicine',    ic:'💊'}
+      ].map(c=>`
+        <button class="sup-btn ${cat===c.id?'active':''}" onclick="navTo('buy-supplies',{cat:'${c.id}'})">
+          <div class="sup-ic" style="background:${gradFor(c.id)}">${c.ic}</div>
+          <div class="sup-lb">${c.lb}</div>
+        </button>`).join('')}
+    </div>
+
+    <div style="padding:0 18px 18px">${cards}</div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   SCREEN: WEATHER
+   ============================================================ */
+function renderWeather(){
+  const w = S.weather;
+  if(!w){
+    return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button><div class="tb-title">Weather</div></div><div class="empty"><div class="e-ic">☁️</div><h3>Loading weather…</h3></div></div>`;
+  }
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Weather Forecast</div>
+    </div>
+
+    <div style="padding:14px 18px">
+      <div style="text-align:center;padding:20px 0">
+        <div style="font-size:13px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">📍 ${esc(S.userLocation)}</div>
+        <div style="font-size:68px;line-height:1;margin-bottom:6px">${weatherEmoji(w.code)}</div>
+        <div style="font-size:44px;font-weight:900;color:var(--td);letter-spacing:-.04em;line-height:1">${w.temp}°C</div>
+        <div style="font-size:14px;color:var(--tl);font-weight:700;margin-top:4px">${weatherDesc(w.code)}</div>
+        <div style="font-size:12px;color:var(--tm);font-weight:600;margin-top:4px">H: ${w.hi}°  L: ${w.lo}°  ·  💧 ${w.hum}%  ·  💨 ${w.wind}km/h</div>
+      </div>
+
+      <div class="card">
+        <h3 style="font-size:13px;font-weight:800;color:var(--td);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em">3-Day Forecast</h3>
+        <div style="display:flex;justify-content:space-between;gap:8px">
+          ${w.daily.map(d=>`
+            <div style="flex:1;text-align:center;padding:10px 4px;border-radius:var(--r);background:var(--sf2)">
+              <div style="font-size:11px;font-weight:800;color:var(--td);margin-bottom:6px">${d.day}</div>
+              <div style="font-size:24px;margin-bottom:4px">${weatherEmoji(d.code)}</div>
+              <div style="font-size:12px;font-weight:800;color:var(--td)">${d.hi}°</div>
+              <div style="font-size:10px;color:var(--tl);font-weight:600">${d.lo}°</div>
+            </div>`).join('')}
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px;background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-color:rgba(180,83,9,.2)">
+        <div style="display:flex;gap:10px">
+          <div style="font-size:22px">💡</div>
+          <div>
+            <h4 style="font-size:13px;font-weight:800;color:#78350f;margin-bottom:4px">Farming Tips</h4>
+            <p style="font-size:12px;color:#78350f;line-height:1.5;font-weight:600">Adjust irrigation based on rainfall. Avoid overwatering. Keep soil moist but not waterlogged.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   SCREEN: PROFILE
+   ============================================================ */
+function renderProfile(){
+  const p = S.profile||{};
+  const fullName = ((p.firstName||'')+' '+(p.lastName||'')).trim() || p.displayName || p.name || 'Farmer';
+  const initial = initials(fullName);
+  const listings = S.myListings || [];
+  const posts = (S.community||[]).filter(x=>x.author_id===S.user.uid);
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered" style="background:transparent;border-bottom:none">
+      <div class="tb-title" style="opacity:0">Profile</div>
+      <div class="tb-actions">
+        <button class="tb-btn" onclick="toast('Settings')">
+          <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.488.488 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="prof-hero">
+      <div class="p-av">${p.profileUrl?`<img src="${esc(p.profileUrl)}" alt="">`:initial}</div>
+      <h2>${esc(fullName)}</h2>
+      <div class="p-ver">✓ Verified Farmer</div>
+      <div class="p-loc">📍 ${esc(S.userLocation)}</div>
+      <div class="prof-stats">
+        <div><div class="ps-n">${(S.myActivities||[]).length}</div><div class="ps-l">Activities</div></div>
+        <div><div class="ps-n">${listings.length}</div><div class="ps-l">Listings</div></div>
+        <div><div class="ps-n">${posts.length}</div><div class="ps-l">Posts</div></div>
+      </div>
+    </div>
+
+    <div class="menu-list">
+      <div class="menu-item" onclick="navTo('myfarm')">
+        <div class="mi-ic">🌱</div>
+        <div class="mi-tx"><div class="mi-tt">My Farm</div><div class="mi-sb">${(S.myActivities||[]).length} activities</div></div>
+        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+      <div class="menu-item" onclick="navTo('my-posts')">
+        <div class="mi-ic">📋</div>
+        <div class="mi-tx"><div class="mi-tt">My Posts</div><div class="mi-sb">Manage your listings</div></div>
+        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+      <div class="menu-item" onclick="navTo('weather')">
+        <div class="mi-ic">☁️</div>
+        <div class="mi-tx"><div class="mi-tt">Weather</div><div class="mi-sb">Local forecast</div></div>
+        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+      <div class="menu-item" onclick="navTo('buy-supplies')">
+        <div class="mi-ic">🛒</div>
+        <div class="mi-tx"><div class="mi-tt">Farm Inputs</div><div class="mi-sb">Buy seeds, fertilizer, tools</div></div>
+        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+      <div class="menu-item" onclick="changeLocation()">
+        <div class="mi-ic">📍</div>
+        <div class="mi-tx"><div class="mi-tt">Change Location</div><div class="mi-sb">${esc(S.userLocation)}</div></div>
+        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+      <div class="menu-item" onclick="doLogout()">
+        <div class="mi-ic" style="background:#fee2e2">🚪</div>
+        <div class="mi-tx"><div class="mi-tt" style="color:var(--danger)">Sign Out</div><div class="mi-sb">Log out of your account</div></div>
+      </div>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+window.changeLocation = ()=>{
+  const cities = ['Lusaka','Kitwe','Ndola','Chingola','Kasama','Livingstone','Chipata','Kabwe','Solwezi','Mongu'];
+  modal(`
+    <h3>Change Location</h3>
+    <p>Select your farming region for weather and discovery.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">
+      ${cities.map(c=>`<button class="chip" onclick="setLoc('${c}')">${c}</button>`).join('')}
+    </div>
+    <div style="height:12px"></div>
+    <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+  `);
+};
+window.setLoc = async (c)=>{
+  S.userLocation = c;
+  closeModal();
+  toast('Location: '+c);
+  try{ await update(ref(db,'users/'+S.user.uid), {location:c}); }catch(e){}
+  S.weather = await loadWeather(c);
+  // re-render current screen
+  route();
+};
+
+window.doLogout = ()=>{
+  modal(`
+    <h3>Sign out?</h3>
+    <p>You'll need to log in again to access your farm.</p>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmLogout()">Sign Out</button>
+    </div>
+  `);
+};
+window.confirmLogout = async ()=>{
+  try{ await signOut(auth); }catch(e){}
+  window.location.href = 'index.html';
+};
+
+/* ============================================================
+   SCREEN: MY POSTS
+   ============================================================ */
+function renderMyPosts(){
+  const posts = S.myListings || [];
+  const active = posts.filter(p=>p.status==='available');
+  const sold = posts.filter(p=>p.status==='sold');
+  const expired = posts.filter(p=>p.status==='expired');
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">My Posts</div>
+    </div>
+    <div class="chips-row" style="padding-top:12px">
+      <button class="chip active">Active (${active.length})</button>
+      <button class="chip">Sold (${sold.length})</button>
+      <button class="chip">Expired (${expired.length})</button>
+    </div>
+    <div style="padding:0 18px 18px">
+      ${active.length ? active.map(m=>`
+        <div class="card" style="display:flex;gap:10px;margin-bottom:10px;align-items:center">
+          <div style="width:52px;height:52px;border-radius:10px;background:${gradFor(m.title||'')};display:flex;align-items:center;justify-content:center;font-size:24px;overflow:hidden;flex-shrink:0">
+            ${m.photoUrls?.[0]?`<img src="${esc(m.photoUrls[0])}" style="width:100%;height:100%;object-fit:cover">`:pickIcon(m.title||'')}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:800;color:var(--td)">${esc(m.title||'')}</div>
+            <div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:2px">${esc(m.quantity||'')} ${esc(m.unit||'')} · ${fmtZMK(m.priceAmount)}</div>
+          </div>
+          <div style="display:flex;gap:4px">
+            <button class="btn btn-s btn-sm" style="width:auto;padding:6px 8px" onclick="event.stopPropagation();toast('Edit listing')">✎</button>
+            <button class="btn btn-s btn-sm" style="width:auto;padding:6px 8px" onclick="event.stopPropagation();toast('Paused')">⏸</button>
+          </div>
+        </div>`).join('') : `
+        <div class="empty">
+          <div class="e-ic">📋</div>
+          <h3>No active posts</h3>
+          <p>Post goods to start selling.</p>
+          <div style="height:12px"></div>
+          <button class="btn btn-p" style="max-width:220px;margin:0 auto" onclick="navTo('post-ready-goods')">+ Post Ready Goods</button>
+        </div>`}
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   ROUTER
+   ============================================================ */
+function route(){
+  const id = S.screen;
+  const el = document.getElementById('screen-'+id);
+  const wrap = document.querySelector('.screen-wrap');
+  if(!el) return;
+
+  switch(id){
+    case 'home': el.innerHTML = renderHome(); break;
+    case 'explore': el.innerHTML = renderExplore(S.screenData.filter); break;
+    case 'catalogue-detail': el.innerHTML = renderCatalogueDetail(S.screenData.id); break;
+    case 'myfarm': el.innerHTML = renderMyFarm(); break;
+    case 'create-activity': el.innerHTML = renderCreateActivity(S.screenData); wireCreateActivity(); break;
+    case 'activity-detail': el.innerHTML = renderActivityDetail(S.screenData.id); break;
+    case 'farm-activity': el.innerHTML = renderFarmActivity(S.screenData.filter); break;
+    case 'community': el.innerHTML = renderCommunity(); break;
+    case 'create-post': el.innerHTML = renderCreatePost(); wireCreatePost(); break;
+    case 'marketplace': el.innerHTML = renderMarketplace(); break;
+    case 'product-detail': el.innerHTML = renderProduct(S.screenData.id); break;
+    case 'cart': el.innerHTML = renderCart(); break;
+    case 'checkout': el.innerHTML = renderCheckout(); break;
+    case 'post-ready-goods': el.innerHTML = renderPostReadyGoods(); wirePostReadyGoods(); break;
+    case 'delivery': el.innerHTML = renderDelivery(); break;
+    case 'request-delivery': el.innerHTML = renderRequestDelivery(); break;
+    case 'buy-supplies': el.innerHTML = renderBuySupplies(S.screenData.cat); break;
+    case 'weather': el.innerHTML = renderWeather(); break;
+    case 'profile': el.innerHTML = renderProfile(); break;
+    case 'my-posts': el.innerHTML = renderMyPosts(); break;
+    default:
+      el.innerHTML = renderHome();
+  }
+}
+
+/* Override showScreen to call route() */
+const _origShowScreen = showScreen;
+window.showScreen = function(id, data={}, pushHistory=true){
+  S.screenData = data||{};
+  const wrap = document.querySelector('.screen-wrap');
+  let target = document.getElementById('screen-'+id);
+  if(!target){
+    target = document.createElement('div');
+    target.className = 'screen';
+    target.id = 'screen-'+id;
+    wrap.appendChild(target);
+  }
+  if(activeScreenEl && activeScreenEl !== target) activeScreenEl.classList.remove('active');
+  void target.offsetWidth;
+  target.classList.add('active');
+  activeScreenEl = target;
+  S.screen = id;
+  route();
+  if(pushHistory){
+    try{ history.pushState({screen:id, data}, '', '#'+id); }catch(e){}
+  }
+  updateNav(id);
+  const sc = target.querySelector('.scroll');
+  if(sc) sc.scrollTop = 0;
+};
+
+/* Make navTo use our override */
+window.navTo = (id, data)=> window.showScreen(id, data);
+
+/* Also rebind go* helpers */
+window.goHome      = ()=> window.navTo('home');
+window.goExplore   = ()=> window.navTo('explore');
+window.goCommunity = ()=> window.navTo('community');
+window.goDelivery  = ()=> window.navTo('delivery');
+window.goProfile   = ()=> window.navTo('profile');
+window.openActivity = (id)=>{ window.navTo('activity-detail', {id}); };
+window.openCatalogueItem = (id)=>{ window.navTo('catalogue-detail', {id}); };
+
+/* ============================================================
+   START FROM CATALOGUE
+   ============================================================ */
+window.startFromCatalogue = (id)=>{
+  const item = (S.catalogue||[]).find(c=>c.id===id);
+  if(!item){ toast('Not found'); return; }
+  const catMap = {Crop:'crops','Field Crops':'crops',Pulses:'crops',Vegetables:'crops',Fruits:'crops',Livestock:'livestock',Poultry:'poultry',Aquaculture:'fisheries','Capture fisheries':'fisheries'};
+  const cat = catMap[item.enterpriseType] || 'crops';
+  window.navTo('create-activity', {category:cat, speciesId:id});
+  // Pre-fill
+  setTimeout(()=>{
+    const sp = document.getElementById('act-species');
+    if(sp) sp.value = id;
+    const tt = document.getElementById('act-title');
+    if(tt) tt.value = item.name;
+  }, 100);
+};
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+window.doSearch = (q)=>{
+  q = (q||'').toLowerCase().trim();
+  if(!q) return;
+  const found = (S.catalogue||[]).filter(c=>
+    c.name.toLowerCase().includes(q) ||
+    (c.scientificName||'').toLowerCase().includes(q) ||
+    (c.group||'').toLowerCase().includes(q)
+  );
+  modal(`
+    <h3>Search: "${esc(q)}"</h3>
+    ${found.length ? `
+      <div style="max-height:50vh;overflow-y:auto;text-align:left">
+        ${found.slice(0,8).map(f=>`
+          <div class="menu-item" style="margin-bottom:6px" onclick="closeModal();openCatalogueItem('${esc(f.id)}')">
+            <div class="mi-ic" style="background:${f.grad}">${f.icon}</div>
+            <div class="mi-tx"><div class="mi-tt">${esc(f.name)}</div><div class="mi-sb">${esc(f.group||f.category)}</div></div>
+          </div>
+        `).join('')}
+      </div>
+    ` : `<p>No results found.</p>`}
+    <button class="btn btn-s" onclick="closeModal()">Close</button>
+  `);
+};
+window.openSearch = ()=>{ 
+  modal(`
+    <h3>Search</h3>
+    <input class="inp" id="md-search" placeholder="Crops, animals, fish…" style="width:100%;padding:12px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:15px;outline:none;margin-bottom:12px">
+    <button class="btn btn-p" onclick="closeModal();doSearch(document.getElementById('md-search').value)">Search</button>
+    <div style="height:8px"></div>
+    <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+  `);
+  setTimeout(()=>document.getElementById('md-search').focus(), 100);
+};
+
+/* ============================================================
+   MESSAGE (placeholder)
+   ============================================================ */
+window.openMessage = (uid, name)=>{
+  if(!uid){ toast('Cannot message this farmer'); return; }
+  modal(`
+    <h3>Message ${esc(name)}</h3>
+    <p>Direct messaging coming soon.</p>
+    <button class="btn btn-s" onclick="closeModal()">OK</button>
+  `);
+};
+
+/* ============================================================
+   START APP
+   ============================================================ */
+function renderBanned(reason){
+  return `
+    <div class="screen-wrap" style="display:flex;align-items:center;justify-content:center">
+      <div class="state-screen">
+        <div class="st-ic danger">🚫</div>
+        <h1>Account Banned</h1>
+        <p>${esc(reason||'Your account has been banned. Please contact support for more information.')}</p>
+        <button class="btn btn-s" onclick="doLogout()">Sign Out</button>
+      </div>
+    </div>`;
+}
+function renderMaintenance(){
+  return `
+    <div class="screen-wrap" style="display:flex;align-items:center;justify-content:center">
+      <div class="state-screen">
+        <div class="st-ic warn">🔧</div>
+        <h1>Under Maintenance</h1>
+        <p>AgriCare is getting an update. Please try again in a few minutes.</p>
+      </div>
+    </div>`;
+}
+
+async function startApp(){
+  // Show splash
+  const splash = document.getElementById('splash');
+  requestAnimationFrame(()=> splash.classList.add('show'));
+
+  // Auth check
+  onAuthStateChanged(auth, async (user)=>{
+    // Wait ~2.6s for splash animation
+    await new Promise(r=>setTimeout(r, 2600));
+
+    if(!user){
+      window.location.href = 'index.html';
+      return;
+    }
+    S.user = user;
+
+    // Check system state
+    const st = await checkSystemState();
+    if(st.maint){
+      document.getElementById('app').innerHTML = renderMaintenance();
+      return;
+    }
+    if(st.banned){
+      document.getElementById('app').innerHTML = renderBanned(st.banReason);
+      return;
+    }
+
+    // Load agriKnowledge
+    toast('Loading farm data…', 1500);
+    const agri = await loadAgriKnowledge();
+    S.agri = agri;
+    S.catalogue = agri?.catalogue || [];
+
+    // Load user profile
+    const ud = await loadUserData(user.uid);
+    S.profile = ud.profile || {};
+    S.myActivities = ud.activities || [];
+    S.myListings = ud.listings || [];
+
+    // Set location
+    S.userLocation = S.profile.location || 'Lusaka';
+
+    // Load feeds
+    const [acts, mkt, comm, sup] = await Promise.all([
+      loadAllActivities(),
+      loadMarketplace(),
+      loadCommunity(),
+      loadSuppliers()
+    ]);
+    S.allActivities = acts;
+    S.marketplace = mkt;
+    S.community = comm;
+    S.suppliers = sup;
+
+    // Load weather
+    S.weather = await loadWeather(S.userLocation);
+
+    // Build app shell
+    const app = document.getElementById('app');
+    app.innerHTML = `<div class="screen-wrap"></div>`;
+
+    // Create all screens lazily — start with home
+    const wrap = app.querySelector('.screen-wrap');
+    const home = document.createElement('div');
+    home.className = 'screen';
+    home.id = 'screen-home';
+    wrap.appendChild(home);
+    activeScreenEl = home;
+    S.screen = 'home';
+    home.classList.add('active');
+    route();
+
+    // Replace history
+    try{ history.replaceState({screen:'home'}, '', '#home'); }catch(e){}
+  });
+}
+
+startApp();
+
+/* ============================================================
+   SPLASH REMOVE AFTER ANIMATION
+   ============================================================ */
+setTimeout(()=>{
+  const splash = document.getElementById('splash');
+  if(splash && splash.parentNode){
+    setTimeout(()=>{
+      splash.classList.remove('show');
+      setTimeout(()=>{
+        if(splash.parentNode) splash.parentNode.removeChild(splash);
+      }, 1000);
+    }, 300);
+  }
+}, 2700);
+
+/* ============================================================
+   ERROR SAFETY
+   ============================================================ */
+window.addEventListener('unhandledrejection', e=>{
+  console.warn('Unhandled:', e.reason);
+});
+</script>
+
+</body>
+</html>
