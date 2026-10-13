@@ -85,7 +85,7 @@ img{display:block;max-width:100%}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ============================================================
-   GATE (approval / maintenance / banned)
+   GATE
    ============================================================ */
 .gate{
   position:fixed;inset:0;z-index:8000;background:#fff;
@@ -115,20 +115,33 @@ img{display:block;max-width:100%}
 }
 .leaflet-control-attribution a{color:#475569 !important}
 
-/* Driver marker */
-.drv-marker-wrap{background:none !important;border:none !important}
-.drv-marker{
-  width:46px;height:46px;display:flex;align-items:center;justify-content:center;
-  transform-origin:50% 50%;transition:transform .5s var(--e);
-  filter:drop-shadow(0 3px 8px rgba(0,0,0,.32));
+/* ============================================================
+   VEHICLE MARKER (per vehicle type)
+   ============================================================ */
+.veh-marker-wrap{background:none !important;border:none !important}
+.veh-marker{
+  width:52px;height:52px;display:flex;align-items:center;justify-content:center;
+  transform-origin:50% 50%;
+  transition:transform .5s var(--e);
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.32));
+  position:relative;
 }
-.drv-marker img{width:100%;height:100%;object-fit:contain;pointer-events:none}
-.drv-marker.no-img::after{
-  content:'\f0d1';font-family:'Font Awesome 6 Free';font-weight:900;
-  font-size:1.35rem;color:var(--p);
-  background:#fff;width:38px;height:38px;border-radius:50%;
+.veh-marker .veh-bubble{
+  width:42px;height:42px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 2px 8px rgba(0,0,0,.25);
+  color:#fff;font-size:1.1rem;
+  border:3px solid #fff;
+  box-shadow:0 0 0 2px rgba(15,23,42,.08),0 6px 14px -4px rgba(0,0,0,.35);
+}
+.veh-marker .veh-pulse{
+  position:absolute;inset:0;border-radius:50%;
+  border:2px solid rgba(15,122,52,.35);
+  animation:vehPulse 2s var(--e) infinite;
+  pointer-events:none;
+}
+@keyframes vehPulse{
+  0%{transform:scale(.7);opacity:.9}
+  100%{transform:scale(1.5);opacity:0}
 }
 
 /* Pickup/Dropoff markers */
@@ -148,7 +161,7 @@ img{display:block;max-width:100%}
 }
 
 /* ============================================================
-   FLOATING NAME CHIP (top-left, next to burger)
+   FLOATING NAME CHIP
    ============================================================ */
 .name-chip{
   position:fixed;top:calc(var(--safe-t) + 14px);left:66px;z-index:600;
@@ -177,7 +190,7 @@ img{display:block;max-width:100%}
 }
 
 /* ============================================================
-   FLOATING FLOAT BALANCE (top-right, big)
+   FLOAT BALANCE PILL
    ============================================================ */
 .float-balance-pill{
   position:fixed;top:calc(var(--safe-t) + 14px);right:14px;z-index:600;
@@ -289,7 +302,6 @@ body.has-panel #detailPanel{
   max-width:640px;margin:0 auto;padding:12px 14px 14px;
 }
 
-/* Compact active-trip sections */
 .dp-c-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
 .dp-c-tag{
   display:inline-flex;align-items:center;gap:5px;
@@ -425,7 +437,6 @@ body.has-panel #detailPanel{
 .dd-call-btn:active{transform:scale(.9)}
 .dd-call-btn.disabled{background:#d8d8dc;box-shadow:none;pointer-events:none}
 
-/* Promo block */
 .promo-block{
   background:linear-gradient(135deg,var(--ok-soft) 0%,#d1fae5 100%);
   border:1px solid rgba(22,163,74,.28);border-radius:11px;
@@ -453,7 +464,6 @@ body.has-panel #detailPanel{
 .promo-block .pb-row.highlight .pb-val{font-size:.78rem}
 .promo-block .pb-row.discount .pb-val{color:var(--danger)}
 
-/* Slide buttons */
 .slide-btn{
   position:relative;width:100%;height:54px;border-radius:999px;color:#fff;
   overflow:hidden;touch-action:none;
@@ -557,7 +567,6 @@ body.has-panel #detailPanel{
   padding:2px 8px;border-radius:999px;min-width:20px;text-align:center;
 }
 .nav-item .nav-badge.zero{display:none}
-.nav-item .nav-badge.gold{background:var(--warn)}
 .sidebar-foot{padding:14px 12px calc(var(--safe-b) + 20px);border-top:1px solid var(--bd);flex-shrink:0}
 .logout-btn{
   width:100%;display:flex;align-items:center;gap:15px;
@@ -663,8 +672,9 @@ body.has-panel #detailPanel{
 .chip.searching{background:var(--info-soft);color:#1d4ed8}
 .chip.unclaimed{background:var(--warn-soft);color:#78350f}
 .chip.paid{background:var(--ok-soft);color:#065f46}
+.chip.approved{background:var(--ok-soft);color:#065f46}
+.chip.rejected{background:var(--danger-soft);color:#991b1b}
 
-/* Account page */
 .account-hero{
   background:linear-gradient(160deg,var(--p-d) 0%,#04361a 100%);
   color:#fff;border-radius:20px;padding:22px;margin-bottom:16px;
@@ -715,7 +725,6 @@ body.has-panel #detailPanel{
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 
-/* NRC tiles */
 .nrc-strip{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .nrc-tile{
   background:#fff;border:1px solid var(--bd);border-radius:var(--r);
@@ -739,7 +748,6 @@ body.has-panel #detailPanel{
   display:flex;align-items:center;justify-content:center;font-size:11px;
 }
 
-/* Settings rows */
 .settings-list{background:var(--sf2);border-radius:16px;padding:4px;margin-bottom:16px}
 .settings-row{
   width:100%;display:flex;align-items:center;gap:14px;
@@ -761,7 +769,6 @@ body.has-panel #detailPanel{
 .settings-row .sr-txt span{display:block;font-size:.76rem;color:var(--tl)}
 .settings-row .sr-arrow{color:var(--tm);font-size:.82rem}
 
-/* History cards */
 .filter-tabs{
   display:flex;gap:8px;padding:12px 16px 8px;
   overflow-x:auto;-webkit-overflow-scrolling:touch;
@@ -883,7 +890,7 @@ body.has-panel #detailPanel{
 .hist-details .hd-actions button.ghost{background:var(--sf2);color:var(--td)}
 
 /* ============================================================
-   REQUEST POPUP — dual-slide accept/reject
+   REQUEST POPUP
    ============================================================ */
 #requestModal{z-index:5500;padding:18px;align-items:center;justify-content:center}
 .req-modal{
@@ -986,7 +993,6 @@ body.has-panel #detailPanel{
   font-size:.72rem;font-weight:700;color:#78350f;margin-bottom:10px;
 }
 
-/* Dual-direction slide — Left=Reject, Right=Accept */
 .dual-slide-wrap{
   position:relative;width:100%;height:64px;border-radius:999px;
   overflow:hidden;touch-action:none;user-select:none;
@@ -1057,7 +1063,6 @@ body.has-panel #detailPanel{
 .modal-foot .legend .l-dot.me{background:var(--p)}
 .modal-foot .legend .l-dot.target{background:var(--info)}
 
-/* Simple centered info modal */
 .info-modal{
   background:#fff;border-radius:22px;width:100%;max-width:400px;
   padding:26px 22px 20px;text-align:center;
@@ -1082,7 +1087,6 @@ body.has-panel #detailPanel{
 .info-modal .im-actions .im-ok{background:var(--p-d);color:#fff}
 .info-modal .im-actions .im-danger{background:var(--danger);color:#fff}
 
-/* Rating modal */
 .rating-modal{
   background:#fff;border-radius:22px;width:100%;max-width:400px;
   padding:26px 22px 20px;text-align:center;
@@ -1123,7 +1127,6 @@ body.has-panel #detailPanel{
 .rating-submit:disabled{opacity:.4;pointer-events:none}
 .rating-submit:active:not(:disabled){transform:scale(.97)}
 
-/* Arrival modal */
 .arrival-modal{
   background:#fff;border-radius:22px;width:100%;max-width:400px;
   padding:26px 22px 20px;text-align:center;
@@ -1161,7 +1164,6 @@ body.has-panel #detailPanel{
   background:var(--sf2);color:var(--td);font-size:.88rem;font-weight:700;
 }
 
-/* Floating customer card */
 .floating-customer-card{
   position:fixed;left:12px;right:12px;bottom:calc(var(--safe-b) + 16px);
   z-index:700;background:var(--p-d);color:#fff;border-radius:18px;
@@ -1214,7 +1216,6 @@ body.has-panel #detailPanel{
   box-shadow:0 10px 24px -10px rgba(22,163,74,.75);
 }
 
-/* Chat */
 .chat-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px 12px;background:#f7f8fa}
 .chat-messages{display:flex;flex-direction:column;gap:8px;max-width:620px;margin:0 auto}
 .chat-msg{max-width:78%;padding:10px 14px;border-radius:18px;font-size:.88rem;line-height:1.45;word-break:break-word;white-space:pre-wrap}
@@ -1241,7 +1242,6 @@ body.has-panel #detailPanel{
 }
 .chat-send-btn:active{transform:scale(.92)}
 
-/* Upload boxes for profile etc */
 .upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px}
 .upload-box{
   position:relative;width:100%;aspect-ratio:1/1;background:var(--sf2);
@@ -1265,7 +1265,6 @@ body.has-panel #detailPanel{
   animation:spin .8s linear infinite;z-index:4;
 }
 
-/* Deposit rows */
 .deposit-card{background:var(--sf2);border-radius:16px;padding:16px;margin-bottom:16px}
 .deposit-card .dc-title{
   font-size:.72rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;
@@ -1296,7 +1295,6 @@ body.has-panel #detailPanel{
   display:flex;align-items:center;justify-content:center;font-size:.85rem;
 }
 
-/* Float hero */
 .float-hero{
   background:linear-gradient(160deg,var(--p) 0%,var(--p-d) 100%);
   color:#fff;border-radius:20px;padding:26px 22px;margin-bottom:18px;
@@ -1315,7 +1313,6 @@ body.has-panel #detailPanel{
 .float-hero h2{font-size:1.4rem;font-weight:800;letter-spacing:-.5px;margin-bottom:6px;position:relative;z-index:1}
 .float-hero p{font-size:.86rem;color:rgba(255,255,255,.72);line-height:1.5;max-width:320px;margin:0 auto;position:relative;z-index:1}
 
-/* Claim tiles */
 .claim-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .claim-tile{background:var(--sf2);border-radius:14px;padding:14px 16px}
 .claim-tile.pending{background:linear-gradient(135deg,#f59e0b 0%,#b45309 100%);color:#fff}
@@ -1349,7 +1346,6 @@ body.has-panel #detailPanel{
 }
 .claim-submit-bar button:active{transform:scale(.96)}
 
-/* Empty / loader */
 .empty-state{text-align:center;padding:60px 24px;color:var(--tl)}
 .empty-state i{font-size:3rem;color:#d8d8dc;margin-bottom:16px;display:block}
 .empty-state h3{font-size:1.05rem;font-weight:800;color:var(--td);margin-bottom:6px;letter-spacing:-.3px}
@@ -1363,21 +1359,7 @@ body.has-panel #detailPanel{
   border:2px solid rgba(15,122,52,.18);border-top-color:var(--p);
   animation:spin .8s linear infinite;
 }
-.float-gate-card{
-  background:var(--danger-soft);border:1px solid rgba(220,38,38,.22);
-  border-radius:16px;padding:22px 20px;text-align:center;margin-bottom:14px;
-}
-.float-gate-card .fg-ico{
-  width:60px;height:60px;border-radius:50%;
-  background:rgba(220,38,38,.15);color:var(--danger);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.4rem;margin:0 auto 14px;
-}
-.float-gate-card h3{font-size:1.05rem;font-weight:800;letter-spacing:-.3px;color:#991b1b;margin-bottom:6px}
-.float-gate-card p{font-size:.84rem;color:#7f1d1d;line-height:1.55;margin-bottom:4px}
-.float-gate-card .fg-amount{font-size:.9rem;font-weight:800;color:#7a1c11;margin:10px 0 16px}
 
-/* Toast */
 #toast{
   position:fixed;left:50%;bottom:calc(var(--safe-b) + 92px);z-index:6000;
   transform:translate(-50%,24px);
@@ -1390,8 +1372,6 @@ body.has-panel #detailPanel{
 }
 body.has-panel #toast{bottom:76vh}
 #toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
-
-/* Banned/Maintenance gate full screen */
 
 @media (max-width:380px){
   .float-balance-pill .fb-txt small{display:none}
@@ -1413,9 +1393,6 @@ body.has-panel #toast{bottom:76vh}
 </head>
 <body>
 
-<!-- ============================
-     LOADING
-     ============================ -->
 <div id="loadingScreen">
   <div class="l-logo">
     <img src="logo.png" alt="AgriCare" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
@@ -1426,21 +1403,12 @@ body.has-panel #toast{bottom:76vh}
   <div class="l-spinner"></div>
 </div>
 
-<!-- ============================
-     MAP
-     ============================ -->
 <div id="map"></div>
 
-<!-- ============================
-     DETAIL PANEL (active trip)
-     ============================ -->
 <section id="detailPanel">
   <div class="dp-inner" id="dpInner"></div>
 </section>
 
-<!-- ============================
-     FLOATING NAME CHIP
-     ============================ -->
 <button class="name-chip" id="nameChip" aria-label="Account">
   <span class="nc-av" id="ncAvatar"><i class="fas fa-user"></i></span>
   <span class="nc-txt">
@@ -1449,16 +1417,10 @@ body.has-panel #toast{bottom:76vh}
   </span>
 </button>
 
-<!-- ============================
-     SIDEBAR TOGGLE
-     ============================ -->
 <button class="float-btn" id="sidebarBtn" aria-label="Open menu">
   <i class="fas fa-bars"></i>
 </button>
 
-<!-- ============================
-     FLOAT BALANCE PILL
-     ============================ -->
 <button class="float-balance-pill" id="floatBalancePill" title="Float balance — tap to top up">
   <span class="fb-ico"><i class="fas fa-wallet"></i></span>
   <span class="fb-txt">
@@ -1467,9 +1429,6 @@ body.has-panel #toast{bottom:76vh}
   </span>
 </button>
 
-<!-- ============================
-     ONLINE / OFFLINE SLIDE
-     ============================ -->
 <div id="onlineSlideWrap">
   <div class="online-slide offline" id="onlineSlide">
     <div class="os-fill" id="osFill"></div>
@@ -1478,9 +1437,6 @@ body.has-panel #toast{bottom:76vh}
   </div>
 </div>
 
-<!-- ============================
-     FLOATING CUSTOMER CARD (when in trip)
-     ============================ -->
 <div class="floating-customer-card" id="floatingCustomerCard">
   <div class="fcc-row">
     <div class="fcc-avatar" id="fccAvatar"><i class="fas fa-user"></i></div>
@@ -1501,9 +1457,6 @@ body.has-panel #toast{bottom:76vh}
 
 <div id="toast"></div>
 
-<!-- ============================
-     SIDEBAR
-     ============================ -->
 <div id="sidebarOverlay"></div>
 <aside id="sidebar">
   <div class="sidebar-head">
@@ -1531,12 +1484,9 @@ body.has-panel #toast{bottom:76vh}
   </div>
 </aside>
 
-<!-- ============================
-     ACCOUNT PAGE
-     ============================ -->
 <div class="page" id="accountPage">
   <div class="page-head">
-    <button class="icon-btn" data-close-page="accountPage" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
+    <button class="icon-btn" data-close-page="accountPage"><i class="fas fa-arrow-left"></i></button>
     <div style="flex:1;">
       <h2>Account</h2>
       <div class="page-head-sub">Profile &amp; documents</div>
@@ -1578,12 +1528,9 @@ body.has-panel #toast{bottom:76vh}
   </div>
 </div>
 
-<!-- ============================
-     CLAIMS PAGE
-     ============================ -->
 <div class="page" id="claimsPage">
   <div class="page-head">
-    <button class="icon-btn" data-close-page="claimsPage" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
+    <button class="icon-btn" data-close-page="claimsPage"><i class="fas fa-arrow-left"></i></button>
     <div style="flex:1;">
       <h2>Claims</h2>
       <div class="page-head-sub">Discount refunds from admin</div>
@@ -1596,12 +1543,9 @@ body.has-panel #toast{bottom:76vh}
   </div>
 </div>
 
-<!-- ============================
-     HISTORY PAGE
-     ============================ -->
 <div class="page" id="historyPage">
   <div class="page-head">
-    <button class="icon-btn" data-close-page="historyPage" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
+    <button class="icon-btn" data-close-page="historyPage"><i class="fas fa-arrow-left"></i></button>
     <div style="flex:1;">
       <h2>History</h2>
       <div class="page-head-sub">Tap any card for details</div>
@@ -1619,12 +1563,9 @@ body.has-panel #toast{bottom:76vh}
   </div>
 </div>
 
-<!-- ============================
-     BUY FLOAT PAGE
-     ============================ -->
 <div class="page" id="buyFloatPage">
   <div class="page-head">
-    <button class="icon-btn" data-close-page="buyFloatPage" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
+    <button class="icon-btn" data-close-page="buyFloatPage"><i class="fas fa-arrow-left"></i></button>
     <div style="flex:1;">
       <h2>Buy Float</h2>
       <div class="page-head-sub">Top up your balance</div>
@@ -1667,12 +1608,9 @@ body.has-panel #toast{bottom:76vh}
   </div>
 </div>
 
-<!-- ============================
-     SETTINGS PAGE
-     ============================ -->
 <div class="page" id="settingsPage">
   <div class="page-head">
-    <button class="icon-btn" data-close-page="settingsPage" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
+    <button class="icon-btn" data-close-page="settingsPage"><i class="fas fa-arrow-left"></i></button>
     <div style="flex:1;">
       <h2>Settings</h2>
       <div class="page-head-sub">Preferences &amp; info</div>
@@ -1720,12 +1658,9 @@ body.has-panel #toast{bottom:76vh}
   </div>
 </div>
 
-<!-- ============================
-     CHAT PAGE
-     ============================ -->
 <div class="page" id="chatPage">
   <div class="page-head">
-    <button class="icon-btn" id="chatBackBtn" aria-label="Back"><i class="fas fa-arrow-left"></i></button>
+    <button class="icon-btn" id="chatBackBtn"><i class="fas fa-arrow-left"></i></button>
     <div style="flex:1;">
       <h2 id="chatTitle">Chat</h2>
       <div class="page-head-sub" id="chatSubtitle">Customer</div>
@@ -1736,15 +1671,10 @@ body.has-panel #toast{bottom:76vh}
   </div>
   <div class="chat-input-row">
     <textarea id="chatInput" placeholder="Type a message…" rows="1"></textarea>
-    <button class="chat-send-btn" id="chatSendBtn" aria-label="Send">
-      <i class="fas fa-paper-plane"></i>
-    </button>
+    <button class="chat-send-btn" id="chatSendBtn"><i class="fas fa-paper-plane"></i></button>
   </div>
 </div>
 
-<!-- ============================
-     REQUEST POPUP (incoming order)
-     ============================ -->
 <div class="modal-overlay" id="requestModal">
   <div class="req-modal">
     <div class="req-map-wrap">
@@ -1755,9 +1685,6 @@ body.has-panel #toast{bottom:76vh}
   </div>
 </div>
 
-<!-- ============================
-     RATING MODAL
-     ============================ -->
 <div class="modal-overlay" id="ratingModal">
   <div class="rating-modal">
     <div class="rating-avatar" id="ratingAvatar"><i class="fas fa-user"></i></div>
@@ -1781,9 +1708,6 @@ body.has-panel #toast{bottom:76vh}
   </div>
 </div>
 
-<!-- ============================
-     ARRIVAL MODAL
-     ============================ -->
 <div class="modal-overlay" id="arrivalModal">
   <div class="arrival-modal">
     <div class="arrival-badge"><i class="fas fa-circle-check"></i> Arrived at pickup</div>
@@ -1799,9 +1723,6 @@ body.has-panel #toast{bottom:76vh}
   </div>
 </div>
 
-<!-- ============================
-     MAP CHECK MODAL
-     ============================ -->
 <div class="modal-overlay" id="mapModal">
   <div class="modal">
     <div class="modal-head">
@@ -1821,9 +1742,6 @@ body.has-panel #toast{bottom:76vh}
   </div>
 </div>
 
-<!-- ============================
-     INFO MODAL (confirmations)
-     ============================ -->
 <div class="modal-overlay" id="infoModal">
   <div class="info-modal">
     <div class="im-ic ok" id="infoIcon"><i class="fas fa-circle-check"></i></div>
@@ -1836,11 +1754,8 @@ body.has-panel #toast{bottom:76vh}
 <script type="module">
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged, signOut, deleteUser } from "firebase/auth";
-import { getDatabase, ref, set, get, update, push, onValue, remove } from "firebase/database";
+import { getDatabase, ref, set, get, update, push, onValue, remove, runTransaction } from "firebase/database";
 
-/* ============================================================
-   FIREBASE
-   ============================================================ */
 const firebaseConfig = {
   apiKey: "AIzaSyDye0P37QYNjtRRKh2_At84QCkKCqjceAQ",
   authDomain: "reaper-7b33d.firebaseapp.com",
@@ -1856,9 +1771,6 @@ const db = getDatabase(app);
 const CLOUD_NAME = 'dd3lcymrk';
 const UPLOAD_PRESET = 'h3eyhc2o';
 
-/* ============================================================
-   CONSTANTS
-   ============================================================ */
 const ZOOM = 15;
 const MODAL_ZOOM = 15;
 const TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -1882,15 +1794,13 @@ const RATING_LABELS = {
   5: 'Excellent!'
 };
 
-/* ============================================================
-   STATE
-   ============================================================ */
 let currentUser = null;
 let userRecord = null;
 let floatBalance = 0;
 let userLocation = null;
 let map = null;
 let userMarker = null;
+let currentVehicleTypeRendered = null;
 let mainRouteLayer = null;
 let pickupMarker = null;
 let stopMarker = null;
@@ -1930,20 +1840,16 @@ let locationWatchId = null;
 
 let ratingTripId = null;
 let ratingCustomerId = null;
-let ratingCustomerName = null;
-let ratingCustomerPhoto = null;
 let currentRatingValue = 0;
 
 let claimsUnsub = null;
 let claimsCache = [];
 
-let acceptedUnsub = null;
-let activeChatTripId = null;
 let chatUnsub = null;
+let activeChatTripId = null;
 
-/* ============================================================
-   DOM
-   ============================================================ */
+let floatCreditUnsub = null;
+
 const $ = (id) => document.getElementById(id);
 const loadingScreen = $('loadingScreen');
 
@@ -2026,7 +1932,7 @@ function statusLabel(s) {
 }
 function vehicleLabel(v) {
   if (v === 'bicycle') return 'Bicycle';
-  if (v === 'bike' || v === 'rider') return 'Motorbike';
+  if (v === 'bike' || v === 'rider' || v === 'motorbike') return 'Motorbike';
   if (v === 'car') return 'Car';
   if (v === 'truck') return 'Truck';
   return 'Vehicle';
@@ -2040,6 +1946,41 @@ function starsHtml(rating, sz) {
   }
   html += '</span>';
   return html;
+}
+
+/* ============================================================
+   VEHICLE ICON BUILDER
+   ============================================================ */
+function buildVehicleIconHtml(heading, vehicleType) {
+  const v = String(vehicleType || '').toLowerCase();
+  let iconClass, bg, pulseColor;
+  if (v === 'bicycle') {
+    iconClass = 'fa-bicycle';
+    bg = 'linear-gradient(135deg,#16a34a,#0b5f28)';
+    pulseColor = 'rgba(22,163,74,.35)';
+  } else if (v === 'bike' || v === 'rider' || v === 'motorbike') {
+    iconClass = 'fa-motorcycle';
+    bg = 'linear-gradient(135deg,#2563eb,#1e40af)';
+    pulseColor = 'rgba(37,99,235,.35)';
+  } else if (v === 'car') {
+    iconClass = 'fa-car-side';
+    bg = 'linear-gradient(135deg,#0f7a34,#084d20)';
+    pulseColor = 'rgba(15,122,52,.35)';
+  } else if (v === 'truck') {
+    iconClass = 'fa-truck';
+    bg = 'linear-gradient(135deg,#d97706,#78350f)';
+    pulseColor = 'rgba(217,119,6,.4)';
+  } else {
+    iconClass = 'fa-motorcycle';
+    bg = 'linear-gradient(135deg,#16a34a,#0b5f28)';
+    pulseColor = 'rgba(22,163,74,.35)';
+  }
+  return `<div class="veh-marker" style="transform:rotate(${heading}deg);">
+    <div class="veh-pulse" style="border-color:${pulseColor};"></div>
+    <div class="veh-bubble" style="background:${bg};">
+      <i class="fas ${iconClass}"></i>
+    </div>
+  </div>`;
 }
 
 /* ============================================================
@@ -2060,11 +2001,8 @@ function commissionFor(fare) {
 function listenFloatRules() {
   if (floatRulesUnsub) floatRulesUnsub();
   floatRulesUnsub = onValue(ref(db, 'system/floatRules'), (snap) => {
-    if (snap.exists()) {
-      FLOAT_RULES = Object.assign({}, DEFAULT_FLOAT_RULES, snap.val() || {});
-    } else {
-      FLOAT_RULES = { ...DEFAULT_FLOAT_RULES };
-    }
+    if (snap.exists()) FLOAT_RULES = Object.assign({}, DEFAULT_FLOAT_RULES, snap.val() || {});
+    else FLOAT_RULES = { ...DEFAULT_FLOAT_RULES };
     renderFloatRulesView();
     renderFloatBalance();
     renderDetailPanel();
@@ -2097,8 +2035,7 @@ function renderFloatBalance() {
 }
 
 function listenFloatBalance(uid) {
-  const r = ref(db, `users/${uid}/floatBalance`);
-  onValue(r, (snap) => {
+  onValue(ref(db, `users/${uid}/floatBalance`), (snap) => {
     if (snap.exists()) {
       const v = snap.val();
       floatBalance = typeof v === 'number' ? v : parseInt(v, 10) || 0;
@@ -2108,6 +2045,53 @@ function listenFloatBalance(uid) {
     renderFloatBalance();
     evaluateQueue();
   }, err => console.warn('float listener', err));
+}
+
+/* ============================================================
+   FLOAT CREDIT — auto-credit approved float requests
+   ============================================================ */
+function listenFloatRequestsForCredit(uid) {
+  if (floatCreditUnsub) { floatCreditUnsub(); floatCreditUnsub = null; }
+  floatCreditUnsub = onValue(ref(db, 'floatRequests'), async (snap) => {
+    const data = snap.val() || {};
+    for (const id in data) {
+      const f = data[id];
+      if (!f) continue;
+      if (f.providerId !== uid) continue;
+      if (f.status !== 'approved') continue;
+      if (f.creditedToBalance === true) continue;
+
+      const amount = Number(f.amount || 0);
+      if (!amount || amount <= 0) continue;
+
+      try {
+        // Atomically claim the credit — if another client/admin already claimed it, we skip.
+        let claimed = false;
+        const claimResult = await runTransaction(ref(db, `floatRequests/${id}/creditedToBalance`), (current) => {
+          if (current === true) return; // abort
+          claimed = true;
+          return true;
+        });
+
+        if (!claimResult.committed || !claimed) continue;
+
+        // Now safely credit balance
+        await runTransaction(ref(db, `users/${uid}/floatBalance`), (bal) => {
+          const cur = Number(bal) || 0;
+          return cur + amount;
+        });
+
+        await update(ref(db, `floatRequests/${id}`), {
+          creditedAt: Date.now(),
+          creditedByClient: true
+        });
+
+        showToast(`✅ K${amount} added to your float`);
+      } catch (err) {
+        console.warn('credit err', err);
+      }
+    }
+  }, err => console.warn('float credit listener', err));
 }
 
 /* ============================================================
@@ -2126,30 +2110,33 @@ function initMap() {
   setTimeout(() => { if (map) map.invalidateSize(); }, 220);
 }
 
-function buildDriverIconHtml(heading) {
-  return `<div class="drv-marker" style="transform:rotate(${heading}deg);">
-    <img src="driver.png" alt="" onerror="this.style.display='none';this.parentNode.classList.add('no-img');">
-  </div>`;
-}
-
 function setUserMarker(lat, lng, heading) {
   if (!map) return;
   let h = heading;
   if (!isFinite(h)) h = currentHeading;
   h = ((h % 360) + 360) % 360;
+  const vType = (userRecord && userRecord.vehicleType) || 'bike';
+
+  // If vehicle type changed, rebuild marker with new icon
+  if (userMarker && currentVehicleTypeRendered !== vType) {
+    try { map.removeLayer(userMarker); } catch (e) {}
+    userMarker = null;
+  }
+
   if (userMarker) {
     userMarker.setLatLng([lat, lng]);
     const el = userMarker.getElement();
     if (el) {
-      const car = el.querySelector('.drv-marker');
-      if (car) car.style.transform = `rotate(${h}deg)`;
+      const marker = el.querySelector('.veh-marker');
+      if (marker) marker.style.transform = `rotate(${h}deg)`;
     }
   } else {
+    currentVehicleTypeRendered = vType;
     const icon = L.divIcon({
-      className: 'drv-marker-wrap',
-      html: buildDriverIconHtml(h),
-      iconSize: [46, 46],
-      iconAnchor: [23, 23]
+      className: 'veh-marker-wrap',
+      html: buildVehicleIconHtml(h, vType),
+      iconSize: [52, 52],
+      iconAnchor: [26, 26]
     });
     userMarker = L.marker([lat, lng], { icon, zIndexOffset: 800, interactive: false }).addTo(map);
   }
@@ -2362,11 +2349,11 @@ document.querySelectorAll('.nav-item').forEach(btn => {
     const nav = btn.dataset.nav;
     closeSidebar();
     setTimeout(() => {
-      if (nav === 'account') openPage('accountPage'), renderAccountPage();
+      if (nav === 'account') { openPage('accountPage'); renderAccountPage(); }
       else if (nav === 'claims') openClaimsPage();
       else if (nav === 'history') openHistoryPage();
       else if (nav === 'buyfloat') openBuyFloatPage();
-      else if (nav === 'settings') openPage('settingsPage'), renderFloatRulesView();
+      else if (nav === 'settings') { openPage('settingsPage'); renderFloatRulesView(); }
     }, 220);
   });
 });
@@ -2511,15 +2498,15 @@ function attachRequestListeners() {
 
   requestsUnsub = onValue(ref(db, 'deliveryRequests'), (snap) => {
     const data = snap.val() || {};
-    const map = {};
+    const mapR = {};
     for (const id in data) {
       const r = data[id];
       if (!r) continue;
       if (r.status === 'searching' && !r.providerId) {
-        map[id] = { ...r, requestId: id };
+        mapR[id] = { ...r, requestId: id };
       }
     }
-    incomingRequests = map;
+    incomingRequests = mapR;
     evaluateQueue();
   }, err => console.warn('req listener', err));
 }
@@ -2591,7 +2578,7 @@ function renderDetailPanel() {
 }
 
 /* ============================================================
-   PROMO / DISCOUNT HELPERS
+   PROMO HELPERS
    ============================================================ */
 function getDiscountInfo(data) {
   const fare = Number(data.fare || 0);
@@ -3087,15 +3074,11 @@ function renderActiveTrip() {
   if (cancelBtn) cancelBtn.addEventListener('click', cancelActiveTrip);
 }
 
-/* ============================================================
-   SLIDE-TO-ACTION
-   ============================================================ */
 let slideDragging = false, slideStartX = 0, slideMaxX = 0, slideIsBusy = false;
 
 function wireSlideButton() {
   const btn = $('slideBtn'), handle = $('slideHandle'), fill = $('slideFill'), label = $('slideLabel');
   if (!btn || !handle || !fill || !label) return;
-
   slideIsBusy = false;
   handle.style.transform = '';
   fill.style.width = '54px';
@@ -3159,9 +3142,6 @@ async function triggerSlideAction() {
   }
 }
 
-/* ============================================================
-   FLOATING CUSTOMER CARD
-   ============================================================ */
 function updateFloatingCustomerCard() {
   if (!activeTrip || !activeStage || activeStage === 'incoming') {
     hideFloatingCustomerCard();
@@ -3188,16 +3168,12 @@ function updateFloatingCustomerCard() {
   document.body.classList.add('has-floating-card');
   setTimeout(() => { if (map) map.invalidateSize(); }, 150);
 }
-
 function hideFloatingCustomerCard() {
   $('floatingCustomerCard').classList.remove('open');
   document.body.classList.remove('has-floating-card');
   setTimeout(() => { if (map) map.invalidateSize(); }, 150);
 }
 
-/* ============================================================
-   ARRIVAL MODAL
-   ============================================================ */
 function openArrivalModal(data) {
   const name = data.senderName || data.requesterName || 'Customer';
   const phone = data.senderPhone || data.requesterPhone || '—';
@@ -3221,9 +3197,6 @@ function closeArrivalModal() { $('arrivalModal').classList.remove('open'); }
 $('arrivalOkBtn').addEventListener('click', closeArrivalModal);
 $('arrivalModal').addEventListener('click', (e) => { if (e.target === $('arrivalModal')) closeArrivalModal(); });
 
-/* ============================================================
-   RATING MODAL
-   ============================================================ */
 function updateStarDisplay(v) {
   document.querySelectorAll('#ratingStars button').forEach((b, i) => b.classList.toggle('active', i < v));
   $('ratingLabel').textContent = RATING_LABELS[v] || '';
@@ -3232,8 +3205,6 @@ function openRatingModal(tripId, customerId, customerName, customerPhoto) {
   if (!customerId) return;
   ratingTripId = tripId;
   ratingCustomerId = customerId;
-  ratingCustomerName = customerName || 'Customer';
-  ratingCustomerPhoto = customerPhoto || '';
   currentRatingValue = 0;
   if (customerPhoto) $('ratingAvatar').innerHTML = `<img src="${esc(customerPhoto)}" alt="">`;
   else $('ratingAvatar').innerHTML = `<i class="fas fa-user"></i>`;
@@ -3257,7 +3228,7 @@ async function submitRating() {
       rating: currentRatingValue,
       comment: comment || '',
       providerId: currentUser.uid,
-      providerName: (userRecord && (userRecord.firstName ? `${userRecord.firstName} ${userRecord.lastName || ''}` : userRecord.name)) || 'Delivery Partner',
+      providerName: userRecord?.firstName ? `${userRecord.firstName} ${userRecord.lastName || ''}`.trim() : (userRecord?.name || 'Delivery Partner'),
       tripId: ratingTripId,
       createdAt: Date.now()
     });
@@ -3294,15 +3265,7 @@ document.querySelectorAll('#ratingStars button').forEach(btn => {
 $('ratingSkipBtn').addEventListener('click', closeRatingModal);
 $('ratingSubmitBtn').addEventListener('click', submitRating);
 
-/* ============================================================
-   TRIP ACTIONS
-   ============================================================ */
 async function handleAccept() {
-  if (!activeTrip || isAcceptingRequest === false) {
-    if (isAcceptingRequest) {
-      // already processing — continue
-    }
-  }
   const tripSnapshot = activeTrip;
   if (!tripSnapshot) { isAcceptingRequest = false; return; }
   const { id, data } = tripSnapshot;
@@ -3501,9 +3464,6 @@ async function cancelActiveTrip() {
   );
 }
 
-/* ============================================================
-   TRIP WATCHER
-   ============================================================ */
 function attachTripWatcher(id) {
   detachTripWatcher();
   tripUnsub = onValue(ref(db, `deliveryRequests/${id}`), (snap) => {
@@ -3536,9 +3496,6 @@ function detachTripWatcher() {
   if (tripUnsub) { tripUnsub(); tripUnsub = null; }
 }
 
-/* ============================================================
-   RESUME ACTIVE TRIP
-   ============================================================ */
 async function resumeActiveTrip() {
   if (!currentUser || !userRecord) return;
   if (userRecord.status !== 'approved') return;
@@ -3641,7 +3598,7 @@ async function sendChatMessage() {
   $('chatInput').value = '';
   $('chatInput').style.height = 'auto';
   try {
-    const name = userRecord && (userRecord.firstName ? `${userRecord.firstName} ${userRecord.lastName || ''}`.trim() : userRecord.name) || 'Delivery Partner';
+    const name = userRecord?.firstName ? `${userRecord.firstName} ${userRecord.lastName || ''}`.trim() : (userRecord?.name || 'Delivery Partner');
     const ref2 = push(ref(db, `deliveryRequests/${activeChatTripId}/chat`));
     await set(ref2, {
       senderId: currentUser.uid,
@@ -3708,9 +3665,6 @@ function showConfirm(title, body, okLabel, cancelLabel, onConfirm) {
   ]);
 }
 
-/* ============================================================
-   EXTERNAL NAV
-   ============================================================ */
 function isIOS() {
   return /iPad|iPhone|iPod/.test(navigator.userAgent)
       || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -3741,7 +3695,6 @@ function applyUserUI() {
 
   const initial = initials(fullName);
 
-  // Sidebar
   if (photo) $('sidebarAvatar').innerHTML = `<img src="${esc(photo)}" alt="">`;
   else $('sidebarAvatar').innerHTML = `<i class="fas fa-user"></i>`;
   $('sidebarName').textContent = fullName;
@@ -3759,12 +3712,10 @@ function applyUserUI() {
     roleChip.textContent = 'Not Approved';
   }
 
-  // Name chip
   $('ncName').textContent = firstName || fullName.split(' ')[0] || 'Partner';
   if (photo) $('ncAvatar').innerHTML = `<img src="${esc(photo)}" alt="">`;
   else $('ncAvatar').textContent = initial;
 
-  // Account page fields
   $('heroName').textContent = fullName;
   $('heroPhone').textContent = phone;
   const heroStatus = $('heroStatus');
@@ -3783,17 +3734,18 @@ function applyUserUI() {
   $('detEmail').textContent = email;
   $('detVehicle').textContent = vehicleLabel(vehicle) || '—';
 
-  // Hero avatar
   if (photo) $('heroAvatar').innerHTML = `<img src="${esc(photo)}" alt="">`;
   else $('heroAvatar').innerHTML = `<i class="fas fa-user"></i>`;
 
-  // NRC
   if (userRecord.nrcFront || userRecord.nrcFrontUrl) {
     $('nrcFrontImg').innerHTML = `<img src="${esc(userRecord.nrcFront || userRecord.nrcFrontUrl)}" alt="">`;
   }
   if (userRecord.nrcBack || userRecord.nrcBackUrl) {
     $('nrcBackImg').innerHTML = `<img src="${esc(userRecord.nrcBack || userRecord.nrcBackUrl)}" alt="">`;
   }
+
+  // Refresh vehicle marker if type changed
+  if (userLocation) setUserMarker(userLocation.lat, userLocation.lng, currentHeading);
 }
 
 function renderAccountPage() { applyUserUI(); }
@@ -4216,7 +4168,7 @@ function renderFloatCard(f) {
         <div class="h-ico float"><i class="fas fa-wallet"></i></div>
         <div class="h-body">
           <div class="h-title">Float top-up</div>
-          <div class="h-sub">${esc(f.reference || 'Balance top-up')}</div>
+          <div class="h-sub">${esc(f.reference || 'Balance top-up')}${f.creditedToBalance ? ' · Credited' : ''}</div>
         </div>
         <div class="h-right">
           <strong>K ${esc(fmtPrice(f.amount))}</strong>
@@ -4231,6 +4183,7 @@ function renderFloatCard(f) {
             <div class="hd-row"><span class="hd-key">Amount</span><span class="hd-val">K ${esc(fmtPrice(f.amount))}</span></div>
             <div class="hd-row"><span class="hd-key">Submitted</span><span class="hd-val">${esc(fmtDateTime(f.createdAt))}</span></div>
             ${f.approvedAt ? `<div class="hd-row"><span class="hd-key">Approved</span><span class="hd-val">${esc(fmtDateTime(f.approvedAt))}</span></div>` : ''}
+            ${f.creditedToBalance ? `<div class="hd-row"><span class="hd-key">Credited</span><span class="hd-val">Yes${f.creditedAt ? ` · ${esc(fmtDateTime(f.creditedAt))}` : ''}</span></div>` : ''}
           </div>
           ${f.screenshotUrl ? `
             <div class="hd-section">
@@ -4300,7 +4253,6 @@ function renderDepositNumbers(numbers) {
   });
 }
 
-// Wire float screenshot upload
 $('floatScreenshotBox').addEventListener('click', async () => {
   const box = $('floatScreenshotBox');
   if (box.classList.contains('is-loading')) return;
@@ -4337,7 +4289,7 @@ $('submitFloatBtn').addEventListener('click', async () => {
   try {
     const ref2 = push(ref(db, 'floatRequests'));
     const id = ref2.key;
-    const name = userRecord && (userRecord.firstName ? `${userRecord.firstName} ${userRecord.lastName || ''}`.trim() : userRecord.name) || 'Partner';
+    const name = userRecord?.firstName ? `${userRecord.firstName} ${userRecord.lastName || ''}`.trim() : (userRecord?.name || 'Partner');
     await set(ref2, {
       id,
       providerId: currentUser.uid,
@@ -4389,12 +4341,9 @@ $('settingsDeleteAccount').addEventListener('click', () => {
 async function confirmDeleteAccount() {
   if (!currentUser) return;
   try {
-    // Remove user data
     await remove(ref(db, `users/${currentUser.uid}`));
-    // Delete Firebase auth user
     try { await deleteUser(currentUser); }
     catch (e) {
-      // If requires re-auth, sign out anyway
       console.warn('deleteUser failed, signing out', e);
       await signOut(auth);
     }
@@ -4423,13 +4372,14 @@ async function doLogout() {
   if (claimsUnsub) claimsUnsub();
   if (historyUnsub) historyUnsub();
   if (chatUnsub) chatUnsub();
+  if (floatCreditUnsub) floatCreditUnsub();
   try { await signOut(auth); } catch (err) { console.warn(err); }
   localStorage.removeItem('deliveryUid');
   window.location.href = 'index.html';
 }
 
 /* ============================================================
-   MAP MODAL (from history / trip)
+   MAP MODAL
    ============================================================ */
 $('mapModalClose').addEventListener('click', () => $('mapModal').classList.remove('open'));
 $('mapModal').addEventListener('click', (e) => { if (e.target === $('mapModal')) $('mapModal').classList.remove('open'); });
@@ -4450,7 +4400,6 @@ onAuthStateChanged(auth, async (user) => {
   currentUser = user;
 
   try {
-    // Maintenance check
     const maintSnap = await get(ref(db, 'system/maintenance'));
     if (maintSnap.exists() && maintSnap.val().enabled === true) {
       showGate('warn', 'Under Maintenance',
@@ -4458,7 +4407,6 @@ onAuthStateChanged(auth, async (user) => {
       return;
     }
 
-    // Load user record
     const snap = await get(ref(db, `users/${user.uid}`));
     if (!snap.exists()) {
       showGate('error', 'Account Not Found', 'Your account could not be loaded. Please log in again.');
@@ -4466,35 +4414,33 @@ onAuthStateChanged(auth, async (user) => {
     }
     userRecord = snap.val() || {};
 
-    // Role check
     if (userRecord.role !== 'delivery') {
       showGate('error', 'Wrong Account Type',
         'This app is for delivery partners. Please log in as a delivery partner.');
       return;
     }
 
-    // Banned check
     if (userRecord.banned || userRecord.status === 'banned') {
       showGate('error', 'Account Banned',
         userRecord.banReason || 'Your account has been banned. Please contact support.');
       return;
     }
 
-    // Approval check
     if (userRecord.status !== 'approved') {
       showGate('pending', 'Approval Pending',
         'Your delivery partner application is still under review. You will be able to log in once an admin approves your account.');
       return;
     }
 
-    // Live user record
     onValue(ref(db, `users/${user.uid}`), (s) => {
       if (!s.exists()) return;
       const prev = userRecord || {};
       const next = s.val() || {};
       const statusChanged = prev.status !== next.status;
+      const vehicleChanged = prev.vehicleType !== next.vehicleType;
       userRecord = next;
       applyUserUI();
+      if (vehicleChanged && userLocation) setUserMarker(userLocation.lat, userLocation.lng, currentHeading);
       if (statusChanged && next.status === 'approved') showToast('✅ Your account was approved');
       if (statusChanged && next.status === 'banned') {
         showGate('error', 'Account Banned', next.banReason || 'Your account has been banned.');
@@ -4502,16 +4448,15 @@ onAuthStateChanged(auth, async (user) => {
       if (isOnline && next.status === 'approved' && !requestsUnsub) attachRequestListeners();
     });
 
-    // Setup
     applyUserUI();
     initMap();
     wireOnlineSlider();
 
     listenFloatRules();
     listenFloatBalance(user.uid);
+    listenFloatRequestsForCredit(user.uid);
     listenClaims(user.uid);
 
-    // Restore online state
     if (userRecord.online === true) {
       isOnline = true;
       setOnlineUI();
@@ -4541,9 +4486,6 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-/* ============================================================
-   GATE (full-screen state)
-   ============================================================ */
 function showGate(type, title, msg) {
   hideLoading();
   const el = document.createElement('div');
@@ -4565,9 +4507,6 @@ function showGate(type, title, msg) {
   document.body.appendChild(el);
 }
 
-/* ============================================================
-   MISC
-   ============================================================ */
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     if ($('infoModal').classList.contains('open')) $('infoModal').classList.remove('open');
