@@ -908,6 +908,7 @@ a{color:inherit;text-decoration:none}
   padding:11px 14px;border-radius:var(--r);background:var(--sf2);
   border:1.5px solid var(--bd);margin-bottom:10px;
 }
+.location-input.active{border-color:var(--p);background:var(--p-l)}
 .location-input .loc-dot{
   width:10px;height:10px;border-radius:50%;background:var(--p);
   flex-shrink:0;box-shadow:0 0 0 3px rgba(15,122,52,.15);
@@ -922,6 +923,7 @@ a{color:inherit;text-decoration:none}
   width:22px;height:22px;border-radius:50%;background:var(--bd);color:var(--tl);
   display:flex;align-items:center;justify-content:center;font-size:11px;
 }
+.location-input .loc-clear.gps{background:var(--p);color:#fff;width:26px;height:26px;font-size:12px}
 
 .map-search-results{
   background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);
@@ -1170,8 +1172,11 @@ a{color:inherit;text-decoration:none}
 }
 .delivery-recent-item .dri-tag.searching{background:#dbeafe;color:#1e40af}
 .delivery-recent-item .dri-tag.accepted{background:#fef3c7;color:#92400e}
+.delivery-recent-item .dri-tag.arrived{background:#c7d2fe;color:#3730a3}
 .delivery-recent-item .dri-tag.in_progress{background:#d1fae5;color:#065f46}
+.delivery-recent-item .dri-tag.picked_up{background:#d1fae5;color:#065f46}
 .delivery-recent-item .dri-tag.completed{background:#e6f5eb;color:var(--p-d)}
+.delivery-recent-item .dri-tag.delivered{background:#e6f5eb;color:var(--p-d)}
 .delivery-recent-item .dri-tag.cancelled{background:#f1f5f9;color:#64748b}
 
 /* Vehicle sheet for delivery prices */
@@ -1301,6 +1306,294 @@ a{color:inherit;text-decoration:none}
   transition:opacity .4s ease, transform .4s ease;
 }
 
+/* ============================================================
+   NEW — Ongoing deliveries live-tracking map
+   ============================================================ */
+.ongoing-track-wrap{
+  margin:0 18px 14px;
+  border-radius:var(--r);
+  overflow:hidden;
+  border:1px solid var(--bd);
+  box-shadow:var(--sh-sm);
+  height:280px;
+  position:relative;
+  display:none;
+}
+.ongoing-track-wrap.show{display:block}
+#ongoingMap{position:absolute;inset:0;z-index:1}
+.ongoing-track-badge{
+  position:absolute;top:10px;left:10px;z-index:400;
+  background:rgba(15,122,52,.94);color:#fff;
+  font-size:10.5px;font-weight:800;letter-spacing:.05em;
+  padding:7px 12px;
+  border-radius:var(--r-p);
+  display:inline-flex;align-items:center;gap:7px;
+  box-shadow:0 6px 18px -6px rgba(15,122,52,.55);
+  max-width:calc(100% - 20px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ongoing-track-badge.info{background:rgba(37,99,235,.94);box-shadow:0 6px 18px -6px rgba(37,99,235,.55)}
+.ongoing-track-badge.success{background:rgba(22,163,74,.94)}
+.ongoing-track-badge.cancel{background:rgba(100,116,139,.94)}
+.ongoing-track-badge .dot{
+  width:8px;height:8px;border-radius:50%;background:#a7f3d0;
+  animation:lcPulse 1.4s ease-in-out infinite;
+}
+
+/* ============================================================
+   NEW — Expandable ongoing request cards
+   ============================================================ */
+.od-card{
+  background:#fff;
+  border:1px solid var(--bd);
+  border-radius:var(--r);
+  margin-bottom:10px;
+  overflow:hidden;
+  box-shadow:var(--sh-xs);
+  transition:box-shadow .22s var(--e);
+}
+.od-card.expanded{box-shadow:var(--sh);border-color:var(--bd-s)}
+.od-summary{
+  padding:13px 14px;
+  cursor:pointer;
+  transition:background .2s var(--e);
+  display:block;
+}
+.od-summary:active{background:var(--sf2)}
+.od-head-row{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:6px}
+.od-title{
+  font-size:13.5px;font-weight:800;color:var(--td);
+  letter-spacing:-.01em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  flex:1;min-width:0;
+}
+.od-status-tag{
+  font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+  padding:4px 9px;
+  border-radius:var(--r-p);
+  flex-shrink:0;
+  background:var(--p-l);color:var(--p-d);
+}
+.od-status-tag.searching{background:#dbeafe;color:#1e40af}
+.od-status-tag.accepted{background:#fef3c7;color:#92400e}
+.od-status-tag.arrived{background:#c7d2fe;color:#3730a3}
+.od-status-tag.in_progress{background:#d1fae5;color:#065f46}
+.od-status-tag.picked_up{background:#d1fae5;color:#065f46}
+.od-status-tag.delivered{background:#e6f5eb;color:var(--p-d)}
+.od-status-tag.completed{background:#e6f5eb;color:var(--p-d)}
+.od-status-tag.cancelled{background:#f1f5f9;color:#64748b}
+.od-sub{
+  font-size:11.5px;color:var(--tl);font-weight:600;
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+}
+.od-sub .dot-sep{width:3px;height:3px;border-radius:50%;background:var(--tm);flex-shrink:0}
+.od-fare{
+  font-size:14px;font-weight:900;color:var(--p-d);letter-spacing:-.02em;
+  margin-top:6px;
+}
+.od-chev{
+  display:flex;align-items:center;justify-content:center;gap:4px;
+  font-size:10.5px;font-weight:800;color:var(--tl);margin-top:8px;
+  text-transform:uppercase;letter-spacing:.05em;
+}
+.od-chev svg{
+  width:14px;height:14px;fill:currentColor;
+  transition:transform .3s var(--e);
+}
+.od-card.expanded .od-chev svg{transform:rotate(180deg)}
+
+.od-details{
+  max-height:0;
+  overflow:hidden;
+  background:var(--sf2);
+  transition:max-height .4s var(--e);
+  border-top:1px solid transparent;
+}
+.od-card.expanded .od-details{
+  max-height:1400px;
+  border-top-color:var(--bd);
+}
+.od-details-inner{padding:14px 14px 16px}
+.od-row{
+  display:flex;justify-content:space-between;gap:12px;
+  padding:7px 0;font-size:12.5px;
+  border-bottom:1px dashed rgba(15,23,42,.06);
+}
+.od-row:last-child{border-bottom:none}
+.od-row .k{color:var(--tl);font-weight:600;flex-shrink:0}
+.od-row .v{color:var(--td);font-weight:700;text-align:right;word-break:break-word}
+.od-row .v.long{text-align:left;max-width:65%}
+
+.od-provider-box{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 11px;
+  background:#fff;
+  border-radius:var(--r);
+  margin:6px 0 10px;
+  box-shadow:0 0 0 1px var(--bd);
+}
+.od-provider-av{
+  width:42px;height:42px;
+  border-radius:50%;flex-shrink:0;overflow:hidden;
+  background:linear-gradient(135deg,var(--p),var(--p-d));
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:14px;
+}
+.od-provider-av img{width:100%;height:100%;object-fit:cover}
+.od-provider-info{flex:1;min-width:0}
+.od-provider-name{font-size:13px;font-weight:800;color:var(--td)}
+.od-provider-rating{
+  display:flex;align-items:center;gap:4px;
+  font-size:11px;color:#f59e0b;font-weight:700;margin-top:2px;
+}
+.od-provider-rating .empty-stars{color:#cbd5e1;font-size:9px}
+.od-provider-call{
+  width:38px;height:38px;
+  border-radius:50%;background:var(--ok);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;flex-shrink:0;
+  box-shadow:0 5px 12px -4px rgba(22,163,74,.5);
+  text-decoration:none;
+}
+
+.od-actions-row{display:flex;gap:8px;margin-top:12px}
+.od-actions-row button{
+  flex:1;padding:11px 12px;
+  border-radius:var(--r-p);
+  font-size:12px;font-weight:800;
+  letter-spacing:.02em;
+}
+.od-actions-row .btn-primary-sm{
+  background:linear-gradient(180deg,#12903e 0%,var(--p) 100%);color:#fff;
+}
+.od-actions-row .btn-secondary-sm{
+  background:var(--sf);color:var(--td);border:1.5px solid var(--bd);
+}
+.od-actions-row .btn-danger-soft-sm{
+  background:#fee2e2;color:var(--danger);
+}
+
+/* ============================================================
+   NEW — Rating modal
+   ============================================================ */
+.rating-overlay{
+  position:fixed;inset:0;z-index:700;
+  background:rgba(15,23,42,.55);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;padding:20px;
+  animation:fadeIn .25s ease;
+}
+.rating-overlay.open{display:flex}
+.rating-card{
+  background:#fff;
+  border-radius:var(--r-xl);
+  padding:26px 22px 22px;
+  text-align:center;
+  max-width:400px;width:100%;
+  box-shadow:0 30px 70px -20px rgba(15,23,42,.4);
+  animation:modalIn .35s cubic-bezier(.34,1.4,.64,1);
+}
+.rating-provider-avatar{
+  width:72px;height:72px;
+  border-radius:50%;margin:0 auto 14px;
+  background:linear-gradient(135deg,var(--p),var(--p-d));
+  color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;font-weight:900;
+  overflow:hidden;
+  box-shadow:0 0 0 4px #fff,0 0 0 6px rgba(15,122,52,.15);
+}
+.rating-provider-avatar img{width:100%;height:100%;object-fit:cover}
+.rating-card h3{font-size:18px;font-weight:900;color:var(--td);letter-spacing:-.02em;margin-bottom:4px}
+.rating-card p{
+  font-size:12.5px;color:var(--tl);font-weight:600;
+  line-height:1.5;margin-bottom:14px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.rating-stars-row{
+  display:flex;justify-content:center;gap:6px;
+  margin:14px 0 8px;
+}
+.rating-star{
+  width:44px;height:44px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;
+  color:#d8d8dc;
+  transition:color .18s var(--e),transform .22s var(--e);
+  padding:0;
+}
+.rating-star.active{color:#f59e0b}
+.rating-star:active{transform:scale(.88)}
+.rating-label{
+  font-size:12.5px;font-weight:800;color:var(--tl);
+  margin-bottom:14px;min-height:18px;letter-spacing:.02em;
+}
+.rating-comment-input{
+  width:100%;padding:11px 14px;
+  border-radius:var(--r);
+  border:1.5px solid var(--bd);
+  background:var(--sf2);
+  outline:none;
+  font-size:13.5px;line-height:1.5;
+  resize:none;font-family:inherit;
+  transition:all .2s var(--e);
+  margin-bottom:14px;
+  min-height:70px;
+}
+.rating-comment-input:focus{border-color:var(--p);background:#fff;box-shadow:var(--ring)}
+.rating-actions-row{display:flex;gap:10px}
+.rating-actions-row button{
+  flex:1;padding:13px;
+  border-radius:var(--r);
+  font-size:13.5px;font-weight:800;
+}
+.rating-skip{background:var(--sf2);color:var(--td)}
+.rating-submit{
+  background:linear-gradient(180deg,#12903e 0%,var(--p) 100%);color:#fff;
+  box-shadow:var(--sh-brand);
+}
+.rating-submit:disabled{opacity:.5;pointer-events:none}
+
+/* Provider marker for ongoing tracking */
+.ongoing-provider-wrap{background:none !important;border:none !important}
+.ongoing-provider-marker{
+  width:46px;height:46px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#16a34a,#0b5f28);
+  color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+  border:3px solid #fff;
+  box-shadow:0 4px 12px rgba(0,0,0,.32);
+  position:relative;
+}
+.ongoing-provider-marker::after{
+  content:'';
+  position:absolute;inset:-7px;
+  border-radius:50%;
+  border:2.5px solid rgba(22,163,74,.4);
+  animation:lcPulse 2s ease-in-out infinite;
+}
+.ongoing-pickup-leaf{
+  width:26px;height:26px;
+  background:#0f7a34;border:3.5px solid #fff;
+  border-radius:50% 50% 50% 0;
+  transform:rotate(-45deg);
+  box-shadow:0 3px 10px rgba(0,0,0,.42);
+  box-sizing:border-box;
+}
+.ongoing-drop-leaf{
+  width:26px;height:26px;
+  background:#2563eb;border:3.5px solid #fff;
+  border-radius:50% 50% 50% 0;
+  transform:rotate(-45deg);
+  box-shadow:0 3px 10px rgba(0,0,0,.42);
+  box-sizing:border-box;
+}
+
+/* Rating stars preview inside provider box */
+.od-provider-rating .filled{color:#f59e0b}
+.od-provider-rating .empty{color:#cbd5e1}
+
 @media(min-width:560px){.cat-grid,.mk-grid{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:721px){.scroll{padding-bottom:calc(var(--nav-h) + 24px)}}
 </style>
@@ -1372,7 +1665,29 @@ a{color:inherit;text-decoration:none}
     <p id="searchingSubtitle">Looking for a provider near you</p>
     <div class="sc-actions">
       <button class="sc-cancel" onclick="cancelDeliverySearch()">Cancel Delivery</button>
-      <button class="sc-map" onclick="closeSearching();navTo('delivery')">View Map</button>
+      <button class="sc-map" onclick="closeSearching();navTo('ongoing-deliveries')">View Map</button>
+    </div>
+  </div>
+</div>
+
+<!-- Rating overlay (NEW) -->
+<div class="rating-overlay" id="ratingOverlay">
+  <div class="rating-card">
+    <div class="rating-provider-avatar" id="ratingProviderAvatar">🚚</div>
+    <h3>Rate your transporter</h3>
+    <p id="ratingProviderName">How was your delivery?</p>
+    <div class="rating-stars-row" id="ratingStarsRow">
+      <button type="button" class="rating-star" data-star="1">★</button>
+      <button type="button" class="rating-star" data-star="2">★</button>
+      <button type="button" class="rating-star" data-star="3">★</button>
+      <button type="button" class="rating-star" data-star="4">★</button>
+      <button type="button" class="rating-star" data-star="5">★</button>
+    </div>
+    <div class="rating-label" id="ratingLabel">Tap a star to rate</div>
+    <textarea class="rating-comment-input" id="ratingComment" maxlength="240" placeholder="Add a comment (optional)"></textarea>
+    <div class="rating-actions-row">
+      <button type="button" class="rating-skip" onclick="closeRatingModal()">Skip</button>
+      <button type="button" class="rating-submit" id="ratingSubmitBtn" disabled onclick="submitDeliveryRating()">Submit</button>
     </div>
   </div>
 </div>
@@ -1426,7 +1741,30 @@ const S = {
   delRouteLayer: null, delDriverMarker: null, delDriverPoll: null,
   delActiveId: null, delActiveUnsub: null,
   heroMap: null, heroDriverMarkers: {}, heroDriverListener: null,
-  followUnsub: null
+  followUnsub: null,
+  // NEW: Ongoing tracking
+  ongoingMap: null,
+  ongoingProviderMarker: null,
+  ongoingPickupMarker: null,
+  ongoingDropoffMarker: null,
+  ongoingRouteLayer: null,
+  ongoingTrackUnsub: null,
+  ongoingStatusUnsub: null,
+  ongoingTrackDeliveryId: null,
+  ongoingTrackStage: null,
+  ongoingLastProviderPos: null,
+  ongoingRouteLastFrom: null,
+  ongoingRouteBusy: false,
+  ongoingRouteRefreshTimer: null,
+  ongoingRouteFitted: false,
+  // NEW: Rating
+  pendingRatingDelivery: null,
+  pendingRatingStars: 0,
+  // NEW: Expanded ongoing cards
+  expandedOngoingCards: {},
+  // NEW: Pickup GPS state
+  pickupGpsEnabled: false,
+  pickupGpsUnsub: null
 };
 
 const $app = document.getElementById('app');
@@ -1444,6 +1782,13 @@ const $searchingOverlay = document.getElementById('searchingOverlay');
 const $searchingIcon = document.getElementById('searchingIcon');
 const $searchingTitle = document.getElementById('searchingTitle');
 const $searchingSubtitle = document.getElementById('searchingSubtitle');
+const $ratingOverlay = document.getElementById('ratingOverlay');
+const $ratingStarsRow = document.getElementById('ratingStarsRow');
+const $ratingLabel = document.getElementById('ratingLabel');
+const $ratingComment = document.getElementById('ratingComment');
+const $ratingSubmitBtn = document.getElementById('ratingSubmitBtn');
+const $ratingProviderAvatar = document.getElementById('ratingProviderAvatar');
+const $ratingProviderName = document.getElementById('ratingProviderName');
 
 /* ============================================================
    HELPERS
@@ -1513,6 +1858,36 @@ function fmtDate(ts){
 function daysSince(ts){
   if(!ts) return 0;
   return Math.max(0, Math.floor((Date.now() - ts) / 86400000));
+}
+function haversineMeters(lat1, lon1, lat2, lon2){
+  const R = 6371000;
+  const p1 = lat1 * Math.PI / 180, p2 = lat2 * Math.PI / 180;
+  const dp = (lat2 - lat1) * Math.PI / 180;
+  const dl = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dp/2)**2 + Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)**2;
+  return 2 * R * Math.asin(Math.min(1, Math.sqrt(a)));
+}
+function fmtDistance(m){
+  if(m == null || !isFinite(m)) return '—';
+  if(m < 1000) return Math.round(m) + ' m';
+  return (m/1000).toFixed(m < 10000 ? 1 : 0) + ' km';
+}
+function fmtDuration(sec){
+  if(sec == null || !isFinite(sec)) return '—';
+  const mins = Math.round(sec / 60);
+  if(mins < 1) return '< 1 min';
+  if(mins < 60) return mins + ' min';
+  const h = Math.floor(mins/60), m = mins % 60;
+  return h + 'h ' + m + 'm';
+}
+function starsHtmlForRating(rating, size){
+  const r = Math.round(Number(rating) || 0);
+  const sz = size || '12px';
+  let s = '';
+  for(let i=1;i<=5;i++){
+    s += `<span class="${i<=r?'filled':'empty'}" style="font-size:${sz}">★</span>`;
+  }
+  return s;
 }
 
 /* ============================================================
@@ -1874,12 +2249,17 @@ function showScreen(id, data={}, pushHistory=true){
     try{ S.heroDriverListener(); }catch(e){}
     S.heroDriverListener = null;
   }
+  // Cleanup live tracking when leaving ongoing-deliveries
+  if(id !== 'ongoing-deliveries'){
+    stopOngoingTracking();
+  }
 }
 
 window.addEventListener('popstate', e=>{
   if($modal.classList.contains('open')){ closeModal(); return; }
   if($vsheetOverlay.classList.contains('open')){ closeVsheet(); return; }
   if($searchingOverlay.classList.contains('open')){ closeSearching(); return; }
+  if($ratingOverlay.classList.contains('open')){ closeRatingModal(); return; }
   const st = e.state || {};
   const id = st.screen || 'home';
   if(!document.getElementById('screen-'+id)){ showScreen('home', {}, false); return; }
@@ -2223,7 +2603,7 @@ function startContentNotificationListeners(){
           type:'delivery',
           title:'🚚 Delivery update',
           text: `Delivery ${id} — ${statusTxt}`,
-          link: 'screen:delivery',
+          link: 'screen:ongoing-deliveries',
           severity: d.status === 'delivered' ? 'info' : 'warn'
         });
         if(ts > latest) latest = ts;
@@ -2575,7 +2955,7 @@ function route(){
     case 'delivery': el.innerHTML = renderDelivery(); wireDeliveryHeroMap(); break;
     case 'request-delivery': el.innerHTML = renderRequestDelivery(); wireRequestDelivery(); break;
     case 'delivery-history': el.innerHTML = renderDeliveryHistory(); break;
-    case 'ongoing-deliveries': el.innerHTML = renderOngoingDeliveries(); break;
+    case 'ongoing-deliveries': el.innerHTML = renderOngoingDeliveries(); wireOngoingDeliveries(); break;
     case 'buy-supplies': el.innerHTML = renderBuySupplies(S.screenData.cat); break;
     case 'supplier-cart': el.innerHTML = renderSupplierCart(); break;
     case 'supplier-checkout': el.innerHTML = renderSupplierCheckout(); wireSupplierCheckout(); break;
@@ -4182,11 +4562,11 @@ function computeDeliveryFare(vehicleId, distanceM, durationS){
 }
 
 /* ============================================================
-   SCREEN: DELIVERY (dashboard with map)
+   SCREEN: DELIVERY DASHBOARD
    ============================================================ */
 function renderDelivery(){
   const all = (S.allDeliveries || []).filter(d=>d.requester_id === S.user.uid);
-  const ongoing = all.filter(d=>['searching','accepted','in_progress','arrived','picked_up'].includes(d.status));
+  const ongoing = all.filter(d=>['searching','accepted','arrived','in_progress','picked_up'].includes(d.status));
   const recent = all.slice(0, 3);
 
   const recentHTML = recent.length ? recent.map(d=>{
@@ -4314,14 +4694,6 @@ window.recenterDeliveryHero = ()=>{
     detectUserCityAndWeather(true);
   }
 };
-function haversineMeters(lat1, lon1, lat2, lon2){
-  const R = 6371000;
-  const p1 = lat1 * Math.PI / 180, p2 = lat2 * Math.PI / 180;
-  const dp = (lat2 - lat1) * Math.PI / 180;
-  const dl = (lon2 - lon1) * Math.PI / 180;
-  const a = Math.sin(dp/2)**2 + Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)**2;
-  return 2 * R * Math.asin(Math.min(1, Math.sqrt(a)));
-}
 
 /* ============================================================
    SCREEN: DELIVERY HISTORY
@@ -4351,69 +4723,531 @@ function renderDeliveryHistory(){
 }
 
 /* ============================================================
-   SCREEN: ONGOING DELIVERIES
+   SCREEN: ONGOING DELIVERIES — expandable + live tracking
    ============================================================ */
 function renderOngoingDeliveries(){
   const all = (S.allDeliveries || [])
     .filter(d=>d.requester_id === S.user.uid)
     .filter(d=>['searching','accepted','arrived','in_progress','picked_up'].includes(d.status))
     .sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
-  const list = all.length ? all.map(d=>deliveryCardHTML(d, false)).join('') : `
+
+  const hasTracking = all.some(d => ['accepted','arrived','in_progress','picked_up'].includes(d.status));
+
+  const list = all.length ? all.map(d=>renderOngoingCard(d)).join('') : `
     <div class="empty">
       <div class="e-ic">⏱️</div>
       <h3>No ongoing deliveries</h3>
       <p>Active deliveries will show up here.</p>
     </div>`;
+
   return `
-  <div class="scroll">
+  <div class="scroll" id="ongoingScroll">
     <div class="topbar bordered">
       <button class="tb-back" onclick="goBack()">
         <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
       </button>
       <div class="tb-title">Ongoing Deliveries</div>
     </div>
+
+    <div class="ongoing-track-wrap${hasTracking ? ' show' : ''}" id="ongoingTrackWrap">
+      <div id="ongoingMap"></div>
+      <div class="ongoing-track-badge" id="ongoingTrackBadge">
+        <span class="dot"></span>
+        <span id="ongoingTrackBadgeText">Tracking provider…</span>
+      </div>
+    </div>
+
     <div style="padding:14px 18px 18px">${list}</div>
   </div>
   ${bottomNavHTML()}`;
 }
 
-function deliveryCardHTML(d, isHistory){
+function renderOngoingCard(d){
   const status = d.status || 'searching';
-  const tagCls = status;
+  const statusText = status.replace(/_/g,' ');
+  const expanded = !!S.expandedOngoingCards[d.id];
+  const showProvider = d.providerName && ['accepted','arrived','in_progress','picked_up','delivered'].includes(status);
+
+  const rating = Number(d.providerRatingAverage || 0);
+  const ratingCount = Number(d.providerRatingCount || 0);
+
+  const totalDist = d.distance ? fmtDistance(d.distance) : '—';
+  const totalDur = d.duration ? fmtDuration(d.duration) : '—';
+
   return `
-    <div class="card" style="margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
-        <div style="flex:1;min-width:0">
-          <div style="font-size:13px;font-weight:800;color:var(--td);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(d.pickupLabel||'Pickup')} → ${esc(d.dropoffLabel||'Drop-off')}</div>
-          <div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:3px">${esc(d.cargo || 'Goods')} · ${esc(d.vehicleLabel || d.vehicleType || 'Any')}</div>
-          <div style="font-size:11px;color:var(--tm);font-weight:600;margin-top:2px">📅 ${esc(d.date || '—')} · ${timeAgo(d.createdAt)}</div>
-          ${d.fare ? `<div style="font-size:12px;font-weight:900;color:var(--p-d);margin-top:5px">${fmtZMK(d.fare)}</div>`:''}
-        </div>
-        <span class="dri-tag ${tagCls}">${esc(status.replace(/_/g,' '))}</span>
+  <div class="od-card${expanded ? ' expanded' : ''}" data-odid="${esc(d.id)}">
+    <div class="od-summary" onclick="toggleOngoingCard('${esc(d.id)}')">
+      <div class="od-head-row">
+        <div class="od-title">${esc(d.pickupLabel || 'Pickup')} → ${esc(d.dropoffLabel || 'Drop-off')}</div>
+        <span class="od-status-tag ${status}">${esc(statusText)}</span>
       </div>
-      ${d.providerName ? `
-        <div style="display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bd)">
-          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--p-d));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;overflow:hidden">
-            ${d.providerPhoto ? `<img src="${esc(d.providerPhoto)}" style="width:100%;height:100%;object-fit:cover">` : initials(d.providerName)}
+      <div class="od-sub">
+        <span>${esc(d.cargo || 'Goods')}</span>
+        <span class="dot-sep"></span>
+        <span>${esc(d.vehicleLabel || 'Any')}</span>
+        <span class="dot-sep"></span>
+        <span>${timeAgo(d.createdAt)}</span>
+      </div>
+      <div class="od-fare">${d.fare ? fmtZMK(d.fare) : 'Estimating…'}</div>
+      <div class="od-chev">
+        <span>${expanded ? 'Hide details' : 'Show details'}</span>
+        <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+      </div>
+    </div>
+    <div class="od-details">
+      <div class="od-details-inner">
+        ${showProvider ? `
+          <div class="od-provider-box">
+            <div class="od-provider-av">${d.providerPhoto ? `<img src="${esc(d.providerPhoto)}" alt="">` : initials(d.providerName || 'D')}</div>
+            <div class="od-provider-info">
+              <div class="od-provider-name">${esc(d.providerName)}</div>
+              <div class="od-provider-rating">
+                ${rating ? starsHtmlForRating(rating, '12px') : '<span class="empty-stars">No ratings yet</span>'}
+                ${rating ? `<span style="color:#64748b;font-size:10.5px;font-weight:700;margin-left:4px">${rating.toFixed(1)} (${ratingCount})</span>` : ''}
+              </div>
+            </div>
+            ${d.providerPhone ? `
+              <a class="od-provider-call" href="tel:${esc(d.providerPhone)}" onclick="event.stopPropagation()">📞</a>
+            ` : ''}
           </div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:12px;font-weight:800;color:var(--td)">${esc(d.providerName)}</div>
-            <div style="font-size:10.5px;color:var(--tl);font-weight:600">${esc(d.providerRole || 'Provider')}</div>
+        ` : ''}
+
+        <div class="od-row"><span class="k">Pickup</span><span class="v">${esc(d.pickupLabel || '—')}</span></div>
+        <div class="od-row"><span class="k">Drop-off</span><span class="v">${esc(d.dropoffLabel || '—')}</span></div>
+        <div class="od-row"><span class="k">Cargo</span><span class="v">${esc(d.cargo || 'Goods')}</span></div>
+        <div class="od-row"><span class="k">Weight</span><span class="v">${esc(String(d.weight || '—'))} kg</span></div>
+        <div class="od-row"><span class="k">Distance</span><span class="v">${totalDist}</span></div>
+        <div class="od-row"><span class="k">Duration</span><span class="v">${totalDur}</span></div>
+        <div class="od-row"><span class="k">Vehicle</span><span class="v">${esc(d.vehicleLabel || '—')}</span></div>
+        <div class="od-row"><span class="k">Sender</span><span class="v">${esc(d.senderName || '—')}</span></div>
+        <div class="od-row"><span class="k">Sender phone</span><span class="v">${esc(d.senderPhone || '—')}</span></div>
+        <div class="od-row"><span class="k">Receiver</span><span class="v">${esc(d.receiverName || '—')}</span></div>
+        <div class="od-row"><span class="k">Receiver phone</span><span class="v">${esc(d.receiverPhone || '—')}</span></div>
+        ${d.date ? `<div class="od-row"><span class="k">Date</span><span class="v">${esc(d.date)}</span></div>` : ''}
+        ${d.notes ? `<div class="od-row"><span class="k">Notes</span><span class="v long">${esc(d.notes)}</span></div>` : ''}
+        <div class="od-row"><span class="k">Requested</span><span class="v">${esc(new Date(d.createdAt).toLocaleString())}</span></div>
+        ${d.fare ? `<div class="od-row"><span class="k">Fare</span><span class="v">${fmtZMK(d.fare)}</span></div>` : ''}
+
+        ${status === 'searching' ? `
+          <div class="od-actions-row">
+            <button class="btn-secondary-sm" onclick="event.stopPropagation();openDeliverySearching()">
+              🔍 View search
+            </button>
+            <button class="btn-danger-soft-sm" onclick="event.stopPropagation();cancelDeliveryRequest('${esc(d.id)}')">
+              ✕ Cancel
+            </button>
           </div>
-          ${d.providerPhone ? `<a href="tel:${esc(d.providerPhone)}" style="width:34px;height:34px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px">📞</a>`:''}
-        </div>
-      `:''}
-      ${!isHistory && status === 'searching' ? `
-        <button class="btn btn-s btn-sm" style="width:100%;margin-top:10px" onclick="openDeliverySearching()">View Search Status</button>
-      `:''}
-    </div>`;
+        ` : ''}
+        ${['accepted','arrived','in_progress','picked_up'].includes(status) ? `
+          <div class="od-actions-row">
+            <button class="btn-primary-sm" onclick="event.stopPropagation();focusOngoingTracking('${esc(d.id)}')">
+              🗺️ Track live
+            </button>
+            ${d.providerPhone ? `
+              <a href="tel:${esc(d.providerPhone)}" class="btn-secondary-sm" style="text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center;padding:11px 12px" onclick="event.stopPropagation()">
+                📞 Call
+              </a>
+            ` : ''}
+          </div>
+        ` : ''}
+        ${(status === 'delivered' || status === 'completed') && !d.farmerRating ? `
+          <div class="od-actions-row">
+            <button class="btn-primary-sm" onclick="event.stopPropagation();openRatingModalById('${esc(d.id)}')">
+              ⭐ Rate this delivery
+            </button>
+          </div>
+        ` : ''}
+        ${(status === 'delivered' || status === 'completed') && d.farmerRating ? `
+          <div class="od-row" style="margin-top:8px">
+            <span class="k">Your rating</span>
+            <span class="v">${starsHtmlForRating(d.farmerRating, '13px')}</span>
+          </div>
+          ${d.farmerRatingComment ? `<div class="od-row"><span class="k">Comment</span><span class="v long">${esc(d.farmerRatingComment)}</span></div>` : ''}
+        ` : ''}
+      </div>
+    </div>
+  </div>`;
 }
 
 /* ============================================================
-   SCREEN: REQUEST DELIVERY
+   Expandable card state
+   ============================================================ */
+window.toggleOngoingCard = (id)=>{
+  S.expandedOngoingCards[id] = !S.expandedOngoingCards[id];
+  const card = document.querySelector(`.od-card[data-odid="${id}"]`);
+  if(card){
+    card.classList.toggle('expanded', !!S.expandedOngoingCards[id]);
+    const chev = card.querySelector('.od-chev span');
+    if(chev) chev.textContent = S.expandedOngoingCards[id] ? 'Hide details' : 'Show details';
+  }
+};
+
+window.cancelDeliveryRequest = (id)=>{
+  modal(`<h3>Cancel this delivery?</h3><p>Providers will stop searching and the request will be cancelled.</p>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-s" onclick="closeModal()">No</button>
+      <button class="btn btn-danger" onclick="confirmCancelDeliveryRequest('${esc(id)}')">Yes, cancel</button>
+    </div>`);
+};
+window.confirmCancelDeliveryRequest = async (id)=>{
+  try{
+    await update(ref(db, 'deliveryRequests/'+id), {status:'cancelled', cancelledAt: Date.now()});
+    closeModal();
+    toast('Delivery cancelled');
+    await loadAllDeliveries();
+    if(S.screen === 'ongoing-deliveries') route();
+  }catch(e){ toast('Failed'); }
+};
+
+window.focusOngoingTracking = (id)=>{
+  const d = (S.allDeliveries||[]).find(x=>x.id===id);
+  if(!d) return;
+  const wrap = document.getElementById('ongoingTrackWrap');
+  if(wrap){
+    wrap.classList.add('show');
+    try{ wrap.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){}
+  }
+  S.ongoingRouteFitted = false;
+  startOngoingTracking(d);
+};
+
+/* ============================================================
+   Live route tracking (provider → pickup or pickup → dropoff)
+   ============================================================ */
+function wireOngoingDeliveries(){
+  const all = (S.allDeliveries || []).filter(d=>d.requester_id === S.user.uid);
+  const active = all.find(d=>['accepted','arrived','in_progress','picked_up'].includes(d.status));
+  if(active){
+    setTimeout(()=>{
+      initOngoingMap();
+      startOngoingTracking(active);
+    }, 260);
+  }
+}
+
+function initOngoingMap(){
+  const el = document.getElementById('ongoingMap');
+  if(!el) return;
+  if(S.ongoingMap){ try{ S.ongoingMap.remove(); }catch(e){} S.ongoingMap = null; }
+  S.ongoingMap = L.map('ongoingMap', {zoomControl:false, attributionControl:false}).setView([-15.4167, 28.2833], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, subdomains:'abc'}).addTo(S.ongoingMap);
+  setTimeout(()=>{ if(S.ongoingMap) S.ongoingMap.invalidateSize(); }, 200);
+}
+
+function stopOngoingTracking(){
+  if(S.ongoingTrackUnsub){ try{ S.ongoingTrackUnsub(); }catch(e){} S.ongoingTrackUnsub = null; }
+  if(S.ongoingStatusUnsub){ try{ S.ongoingStatusUnsub(); }catch(e){} S.ongoingStatusUnsub = null; }
+  if(S.ongoingRouteRefreshTimer){ clearInterval(S.ongoingRouteRefreshTimer); S.ongoingRouteRefreshTimer = null; }
+  S.ongoingTrackDeliveryId = null;
+  S.ongoingTrackStage = null;
+  S.ongoingLastProviderPos = null;
+  S.ongoingRouteLastFrom = null;
+  S.ongoingRouteFitted = false;
+  S.ongoingRouteBusy = false;
+  if(S.ongoingProviderMarker && S.ongoingMap){ try{ S.ongoingMap.removeLayer(S.ongoingProviderMarker); }catch(e){} }
+  if(S.ongoingPickupMarker && S.ongoingMap){ try{ S.ongoingMap.removeLayer(S.ongoingPickupMarker); }catch(e){} }
+  if(S.ongoingDropoffMarker && S.ongoingMap){ try{ S.ongoingMap.removeLayer(S.ongoingDropoffMarker); }catch(e){} }
+  if(S.ongoingRouteLayer && S.ongoingMap){ try{ S.ongoingMap.removeLayer(S.ongoingRouteLayer); }catch(e){} }
+  S.ongoingProviderMarker = null;
+  S.ongoingPickupMarker = null;
+  S.ongoingDropoffMarker = null;
+  S.ongoingRouteLayer = null;
+}
+
+function startOngoingTracking(delivery){
+  if(S.ongoingTrackDeliveryId === delivery.id && S.ongoingTrackStage === delivery.status){
+    return;
+  }
+  stopOngoingTracking();
+  S.ongoingTrackDeliveryId = delivery.id;
+  S.ongoingTrackStage = delivery.status;
+
+  const wrap = document.getElementById('ongoingTrackWrap');
+  if(wrap) wrap.classList.add('show');
+
+  if(!S.ongoingMap) initOngoingMap();
+  if(!S.ongoingMap) return;
+
+  // Place pickup + dropoff markers
+  if(delivery.pickup && isFinite(delivery.pickup.lat)){
+    const pickupIcon = L.divIcon({className:'', html:'<div class="ongoing-pickup-leaf"></div>', iconSize:[26,26], iconAnchor:[13,26]});
+    S.ongoingPickupMarker = L.marker([delivery.pickup.lat, delivery.pickup.lng], {icon: pickupIcon, zIndexOffset: 500}).addTo(S.ongoingMap);
+  }
+  if(delivery.dropoff && isFinite(delivery.dropoff.lat)){
+    const dropoffIcon = L.divIcon({className:'', html:'<div class="ongoing-drop-leaf"></div>', iconSize:[26,26], iconAnchor:[13,26]});
+    S.ongoingDropoffMarker = L.marker([delivery.dropoff.lat, delivery.dropoff.lng], {icon: dropoffIcon, zIndexOffset: 500}).addTo(S.ongoingMap);
+  }
+
+  updateOngoingTrackBadge(delivery.status);
+
+  // Listen to provider's live location
+  const providerId = delivery.providerId;
+  if(providerId){
+    S.ongoingTrackUnsub = onValue(ref(db, `users/${providerId}/location`), (snap)=>{
+      if(!snap.exists()) return;
+      const loc = snap.val();
+      if(!loc || !isFinite(loc.lat) || !isFinite(loc.lng)) return;
+      updateOngoingProviderMarker(loc.lat, loc.lng, loc.heading || 0);
+      maybeRefreshOngoingRoute(loc.lat, loc.lng);
+    });
+  }
+
+  // Listen to delivery status updates
+  S.ongoingStatusUnsub = onValue(ref(db, 'deliveryRequests/' + delivery.id), (snap)=>{
+    if(!snap.exists()) return;
+    const d = snap.val();
+    const id = delivery.id;
+
+    // Update local cache
+    const idx = (S.allDeliveries || []).findIndex(x=>x.id === id);
+    if(idx >= 0) S.allDeliveries[idx] = {id, ...d};
+
+    // Update badge
+    updateOngoingTrackBadge(d.status);
+
+    // Update any card in DOM
+    if(S.screen === 'ongoing-deliveries'){
+      const cardEl = document.querySelector('.od-card[data-odid="'+id+'"]');
+      if(cardEl){
+        const statusEl = cardEl.querySelector('.od-status-tag');
+        if(statusEl){
+          statusEl.textContent = (d.status || '').replace(/_/g,' ');
+          statusEl.className = 'od-status-tag ' + d.status;
+        }
+      }
+    }
+
+    // Stage change → redraw
+    const newStage = d.status;
+    if(newStage !== S.ongoingTrackStage){
+      S.ongoingTrackStage = newStage;
+      S.ongoingRouteLastFrom = null;
+      S.ongoingRouteFitted = false;
+      if(S.ongoingLastProviderPos){
+        redrawOngoingRoute(S.ongoingLastProviderPos.lat, S.ongoingLastProviderPos.lng);
+      }
+    }
+
+    // Completion → trigger rating
+    if((d.status === 'delivered' || d.status === 'completed') && !d.farmerRating){
+      setTimeout(()=>openRatingModal(d, id), 900);
+    }
+    if(d.status === 'cancelled'){
+      toast('Delivery was cancelled');
+      stopOngoingTracking();
+      if(wrap) wrap.classList.remove('show');
+    }
+  });
+
+  // Periodic refresh
+  S.ongoingRouteRefreshTimer = setInterval(()=>{
+    if(S.ongoingLastProviderPos) redrawOngoingRoute(S.ongoingLastProviderPos.lat, S.ongoingLastProviderPos.lng);
+  }, 12000);
+}
+
+function updateOngoingTrackBadge(status){
+  const badge = document.getElementById('ongoingTrackBadge');
+  const txt = document.getElementById('ongoingTrackBadgeText');
+  if(!badge || !txt) return;
+  badge.classList.remove('info','success','cancel');
+  let label = 'Tracking provider…';
+  if(status === 'accepted'){
+    label = 'Provider heading to pickup';
+    badge.classList.add('info');
+  } else if(status === 'arrived'){
+    label = 'Provider arrived at pickup';
+    badge.classList.add('success');
+  } else if(status === 'in_progress' || status === 'picked_up'){
+    label = 'Provider heading to drop-off';
+    badge.classList.add('info');
+  } else if(status === 'delivered' || status === 'completed'){
+    label = 'Delivery complete';
+    badge.classList.add('success');
+  } else if(status === 'cancelled'){
+    label = 'Delivery cancelled';
+    badge.classList.add('cancel');
+  }
+  txt.textContent = label;
+}
+
+function updateOngoingProviderMarker(lat, lng, heading){
+  if(!S.ongoingMap) return;
+  S.ongoingLastProviderPos = {lat, lng};
+  if(S.ongoingProviderMarker){
+    S.ongoingProviderMarker.setLatLng([lat, lng]);
+  } else {
+    const icon = L.divIcon({
+      className:'ongoing-provider-wrap',
+      html:'<div class="ongoing-provider-marker">🚚</div>',
+      iconSize:[46,46], iconAnchor:[23,23]
+    });
+    S.ongoingProviderMarker = L.marker([lat, lng], {icon, zIndexOffset: 1000}).addTo(S.ongoingMap);
+  }
+}
+
+function maybeRefreshOngoingRoute(lat, lng){
+  if(!S.ongoingRouteLastFrom){
+    redrawOngoingRoute(lat, lng);
+    return;
+  }
+  const moved = haversineMeters(S.ongoingRouteLastFrom.lat, S.ongoingRouteLastFrom.lng, lat, lng);
+  if(moved < 40) return;
+  redrawOngoingRoute(lat, lng);
+}
+
+async function redrawOngoingRoute(providerLat, providerLng){
+  if(S.ongoingRouteBusy) return;
+  if(!S.ongoingMap) return;
+  S.ongoingRouteBusy = true;
+  S.ongoingRouteLastFrom = {lat: providerLat, lng: providerLng};
+
+  const id = S.ongoingTrackDeliveryId;
+  const d = (S.allDeliveries || []).find(x=>x.id === id);
+  if(!d){ S.ongoingRouteBusy = false; return; }
+
+  let target = null;
+  if(d.status === 'accepted' || d.status === 'arrived') target = d.pickup;
+  else if(d.status === 'in_progress' || d.status === 'picked_up') target = d.dropoff;
+
+  if(!target || !isFinite(target.lat) || !isFinite(target.lng)){
+    S.ongoingRouteBusy = false;
+    return;
+  }
+
+  try {
+    const url = `https://router.project-osrm.org/route/v1/driving/${providerLng},${providerLat};${target.lng},${target.lat}?overview=full&geometries=geojson`;
+    const r = await fetch(url);
+    const j = await r.json();
+    if(!j.routes || !j.routes.length){ S.ongoingRouteBusy = false; return; }
+    const coords = j.routes[0].geometry.coordinates.map(([lng, lat])=>[lat, lng]);
+
+    if(S.ongoingRouteLayer) S.ongoingMap.removeLayer(S.ongoingRouteLayer);
+    S.ongoingRouteLayer = L.layerGroup().addTo(S.ongoingMap);
+    L.polyline(coords, {color:'#ffffff', weight:8, opacity:.95, lineJoin:'round', lineCap:'round'}).addTo(S.ongoingRouteLayer);
+    L.polyline(coords, {color:'#0f7a34', weight:4.5, opacity:1, lineJoin:'round', lineCap:'round'}).addTo(S.ongoingRouteLayer);
+
+    if(!S.ongoingRouteFitted){
+      S.ongoingMap.fitBounds(L.latLngBounds(coords), {padding:[40,40], maxZoom:16});
+      S.ongoingRouteFitted = true;
+    }
+  } catch(e){
+    console.warn('ongoing route err', e);
+  } finally {
+    S.ongoingRouteBusy = false;
+  }
+}
+
+/* ============================================================
+   Rating system (NEW)
+   ============================================================ */
+function updateRatingStars(){
+  const labels = ['Tap a star to rate','Poor','Fair','Good','Very good','Excellent!'];
+  $ratingStarsRow.querySelectorAll('.rating-star').forEach(btn=>{
+    const n = parseInt(btn.dataset.star, 10);
+    btn.classList.toggle('active', n <= S.pendingRatingStars);
+  });
+  $ratingLabel.textContent = labels[S.pendingRatingStars] || 'Tap a star to rate';
+  $ratingSubmitBtn.disabled = S.pendingRatingStars === 0;
+}
+
+$ratingStarsRow.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.rating-star');
+  if(!btn) return;
+  S.pendingRatingStars = parseInt(btn.dataset.star, 10);
+  updateRatingStars();
+});
+
+function openRatingModal(delivery, deliveryId){
+  if(!delivery || !deliveryId) return;
+  if(delivery.farmerRating) return;
+  S.pendingRatingDelivery = { ...delivery, id: deliveryId };
+  S.pendingRatingStars = 0;
+  updateRatingStars();
+  $ratingComment.value = '';
+  $ratingProviderName.textContent = `How was ${delivery.providerName || 'your transporter'}?`;
+  if(delivery.providerPhoto){
+    $ratingProviderAvatar.innerHTML = `<img src="${esc(delivery.providerPhoto)}" alt="">`;
+  } else {
+    $ratingProviderAvatar.innerHTML = '🚚';
+  }
+  $ratingSubmitBtn.disabled = true;
+  $ratingSubmitBtn.textContent = 'Submit';
+  $ratingOverlay.classList.add('open');
+}
+window.openRatingModalById = (id)=>{
+  const d = (S.allDeliveries || []).find(x=>x.id === id);
+  if(!d) return;
+  openRatingModal(d, id);
+};
+
+window.closeRatingModal = ()=>{
+  $ratingOverlay.classList.remove('open');
+  S.pendingRatingDelivery = null;
+  S.pendingRatingStars = 0;
+};
+
+window.submitDeliveryRating = async ()=>{
+  if(!S.pendingRatingDelivery || !S.pendingRatingStars) return;
+  const d = S.pendingRatingDelivery;
+  const providerId = d.providerId;
+  if(!providerId){ closeRatingModal(); return; }
+  const stars = S.pendingRatingStars;
+  const comment = $ratingComment.value.trim();
+  $ratingSubmitBtn.disabled = true;
+  $ratingSubmitBtn.textContent = 'Saving…';
+  try{
+    await update(ref(db, 'deliveryRequests/'+d.id), {
+      farmerRating: stars,
+      farmerRatingComment: comment,
+      farmerRatedAt: Date.now()
+    });
+    const providerRatingRef = push(ref(db, `users/${providerId}/ratingsReceived`));
+    await set(providerRatingRef, {
+      rating: stars,
+      comment,
+      deliveryId: d.id,
+      raterId: S.user.uid,
+      raterName: (S.profile.firstName||'') + ' ' + (S.profile.lastName||''),
+      createdAt: Date.now()
+    });
+    const snap = await get(ref(db, `users/${providerId}/ratingsReceived`));
+    const ratings = snap.val() || {};
+    const vals = Object.values(ratings).map(r=>Number(r.rating)).filter(v=>isFinite(v) && v > 0);
+    const avg = vals.length ? vals.reduce((a,b)=>a+b, 0) / vals.length : 0;
+    await update(ref(db, `users/${providerId}`), {
+      ratingAverage: Math.round(avg * 10) / 10,
+      ratingCount: vals.length
+    }).catch(()=>{});
+    await update(ref(db, 'deliveryRequests/'+d.id), {
+      providerRatingAverage: Math.round(avg * 10) / 10,
+      providerRatingCount: vals.length
+    }).catch(()=>{});
+
+    // Update local cache
+    const idx = (S.allDeliveries||[]).findIndex(x=>x.id === d.id);
+    if(idx >= 0){
+      S.allDeliveries[idx].farmerRating = stars;
+      S.allDeliveries[idx].farmerRatingComment = comment;
+      S.allDeliveries[idx].providerRatingAverage = Math.round(avg * 10) / 10;
+      S.allDeliveries[idx].providerRatingCount = vals.length;
+    }
+
+    toast('Thanks for your feedback! ⭐');
+    closeRatingModal();
+    if(S.screen === 'ongoing-deliveries') route();
+    if(S.screen === 'delivery-history') route();
+  }catch(e){
+    console.error(e);
+    toast('Could not save rating');
+    $ratingSubmitBtn.disabled = false;
+    $ratingSubmitBtn.textContent = 'Submit';
+  }
+};
+
+/* ============================================================
+   SCREEN: REQUEST DELIVERY — precise pickup
    ============================================================ */
 function renderRequestDelivery(){
-  const defaultPickup = S.userLocation || '';
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -4426,8 +5260,8 @@ function renderRequestDelivery(){
       <div style="padding:14px 18px 0">
         <div class="location-input" id="del-pickup-row">
           <span class="loc-dot"></span>
-          <input type="text" id="del-pickup" placeholder="Pickup — building, house, road, area" value="${esc(defaultPickup)}" autocomplete="off">
-          <button type="button" class="loc-clear" onclick="useCurrentForDelivery('pickup')">📍</button>
+          <input type="text" id="del-pickup" placeholder="Locating your precise pickup…" autocomplete="off">
+          <button type="button" class="loc-clear gps" onclick="useCurrentForDelivery('pickup')">📍</button>
         </div>
         <div class="location-input" id="del-dropoff-row">
           <span class="loc-dot dest"></span>
@@ -4447,7 +5281,7 @@ function renderRequestDelivery(){
     <form class="frm" id="del-form" onsubmit="submitDelivery(event)" style="padding-top:0">
       <div class="fld">
         <label>Sender Name</label>
-        <input id="del-sender" class="inp" placeholder="Who is sending?" required>
+        <input id="del-sender" class="inp" placeholder="Who is sending?" value="${esc((S.profile.firstName||'')+' '+(S.profile.lastName||''))}" required>
       </div>
       <div class="fld">
         <label>Sender Phone</label>
@@ -4491,13 +5325,18 @@ let delPickupMarker = null;
 let delDropoffMarker = null;
 let delRouteLayer = null;
 let delSearchAbort = null;
-let delSearchMode = null;
+let delSearchMode = 'dropoff';
 let delPickupLoc = null;
 let delDropoffLoc = null;
 let delRouteInfo = null;
 
 function wireRequestDelivery(){
-  setTimeout(()=>{ initDeliveryMap(); setupDeliverySearch(); }, 250);
+  setTimeout(async ()=>{
+    initDeliveryMap();
+    setupDeliverySearch();
+    // Auto-fill precise GPS pickup
+    await useCurrentForDelivery('pickup', true);
+  }, 250);
 }
 
 function initDeliveryMap(){
@@ -4587,8 +5426,8 @@ async function setDeliveryPoint(mode, lat, lng, label){
     if(delPickupMarker && delMap) delMap.removeLayer(delPickupMarker);
     if(delMap){
       delPickupMarker = L.marker([lat, lng], {icon: L.divIcon({
-        className:'', html:'<div style="width:18px;height:18px;border-radius:50%;background:#0f7a34;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3)"></div>',
-        iconSize:[18,18], iconAnchor:[9,9]
+        className:'', html:'<div style="width:20px;height:20px;border-radius:50%;background:#0f7a34;border:3px solid #fff;box-shadow:0 2px 10px rgba(15,122,52,.5)"></div>',
+        iconSize:[20,20], iconAnchor:[10,10]
       })}).addTo(delMap);
     }
   } else {
@@ -4598,29 +5437,46 @@ async function setDeliveryPoint(mode, lat, lng, label){
     if(delDropoffMarker && delMap) delMap.removeLayer(delDropoffMarker);
     if(delMap){
       delDropoffMarker = L.marker([lat, lng], {icon: L.divIcon({
-        className:'', html:'<div style="width:18px;height:18px;background:#2563eb;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3);border-radius:50% 50% 50% 0;transform:rotate(-45deg)"></div>',
-        iconSize:[18,18], iconAnchor:[9,18]
+        className:'', html:'<div style="width:20px;height:20px;background:#2563eb;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3);border-radius:50% 50% 50% 0;transform:rotate(-45deg)"></div>',
+        iconSize:[20,20], iconAnchor:[10,20]
       })}).addTo(delMap);
     }
   }
-  // Only draw the route if BOTH points exist. Do NOT animate here - only on submit.
   if(delPickupLoc && delDropoffLoc){
     try{ await fetchDeliveryRoute(); drawStaticRoute(); }catch(e){}
   }
 }
 
-window.useCurrentForDelivery = async (mode)=>{
-  if(!S.userCoords){
-    if(navigator.geolocation){
-      toast('Getting your location…');
-      navigator.geolocation.getCurrentPosition((pos)=>{
-        S.userCoords = {lat: pos.coords.latitude, lng: pos.coords.longitude};
-        setDeliveryPoint(mode, S.userCoords.lat, S.userCoords.lng);
-      }, ()=>toast('Location unavailable'));
-    } else toast('Geolocation not supported');
+window.useCurrentForDelivery = async (mode, silent)=>{
+  const input = document.getElementById(mode === 'pickup' ? 'del-pickup' : 'del-dropoff');
+  if(input) input.value = 'Locating precisely…';
+  if(!navigator.geolocation){
+    if(!silent) toast('Geolocation not supported');
+    if(input) input.value = '';
     return;
   }
-  setDeliveryPoint(mode, S.userCoords.lat, S.userCoords.lng);
+  try{
+    const pos = await new Promise((resolve, reject)=>{
+      navigator.geolocation.getCurrentPosition(resolve, reject, {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0
+      });
+    });
+    const lat = pos.coords.latitude;
+    const lng = pos.coords.longitude;
+    S.userCoords = {lat, lng};
+    await setDeliveryPoint(mode, lat, lng);
+    if(!silent) toast('Precise location set ✓');
+  }catch(err){
+    console.warn('GPS err', err);
+    if(S.userCoords){
+      await setDeliveryPoint(mode, S.userCoords.lat, S.userCoords.lng);
+    } else {
+      if(input) input.value = '';
+      if(!silent) toast('Could not get location');
+    }
+  }
 };
 
 async function fetchDeliveryRoute(){
@@ -4652,24 +5508,14 @@ function drawStaticRoute(){
   });
 }
 
-async function drawDeliveryRoute(){
-  if(!delMap || !delPickupLoc || !delDropoffLoc) return;
-  const coords = await fetchDeliveryRoute();
-  if(!coords) return;
-  if(delRouteLayer) delMap.removeLayer(delRouteLayer);
-  delRouteLayer = L.layerGroup().addTo(delMap);
-  L.polyline(coords, {color:'#ffffff', weight:8, opacity:.95, lineJoin:'round', lineCap:'round'}).addTo(delRouteLayer);
-  L.polyline(coords, {color:'#0f7a34', weight:4.5, opacity:1, lineJoin:'round', lineCap:'round'}).addTo(delRouteLayer);
-  const badge = document.getElementById('del-map-badge');
-  const distKm = (delRouteInfo.distance/1000).toFixed(1);
-  const durMin = Math.round(delRouteInfo.duration/60);
-  if(badge) badge.innerHTML = `<i>🛣️</i> ${distKm} km · ~${durMin} min`;
-  delMap.fitBounds(L.latLngBounds(coords), {padding: [30, 30]});
+function fitDeliveryRoute(){
+  if(!delMap) return;
+  const pts = [];
+  if(delPickupLoc) pts.push([delPickupLoc.lat, delPickupLoc.lng]);
+  if(delDropoffLoc) pts.push([delDropoffLoc.lat, delDropoffLoc.lng]);
+  if(pts.length === 2) delMap.fitBounds(L.latLngBounds(pts), {padding: [40, 40]});
 }
 
-/* ============================================================
-   Animate the route drawing slowly, then show vehicle sheet
-   ============================================================ */
 function animateRouteThenShowVehicles(delData, coords){
   if(!delMap){ showVehicleSheet(delData); return; }
   if(delRouteLayer){ try{ delMap.removeLayer(delRouteLayer); }catch(e){} }
@@ -4678,9 +5524,8 @@ function animateRouteThenShowVehicles(delData, coords){
   const bgLine = L.polyline([], {color:'#ffffff', weight:9, opacity:.95, lineJoin:'round', lineCap:'round'}).addTo(delRouteLayer);
   const fgLine = L.polyline([], {color:'#0f7a34', weight:5, opacity:1, lineJoin:'round', lineCap:'round'}).addTo(delRouteLayer);
 
-  delMap.fitBounds(L.latLngBounds(coords), {padding: [40, 40]});
+  try{ delMap.fitBounds(L.latLngBounds(coords), {padding: [40, 40]}); }catch(e){}
 
-  // Number of animation frames — 60 frames over ~2s
   const totalFrames = 60;
   const step = Math.max(1, Math.floor(coords.length / totalFrames));
   const frameMs = 30;
@@ -4699,7 +5544,6 @@ function animateRouteThenShowVehicles(delData, coords){
         const durMin = Math.round(delRouteInfo.duration/60);
         badge.innerHTML = `<i>🛣️</i> ${distKm} km · ~${durMin} min`;
       }
-      // After route drawn, wait then show vehicle sheet
       setTimeout(()=>showVehicleSheet(delData), 500);
       return;
     }
@@ -4709,14 +5553,6 @@ function animateRouteThenShowVehicles(delData, coords){
   }, frameMs);
 }
 
-function fitDeliveryRoute(){
-  if(!delMap) return;
-  const pts = [];
-  if(delPickupLoc) pts.push([delPickupLoc.lat, delPickupLoc.lng]);
-  if(delDropoffLoc) pts.push([delDropoffLoc.lat, delDropoffLoc.lng]);
-  if(pts.length === 2) delMap.fitBounds(L.latLngBounds(pts), {padding: [40, 40]});
-}
-
 window.submitDelivery = async (ev)=>{
   ev.preventDefault();
   const err = document.getElementById('del-error');
@@ -4724,16 +5560,9 @@ window.submitDelivery = async (ev)=>{
   const btn = document.getElementById('del-submit');
   btn.disabled = true;
 
-  // Ensure both locations
+  // Try to re-fetch GPS pickup if still missing
   if(!delPickupLoc){
-    const v = document.getElementById('del-pickup').value.trim();
-    if(v){
-      try{
-        const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(v)}`;
-        const r = await fetch(url); const arr = await r.json();
-        if(arr[0]) await setDeliveryPoint('pickup', parseFloat(arr[0].lat), parseFloat(arr[0].lon));
-      }catch(e){}
-    }
+    await useCurrentForDelivery('pickup', true);
   }
   if(!delDropoffLoc){
     const v = document.getElementById('del-dropoff').value.trim();
@@ -4750,8 +5579,6 @@ window.submitDelivery = async (ev)=>{
     err.style.display='block';
     btn.disabled=false; return;
   }
-
-  // Make sure we have route info
   if(!delRouteInfo){
     try{ await fetchDeliveryRoute(); }catch(e){}
   }
@@ -4781,7 +5608,6 @@ window.submitDelivery = async (ev)=>{
     distance: delRouteInfo.distance, duration: delRouteInfo.duration
   };
 
-  // 1. Hide the form fields (fade out) so map becomes the focus
   const frmEl = document.getElementById('del-form');
   const locBlock = document.getElementById('del-locations-block');
   const searchRes = document.getElementById('del-search-results');
@@ -4789,20 +5615,16 @@ window.submitDelivery = async (ev)=>{
   if(frmEl) frmEl.classList.add('frm-hidden');
   if(locBlock) locBlock.classList.add('frm-hidden');
 
-  // 2. Scroll map into view
   const mapWrap = document.getElementById('del-map-wrap');
-  if(mapWrap) {
+  if(mapWrap){
     try{ mapWrap.scrollIntoView({behavior:'smooth', block:'center'}); }catch(e){}
   }
 
-  // 3. Fetch route coords and animate the drawing
   let coords = await fetchDeliveryRoute();
   if(!coords){
-    // Fallback: straight line
     coords = [[delPickupLoc.lat, delPickupLoc.lng], [delDropoffLoc.lat, delDropoffLoc.lng]];
   }
 
-  // 4. After a short pause for the scroll, animate
   setTimeout(()=>{
     animateRouteThenShowVehicles(delData, coords);
     btn.disabled = false;
@@ -4828,9 +5650,8 @@ function showVehicleSheet(delData){
   $vsheetList.innerHTML = rows;
   $vsheetOverlay.classList.add('open');
 }
-window.closeVsheet = ()=>{ 
-  $vsheetOverlay.classList.remove('open'); 
-  // Restore form visibility
+window.closeVsheet = ()=>{
+  $vsheetOverlay.classList.remove('open');
   const frmEl = document.getElementById('del-form');
   const locBlock = document.getElementById('del-locations-block');
   if(frmEl) frmEl.classList.remove('frm-hidden');
@@ -4875,10 +5696,9 @@ window.chooseDeliveryVehicle = async (vehicleId)=>{
       text:`Your delivery (${id}) is searching for a ${vehicle.label.toLowerCase()}.`,
       link:'screen:ongoing-deliveries'
     });
-    // Show searching overlay
     $searchingIcon.textContent = vehicle.icon;
     $searchingTitle.textContent = `Searching for a ${vehicle.label}`;
-    $searchingSubtitle.textContent = `Looking for a ${vehicle.label.toLowerCase()} near ${delData.pickup.label || 'you'}…`;
+    $searchingSubtitle.textContent = `Looking for a ${vehicle.label.toLowerCase()} near your pickup…`;
     $searchingOverlay.classList.add('open');
     S.delActiveId = id;
     if(!S.allDeliveries) S.allDeliveries = [];
@@ -4894,7 +5714,6 @@ window.chooseDeliveryVehicle = async (vehicleId)=>{
       receiverName: delData.receiver, receiverPhone: delData.receiverPhone,
       status:'searching', createdAt: Date.now()
     });
-    // Reset
     window._pendingDel = null;
     delPickupLoc = null; delDropoffLoc = null; delRouteInfo = null;
     try{
@@ -4902,10 +5721,8 @@ window.chooseDeliveryVehicle = async (vehicleId)=>{
       if(delDropoffMarker && delMap) delMap.removeLayer(delDropoffMarker);
       if(delRouteLayer) delMap.removeLayer(delRouteLayer);
     }catch(e){}
-    // Watch for acceptance
     watchDeliveryAcceptance(id);
-    // Auto-navigate after a beat
-    setTimeout(()=>{ 
+    setTimeout(()=>{
       closeSearching();
       navTo('ongoing-deliveries');
     }, 5000);
@@ -4922,6 +5739,8 @@ window.cancelDeliverySearch = async ()=>{
     try{
       await update(ref(db, 'deliveryRequests/'+S.delActiveId), {status:'cancelled', cancelledAt:Date.now()});
       toast('Delivery cancelled');
+      await loadAllDeliveries();
+      if(S.screen === 'ongoing-deliveries') route();
     }catch(e){}
   }
 };
@@ -4935,6 +5754,8 @@ function watchDeliveryAcceptance(id){
     const idx = (S.allDeliveries||[]).findIndex(x=>x.id===id);
     if(idx >= 0){
       S.allDeliveries[idx] = {id, ...d};
+    } else if (S.allDeliveries) {
+      S.allDeliveries.unshift({id, ...d});
     }
     if(d.status === 'accepted' && d.providerName){
       $searchingIcon.textContent = '✅';
@@ -4951,6 +5772,9 @@ function watchDeliveryAcceptance(id){
       pushNotification({type:'delivery', title:'📦 Delivery picked up', text:`Your delivery is in progress`, link:'screen:ongoing-deliveries'});
     } else if(d.status === 'delivered' || d.status === 'completed'){
       pushNotification({type:'delivery', title:'✅ Delivery complete', text:`Your delivery has been completed`, link:'screen:delivery-history'});
+      if(!d.farmerRating){
+        setTimeout(()=>openRatingModal(d, id), 1200);
+      }
     } else if(d.status === 'cancelled'){
       pushNotification({type:'delivery', title:'❌ Delivery cancelled', text:`Your delivery was cancelled`, link:'screen:delivery-history'});
     }
@@ -4961,12 +5785,55 @@ function watchDeliveryAcceptance(id){
 }
 
 window.openDeliverySearching = ()=>{
-  if(!S.delActiveId) return;
+  if(!S.delActiveId){
+    const active = (S.allDeliveries||[]).find(d=>d.status === 'searching' && d.requester_id === S.user.uid);
+    if(active) S.delActiveId = active.id;
+    else return;
+  }
   $searchingIcon.textContent = '🚚';
   $searchingTitle.textContent = 'Searching for provider';
   $searchingSubtitle.textContent = 'Hang tight — a provider will accept soon';
   $searchingOverlay.classList.add('open');
 };
+
+/* Fallback delivery card renderer for history screen */
+function deliveryCardHTML(d, isHistory){
+  const status = d.status || 'searching';
+  const tagCls = status;
+  return `
+    <div class="card" style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:800;color:var(--td);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(d.pickupLabel||'Pickup')} → ${esc(d.dropoffLabel||'Drop-off')}</div>
+          <div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:3px">${esc(d.cargo || 'Goods')} · ${esc(d.vehicleLabel || d.vehicleType || 'Any')}</div>
+          <div style="font-size:11px;color:var(--tm);font-weight:600;margin-top:2px">📅 ${esc(d.date || '—')} · ${timeAgo(d.createdAt)}</div>
+          ${d.fare ? `<div style="font-size:12px;font-weight:900;color:var(--p-d);margin-top:5px">${fmtZMK(d.fare)}</div>`:''}
+        </div>
+        <span class="dri-tag ${tagCls}">${esc(status.replace(/_/g,' '))}</span>
+      </div>
+      ${d.providerName ? `
+        <div style="display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bd)">
+          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--p-d));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;overflow:hidden">
+            ${d.providerPhoto ? `<img src="${esc(d.providerPhoto)}" style="width:100%;height:100%;object-fit:cover">` : initials(d.providerName)}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:12px;font-weight:800;color:var(--td)">${esc(d.providerName)}</div>
+            <div style="font-size:10.5px;color:var(--tl);font-weight:600">${esc(d.providerRole || 'Provider')}</div>
+          </div>
+          ${d.providerPhone ? `<a href="tel:${esc(d.providerPhone)}" style="width:34px;height:34px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px">📞</a>`:''}
+        </div>
+      `:''}
+      ${(d.farmerRating) ? `
+        <div style="margin-top:10px;padding-top:8px;border-top:1px dashed var(--bd)">
+          <div style="font-size:10.5px;color:var(--tl);font-weight:700;margin-bottom:3px">Your rating</div>
+          <div style="font-size:13px;color:#f59e0b">${starsHtmlForRating(d.farmerRating, '13px')}</div>
+        </div>
+      `:''}
+      ${isHistory && !d.farmerRating && (status === 'delivered' || status === 'completed') ? `
+        <button class="btn btn-o btn-sm" style="width:100%;margin-top:10px" onclick="openRatingModalById('${esc(d.id)}')">⭐ Rate this delivery</button>
+      ` : ''}
+    </div>`;
+}
 
 /* ============================================================
    SCREEN: BUY SUPPLIES
@@ -5409,7 +6276,7 @@ function renderAnalysis(){
 }
 
 /* ============================================================
-   SCREEN: PROFILE — NRC read from nrcFront/nrcBack (matching UTOM-AGRI registration)
+   SCREEN: PROFILE — NRC read from nrcFront/nrcBack
    ============================================================ */
 function renderProfile(){
   const p = S.profile||{};
@@ -5418,8 +6285,6 @@ function renderProfile(){
   const listings = S.myListings || [];
   const posts = (S.community||[]).filter(x=>x.authorId === S.user.uid);
   const following = Object.keys(S.following||{}).length;
-
-  // NRC: read from both modern (nrcFront/nrcBack) and legacy (nrcFrontUrl/nrcBackUrl) keys
   const nrcFront = p.nrcFront || p.nrcFrontUrl || '';
   const nrcBack = p.nrcBack || p.nrcBackUrl || '';
   const hasNrc = !!(nrcFront || nrcBack);
@@ -5474,6 +6339,16 @@ function renderProfile(){
         <div class="mi-tx"><div class="mi-tt">My Farm</div><div class="mi-sb">${(S.myActivities||[]).length} activities</div></div>
         <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
       </div>
+      <div class="menu-item" onclick="navTo('ongoing-deliveries')">
+        <div class="mi-ic">🚚</div>
+        <div class="mi-tx"><div class="mi-tt">My Deliveries</div><div class="mi-sb">Ongoing &amp; active</div></div>
+        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+      <div class="menu-item" onclick="navTo('delivery-history')">
+        <div class="mi-ic">📜</div>
+        <div class="mi-tx"><div class="mi-tt">Delivery History</div><div class="mi-sb">Past deliveries</div></div>
+        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
       <div class="menu-item" onclick="navTo('follow-ups')">
         <div class="mi-ic">👥</div>
         <div class="mi-tx"><div class="mi-tt">Follow Ups</div><div class="mi-sb">${following} following</div></div>
@@ -5518,14 +6393,11 @@ function renderProfile(){
   ${bottomNavHTML()}`;
 }
 
-/* Store NRC using the same keys as the UTOM-AGRI registration flow */
 window.uploadNrcPic = async (field)=>{
-  // field is 'nrcFront' or 'nrcBack' — matching UTOM-AGRI registration storage
   try{
     const url = await uploadImage('nrc');
     if(!url) return;
     const patch = { [field]: url, verified: true, updatedAt: Date.now() };
-    // Also mirror to legacy keys for backwards compat
     if(field === 'nrcFront') patch.nrcFrontUrl = url;
     if(field === 'nrcBack')  patch.nrcBackUrl = url;
     await update(ref(db, 'users/'+S.user.uid), patch);
@@ -5555,7 +6427,7 @@ window.confirmLogout = async ()=>{
 };
 
 /* ============================================================
-   SCREEN: DOCS — read from nrcFront/nrcBack
+   SCREEN: DOCS
    ============================================================ */
 function renderDocs(){
   const p = S.profile || {};
@@ -5590,7 +6462,6 @@ function renderDocs(){
 }
 
 window.uploadDoc = async (type)=>{
-  // NRC stored under same keys as UTOM-AGRI registration
   const fieldMap = {nrc:'nrcFront', nrcBack:'nrcBack', farm_permit:'farmPermitUrl', land_title:'landTitleUrl', farmer_cert:'farmerCertUrl'};
   const field = fieldMap[type];
   if(!field) return;
@@ -5932,6 +6803,7 @@ async function startApp(){
     S.allActivities = acts; S.marketplace = mkt; S.suppliers = sup;
 
     loadAllDeliveries();
+    startDeliveriesLiveListener();
 
     startCommunityListener();
     startSupplierProductsListener();
@@ -5978,6 +6850,57 @@ function startWeatherRefresh(){
   }, 30 * 60 * 1000);
 }
 
+/* Live listener for delivery requests (updates ongoing cards automatically) */
+function startDeliveriesLiveListener(){
+  if(!S.user) return;
+  onValue(ref(db, 'deliveryRequests'), (snap)=>{
+    const data = snap.val() || {};
+    const mine = [];
+    Object.entries(data).forEach(([id, d])=>{
+      if(d.requester_id === S.user.uid) mine.push({id, ...d});
+    });
+    mine.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+    S.allDeliveries = mine;
+    S.myDeliveries = mine;
+
+    // If on the ongoing page, refresh the cards list only (map stays live)
+    if(S.screen === 'ongoing-deliveries'){
+      const scrollEl = document.getElementById('ongoingScroll');
+      if(!scrollEl) return;
+      const listContainer = scrollEl.querySelector('div[style*="padding:14px 18px 18px"]');
+      if(listContainer){
+        const ongoing = mine.filter(d=>['searching','accepted','arrived','in_progress','picked_up'].includes(d.status));
+        listContainer.innerHTML = ongoing.length
+          ? ongoing.map(d=>renderOngoingCard(d)).join('')
+          : `<div class="empty"><div class="e-ic">⏱️</div><h3>No ongoing deliveries</h3><p>Active deliveries will show up here.</p></div>`;
+
+        // Show/hide tracking wrapper
+        const trackWrap = document.getElementById('ongoingTrackWrap');
+        const hasTracking = ongoing.some(d => ['accepted','arrived','in_progress','picked_up'].includes(d.status));
+        if(trackWrap){
+          if(hasTracking) trackWrap.classList.add('show');
+          else trackWrap.classList.remove('show');
+        }
+
+        // If active provider delivery exists, ensure tracking running
+        const active = ongoing.find(d => ['accepted','arrived','in_progress','picked_up'].includes(d.status));
+        if(active && S.ongoingTrackDeliveryId !== active.id){
+          initOngoingMap();
+          startOngoingTracking(active);
+        }
+      }
+    }
+
+    // Refresh delivery dashboard recent list
+    if(S.screen === 'delivery'){
+      // Only re-render if on dashboard
+      const el = document.getElementById('screen-delivery');
+      if(el) el.innerHTML = renderDelivery();
+      wireDeliveryHeroMap();
+    }
+  });
+}
+
 async function loadMyDeliveries(){
   if(!S.user) return;
   try{
@@ -5998,7 +6921,7 @@ async function loadMyDeliveries(){
 async function loadAllDeliveries(){
   try{
     const snap = await get(ref(db, 'deliveryRequests'));
-    if(!snap.exists()) return;
+    if(!snap.exists()){ S.allDeliveries = []; return; }
     const data = snap.val();
     const mine = [];
     Object.entries(data).forEach(([id, d])=>{
@@ -6006,6 +6929,7 @@ async function loadAllDeliveries(){
     });
     mine.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
     S.allDeliveries = mine;
+    S.myDeliveries = mine;
   }catch(e){}
 }
 
@@ -6043,6 +6967,9 @@ window.addEventListener('beforeunload', ()=>{
   if(S.heroDriverListener){ try{S.heroDriverListener();}catch(e){} }
   if(S.delActiveUnsub){ try{S.delActiveUnsub();}catch(e){} }
   if(S.followUnsub){ try{S.followUnsub();}catch(e){} }
+  if(S.ongoingTrackUnsub){ try{S.ongoingTrackUnsub();}catch(e){} }
+  if(S.ongoingStatusUnsub){ try{S.ongoingStatusUnsub();}catch(e){} }
+  if(S.ongoingRouteRefreshTimer){ clearInterval(S.ongoingRouteRefreshTimer); }
 });
 </script>
 
