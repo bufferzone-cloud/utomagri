@@ -301,7 +301,7 @@ a{color:inherit;text-decoration:none}
   padding:2px 7px;border-radius:var(--r-p);background:var(--p-l);color:var(--p-d);margin-left:auto;
 }
 
-/* ============ BOTTOM NAV — GREEN ACTIVE ============ */
+/* ============ BOTTOM NAV ============ */
 .bnav{
   position:absolute;left:0;right:0;bottom:0;height:calc(var(--nav-h) + var(--safe-b));
   padding-bottom:var(--safe-b);
@@ -399,10 +399,7 @@ a{color:inherit;text-decoration:none}
 }
 .fld .inp:focus{border-color:var(--p);box-shadow:var(--ring);background:#fbfdfb}
 .fld textarea.inp{resize:vertical;min-height:82px;line-height:1.5}
-.fld .hint{font-size:11px;color:var(--tm);margin-top:5px;font-weight:600;line-height:1.4}
-.fld .hint.warn{color:#92400e;background:#fef3c7;padding:8px 10px;border-radius:8px;border:1px solid rgba(180,83,9,.2)}
 
-/* ============ WHITE STYLED SELECT ============ */
 .select-trigger{
   width:100%;padding:13px 15px;border:1.5px solid var(--bd);border-radius:var(--r);
   background:var(--sf);font-size:15px;font-weight:500;color:var(--td);
@@ -516,7 +513,6 @@ a{color:inherit;text-decoration:none}
 }
 .fa-card .fa-acts button:active{transform:scale(.96);background:var(--p-l);color:var(--p-d)}
 
-/* ============ COMMUNITY POSTS ============ */
 .post{
   background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);
   padding:13px;margin-bottom:12px;box-shadow:var(--sh-xs);
@@ -675,34 +671,29 @@ a{color:inherit;text-decoration:none}
 .prof-stats .ps-n{font-size:20px;font-weight:900;letter-spacing:-.03em}
 .prof-stats .ps-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.85;margin-top:2px}
 
-/* NRC mini previews in profile */
-.nrc-row{
+/* NRC pics in profile */
+.nrc-strip{
   display:grid;grid-template-columns:1fr 1fr;gap:10px;
   margin:0 18px 16px;
 }
-.nrc-slot{
-  position:relative;padding:10px;border-radius:var(--r);
-  background:var(--sf);border:1.5px dashed var(--bd-s);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-  cursor:pointer;transition:all .2s var(--e);overflow:hidden;
-  aspect-ratio:16/10;
+.nrc-tile{
+  background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);
+  padding:8px;box-shadow:var(--sh-xs);position:relative;
 }
-.nrc-slot:active{transform:scale(.97);border-color:var(--p)}
-.nrc-slot.has-img{border-style:solid;border-color:var(--p);background:#fff}
-.nrc-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
-.nrc-slot.has-img img{display:block}
-.nrc-slot.has-img .nrc-ic,.nrc-slot.has-img .nrc-lb{display:none}
-.nrc-slot .nrc-ic{font-size:22px}
-.nrc-slot .nrc-lb{
-  font-size:10px;font-weight:800;color:var(--tl);
-  text-transform:uppercase;letter-spacing:.05em;text-align:center;line-height:1.2;
+.nrc-tile .nrc-img{
+  aspect-ratio:16/10;border-radius:8px;overflow:hidden;background:var(--sf2);
+  display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--tm);
 }
-.nrc-slot .nrc-del{
-  position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;
-  background:rgba(220,38,38,.9);color:#fff;display:none;
-  align-items:center;justify-content:center;font-size:12px;font-weight:800;z-index:2;
+.nrc-tile .nrc-img img{width:100%;height:100%;object-fit:cover}
+.nrc-tile .nrc-lbl{
+  font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+  color:var(--tl);text-align:center;margin-top:6px;
 }
-.nrc-slot.has-img .nrc-del{display:flex}
+.nrc-tile .nrc-edit{
+  position:absolute;top:12px;right:12px;
+  width:24px;height:24px;border-radius:50%;background:rgba(15,122,52,.95);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:11px;
+}
 
 .menu-list{padding:0 18px 18px}
 .menu-item{
@@ -769,7 +760,7 @@ a{color:inherit;text-decoration:none}
   font-size:11px;font-weight:900;
 }
 
-/* ============ NOTIFICATIONS PANEL ============ */
+/* Notifications panel */
 .notif-panel{
   position:fixed;top:0;right:0;bottom:0;z-index:400;
   width:min(420px,92vw);background:var(--sf);
@@ -823,7 +814,7 @@ a{color:inherit;text-decoration:none}
 }
 .notif-empty .ne-ic{font-size:52px;opacity:.4;margin-bottom:12px}
 
-/* ============ WHITE MODAL ============ */
+/* Modal */
 .modal{
   position:fixed;inset:0;background:rgba(15,23,42,.45);
   backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
@@ -851,7 +842,7 @@ a{color:inherit;text-decoration:none}
 .modal-card .inp:focus{border-color:var(--p);box-shadow:var(--ring)}
 .modal-card .select-trigger{background:#fff}
 
-/* ============ TOAST ============ */
+/* Toast */
 .toast{
   position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 20px);left:50%;
   transform:translate(-50%,30px);background:rgba(15,23,42,.94);color:#fff;
@@ -888,7 +879,7 @@ a{color:inherit;text-decoration:none}
 }
 .map-wrap .map-badge{
   position:absolute;top:10px;left:10px;z-index:400;
-  background:rgba(15,23,42,.86);color:#fff;
+  background:rgba(15,122,52,.9);color:#fff;
   font-size:10.5px;font-weight:800;letter-spacing:.04em;
   padding:6px 11px;border-radius:var(--r-p);
   display:inline-flex;align-items:center;gap:6px;
@@ -957,7 +948,6 @@ a{color:inherit;text-decoration:none}
   background:var(--p-l);padding:3px 8px;border-radius:var(--r-p);flex-shrink:0;
 }
 
-/* Revenue tile */
 .rev-grid{
   display:grid;grid-template-columns:1fr 1fr;gap:10px;
   padding:0 18px 14px;
@@ -977,7 +967,6 @@ a{color:inherit;text-decoration:none}
 .rev-tile .rt-s{font-size:11px;color:var(--tl);font-weight:600;margin-top:4px}
 .rev-tile.dark .rt-s{color:rgba(255,255,255,.75)}
 
-/* Docs grid */
 .docs-grid{
   display:grid;grid-template-columns:1fr 1fr;gap:10px;
   padding:0 18px 14px;
@@ -1003,7 +992,6 @@ a{color:inherit;text-decoration:none}
 .doc-card .dc-st.miss{background:#fee2e2;color:#991b1b}
 .doc-card .dc-st.pend{background:#fef3c7;color:#92400e}
 
-/* Analysis */
 .analysis-stat{
   display:flex;align-items:center;gap:12px;padding:14px;
   background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);
@@ -1046,230 +1034,262 @@ a{color:inherit;text-decoration:none}
 .gov-site .gs-desc{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px;line-height:1.4}
 .gov-site .gs-arrow{font-size:14px;color:var(--tm)}
 
-@media(min-width:560px){.cat-grid,.mk-grid{grid-template-columns:repeat(3,1fr)}}
-@media(min-width:721px){.scroll{padding-bottom:calc(var(--nav-h) + 24px)}}
-
-/* ==========================================================
-   NEW · DELIVERY DASHBOARD (NTUMENI-STYLE, GREEN)
-   ========================================================== */
-.delivery-split{
-  display:flex;flex-direction:column;height:100%;
+/* ========== NEW: Delivery dashboard (NTUMENI-inspired green) ========== */
+.delivery-dash{
+  position:relative;
+  display:flex;flex-direction:column;
+  height:100%;
 }
 .delivery-map-half{
-  flex:0 0 44%;
-  min-height:240px;
-  position:relative;
-  background:#e8eaed;
-  overflow:hidden;
-  border-bottom:1px solid var(--bd);
+  flex:1 1 55%;min-height:280px;position:relative;background:#e8f5ec;overflow:hidden;
 }
-#deliveryDashboardMap{position:absolute;inset:0;z-index:1}
+#deliveryHeroMap{position:absolute;inset:0;z-index:1}
 .delivery-map-badge{
   position:absolute;top:12px;left:12px;z-index:400;
-  background:rgba(15,23,42,.86);color:#fff;
-  font-size:.68rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+  background:rgba(15,122,52,.94);color:#fff;
+  font-size:11px;font-weight:800;letter-spacing:.4px;
+  padding:7px 13px;border-radius:999px;
+  display:inline-flex;align-items:center;gap:7px;
+  max-width:calc(100% - 24px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  box-shadow:0 6px 20px -6px rgba(15,122,52,.5);
+}
+.delivery-map-count{
+  position:absolute;top:12px;right:12px;z-index:400;
+  background:rgba(18,183,106,.94);color:#fff;
+  font-size:10.5px;font-weight:800;letter-spacing:.4px;
   padding:7px 12px;border-radius:999px;
   display:inline-flex;align-items:center;gap:6px;
-  max-width:calc(100% - 24px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  backdrop-filter:blur(6px);
+  box-shadow:0 4px 14px -4px rgba(18,183,106,.55);
 }
-.delivery-map-locate{
-  position:absolute;right:12px;bottom:12px;z-index:400;
+.delivery-map-count.hidden-count{opacity:0;transform:translateY(-6px);pointer-events:none;transition:all .3s}
+.delivery-map-actions{
+  position:absolute;right:12px;bottom:12px;z-index:400;display:flex;flex-direction:column;gap:8px;
+}
+.delivery-map-actions button{
   width:42px;height:42px;border-radius:12px;background:#fff;
-  display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--td);
-  box-shadow:0 4px 16px rgba(0,0,0,.14);
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  color:var(--p);box-shadow:0 4px 14px rgba(0,0,0,.15);
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1);
 }
-.delivery-map-locate:active{transform:scale(.92)}
+.delivery-map-actions button:active{transform:scale(.92)}
 
 .delivery-action-half{
-  flex:1;min-height:0;
-  background:#fff;
-  overflow-y:auto;-webkit-overflow-scrolling:touch;
-  padding:16px 16px 18px;
-  display:flex;flex-direction:column;
+  flex:1 1 45%;min-height:0;
+  background:#fff;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:16px 16px calc(var(--safe-b) + 16px);
+  display:flex;flex-direction:column;gap:12px;
+  border-top:1px solid var(--bd);
 }
-.delivery-head{
-  font-size:1.12rem;font-weight:900;letter-spacing:-.4px;color:var(--td);
-  margin-bottom:3px;
+.delivery-greeting{font-size:17px;font-weight:900;letter-spacing:-.02em;color:var(--td)}
+.delivery-sub{font-size:12.5px;color:var(--tl);font-weight:600;margin-top:2px;margin-bottom:4px}
+
+.btn-delivery-main{
+  width:100%;padding:18px 18px;border-radius:var(--r-lg);
+  background:linear-gradient(180deg,#16a34a 0%,#0f7a34 60%,#0b5f28 100%);
+  color:#fff;display:flex;align-items:center;gap:14px;
+  text-align:left;box-shadow:0 12px 30px -10px rgba(15,122,52,.55);
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
 }
-.delivery-sub{
-  font-size:.82rem;color:var(--tl);margin-bottom:14px;font-weight:500;
-}
-.delivery-primary-btn{
-  width:100%;padding:18px 18px;border-radius:var(--r);
-  background:linear-gradient(180deg,#12903e 0%,var(--p) 60%,var(--p-d) 100%);
-  color:#fff;display:flex;align-items:center;gap:14px;text-align:left;
-  box-shadow:0 10px 26px -10px var(--p-glow);
-  margin-bottom:10px;flex-shrink:0;
-  transition:transform .3s var(--e);
-}
-.delivery-primary-btn:active{transform:scale(.982)}
-.delivery-primary-btn .dpb-ico{
-  width:46px;height:46px;border-radius:14px;
-  background:rgba(255,255,255,.16);
+.btn-delivery-main:active{transform:scale(.982)}
+.btn-delivery-main .dm-ico{
+  width:48px;height:48px;border-radius:14px;
+  background:rgba(255,255,255,.18);
   display:flex;align-items:center;justify-content:center;
-  font-size:1.25rem;flex-shrink:0;
+  font-size:22px;flex-shrink:0;
 }
-.delivery-primary-btn .dpb-txt{flex:1;min-width:0}
-.delivery-primary-btn .dpb-txt strong{display:block;font-size:1rem;font-weight:900;letter-spacing:-.3px;margin-bottom:2px}
-.delivery-primary-btn .dpb-txt span{display:block;font-size:.72rem;font-weight:500;color:rgba(255,255,255,.7)}
-.delivery-primary-btn .dpb-arrow{font-size:.85rem;color:rgba(255,255,255,.6)}
+.btn-delivery-main .dm-txt{flex:1;min-width:0}
+.btn-delivery-main .dm-txt strong{
+  display:block;font-size:15px;font-weight:900;letter-spacing:-.02em;margin-bottom:3px;
+}
+.btn-delivery-main .dm-txt span{
+  display:block;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.82);
+}
+.btn-delivery-main .dm-arrow{font-size:16px;color:rgba(255,255,255,.55)}
 
-.delivery-secondary-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex-shrink:0;margin-top:4px}
-.delivery-secondary-btn{
-  padding:16px 12px;border-radius:var(--r);background:#fff;
-  box-shadow:0 0 0 1px var(--bd),0 2px 8px rgba(15,23,42,.04);
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  transition:transform .28s var(--e);
+.delivery-mini-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
 }
-.delivery-secondary-btn:active{transform:scale(.97)}
-.delivery-secondary-btn .dsb-ico{
-  width:38px;height:38px;border-radius:50%;
+.btn-delivery-mini{
+  padding:14px 12px;border-radius:var(--r);background:#fff;
+  border:1.5px solid var(--bd);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  transition:all .22s var(--e);position:relative;
+}
+.btn-delivery-mini:active{transform:scale(.97);background:var(--p-l);border-color:var(--p)}
+.btn-delivery-mini .dmi-ico{
+  width:38px;height:38px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+}
+.btn-delivery-mini .dmi-ico.green{background:linear-gradient(145deg,#d1fae5,#10b981);color:#fff}
+.btn-delivery-mini .dmi-ico.blue{background:linear-gradient(145deg,#dbeafe,#2563eb);color:#fff}
+.btn-delivery-mini .dmi-lb{font-size:12px;font-weight:800;color:var(--td);text-align:center}
+.btn-delivery-mini .dmi-count{
+  position:absolute;top:8px;right:8px;
+  min-width:18px;height:18px;padding:0 4px;border-radius:9px;
+  background:var(--danger);color:#fff;font-size:10px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+}
+
+.delivery-recent-title{
+  font-size:12.5px;font-weight:800;color:var(--td);
+  text-transform:uppercase;letter-spacing:.05em;margin-top:6px;
+  display:flex;align-items:center;gap:8px;
+}
+.delivery-recent-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--bd),transparent)}
+
+.delivery-recent-item{
+  display:flex;gap:12px;padding:12px;
+  background:#fff;border:1px solid var(--bd);border-radius:var(--r);
+  align-items:center;cursor:pointer;transition:transform .2s var(--e);
+}
+.delivery-recent-item:active{transform:scale(.98)}
+.delivery-recent-item .dri-ico{
+  width:42px;height:42px;border-radius:12px;flex-shrink:0;
   background:var(--p-l);color:var(--p);
-  display:flex;align-items:center;justify-content:center;font-size:1.05rem;
+  display:flex;align-items:center;justify-content:center;font-size:18px;
 }
-.delivery-secondary-btn .dsb-label{font-size:.78rem;font-weight:800;color:var(--td);letter-spacing:-.2px;text-align:center}
-.delivery-secondary-btn .dsb-count{
-  font-size:.62rem;font-weight:800;color:var(--p);
-  background:var(--p-l);padding:2px 8px;border-radius:999px;
+.delivery-recent-item .dri-body{flex:1;min-width:0}
+.delivery-recent-item .dri-title{
+  font-size:12.5px;font-weight:800;color:var(--td);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.delivery-recent-item .dri-sub{
+  font-size:10.5px;color:var(--tl);font-weight:600;margin-top:3px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.delivery-recent-item .dri-tag{
+  font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+  padding:4px 9px;border-radius:var(--r-p);flex-shrink:0;
+  background:var(--p-l);color:var(--p-d);
+}
+.delivery-recent-item .dri-tag.searching{background:#dbeafe;color:#1e40af}
+.delivery-recent-item .dri-tag.accepted{background:#fef3c7;color:#92400e}
+.delivery-recent-item .dri-tag.in_progress{background:#d1fae5;color:#065f46}
+.delivery-recent-item .dri-tag.completed{background:#e6f5eb;color:var(--p-d)}
+.delivery-recent-item .dri-tag.cancelled{background:#f1f5f9;color:#64748b}
+
+/* Vehicle sheet for delivery prices */
+.vsheet-overlay{
+  position:fixed;inset:0;z-index:600;
+  background:rgba(15,23,42,.55);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  display:none;align-items:flex-end;justify-content:center;
+  animation:fadeIn .22s ease;
+}
+.vsheet-overlay.open{display:flex}
+.vsheet{
+  background:#fff;border-radius:26px 26px 0 0;
+  width:100%;max-width:560px;padding:12px 20px calc(var(--safe-b) + 26px);
+  box-shadow:0 -12px 40px rgba(0,0,0,.28);
+  animation:vsheetUp .42s cubic-bezier(.32,.72,0,1);
+}
+@keyframes vsheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.vsheet-handle{
+  width:42px;height:4px;border-radius:999px;
+  background:rgba(15,23,42,.14);margin:4px auto 18px;
+}
+.vsheet-head{text-align:center;margin-bottom:16px}
+.vsheet-head h3{font-size:17px;font-weight:900;letter-spacing:-.02em;color:var(--td);margin-bottom:4px}
+.vsheet-head p{font-size:12px;color:var(--tl);font-weight:600}
+.vsheet-list{display:flex;flex-direction:column;gap:9px;margin-bottom:14px}
+.vsheet-item{
+  width:100%;display:flex;align-items:center;gap:14px;
+  padding:14px 15px;border-radius:var(--r);
+  background:#fff;border:1.5px solid var(--bd);text-align:left;
+  transition:all .22s var(--e);
+}
+.vsheet-item:active{transform:scale(.98);background:var(--p-l);border-color:var(--p)}
+.vsheet-item .vsi-ico{
+  width:46px;height:46px;border-radius:14px;
+  background:linear-gradient(135deg,#0f7a34,#0b5f28);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.vsheet-item .vsi-info{flex:1;min-width:0}
+.vsheet-item .vsi-info strong{display:block;font-size:13.5px;font-weight:800;color:var(--td);margin-bottom:2px}
+.vsheet-item .vsi-info span{display:block;font-size:11px;color:var(--tl);font-weight:600}
+.vsheet-item .vsi-price{text-align:right;flex-shrink:0}
+.vsheet-item .vsi-price strong{display:block;font-size:16px;font-weight:900;letter-spacing:-.03em;color:var(--p-d)}
+.vsheet-item .vsi-price small{display:block;font-size:9.5px;color:var(--tl);font-weight:700;letter-spacing:.5px;margin-top:2px;text-transform:uppercase}
+.vsheet-cancel{
+  width:100%;padding:13px;border-radius:var(--r);
+  background:var(--sf2);font-size:14px;font-weight:700;color:var(--td);
 }
 
-/* searching pane */
-.searching-wrap{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  flex:1;min-height:0;padding:20px 0;
+/* Searching overlay */
+.searching-overlay{
+  position:fixed;inset:0;z-index:550;
+  background:rgba(15,23,42,.55);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;padding:24px;
+  animation:fadeIn .25s ease;
 }
-.pane-radar{position:relative;width:88px;height:88px;margin-bottom:16px}
-.pane-radar .radar-ring{
+.searching-overlay.open{display:flex}
+.searching-card{
+  background:#fff;border-radius:var(--r-xl);
+  padding:32px 24px 24px;text-align:center;
+  max-width:380px;width:100%;
+  box-shadow:0 30px 70px -20px rgba(15,23,42,.4);
+  animation:modalIn .35s cubic-bezier(.34,1.4,.64,1);
+}
+.searching-radar{
+  position:relative;width:90px;height:90px;margin:0 auto 20px;
+}
+.searching-radar .sr-ring{
   position:absolute;inset:0;border-radius:50%;
   border:2.5px solid var(--p);opacity:0;
-  animation:radarPulse 2.4s cubic-bezier(.4,0,.2,1) infinite;
+  animation:radarPulse 2.4s ease-in-out infinite;
 }
-.pane-radar .radar-ring:nth-child(2){animation-delay:.8s}
-.pane-radar .radar-ring:nth-child(3){animation-delay:1.6s}
+.searching-radar .sr-ring:nth-child(2){animation-delay:.8s}
+.searching-radar .sr-ring:nth-child(3){animation-delay:1.6s}
 @keyframes radarPulse{
   0%{transform:scale(.4);opacity:.85}
   100%{transform:scale(1.65);opacity:0}
 }
-.pane-radar .radar-center{
-  position:absolute;inset:22px;border-radius:50%;
-  background:var(--p);color:#fff;
+.searching-radar .sr-center{
+  position:absolute;inset:24px;border-radius:50%;
+  background:linear-gradient(135deg,#16a34a,#0b5f28);color:#fff;
   display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;z-index:2;
+  font-size:26px;z-index:2;
   box-shadow:0 0 0 5px rgba(255,255,255,.9);
 }
-.active-pane-head{text-align:center;margin-bottom:12px}
-.active-pane-head h2{font-size:1.05rem;font-weight:900;letter-spacing:-.3px;margin-bottom:5px;color:var(--td)}
-.active-pane-head p{font-size:.8rem;color:var(--tl);line-height:1.5;max-width:300px;margin:0 auto}
-.pane-cancel-btn{
-  width:100%;padding:12px;border-radius:var(--r-sm);
-  background:var(--sf2);font-size:.88rem;font-weight:800;flex-shrink:0;
-  color:var(--td);border:1px solid var(--bd);
+.searching-card h3{font-size:18px;font-weight:900;color:var(--td);letter-spacing:-.02em;margin-bottom:6px}
+.searching-card p{font-size:13px;color:var(--tl);font-weight:600;line-height:1.5;margin-bottom:20px}
+.searching-card .sc-actions{display:flex;gap:10px}
+.searching-card .sc-actions button{
+  flex:1;padding:12px;border-radius:var(--r);font-size:13px;font-weight:800;
 }
-.pane-cancel-btn:active{transform:scale(.97)}
+.searching-card .sc-cancel{background:var(--sf2);color:var(--td)}
+.searching-card .sc-map{background:var(--p);color:#fff;box-shadow:var(--sh-brand)}
 
-/* Vehicle price popup */
-.price-modal-card{
-  background:#fff !important;border-radius:var(--r-xl);
-  width:100%;max-width:460px;padding:22px;
-  animation:modalIn .32s cubic-bezier(.34,1.4,.64,1);
-  max-height:88vh;overflow-y:auto;
+/* follow-ups */
+.fu-card{
+  display:flex;gap:12px;padding:13px;
+  background:#fff;border:1px solid var(--bd);border-radius:var(--r);
+  margin-bottom:10px;box-shadow:var(--sh-xs);
+  align-items:center;
 }
-.price-modal-card h3{
-  font-size:17px;font-weight:900;color:var(--td);letter-spacing:-.02em;
-  margin-bottom:4px;text-align:center;
-}
-.price-modal-card .pm-sub{
-  font-size:12px;color:var(--tl);text-align:center;margin-bottom:14px;font-weight:600;
-}
-.price-modal-card .pm-trip{
-  background:var(--p-ll);border:1px solid rgba(15,122,52,.14);
-  border-radius:var(--r);padding:12px;margin-bottom:14px;
-}
-.price-modal-card .pm-trip .pm-row{
-  display:flex;gap:8px;align-items:center;padding:4px 0;font-size:12.5px;font-weight:600;
-}
-.price-modal-card .pm-trip .pm-dot{
-  width:9px;height:9px;border-radius:50%;background:var(--p);flex-shrink:0;
-}
-.price-modal-card .pm-trip .pm-dot.dest{border-radius:2.5px;background:var(--info)}
-.price-modal-card .pm-trip .pm-meta{
-  display:flex;gap:12px;justify-content:space-around;margin-top:8px;padding-top:8px;
-  border-top:1px dashed rgba(15,122,52,.2);
-  font-size:11px;font-weight:700;color:var(--p);
-}
-.vehicle-options{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
-.vehicle-option{
-  width:100%;display:flex;align-items:center;gap:12px;
-  padding:13px 14px;border-radius:var(--r);
-  background:#fff;box-shadow:0 0 0 1.5px var(--bd);
-  text-align:left;transition:transform .2s var(--e),box-shadow .2s var(--e);
-}
-.vehicle-option:active{transform:scale(.98)}
-.vehicle-option:hover{box-shadow:0 0 0 1.5px var(--p)}
-.vehicle-option .vo-ico{
-  width:44px;height:44px;border-radius:12px;
-  background:linear-gradient(145deg,#e6f5eb,#a7f3d0);
-  color:var(--p-d);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.2rem;flex-shrink:0;
-}
-.vehicle-option .vo-body{flex:1;min-width:0}
-.vehicle-option .vo-body strong{display:block;font-size:.94rem;font-weight:900;color:var(--td);margin-bottom:2px}
-.vehicle-option .vo-body span{display:block;font-size:.72rem;color:var(--tl);font-weight:600}
-.vehicle-option .vo-price{text-align:right;flex-shrink:0}
-.vehicle-option .vo-price strong{
-  display:block;font-size:1.15rem;font-weight:900;color:var(--p-d);letter-spacing:-.4px;
-}
-.vehicle-option .vo-price small{
-  display:block;font-size:.62rem;color:var(--tm);font-weight:800;letter-spacing:.4px;margin-top:2px;
-}
-
-/* Follow ups */
-.follow-tabs{
-  display:flex;gap:8px;padding:12px 18px 10px;overflow-x:auto;
-  scrollbar-width:none;
-}
-.follow-tabs::-webkit-scrollbar{display:none}
-.follow-tab{
-  flex-shrink:0;padding:8px 14px;border-radius:999px;
-  background:var(--sf2);border:1px solid var(--bd);
-  font-size:12px;font-weight:700;color:var(--tb);
-  transition:all .2s var(--e);white-space:nowrap;
-}
-.follow-tab.active{background:var(--p);color:#fff;border-color:var(--p)}
-
-.follow-list{padding:0 18px 18px;display:flex;flex-direction:column;gap:10px}
-.follow-item{
-  display:flex;align-items:center;gap:12px;padding:12px;
-  background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);
-  box-shadow:var(--sh-xs);
-  transition:transform .2s var(--e);
-}
-.follow-item:active{transform:scale(.98)}
-.follow-item .fi-av{
-  width:46px;height:46px;border-radius:50%;flex-shrink:0;overflow:hidden;
+.fu-card .fu-av{
+  width:46px;height:46px;border-radius:50%;flex-shrink:0;
   background:linear-gradient(135deg,var(--p),var(--p-d));color:#fff;
-  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;
+  overflow:hidden;
 }
-.follow-item .fi-av img{width:100%;height:100%;object-fit:cover}
-.follow-item .fi-body{flex:1;min-width:0}
-.follow-item .fi-name{font-size:13px;font-weight:800;color:var(--td);letter-spacing:-.01em}
-.follow-item .fi-sub{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px;line-height:1.4;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.follow-item .fi-tag{
-  font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
-  padding:3px 8px;border-radius:var(--r-p);background:var(--p-l);color:var(--p-d);
-  flex-shrink:0;
+.fu-card .fu-av img{width:100%;height:100%;object-fit:cover}
+.fu-card .fu-body{flex:1;min-width:0}
+.fu-card .fu-nm{font-size:13px;font-weight:800;color:var(--td);letter-spacing:-.01em}
+.fu-card .fu-sb{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px;line-height:1.35}
+.fu-card .fu-meta{display:flex;gap:8px;margin-top:5px;font-size:10px;color:var(--tm);font-weight:700}
+.fu-card .fu-btn{
+  padding:8px 14px;border-radius:var(--r-p);
+  font-size:11px;font-weight:800;flex-shrink:0;
+  background:var(--sf2);border:1px solid var(--bd);color:var(--td);
 }
-.follow-item .fi-unfollow{
-  width:32px;height:32px;border-radius:50%;
-  background:#fef2f2;color:var(--danger);
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;font-weight:800;flex-shrink:0;
-  border:1px solid rgba(220,38,38,.2);
-}
-.follow-item .fi-unfollow:active{transform:scale(.9)}
+.fu-card .fu-btn.unfollow{background:#fee2e2;color:var(--danger);border-color:rgba(220,38,38,.2)}
+
+@media(min-width:560px){.cat-grid,.mk-grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:721px){.scroll{padding-bottom:calc(var(--nav-h) + 24px)}}
 </style>
 </head>
 <body>
@@ -1292,7 +1312,6 @@ a{color:inherit;text-decoration:none}
   </div>
 </div>
 
-<!-- Notification panel -->
 <div class="notif-overlay" id="notifOverlay"></div>
 <aside class="notif-panel" id="notifPanel">
   <div class="notif-head">
@@ -1307,13 +1326,43 @@ a{color:inherit;text-decoration:none}
   </div>
 </aside>
 
-<!-- Floating supplier cart -->
 <button class="cart-float" id="cartFloat" onclick="openSupplierCart()">
   🛒 <span>View Cart</span> <span class="cf-count" id="cartCount">0</span>
 </button>
 
 <div class="modal" id="modal"><div class="modal-card" id="modalCard"></div></div>
 <div class="toast" id="toast"></div>
+
+<!-- Vehicle selection sheet for delivery -->
+<div class="vsheet-overlay" id="vsheetOverlay">
+  <div class="vsheet">
+    <div class="vsheet-handle"></div>
+    <div class="vsheet-head">
+      <h3>Choose delivery type</h3>
+      <p>Prices reflect distance &amp; time for this route.</p>
+    </div>
+    <div class="vsheet-list" id="vsheetList"></div>
+    <button class="vsheet-cancel" onclick="closeVsheet()">Cancel</button>
+  </div>
+</div>
+
+<!-- Searching overlay -->
+<div class="searching-overlay" id="searchingOverlay">
+  <div class="searching-card">
+    <div class="searching-radar">
+      <div class="sr-ring"></div>
+      <div class="sr-ring"></div>
+      <div class="sr-ring"></div>
+      <div class="sr-center" id="searchingIcon">🚚</div>
+    </div>
+    <h3 id="searchingTitle">Searching…</h3>
+    <p id="searchingSubtitle">Looking for a provider near you</p>
+    <div class="sc-actions">
+      <button class="sc-cancel" onclick="cancelDeliverySearch()">Cancel</button>
+      <button class="sc-map" onclick="closeSearching();navTo('delivery')">View Map</button>
+    </div>
+  </div>
+</div>
 
 <script type="module">
 import { initializeApp } from "firebase/app";
@@ -1350,34 +1399,24 @@ const S = {
   cart: [], weather: null, weatherCity: '',
   userCoords: null, userLocation: 'Lusaka',
   notifications: [], unreadNotifCount: 0,
-  myDeliveries: [],
+  myDeliveries: [], allDeliveries: [],
+  following: {},
   communityUnsub: null, notificationsUnsub: null,
   supplierProductsUnsub: null, postCommentsUnsubs: {},
   liveClockTimer: null, weatherRefreshTimer: null,
   locationPermissionAsked: false,
-  /* NEW */
-  following: {},           // { [uid]: {name, photo, at} }
-  followedFarms: {},       // { [activityId]: {..snapshot} }
-  myProviders: [],         // nearby providers for delivery
-  delivery: {
-    map:null, pickup:null, dropoff:null,
-    pickupMarker:null, dropoffMarker:null,
-    routeLine:null, vehicle:null, route:null,
-    dashboardMap:null, userMarker:null,
-    nearbyMarkers:{}, nearbyUnsub:null,
-    activeId:null, activeTrip:null, tripUnsub:null,
-    searchAbort:null, searchMode:null
-  },
-  /* Watcher unsubs */
-  marketWatcherUnsub: null,
-  postsWatcherUnsub: null,
-  commentsWatcherUnsub: null,
-  ordersWatcherUnsub: null,
-  deliveriesWatcherUnsub: null,
-  _lastMarketIds: null,
-  _lastPostIds: null,
-  _lastOrderIds: null,
-  _lastDelivIds: null
+  // New listening state for notifications
+  lastSeen: { community: 0, market: 0, myComments: 0, orders: 0, deliveries: 0 },
+  notifListeners: [],
+  // Delivery flow state
+  delPickup: null, delDropoff: null, delRoute: null,
+  delVehicle: null, delDriver: null, delSearchMode: null, delSearchAbort: null,
+  delMap: null, delPickupMarker: null, delDropoffMarker: null,
+  delRouteLayer: null, delDriverMarker: null, delDriverPoll: null,
+  delActiveId: null, delActiveUnsub: null,
+  heroMap: null, heroDriverMarkers: {}, heroDriverListener: null,
+  // Follow
+  followUnsub: null
 };
 
 const $app = document.getElementById('app');
@@ -1389,6 +1428,12 @@ const $cartCount = document.getElementById('cartCount');
 const $notifPanel = document.getElementById('notifPanel');
 const $notifOverlay = document.getElementById('notifOverlay');
 const $notifBody = document.getElementById('notifBody');
+const $vsheetOverlay = document.getElementById('vsheetOverlay');
+const $vsheetList = document.getElementById('vsheetList');
+const $searchingOverlay = document.getElementById('searchingOverlay');
+const $searchingIcon = document.getElementById('searchingIcon');
+const $searchingTitle = document.getElementById('searchingTitle');
+const $searchingSubtitle = document.getElementById('searchingSubtitle');
 
 /* ============================================================
    HELPERS
@@ -1458,27 +1503,6 @@ function fmtDate(ts){
 function daysSince(ts){
   if(!ts) return 0;
   return Math.max(0, Math.floor((Date.now() - ts) / 86400000));
-}
-function haversineMeters(lat1, lon1, lat2, lon2) {
-  const R = 6371000;
-  const p1 = lat1 * Math.PI / 180, p2 = lat2 * Math.PI / 180;
-  const dp = (lat2 - lat1) * Math.PI / 180;
-  const dl = (lon2 - lon1) * Math.PI / 180;
-  const a = Math.sin(dp/2)**2 + Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)**2;
-  return 2 * R * Math.asin(Math.min(1, Math.sqrt(a)));
-}
-function formatDistanceM(m){
-  if(m == null || !isFinite(m)) return '—';
-  if(m < 1000) return Math.round(m) + ' m';
-  return (m/1000).toFixed(m<10000?1:0) + ' km';
-}
-function formatDurationS(s){
-  if(s == null || !isFinite(s)) return '—';
-  const m = Math.round(s/60);
-  if(m < 1) return '< 1 min';
-  if(m < 60) return m + ' min';
-  const h = Math.floor(m/60), mm = m%60;
-  return h + 'h ' + mm + 'm';
 }
 
 /* ============================================================
@@ -1583,7 +1607,7 @@ function gradFor(str){
 }
 
 /* ============================================================
-   REVERSE GEOCODE (PRECISE) + WEATHER
+   LOCATION PERMISSION + CITY DETECTION
    ============================================================ */
 async function reverseGeocodeCity(lat, lng){
   try{
@@ -1606,40 +1630,32 @@ async function reverseGeocodePrecise(lat, lng){
     const j = await r.json();
     const a = j.address || {};
     const nd = j.namedetails || {};
-    const extra = j.extratags || {};
-    const poi = j.name || nd.name || nd['name:en'] || extra['name:en']
-              || a.amenity || a.building || a.shop || a.tourism || a.office
-              || a.leisure || a.industrial || a.healthcare || a.place || '';
+    const poi = j.name || nd.name || nd['name:en'] || a.amenity || a.building || a.shop || a.tourism || a.office || '';
     const house = a.house_number || '';
-    const road = a.road || a.pedestrian || a.footway || a.path || a.street || a.residential || a.living_street || a.service || '';
+    const road = a.road || a.pedestrian || a.footway || a.path || a.street || a.residential || '';
     const neighbourhood = a.neighbourhood || a.quarter || a.hamlet || '';
-    const suburb = a.suburb || a.city_district || a.district || '';
+    const suburb = a.suburb || a.city_district || '';
     const city = a.city || a.town || a.village || a.municipality || a.county || '';
-    const postcode = a.postcode || '';
     const country = a.country || '';
     let primary = poi;
     if(!primary && house && road) primary = `${house} ${road}`;
     if(!primary && road) primary = road;
     if(!primary && neighbourhood) primary = neighbourhood;
-    if(!primary && suburb) primary = suburb;
     if(!primary && city) primary = city;
     if(!primary) primary = 'Current location';
     const parts = [];
-    if(poi && (house||road)){ if(house && road) parts.push(`${house} ${road}`); else if(road) parts.push(road); }
+    if(poi && road && road !== poi) parts.push(road);
     if(neighbourhood && neighbourhood !== primary) parts.push(neighbourhood);
     if(suburb && suburb !== neighbourhood && suburb !== primary) parts.push(suburb);
     if(city && city !== suburb && city !== primary) parts.push(city);
-    const secondary = parts.join(', ');
-    const label = secondary && !primary.toLowerCase().includes(secondary.toLowerCase())
-      ? `${primary}, ${secondary}` : primary;
-    return {
-      lat, lng, label, primary, secondary,
-      city, country, house, road, neighbourhood, suburb, postcode, poiName: poi,
-      address: j.display_name || ''
-    };
+    const label = parts.length ? `${primary}, ${parts.join(', ')}` : primary;
+    return { lat, lng, label, primary, secondary: parts.join(', '), city, country, house, road, neighbourhood, suburb, address: j.display_name || '', poi };
   }catch(e){ return null; }
 }
 
+/* ============================================================
+   WEATHER
+   ============================================================ */
 async function loadWeatherByCoords(lat, lng){
   try{
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=4`;
@@ -1777,10 +1793,21 @@ function showScreen(id, data={}, pushHistory=true){
   if(sc) sc.scrollTop = 0;
   updateCartFloat();
   startLiveClock();
+  // Cleanup delivery hero map when leaving delivery screen
+  if(id !== 'delivery' && S.heroMap){
+    try{ S.heroMap.remove(); }catch(e){}
+    S.heroMap = null;
+  }
+  if(S.heroDriverListener){
+    try{ S.heroDriverListener(); }catch(e){}
+    S.heroDriverListener = null;
+  }
 }
 
 window.addEventListener('popstate', e=>{
   if($modal.classList.contains('open')){ closeModal(); return; }
+  if($vsheetOverlay.classList.contains('open')){ closeVsheet(); return; }
+  if($searchingOverlay.classList.contains('open')){ closeSearching(); return; }
   const st = e.state || {};
   const id = st.screen || 'home';
   if(!document.getElementById('screen-'+id)){ showScreen('home', {}, false); return; }
@@ -1819,7 +1846,6 @@ function bottomNavHTML(){
     <button class="bn" data-nav="delivery" onclick="goDelivery()">
       <svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
       <span class="bn-lb">Delivery</span>
-      ${S.myDeliveries && S.myDeliveries.length ? `<span class="bn-badge">${S.myDeliveries.length}</span>` : ''}
     </button>
     <button class="bn" data-nav="profile" onclick="goProfile()">
       <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
@@ -1874,7 +1900,7 @@ window.openSupplierCart = ()=>{
 };
 
 /* ============================================================
-   NOTIFICATIONS — panel + watchers
+   NOTIFICATIONS
    ============================================================ */
 window.openNotif = ()=>{
   $notifPanel.classList.add('open');
@@ -1892,13 +1918,9 @@ function renderNotifications(){
     return;
   }
   $notifBody.innerHTML = S.notifications.map(n=>{
-    const map = {
-      order:'📦', delivery:'🚚', community:'💬', comment:'💬',
-      market:'🛒', follow:'👥', like:'❤️', weather:'⛅', system:'🔔'
-    };
-    const ic = map[n.type] || '🔔';
+    const ic = n.type === 'order' ? '📦' : n.type === 'delivery' ? '🚚' : n.type === 'community' ? '💬' : n.type === 'weather' ? '⛅' : n.type === 'market' ? '🛒' : n.type === 'comment' ? '💬' : n.type === 'goods' ? '🌾' : n.type === 'follow' ? '👤' : '🔔';
     const cls = n.severity === 'warn' ? 'warn' : n.severity === 'info' ? 'info' : n.severity === 'danger' ? 'danger' : '';
-    return `<div class="notif-item ${n.read ? '' : 'unread'}" onclick="markNotifRead('${esc(n.id)}')">
+    return `<div class="notif-item ${n.read ? '' : 'unread'}" onclick="onNotifClick('${esc(n.id)}','${esc(n.link||'')}')">
       <div class="n-ic ${cls}">${ic}</div>
       <div class="n-body">
         <div class="n-title">${esc(n.title || 'Notification')}</div>
@@ -1908,11 +1930,30 @@ function renderNotifications(){
     </div>`;
   }).join('');
 }
+
+window.onNotifClick = async (id, link)=>{
+  const n = S.notifications.find(x=>x.id === id);
+  if(!n) return;
+  try{ await update(ref(db, `users/${S.user.uid}/notifications/${id}`), {read: true}); }catch(e){}
+  closeNotif();
+  if(link){
+    try{
+      if(link.startsWith('screen:')){
+        const parts = link.slice(7).split('/');
+        const screen = parts[0];
+        const data = {};
+        if(parts[1]) data.id = parts[1];
+        navTo(screen, data);
+      }
+    }catch(e){}
+  }
+};
 window.markNotifRead = async (id)=>{
   const n = S.notifications.find(x=>x.id === id);
   if(!n || n.read) return;
   try{ await update(ref(db, `users/${S.user.uid}/notifications/${id}`), {read: true}); }catch(e){}
 };
+
 function startNotificationsListener(){
   if(!S.user) return;
   if(S.notificationsUnsub) S.notificationsUnsub();
@@ -1921,7 +1962,7 @@ function startNotificationsListener(){
     const data = snap.val() || {};
     const arr = Object.entries(data).map(([id, v])=>({id, ...v}));
     arr.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
-    S.notifications = arr.slice(0, 100);
+    S.notifications = arr;
     S.unreadNotifCount = arr.filter(n=>!n.read).length;
     renderNotifications();
     const nav = document.getElementById('bnav');
@@ -1937,6 +1978,7 @@ function startNotificationsListener(){
     }
   });
 }
+
 async function pushNotification(payload){
   if(!S.user) return;
   try{
@@ -1944,315 +1986,192 @@ async function pushNotification(payload){
     await set(r, { ...payload, createdAt: Date.now(), read: false });
   }catch(e){ console.warn('notif', e); }
 }
-window.pushNotification = pushNotification;
-
-/* ---- Watchers: goods, community, comments, orders, deliveries ---- */
-function startContentWatchers(){
-  if(!S.user) return;
-  const uid = S.user.uid;
-
-  /* New goods (marketListings) */
-  if(S.marketWatcherUnsub) S.marketWatcherUnsub();
-  S.marketWatcherUnsub = onValue(ref(db, 'marketListings'), (snap)=>{
-    const data = snap.val() || {};
-    const ids = new Set(Object.keys(data));
-    if(S._lastMarketIds){
-      for(const id of ids){
-        if(!S._lastMarketIds.has(id)){
-          const item = data[id];
-          if(item && item.seller_id !== uid && item.status !== 'removed'){
-            pushNotification({
-              type:'market', severity:'info',
-              title:'New goods posted',
-              text:`${item.sellerName || 'A farmer'} posted: ${item.title || item.productName || 'Produce'}`
-            });
-          }
-        }
-      }
-    }
-    S._lastMarketIds = ids;
-  });
-
-  /* New community posts */
-  if(S.postsWatcherUnsub) S.postsWatcherUnsub();
-  S.postsWatcherUnsub = onValue(ref(db, 'communityPosts'), (snap)=>{
-    const data = snap.val() || {};
-    const ids = new Set(Object.keys(data));
-    if(S._lastPostIds){
-      for(const id of ids){
-        if(!S._lastPostIds.has(id)){
-          const p = data[id];
-          if(p && p.authorId !== uid && p.visibility !== 'private'){
-            pushNotification({
-              type:'community', severity:'info',
-              title:'New message in Community',
-              text:`${p.authorName || 'A farmer'} shared: ${(p.body||'').slice(0,60)}${(p.body||'').length>60?'…':''}`
-            });
-            /* Comments on this post — watch them */
-            watchCommentsForPost(id);
-          }
-        }
-      }
-    }
-    S._lastPostIds = ids;
-    /* (Re)attach comment watchers for posts that mention me */
-    for(const id of ids){
-      const p = data[id];
-      if(p && p.authorId === uid) watchCommentsForPost(id);
-    }
-  });
-
-  /* New orders (orders + supplierOrders) */
-  if(S.ordersWatcherUnsub) S.ordersWatcherUnsub();
-  const unsubOrders = onValue(ref(db, 'orders'), (snap)=>{
-    const data = snap.val() || {};
-    const ids = new Set(Object.keys(data));
-    if(S._lastOrderIds){
-      for(const id of ids){
-        if(!S._lastOrderIds.has(id)){
-          const o = data[id];
-          if(o && o.buyer_id === uid){
-            pushNotification({
-              type:'order', severity:'info',
-              title:'Order confirmed',
-              text:`Order ${id} was placed for ${(o.items||[]).length} item(s).`
-            });
-          }
-        }
-      }
-    }
-    S._lastOrderIds = ids;
-  });
-  const unsubSupOrders = onValue(ref(db, 'supplierOrders'), (snap)=>{
-    const data = snap.val() || {};
-    Object.entries(data).forEach(([id, o])=>{
-      if(o && o.buyerId === uid){
-        /* Just detect state changes by tracking last status */
-        const key = '_supOrderStatus_'+id;
-        if(S[key] && S[key] !== o.status){
-          pushNotification({
-            type:'order', severity: o.status==='approved'?'info':'warn',
-            title:`Order ${id} ${o.status==='approved'?'approved':o.status}`,
-            text:`Your input order status is now: ${o.status}.`
-          });
-        }
-        S[key] = o.status;
-      }
-    });
-  });
-  S.ordersWatcherUnsub = ()=>{ unsubOrders(); unsubSupOrders(); };
-
-  /* Deliveries status */
-  if(S.deliveriesWatcherUnsub) S.deliveriesWatcherUnsub();
-  S.deliveriesWatcherUnsub = onValue(ref(db, 'deliveryRequests'), (snap)=>{
-    const data = snap.val() || {};
-    const ids = new Set(Object.keys(data));
-    Object.entries(data).forEach(([id, d])=>{
-      if(d && d.requester_id === uid){
-        const key = '_delivStatus_'+id;
-        if(S[key] && S[key] !== d.status){
-          pushNotification({
-            type:'delivery', severity:'info',
-            title:`Delivery ${id}`,
-            text:`Status updated: ${d.status}.`
-          });
-        }
-        S[key] = d.status;
-      }
-    });
-  });
-}
-
-const watchedCommentPosts = new Set();
-function watchCommentsForPost(postId){
-  if(watchedCommentPosts.has(postId)) return;
-  watchedCommentPosts.add(postId);
-  const path = `communityPosts/${postId}/comments`;
-  const unsub = onValue(ref(db, path), (snap)=>{
-    const data = snap.val() || {};
-    const ids = new Set(Object.keys(data));
-    const key = '_cmtIds_'+postId;
-    if(S[key]){
-      for(const cid of ids){
-        if(!S[key].has(cid)){
-          const c = data[cid];
-          if(c && c.authorId !== S.user.uid){
-            pushNotification({
-              type:'comment', severity:'info',
-              title:'New comment',
-              text:`${c.authorName || 'Someone'} commented: ${(c.text||'').slice(0,60)}`
-            });
-          }
-        }
-      }
-    }
-    S[key] = ids;
-  });
-  /* Not tracking unsub — small leak acceptable */
-}
 
 /* ============================================================
-   FOLLOW / UNFOLLOW + FOLLOW UPS
+   NOTIFICATION LISTENERS (community, market, comments, orders, deliveries)
    ============================================================ */
-window.followUser = async (targetUid, name, photo)=>{
-  if(!S.user || targetUid === S.user.uid) return;
-  try{
-    await update(ref(db, `users/${S.user.uid}/following/${targetUid}`), {
-      name: name || 'Farmer', photo: photo || '', at: Date.now()
-    });
-    S.following[targetUid] = { name: name||'Farmer', photo: photo||'', at: Date.now() };
-    toast('Following ✓');
-    if(S.screen === 'farm-activity' || S.screen === 'activity-detail') route();
-  }catch(e){ toast('Failed: '+e.message); }
-};
-window.unfollowUser = async (targetUid)=>{
+function startContentNotificationListeners(){
   if(!S.user) return;
+  const me = S.user.uid;
+
+  // Load last seen timestamps
   try{
-    await remove(ref(db, `users/${S.user.uid}/following/${targetUid}`));
-    delete S.following[targetUid];
-    toast('Unfollowed');
-    if(S.screen === 'follow-ups'){ const el = document.getElementById('screen-follow-ups'); if(el) el.innerHTML = renderFollowUps(S.screenData.tab); }
-    if(S.screen === 'farm-activity' || S.screen === 'activity-detail') route();
-  }catch(e){ toast('Failed: '+e.message); }
-};
-window.followActivity = async (activityId, activityTitle, ownerName)=>{
-  if(!S.user) return;
-  try{
-    await update(ref(db, `users/${S.user.uid}/followedFarms/${activityId}`), {
-      title: activityTitle || 'Activity', ownerName: ownerName || 'Farmer', at: Date.now()
+    get(ref(db, `users/${me}/lastSeen`)).then(s=>{
+      if(s.exists()){
+        const v = s.val() || {};
+        S.lastSeen.community = v.community || 0;
+        S.lastSeen.market = v.market || 0;
+        S.lastSeen.myComments = v.myComments || 0;
+        S.lastSeen.orders = v.orders || 0;
+        S.lastSeen.deliveries = v.deliveries || 0;
+      } else {
+        // Initialize as now
+        const now = Date.now();
+        S.lastSeen = { community: now, market: now, myComments: now, orders: now, deliveries: now };
+        update(ref(db, `users/${me}/lastSeen`), S.lastSeen).catch(()=>{});
+      }
+    }).catch(()=>{});
+  }catch(e){}
+
+  // 1. New community posts by others
+  const unsubCommunity = onValue(ref(db, 'communityPosts'), (snap)=>{
+    const data = snap.val() || {};
+    const lastSeen = S.lastSeen.community || 0;
+    let latest = lastSeen;
+    Object.entries(data).forEach(([id, p])=>{
+      if(!p || !p.createdAt) return;
+      if(p.authorId === me) return;
+      if(p.createdAt > lastSeen){
+        pushNotification({
+          type:'community',
+          title:'💬 New community post',
+          text: `${p.authorName || 'A farmer'}: ${(p.body||'').slice(0,60)}${(p.body||'').length>60?'…':''}`,
+          link: 'screen:post-detail/'+id,
+          severity:'info'
+        });
+        if(p.createdAt > latest) latest = p.createdAt;
+      }
     });
-    S.followedFarms[activityId] = { title: activityTitle||'Activity', ownerName: ownerName||'Farmer', at: Date.now() };
-    toast('Following activity ✓');
-  }catch(e){ toast('Failed: '+e.message); }
-};
-window.unfollowActivity = async (activityId)=>{
-  try{
-    await remove(ref(db, `users/${S.user.uid}/followedFarms/${activityId}`));
-    delete S.followedFarms[activityId];
-    toast('Unfollowed activity');
-    if(S.screen === 'follow-ups'){ const el = document.getElementById('screen-follow-ups'); if(el) el.innerHTML = renderFollowUps(S.screenData.tab); }
-  }catch(e){ toast('Failed: '+e.message); }
-};
+    if(latest > lastSeen){
+      S.lastSeen.community = latest;
+      update(ref(db, `users/${me}/lastSeen`), { community: latest }).catch(()=>{});
+    }
+  }, ()=>{});
 
-function renderFollowUps(tab){
-  tab = tab || 'farmers';
-  const farmers = Object.entries(S.following || {}).map(([uid, v])=>({uid, ...v}));
-  const farms = Object.entries(S.followedFarms || {}).map(([id, v])=>({id, ...v}));
-  /* Listing follow not tracked separately; show marketplace items from followed farmers */
-  const followedFarmerUids = new Set(Object.keys(S.following || {}));
-  const listings = (S.marketplace || []).filter(m=>followedFarmerUids.has(m.seller_id));
-  const posts = (S.community || []).filter(p=>followedFarmerUids.has(p.authorId));
+  // 2. New market listings by others
+  const unsubMarket = onValue(ref(db, 'marketListings'), (snap)=>{
+    const data = snap.val() || {};
+    const lastSeen = S.lastSeen.market || 0;
+    let latest = lastSeen;
+    Object.entries(data).forEach(([id, m])=>{
+      if(!m || !m.createdAt) return;
+      if(m.seller_id === me) return;
+      if(m.status === 'removed') return;
+      if(m.createdAt > lastSeen){
+        pushNotification({
+          type:'market',
+          title:'🌾 New goods posted',
+          text: `${m.sellerName || 'A farmer'} listed ${m.title || m.productName || 'goods'} at ${fmtZMK(m.priceAmount)}`,
+          link: 'screen:product-detail/'+id,
+          severity:'info'
+        });
+        if(m.createdAt > latest) latest = m.createdAt;
+      }
+    });
+    if(latest > lastSeen){
+      S.lastSeen.market = latest;
+      update(ref(db, `users/${me}/lastSeen`), { market: latest }).catch(()=>{});
+    }
+  }, ()=>{});
 
-  let body = '';
-  if(tab === 'farmers'){
-    body = farmers.length ? `
-      <div class="follow-list">
-        ${farmers.map(f=>`
-          <div class="follow-item" onclick="viewFarmerProfile('${esc(f.uid)}')">
-            <div class="fi-av">${f.photo?`<img src="${esc(f.photo)}" alt="">`:initials(f.name)}</div>
-            <div class="fi-body">
-              <div class="fi-name">${esc(f.name)}</div>
-              <div class="fi-sub">Following since ${fmtDate(f.at)}</div>
-            </div>
-            <span class="fi-tag">Farmer</span>
-            <button class="fi-unfollow" onclick="event.stopPropagation();unfollowUser('${esc(f.uid)}')">✕</button>
-          </div>`).join('')}
-      </div>` : `
-      <div class="empty">
-        <div class="e-ic">👥</div>
-        <h3>Not following anyone yet</h3>
-        <p>Tap "Follow" on a farmer's activity to see their updates here.</p>
-      </div>`;
-  } else if(tab === 'farms'){
-    body = farms.length ? `
-      <div class="follow-list">
-        ${farms.map(f=>`
-          <div class="follow-item" onclick="openActivity('${esc(f.id)}')">
-            <div class="fi-av">${pickIcon(f.title)}</div>
-            <div class="fi-body">
-              <div class="fi-name">${esc(f.title)}</div>
-              <div class="fi-sub">by ${esc(f.ownerName)} · followed ${timeAgo(f.at)}</div>
-            </div>
-            <span class="fi-tag">Farm</span>
-            <button class="fi-unfollow" onclick="event.stopPropagation();unfollowActivity('${esc(f.id)}')">✕</button>
-          </div>`).join('')}
-      </div>` : `
-      <div class="empty">
-        <div class="e-ic">🌱</div>
-        <h3>Not following any farm activity yet</h3>
-        <p>Open an activity and tap "Follow this farm" to track it here.</p>
-      </div>`;
-  } else if(tab === 'listings'){
-    body = listings.length ? `
-      <div class="mk-grid">
-        ${listings.map(m=>`
-          <div class="mk-card" onclick="openProduct('${esc(m.id)}')">
-            <div class="mk-img">
-              ${m.photoUrls?.[0]?`<img src="${esc(m.photoUrls[0])}" alt="">`:pickIcon(m.title||m.productName||'')}
-            </div>
-            <div class="mk-bd">
-              <div class="mk-nm">${esc(m.title||m.productName||'Product')}</div>
-              <div class="mk-sz">${esc(m.quantity||'')} ${esc(m.unit||'')}</div>
-              <div class="mk-pr">${fmtZMK(m.priceAmount)}</div>
-              <div class="mk-ct">📍 ${esc(m.city||'Zambia')} · ${esc(m.sellerName||'')}</div>
-            </div>
-          </div>`).join('')}
-      </div>` : `
-      <div class="empty">
-        <div class="e-ic">🛒</div>
-        <h3>No listings from followed farmers</h3>
-        <p>When farmers you follow post goods, they'll appear here.</p>
-      </div>`;
-  } else {
-    body = posts.length ? `
-      <div style="padding:0 18px 18px">
-        ${posts.slice(0,20).map(p=>`
-          <div class="post">
-            <div class="p-head">
-              <div class="p-av">${p.authorPhoto?`<img src="${esc(p.authorPhoto)}" alt="">`:initials(p.authorName||'F')}</div>
-              <div class="p-who">
-                <div class="p-nm">${esc(p.authorName||'Farmer')}</div>
-                <div class="p-tm">${timeAgo(p.createdAt)}</div>
-              </div>
-            </div>
-            <div class="p-body" onclick="navTo('post-detail',{id:'${esc(p.id)}'})">${esc(p.body||'')}</div>
-          </div>`).join('')}
-      </div>` : `
-      <div class="empty">
-        <div class="e-ic">💬</div>
-        <h3>No posts from followed farmers</h3>
-        <p>Their community posts will appear here.</p>
-      </div>`;
-  }
-  return `
-  <div class="scroll">
-    <div class="topbar bordered">
-      <button class="tb-back" onclick="goBack()">
-        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-      </button>
-      <div class="tb-title">Follow Ups</div>
-    </div>
-    <div class="follow-tabs">
-      ${['farmers','farms','listings','posts'].map(t=>`
-        <button class="follow-tab ${tab===t?'active':''}" onclick="navTo('follow-ups',{tab:'${t}'})">${t[0].toUpperCase()+t.slice(1)}</button>
-      `).join('')}
-    </div>
-    ${body}
-  </div>
-  ${bottomNavHTML()}`;
+  // 3. New comments on my posts
+  const unsubMyComments = onValue(ref(db, 'communityPosts'), (snap)=>{
+    const data = snap.val() || {};
+    const lastSeen = S.lastSeen.myComments || 0;
+    let latest = lastSeen;
+    Object.entries(data).forEach(([postId, p])=>{
+      if(!p || p.authorId !== me) return;
+      const comments = p.comments || {};
+      Object.entries(comments).forEach(([cid, c])=>{
+        if(!c || !c.createdAt) return;
+        if(c.authorId === me) return;
+        if(c.createdAt > lastSeen){
+          pushNotification({
+            type:'comment',
+            title:'💬 New comment on your post',
+            text: `${c.authorName || 'Someone'}: ${(c.text||'').slice(0,60)}${(c.text||'').length>60?'…':''}`,
+            link: 'screen:post-detail/'+postId,
+            severity:'info'
+          });
+          if(c.createdAt > latest) latest = c.createdAt;
+        }
+      });
+    });
+    if(latest > lastSeen){
+      S.lastSeen.myComments = latest;
+      update(ref(db, `users/${me}/lastSeen`), { myComments: latest }).catch(()=>{});
+    }
+  }, ()=>{});
+
+  // 4. Order status changes (both orders and supplierOrders)
+  const unsubOrders = onValue(ref(db, 'orders'), (snap)=>{
+    const data = snap.val() || {};
+    const lastSeen = S.lastSeen.orders || 0;
+    let latest = lastSeen;
+    Object.entries(data).forEach(([id, o])=>{
+      if(!o || o.buyer_id !== me) return;
+      const ts = o.updatedAt || o.createdAt || 0;
+      if(ts > lastSeen){
+        const statusTxt = (o.status||'pending').replace(/_/g,' ');
+        pushNotification({
+          type:'order',
+          title:'📦 Order status',
+          text: `Your order ${id} is now ${statusTxt}`,
+          link: 'screen:my-posts',
+          severity: o.status === 'completed' ? 'info' : 'warn'
+        });
+        if(ts > latest) latest = ts;
+      }
+    });
+    if(latest > lastSeen){
+      S.lastSeen.orders = latest;
+      update(ref(db, `users/${me}/lastSeen`), { orders: latest }).catch(()=>{});
+    }
+  }, ()=>{});
+
+  const unsubSupplierOrders = onValue(ref(db, 'supplierOrders'), (snap)=>{
+    const data = snap.val() || {};
+    const lastSeen = S.lastSeen.orders || 0;
+    let latest = lastSeen;
+    Object.entries(data).forEach(([id, o])=>{
+      if(!o || o.buyerId !== me) return;
+      const ts = o.updatedAt || o.createdAt || 0;
+      if(ts > lastSeen){
+        const statusTxt = (o.status||'pending_approval').replace(/_/g,' ');
+        pushNotification({
+          type:'order',
+          title:'📦 Supplier order',
+          text: `Order ${id} — ${statusTxt}`,
+          link: 'screen:home',
+          severity: o.status === 'approved' ? 'info' : 'warn'
+        });
+        if(ts > latest) latest = ts;
+      }
+    });
+    if(latest > lastSeen){
+      S.lastSeen.orders = latest;
+      update(ref(db, `users/${me}/lastSeen`), { orders: latest }).catch(()=>{});
+    }
+  }, ()=>{});
+
+  // 5. Delivery status changes
+  const unsubDeliv = onValue(ref(db, 'deliveryRequests'), (snap)=>{
+    const data = snap.val() || {};
+    const lastSeen = S.lastSeen.deliveries || 0;
+    let latest = lastSeen;
+    Object.entries(data).forEach(([id, d])=>{
+      if(!d || d.requester_id !== me) return;
+      const ts = d.updatedAt || d.createdAt || 0;
+      if(ts > lastSeen){
+        const statusTxt = (d.status||'searching').replace(/_/g,' ');
+        pushNotification({
+          type:'delivery',
+          title:'🚚 Delivery update',
+          text: `Delivery ${id} — ${statusTxt}`,
+          link: 'screen:delivery',
+          severity: d.status === 'delivered' ? 'info' : 'warn'
+        });
+        if(ts > latest) latest = ts;
+      }
+    });
+    if(latest > lastSeen){
+      S.lastSeen.deliveries = latest;
+      update(ref(db, `users/${me}/lastSeen`), { deliveries: latest }).catch(()=>{});
+    }
+  }, ()=>{});
+
+  S.notifListeners = [unsubCommunity, unsubMarket, unsubMyComments, unsubOrders, unsubSupplierOrders, unsubDeliv];
 }
-
-window.viewFarmerProfile = (uid)=>{
-  /* Quick modal summary */
-  modal(`<div style="text-align:center">
-    <div style="font-size:40px;margin-bottom:8px">🌾</div>
-    <h3>Farmer Profile</h3>
-    <p>Viewing profile for <strong>${esc(S.following[uid]?.name || 'this farmer')}</strong>.</p>
-    <button class="btn btn-s" onclick="closeModal();unfollowUser('${esc(uid)}')">Unfollow</button>
-    <div style="height:8px"></div>
-    <button class="btn btn-p" onclick="closeModal()">Close</button>
-  </div>`);
-};
 
 /* ============================================================
    LOAD AGRIKNOWLEDGE
@@ -2306,10 +2225,13 @@ async function loadAgriKnowledge(){
    LOAD USER DATA
    ============================================================ */
 async function loadUserData(uid){
-  const out = { profile:null, activities:[], listings:[] };
+  const out = { profile:null, activities:[], listings:[], following:{} };
   try{
     const p = await get(ref(db,'users/'+uid));
-    if(p.exists()) out.profile = p.val();
+    if(p.exists()){
+      out.profile = p.val();
+      if(out.profile.following) out.following = out.profile.following;
+    }
     const a = await get(ref(db,'farmActivities'));
     if(a.exists()){
       Object.entries(a.val()).forEach(([k,v])=>{
@@ -2401,21 +2323,9 @@ async function loadSuppliers(){
   }catch(e){}
   return out;
 }
-/* Nearby providers for delivery dashboard */
-function startProvidersListener(){
-  if(!S.user) return;
-  if(S.delivery.nearbyUnsub) S.delivery.nearbyUnsub();
-  S.delivery.nearbyUnsub = onValue(ref(db, 'providers'), (snap)=>{
-    const data = snap.val() || {};
-    S.myProviders = Object.entries(data).map(([id, p])=>({id, ...p}));
-    if(S.screen === 'delivery' && S.delivery.dashboardMap){
-      renderNearbyProvidersOnDashboard();
-    }
-  });
-}
 
 /* ============================================================
-   ACTIVITY FORECAST + STAGES
+   ACTIVITY FORECAST
    ============================================================ */
 function autoPredict(activity){
   if(!activity) return null;
@@ -2438,6 +2348,10 @@ function autoPredict(activity){
   }
   return null;
 }
+
+/* ============================================================
+   STAGE TIMELINE
+   ============================================================ */
 const STAGE_ORDER = ['planned','planted','growing','flowering','fruiting','harvesting','ready_for_sale','completed'];
 const STAGE_DAYS_FRACTION = {
   planned:0, planted:0.05, growing:0.2, flowering:0.5, fruiting:0.7, harvesting:0.9, ready_for_sale:1.0, completed:1.1
@@ -2480,6 +2394,105 @@ function computeStageInfo(activity){
 }
 
 /* ============================================================
+   FOLLOW SYSTEM
+   ============================================================ */
+window.toggleFollow = async (targetId, targetType, targetName, targetPhoto)=>{
+  if(!S.user || !targetId) return;
+  if(targetId === S.user.uid){ toast('You cannot follow yourself'); return; }
+  const key = `${targetType}:${targetId}`;
+  const followingRef = ref(db, `users/${S.user.uid}/following/${targetId}`);
+  const existing = S.following[targetId];
+  try{
+    if(existing){
+      await remove(followingRef);
+      delete S.following[targetId];
+      toast('Unfollowed');
+    } else {
+      await set(followingRef, {
+        targetId, targetType: targetType || 'farmer', targetName: targetName || 'Farmer',
+        targetPhoto: targetPhoto || '', followedAt: Date.now()
+      });
+      S.following[targetId] = { targetId, targetType: targetType||'farmer', targetName, targetPhoto, followedAt: Date.now() };
+      toast('Following ✓');
+      // Notify target
+      try{
+        const nref = push(ref(db, `users/${targetId}/notifications`));
+        await set(nref, {
+          type:'follow',
+          title:'👤 New follower',
+          text: `${(S.profile.firstName||'')} ${(S.profile.lastName||'')} started following you`,
+          createdAt: Date.now(), read:false,
+          severity:'info'
+        });
+      }catch(e){}
+    }
+    route();
+  }catch(e){
+    console.error(e);
+    toast('Failed: '+(e.message||e));
+  }
+};
+window.isFollowing = (targetId)=> !!S.following[targetId];
+
+function renderFollowUps(){
+  const list = Object.values(S.following || {});
+  list.sort((a,b)=>(b.followedAt||0)-(a.followedAt||0));
+  const body = list.length ? list.map(f=>{
+    const initial = initials(f.targetName || 'F');
+    return `
+      <div class="fu-card" onclick="openFollowTarget('${esc(f.targetId)}','${esc(f.targetType||'farmer')}')">
+        <div class="fu-av">${f.targetPhoto ? `<img src="${esc(f.targetPhoto)}" alt="">` : initial}</div>
+        <div class="fu-body">
+          <div class="fu-nm">${esc(f.targetName || 'Farmer')}</div>
+          <div class="fu-sb">${esc((f.targetType||'farmer').charAt(0).toUpperCase()+(f.targetType||'farmer').slice(1))}</div>
+          <div class="fu-meta"><span>📅 Followed ${timeAgo(f.followedAt)}</span></div>
+        </div>
+        <button class="fu-btn unfollow" onclick="event.stopPropagation();toggleFollow('${esc(f.targetId)}','${esc(f.targetType||'farmer')}')">Unfollow</button>
+      </div>`;
+  }).join('') : `
+    <div class="empty">
+      <div class="e-ic">👥</div>
+      <h3>You're not following anyone yet</h3>
+      <p>Tap the follow button on any farmer's activity or profile to see their updates here.</p>
+    </div>`;
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Follow Ups</div>
+    </div>
+    <div style="padding:14px 18px 6px">
+      <p style="font-size:12.5px;color:var(--tl);font-weight:600;line-height:1.55">Farmers and providers you follow. Their new posts and activities will appear here.</p>
+    </div>
+    <div style="padding:14px 18px 18px">${body}</div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+window.openFollowTarget = (id, type)=>{
+  if(type === 'farmer'){
+    // Show their activities
+    const acts = (S.allActivities||[]).filter(a=>a.owner_user_id === id);
+    if(acts.length){
+      navTo('activity-detail', {id: acts[0].id});
+    } else {
+      toast('No activities to show');
+    }
+  } else if(type === 'supplier'){
+    navTo('buy-supplies');
+  } else {
+    toast('Profile');
+  }
+};
+
+/* ============================================================
+   SCREEN: FOLLOW UPS
+   ============================================================ */
+function renderFollowUpsScreen(){ return renderFollowUps(); }
+
+/* ============================================================
    ROUTER
    ============================================================ */
 function route(){
@@ -2502,20 +2515,20 @@ function route(){
     case 'cart': el.innerHTML = renderCart(); break;
     case 'checkout': el.innerHTML = renderCheckout(); break;
     case 'post-ready-goods': el.innerHTML = renderPostReadyGoods(S.screenData); wirePostReadyGoods(); break;
-    case 'delivery': el.innerHTML = renderDeliveryDashboard(); wireDeliveryDashboard(); break;
-    case 'request-delivery': el.innerHTML = renderRequestDelivery(); wireDeliveryMap(); break;
+    case 'delivery': el.innerHTML = renderDelivery(); wireDeliveryHeroMap(); break;
+    case 'request-delivery': el.innerHTML = renderRequestDelivery(); wireRequestDelivery(); break;
     case 'delivery-history': el.innerHTML = renderDeliveryHistory(); break;
     case 'ongoing-deliveries': el.innerHTML = renderOngoingDeliveries(); break;
     case 'buy-supplies': el.innerHTML = renderBuySupplies(S.screenData.cat); break;
     case 'supplier-cart': el.innerHTML = renderSupplierCart(); break;
     case 'supplier-checkout': el.innerHTML = renderSupplierCheckout(); wireSupplierCheckout(); break;
     case 'weather': el.innerHTML = renderWeather(); break;
-    case 'profile': el.innerHTML = renderProfile(); wireProfile(); break;
-    case 'follow-ups': el.innerHTML = renderFollowUps(S.screenData.tab); break;
+    case 'profile': el.innerHTML = renderProfile(); break;
     case 'my-posts': el.innerHTML = renderMyPosts(S.screenData.tab); break;
     case 'revenue': el.innerHTML = renderRevenue(); break;
     case 'docs': el.innerHTML = renderDocs(); break;
     case 'analysis': el.innerHTML = renderAnalysis(); break;
+    case 'follow-ups': el.innerHTML = renderFollowUps(); break;
     default: el.innerHTML = renderHome();
   }
 }
@@ -2637,12 +2650,12 @@ function renderHome(){
     </div>
     <div class="mf-row">${mfHTML}</div>
 
-    <div class="cta-banner" onclick="navTo('follow-ups')">
+    <div class="cta-banner" onclick="navTo('follow-ups')" style="background:linear-gradient(135deg,#dbeafe 0%,#bfdbfe 100%);border-color:rgba(37,99,235,.16)">
       <div class="cta-txt">
-        <h4>👥 Follow Ups</h4>
-        <p>See the farmers, farms, listings and posts you follow in one place.</p>
+        <h4 style="color:#1e40af">👥 Follow Ups</h4>
+        <p style="color:#2563eb">See all the farmers and providers you're following.</p>
       </div>
-      <div class="cta-arrow">
+      <div class="cta-arrow" style="background:#2563eb">
         <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
       </div>
     </div>
@@ -2948,6 +2961,7 @@ window.toggleSelect = (id)=>{
   opts.classList.toggle('open');
   trigger.classList.toggle('open', opts.classList.contains('open'));
 };
+
 window.selectOption = (id, value, label)=>{
   const opts = document.getElementById(id+'-options');
   const trigger = document.getElementById(id+'-trigger');
@@ -2961,6 +2975,7 @@ window.selectOption = (id, value, label)=>{
     trigger.classList.remove('open');
   }
 };
+
 window.switchCat = (id)=>{
   const el = document.getElementById('screen-create-activity');
   if(el) el.innerHTML = renderCreateActivity({category:id});
@@ -2968,6 +2983,7 @@ window.switchCat = (id)=>{
   showScreen('create-activity', {category:id}, false);
   wireSelectOptions();
 };
+
 function wireSelectOptions(){
   document.querySelectorAll('.select-options').forEach(opts=>{
     opts.querySelectorAll('.select-option').forEach(o=>{
@@ -2978,6 +2994,7 @@ function wireSelectOptions(){
     });
   });
 }
+
 function wireCreateActivity(){
   wireSelectOptions();
   const box = document.getElementById('act-photo');
@@ -2991,6 +3008,7 @@ function wireCreateActivity(){
     }catch(e){ if(!String(e).includes('cancel')) toast('Upload failed'); }
   });
 }
+
 window.submitActivity = async (ev)=>{
   ev.preventDefault();
   const err = document.getElementById('act-error');
@@ -3023,6 +3041,7 @@ window.submitActivity = async (ev)=>{
   const payload = {
     owner_user_id: S.user.uid,
     ownerName: (S.profile.firstName||'') + ' ' + (S.profile.lastName||''),
+    ownerPhoto: S.profile.profileUrl || '',
     enterprise_type: catItem?.enterpriseType || 'Crop',
     category: cat,
     species_or_crop_id: species,
@@ -3061,7 +3080,7 @@ window.submitActivity = async (ev)=>{
 };
 
 /* ============================================================
-   SCREEN: ACTIVITY DETAIL
+   SCREEN: ACTIVITY DETAIL (with follow)
    ============================================================ */
 window.openActivity = (id)=>{ navTo('activity-detail', {id}); };
 
@@ -3073,8 +3092,7 @@ function renderActivityDetail(id){
   const stages = ['planned','planted','growing','flowering','fruiting','harvesting','ready_for_sale','completed'];
   const currIdx = stages.indexOf(act.stage_key||'growing');
   const info = computeStageInfo(act);
-  const isFollowing = !!S.followedFarms[act.id];
-  const isFollowingOwner = !isMine && !!S.following[act.owner_user_id];
+  const following = !isMine && isFollowing(act.owner_user_id);
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -3089,6 +3107,19 @@ function renderActivityDetail(id){
     <div class="detail-body">
       <h1>${esc(act.title||act.speciesName||'Activity')}</h1>
       <div class="d-sc">${esc(act.speciesName||'')} ${act.variety_breed?'· '+esc(act.variety_breed):''}</div>
+      ${!isMine ? `
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--p-ll);border:1px solid rgba(15,122,52,.14);border-radius:var(--r);margin-bottom:14px">
+          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--p-d));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;overflow:hidden">
+            ${act.ownerPhoto ? `<img src="${esc(act.ownerPhoto)}" style="width:100%;height:100%;object-fit:cover">` : initials(act.ownerName||'F')}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:12.5px;font-weight:800;color:var(--td)">${esc(act.ownerName||'Farmer')}</div>
+            <div style="font-size:10.5px;color:var(--tl);font-weight:600">Farmer</div>
+          </div>
+          <button class="btn ${following ? 'btn-s' : 'btn-p'}" style="width:auto;padding:8px 14px;font-size:12px" onclick="toggleFollow('${esc(act.owner_user_id)}','farmer','${esc(act.ownerName||'Farmer')}','${esc(act.ownerPhoto||'')}')">
+            ${following ? '✓ Following' : '+ Follow'}
+          </button>
+        </div>`:''}
       <div class="detail-tags">
         <span class="dtag">${esc(act.enterprise_type||'Crop')}</span>
         <span class="dtag blue">${esc((act.stage_key||'growing').replace(/_/g,' '))}</span>
@@ -3158,16 +3189,7 @@ function renderActivityDetail(id){
           <button class="btn btn-o" onclick="postReadyGoods('${esc(act.id)}')">💰 Sell Goods</button>
           <button class="btn btn-s" onclick="deleteActivity('${esc(act.id)}')">🗑 Delete</button>
         </div>
-      `:`
-        <div style="display:flex;gap:8px;margin-top:16px">
-          <button class="btn ${isFollowingOwner?'btn-s':'btn-p'}" onclick="${isFollowingOwner?`unfollowUser('${esc(act.owner_user_id)}')`:`followUser('${esc(act.owner_user_id)}','${esc(act.ownerName||'Farmer')}','${esc(act.ownerPhoto||'')}')`}">
-            ${isFollowingOwner?'✓ Following farmer':'+ Follow farmer'}
-          </button>
-          <button class="btn ${isFollowing?'btn-s':'btn-o'}" onclick="${isFollowing?`unfollowActivity('${esc(act.id)}')`:`followActivity('${esc(act.id)}','${esc(act.title||'')}','${esc(act.ownerName||'')}')`}">
-            ${isFollowing?'✓ Following farm':'+ Follow this farm'}
-          </button>
-        </div>
-      `}
+      `:''}
     </div>
   </div>
   ${bottomNavHTML()}`;
@@ -3216,41 +3238,32 @@ function renderFarmActivity(filter){
   if(filter==='poultry') items = items.filter(a=>a.enterprise_type==='Poultry');
   if(filter==='fisheries') items = items.filter(a=>a.enterprise_type?.includes('Aquaculture')||a.enterprise_type?.includes('Capture'));
   if(filter==='ready') items = items.filter(a=>a.status==='ready_for_sale');
-  if(filter==='following') items = items.filter(a=>!!S.following[a.owner_user_id]);
 
   const cards = items.length ? items.map(a=>{
     const ic = pickIcon(a.species_or_crop_id||a.title||'');
     const tagCls = a.status==='ready_for_sale'?'ready': (a.stage_key==='growing'?'grow':'');
     const tagText = a.status==='ready_for_sale'?'Ready for sale':(a.stage_key||'Growing').replace(/_/g,' ');
     const info = computeStageInfo(a);
-    const isFollowingOwner = !!S.following[a.owner_user_id];
     return `
-      <div class="fa-card">
-        <div onclick="openActivity('${esc(a.id)}')">
-          <div class="fa-imgs single">
-            <div>${a.coverUrl?`<img src="${esc(a.coverUrl)}" alt="">`:ic}</div>
-          </div>
-          <div class="fa-head">
-            <div class="fa-av">${initials(a.ownerName||'F')}</div>
-            <div class="fa-who">
-              <div class="fa-nm">${esc(a.ownerName||'Farmer')}</div>
-              <div class="fa-lc">📍 ${esc(a.location||'Zambia')}</div>
-            </div>
-            <span class="fa-tag ${tagCls}">${esc(tagText)}</span>
-          </div>
-          <div class="fa-bd">
-            <div class="fa-desc"><strong>${esc(a.title||a.speciesName||'')}</strong></div>
-            <div class="fa-meta">
-              ${a.scale_value?`<span>📏 ${esc(a.scale_value)} ${esc(a.scale_unit||'')}</span>`:''}
-              ${a.planted_date?`<span>📅 Day ${info.daysIn}</span>`:''}
-              <span>📊 ${info.progressPct}%</span>
-            </div>
-          </div>
+      <div class="fa-card" onclick="openActivity('${esc(a.id)}')">
+        <div class="fa-imgs single">
+          <div>${a.coverUrl?`<img src="${esc(a.coverUrl)}" alt="">`:ic}</div>
         </div>
-        <div class="fa-acts">
-          <button onclick="event.stopPropagation();${isFollowingOwner?`unfollowUser('${esc(a.owner_user_id)}')`:`followUser('${esc(a.owner_user_id)}','${esc(a.ownerName||'Farmer')}','${esc(a.ownerPhoto||'')}')`}">
-            ${isFollowingOwner?'✓ Following':'+ Follow farmer'}
-          </button>
+        <div class="fa-head">
+          <div class="fa-av">${initials(a.ownerName||'F')}</div>
+          <div class="fa-who">
+            <div class="fa-nm">${esc(a.ownerName||'Farmer')}</div>
+            <div class="fa-lc">📍 ${esc(a.location||'Zambia')}</div>
+          </div>
+          <span class="fa-tag ${tagCls}">${esc(tagText)}</span>
+        </div>
+        <div class="fa-bd">
+          <div class="fa-desc"><strong>${esc(a.title||a.speciesName||'')}</strong></div>
+          <div class="fa-meta">
+            ${a.scale_value?`<span>📏 ${esc(a.scale_value)} ${esc(a.scale_unit||'')}</span>`:''}
+            ${a.planted_date?`<span>📅 Day ${info.daysIn}</span>`:''}
+            <span>📊 ${info.progressPct}%</span>
+          </div>
         </div>
       </div>`;
   }).join('') : `
@@ -3268,7 +3281,7 @@ function renderFarmActivity(filter){
       <div class="tb-title">Farm Activity</div>
     </div>
     <div class="chips-row" style="padding-top:12px">
-      ${['all','crops','livestock','poultry','fisheries','ready','following'].map(f=>`
+      ${['all','crops','livestock','poultry','fisheries','ready'].map(f=>`
         <button class="chip ${filter===f?'active':''}" onclick="navTo('farm-activity',{filter:'${f}'})">${f==='all'?'All':f[0].toUpperCase()+f.slice(1)}</button>
       `).join('')}
     </div>
@@ -3296,7 +3309,6 @@ function renderCommunity(){
       </div>`;
     }
     const myLike = (p.likedBy && p.likedBy[S.user.uid]);
-    const isFollowingAuthor = !!S.following[p.authorId];
     return `
     <div class="post" data-post-id="${esc(p.id)}">
       <div class="p-head">
@@ -3309,10 +3321,9 @@ function renderCommunity(){
           </div>
         </div>
         ${p.authorId !== S.user.uid ? `
-          <button style="font-size:10.5px;font-weight:800;color:${isFollowingAuthor?'var(--tl)':'var(--p)'};padding:6px 10px;border:1px solid ${isFollowingAuthor?'var(--bd)':'var(--p)'};border-radius:999px;background:${isFollowingAuthor?'transparent':'var(--p-l)'}"
-            onclick="event.stopPropagation();${isFollowingAuthor?`unfollowUser('${esc(p.authorId)}')`:`followUser('${esc(p.authorId)}','${esc(p.authorName||'Farmer')}','${esc(p.authorPhoto||'')}')`}">
-            ${isFollowingAuthor?'Following':'Follow'}
-          </button>` : ''}
+          <button class="tb-btn" style="width:32px;height:32px" onclick="toggleFollow('${esc(p.authorId)}','farmer','${esc(p.authorName||'Farmer')}','${esc(p.authorPhoto||'')}')">
+            ${isFollowing(p.authorId) ? '✓' : '+'}
+          </button>`:''}
       </div>
       <div class="p-body" onclick="navTo('post-detail',{id:'${esc(p.id)}'})">${esc(p.body||'')}</div>
       ${mediaHTML}
@@ -3423,7 +3434,12 @@ window.submitComment = async (postId)=>{
     if(post && post.authorId && post.authorId !== S.user.uid){
       try{
         const notifRef = push(ref(db, `users/${post.authorId}/notifications`));
-        await set(notifRef, { type:'comment', title:'New comment', text:`${(S.profile.firstName||'')} ${(S.profile.lastName||'')} commented on your post`, createdAt: Date.now(), read: false });
+        await set(notifRef, {
+          type:'comment', title:'💬 New comment',
+          text:`${(S.profile.firstName||'')} ${(S.profile.lastName||'')} commented on your post`,
+          link:'screen:post-detail/'+postId,
+          createdAt: Date.now(), read: false
+        });
       }catch(e){}
     }
   }catch(e){ toast('Failed to comment'); }
@@ -3454,7 +3470,7 @@ window.toggleLike = async (postId)=>{
       if(post.authorId && post.authorId !== S.user.uid){
         try{
           const notifRef = push(ref(db, `users/${post.authorId}/notifications`));
-          await set(notifRef, { type:'like', title:'New like', text:`${(S.profile.firstName||'')} ${(S.profile.lastName||'')} liked your post`, createdAt: Date.now(), read: false });
+          await set(notifRef, { type:'community', title:'❤️ New like', text:`${(S.profile.firstName||'')} ${(S.profile.lastName||'')} liked your post`, link:'screen:post-detail/'+postId, createdAt: Date.now(), read: false });
         }catch(e){}
       }
     }
@@ -3516,7 +3532,6 @@ function renderCreatePost(){
           <input type="text" id="post-location" placeholder="Where is this?" value="${esc(detectedCity)}">
           <button type="button" class="loc-clear" onclick="useCurrentPostLocation()">📍</button>
         </div>
-        <div class="hint">Your city was detected automatically. Tap 📍 to pin a precise location.</div>
       </div>
       <button type="submit" class="btn btn-p" id="post-submit">Publish Post</button>
     </form>
@@ -3598,6 +3613,9 @@ window.submitPost = async (ev)=>{
       createdAt: Date.now()
     };
     await set(newRef, data);
+    // Update last seen for community so we don't self-notify
+    S.lastSeen.community = Date.now();
+    update(ref(db, `users/${S.user.uid}/lastSeen`), { community: Date.now() }).catch(()=>{});
     toast('Posted ✓');
     setTimeout(()=>navTo('community'), 400);
   }catch(e){ toast('Failed: '+(e.message||e)); btn.disabled=false; }
@@ -3638,6 +3656,10 @@ function renderPostDetail(id){
               ${p.locationLabel ? `· <span class="p-loc">📍 ${esc(p.locationLabel)}</span>` : ''}
             </div>
           </div>
+          ${p.authorId !== S.user.uid ? `
+            <button class="tb-btn" style="width:32px;height:32px" onclick="toggleFollow('${esc(p.authorId)}','farmer','${esc(p.authorName||'Farmer')}','${esc(p.authorPhoto||'')}')">
+              ${isFollowing(p.authorId) ? '✓' : '+'}
+            </button>`:''}
         </div>
         <div class="p-body">${esc(p.body||'')}</div>
         ${mediaHTML}
@@ -3748,14 +3770,12 @@ function renderMarketplace(){
 
 window.openProduct = (id)=>{ navTo('product-detail', {id}); };
 
-/* ============================================================
-   SCREEN: PRODUCT DETAIL
-   ============================================================ */
 function renderProduct(id){
   const m = (S.marketplace||[]).find(x=>x.id===id);
   if(!m) return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button></div></div>`;
   const ic = pickIcon(m.title||m.productName||'');
-  const isFollowingSeller = !!S.following[m.seller_id];
+  const isMine = m.seller_id === S.user.uid;
+  const following = !isMine && isFollowing(m.seller_id);
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -3770,6 +3790,19 @@ function renderProduct(id){
     <div class="detail-body">
       <h1>${esc(m.title||'')}</h1>
       <div class="d-sc">${esc(m.quantity||'')} ${esc(m.unit||'')} available</div>
+      ${!isMine ? `
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--p-ll);border:1px solid rgba(15,122,52,.14);border-radius:var(--r);margin-bottom:14px">
+          <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--p-d));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;overflow:hidden">
+            ${m.sellerPhoto ? `<img src="${esc(m.sellerPhoto)}" style="width:100%;height:100%;object-fit:cover">` : initials(m.sellerName||'S')}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:12.5px;font-weight:800;color:var(--td)">${esc(m.sellerName||'Farmer')}</div>
+            <div style="font-size:10.5px;color:var(--tl);font-weight:600">Seller</div>
+          </div>
+          <button class="btn ${following ? 'btn-s' : 'btn-p'}" style="width:auto;padding:8px 14px;font-size:12px" onclick="toggleFollow('${esc(m.seller_id)}','farmer','${esc(m.sellerName||'Farmer')}','${esc(m.sellerPhoto||'')}')">
+            ${following ? '✓ Following' : '+ Follow'}
+          </button>
+        </div>`:''}
       <div class="detail-tags">
         <span class="dtag">${esc(m.category||'Produce')}</span>
         <span class="dtag blue">📍 ${esc(m.city||'Zambia')}</span>
@@ -3782,10 +3815,6 @@ function renderProduct(id){
         <button class="btn btn-o" onclick="addToCart('${esc(m.id)}')">Add to Cart</button>
         <button class="btn btn-p" onclick="buyNow('${esc(m.id)}')">Buy Now</button>
       </div>
-      ${m.seller_id && m.seller_id !== S.user.uid ? `
-        <button class="btn ${isFollowingSeller?'btn-s':'btn-o'}" style="margin-top:10px" onclick="${isFollowingSeller?`unfollowUser('${esc(m.seller_id)}')`:`followUser('${esc(m.seller_id)}','${esc(m.sellerName||'Farmer')}','${esc(m.sellerPhoto||'')}')`}">
-          ${isFollowingSeller?'✓ Following seller':'+ Follow seller'}
-        </button>` : ''}
     </div>
   </div>
   ${bottomNavHTML()}`;
@@ -3949,7 +3978,6 @@ function renderPostReadyGoods(data){
           <input type="text" id="pl-city" value="${esc(S.weatherCity || S.userLocation)}" required>
           <button type="button" class="loc-clear" onclick="useCurrentListingLocation()">📍</button>
         </div>
-        <div class="hint">Pin your exact spot so nearby buyers can find you.</div>
       </div>
       <div class="fld"><label>Target Market</label>
         <select id="pl-target" class="inp">
@@ -4058,6 +4086,9 @@ window.submitListing = async (ev)=>{
     await set(newRef, data);
     S.marketplace.unshift({id:newRef.key, ...data});
     S.myListings.unshift({id:newRef.key, ...data});
+    // Update last seen for market
+    S.lastSeen.market = Date.now();
+    update(ref(db, `users/${S.user.uid}/lastSeen`), { market: Date.now() }).catch(()=>{});
     toast('Listing published ✓');
     setTimeout(()=>navTo('marketplace'), 400);
   }catch(e){
@@ -4068,144 +4099,264 @@ window.submitListing = async (ev)=>{
 };
 
 /* ============================================================
-   SCREEN: DELIVERY DASHBOARD (NEW — NTUMENI-STYLE, GREEN)
+   DELIVERY PRICING CONFIG
    ============================================================ */
-const DELIVERY_VEHICLES = [
-  {id:'bicycle', label:'Bicycle', desc:'Light & short distance', icon:'🚲', multiplier:0.7},
-  {id:'motorbike', label:'Motorbike', desc:'Fast for small parcels', icon:'🏍️', multiplier:1.0},
-  {id:'car', label:'Car', desc:'Medium size deliveries', icon:'🚗', multiplier:1.35},
-  {id:'truck', label:'Truck', desc:'Bulk / livestock', icon:'🚚', multiplier:2.1}
-];
-const DELIVERY_RATE_PER_KM = 8;      // K8 per km
-const DELIVERY_TIME_RATE = 0.5;       // K per minute
-const DELIVERY_MIN_FARE = {bicycle:12, motorbike:15, car:25, truck:60};
-
-function computeDeliveryFare(vehicleId, distanceMeters, durationSeconds){
-  const v = DELIVERY_VEHICLES.find(x=>x.id===vehicleId) || DELIVERY_VEHICLES[0];
-  const km = (distanceMeters||0) / 1000;
-  const min = (durationSeconds||0) / 60;
-  const base = km * DELIVERY_RATE_PER_KM * v.multiplier + min * DELIVERY_TIME_RATE;
-  const floor = DELIVERY_MIN_FARE[v.id] || 12;
-  return { finalFare: Math.max(floor, Math.round(base)) };
-}
-
-function renderDeliveryDashboard(){
-  const myDeliveries = S.myDeliveries || [];
-  const ongoing = myDeliveries.filter(d=>d.status!=='delivered' && d.status!=='cancelled');
-  const completed = myDeliveries.filter(d=>d.status==='delivered');
-  return `
-  <div class="screen" style="position:relative;display:flex;flex-direction:column;height:100%;padding-bottom:calc(var(--nav-h) + var(--safe-b))">
-    <div class="delivery-split" style="flex:1;min-height:0">
-      <div class="delivery-map-half">
-        <div id="deliveryDashboardMap"></div>
-        <div class="delivery-map-badge">
-          📍 <span id="deliveryMapBadgeText">Locating…</span>
-        </div>
-        <button class="delivery-map-locate" onclick="recenterDeliveryMap()">🎯</button>
-      </div>
-      <div class="delivery-action-half">
-        <div class="delivery-head">Delivery</div>
-        <div class="delivery-sub">Send parcels or hire a driver — anywhere in ${esc(S.weatherCity||S.userLocation)}.</div>
-
-        <button class="delivery-primary-btn" onclick="navTo('request-delivery')">
-          <span class="dpb-ico">🚚</span>
-          <span class="dpb-txt">
-            <strong>Request Delivery</strong>
-            <span>Bicycle · Motorbike · Car · Truck</span>
-          </span>
-          <span class="dpb-arrow">›</span>
-        </button>
-        <button class="delivery-primary-btn" style="background:linear-gradient(180deg,#1a8a5c 0%,#0f7a34 60%,#0b5f28 100%)" onclick="navTo('request-delivery')">
-          <span class="dpb-ico">🏍️</span>
-          <span class="dpb-txt">
-            <strong>Quick Errand</strong>
-            <span>Send someone for a small job</span>
-          </span>
-          <span class="dpb-arrow">›</span>
-        </button>
-        <button class="delivery-primary-btn" style="background:linear-gradient(180deg,#12903e 0%,#0b5f28 60%,#084d20 100%)" onclick="navTo('request-delivery')">
-          <span class="dpb-ico">📦</span>
-          <span class="dpb-txt">
-            <strong>Send Parcel</strong>
-            <span>Package · Documents · Goods</span>
-          </span>
-          <span class="dpb-arrow">›</span>
-        </button>
-
-        <div class="delivery-secondary-row" style="margin-top:6px">
-          <button class="delivery-secondary-btn" onclick="navTo('delivery-history')">
-            <span class="dsb-ico">📜</span>
-            <span class="dsb-label">Delivery History</span>
-            <span class="dsb-count">${completed.length}</span>
-          </button>
-          <button class="delivery-secondary-btn" onclick="navTo('ongoing-deliveries')">
-            <span class="dsb-ico">🚚</span>
-            <span class="dsb-label">Ongoing Deliveries</span>
-            <span class="dsb-count">${ongoing.length}</span>
-          </button>
-        </div>
-      </div>
-    </div>
-    ${bottomNavHTML()}
-  </div>`;
-}
-
-function wireDeliveryDashboard(){
-  setTimeout(()=>{
-    const el = document.getElementById('deliveryDashboardMap');
-    if(!el) return;
-    if(S.delivery.dashboardMap){ try{ S.delivery.dashboardMap.remove(); }catch(e){} S.delivery.dashboardMap = null; }
-    const m = L.map('deliveryDashboardMap', {zoomControl:false, attributionControl:false}).setView(
-      [S.userCoords?.lat||-15.4167, S.userCoords?.lng||28.2833], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, subdomains:'abc'}).addTo(m);
-    S.delivery.dashboardMap = m;
-    /* user marker */
-    if(S.userCoords){
-      L.marker([S.userCoords.lat, S.userCoords.lng], {icon: L.divIcon({
-        className:'', html:'<div style="width:16px;height:16px;border-radius:50%;background:#fff;border:4px solid #0f7a34;box-shadow:0 2px 8px rgba(0,0,0,.35)"></div>',
-        iconSize:[16,16], iconAnchor:[8,8]
-      })}).addTo(m);
-      m.setView([S.userCoords.lat, S.userCoords.lng], 14);
-    }
-    /* reverse geocode for badge */
-    if(S.userCoords){
-      reverseGeocodeCity(S.userCoords.lat, S.userCoords.lng).then(place=>{
-        const t = document.getElementById('deliveryMapBadgeText');
-        if(t && place && place.city) t.textContent = place.city;
-        else if(t) t.textContent = 'Your area';
-      });
-    }
-    renderNearbyProvidersOnDashboard();
-    setTimeout(()=>{ try{ m.invalidateSize(); }catch(e){} }, 300);
-  }, 200);
-}
-window.recenterDeliveryMap = ()=>{
-  if(!S.userCoords || !S.delivery.dashboardMap) return;
-  S.delivery.dashboardMap.setView([S.userCoords.lat, S.userCoords.lng], 15, {animate:true});
+const DELIVERY_VEHICLES = {
+  bicycle: { id:'bicycle', label:'Bicycle', icon:'🚲', desc:'Light, short distance',
+    base: 5, perKm: 4, perMin: 0.3, min: 10 },
+  rider:   { id:'rider', label:'Motorbike rider', icon:'🏍️', desc:'Small parcels',
+    base: 8, perKm: 6, perMin: 0.5, min: 15 },
+  car:     { id:'car', label:'Car', icon:'🚗', desc:'Smaller loads',
+    base: 15, perKm: 10, perMin: 1, min: 30 },
+  truck:   { id:'truck', label:'Truck', icon:'🚚', desc:'Bulk / livestock',
+    base: 30, perKm: 15, perMin: 1.5, min: 60 }
 };
-function renderNearbyProvidersOnDashboard(){
-  const map = S.delivery.dashboardMap;
-  if(!map || !S.userCoords) return;
-  Object.values(S.delivery.nearbyMarkers).forEach(m=>{ try{ map.removeLayer(m); }catch(e){} });
-  S.delivery.nearbyMarkers = {};
-  const provs = (S.myProviders || []).filter(p=>p.role && ['driver','rider','cyclist'].includes(String(p.role).toLowerCase()) && p.location);
-  provs.slice(0, 30).forEach(p=>{
-    const dist = haversineMeters(S.userCoords.lat, S.userCoords.lng, p.location.lat, p.location.lng);
-    if(dist > 25000) return;
-    const icon = L.divIcon({
-      className:'',
-      html:`<div style="width:26px;height:26px;border-radius:50%;background:#0f7a34;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3)">🚗</div>`,
-      iconSize:[26,26], iconAnchor:[13,13]
-    });
-    const mk = L.marker([p.location.lat, p.location.lng], {icon, interactive:false}).addTo(map);
-    S.delivery.nearbyMarkers[p.id] = mk;
-  });
+
+function computeDeliveryFare(vehicleId, distanceM, durationS){
+  const v = DELIVERY_VEHICLES[vehicleId] || DELIVERY_VEHICLES.rider;
+  const km = (distanceM || 0) / 1000;
+  const min = (durationS || 0) / 60;
+  const subtotal = (v.base || 0) + km * (v.perKm || 0) + min * (v.perMin || 0);
+  return Math.round(Math.max(v.min || 0, subtotal));
 }
 
 /* ============================================================
-   SCREEN: REQUEST DELIVERY (NEW FLOW)
+   SCREEN: DELIVERY (dashboard with map)
+   ============================================================ */
+function renderDelivery(){
+  // Build ongoing/history preview from allDeliveries filtered by me
+  const all = (S.allDeliveries || []).filter(d=>d.requester_id === S.user.uid);
+  const ongoing = all.filter(d=>['searching','accepted','in_progress','arrived','picked_up'].includes(d.status));
+  const recent = all.slice(0, 3);
+
+  const recentHTML = recent.length ? recent.map(d=>{
+    const tagCls = d.status || 'searching';
+    return `
+      <div class="delivery-recent-item" onclick="navTo('ongoing-deliveries')">
+        <div class="dri-ico">🚚</div>
+        <div class="dri-body">
+          <div class="dri-title">${esc(d.pickupLabel || 'Pickup')} → ${esc(d.dropoffLabel || 'Drop-off')}</div>
+          <div class="dri-sub">${esc(d.cargo || 'Goods')} · ${timeAgo(d.createdAt)}</div>
+        </div>
+        <span class="dri-tag ${tagCls}">${esc((d.status||'searching').replace(/_/g,' '))}</span>
+      </div>`;
+  }).join('') : `
+    <div class="empty" style="padding:20px 8px">
+      <div class="e-ic" style="font-size:40px">🚚</div>
+      <h3 style="font-size:13px">No deliveries yet</h3>
+      <p style="font-size:11.5px">Request your first delivery to get started.</p>
+    </div>`;
+
+  return `
+  <div class="delivery-dash">
+    <div class="delivery-map-half">
+      <div id="deliveryHeroMap"></div>
+      <div class="delivery-map-badge" id="deliveryMapBadge">
+        📍 <span id="deliveryMapBadgeText">${esc(S.weatherCity || S.userLocation || 'Detecting location…')}</span>
+      </div>
+      <div class="delivery-map-count hidden-count" id="deliveryDriverCount">
+        🚗 <span id="deliveryDriverCountText">0 drivers</span>
+      </div>
+      <div class="delivery-map-actions">
+        <button onclick="recenterDeliveryHero()">🎯</button>
+      </div>
+    </div>
+
+    <div class="delivery-action-half">
+      <div>
+        <div class="delivery-greeting">Delivery</div>
+        <div class="delivery-sub">Send goods anywhere — bicycle, rider, car or truck.</div>
+      </div>
+
+      <button class="btn-delivery-main" onclick="navTo('request-delivery')">
+        <span class="dm-ico">📦</span>
+        <span class="dm-txt">
+          <strong>Request a Delivery</strong>
+          <span>Pickup · Drop-off · Pricing</span>
+        </span>
+        <span class="dm-arrow">›</span>
+      </button>
+
+      <div class="delivery-mini-row">
+        <button class="btn-delivery-mini" onclick="navTo('delivery-history')">
+          <span class="dmi-ico blue">📜</span>
+          <span class="dmi-lb">Delivery<br>History</span>
+        </button>
+        <button class="btn-delivery-mini" onclick="navTo('ongoing-deliveries')">
+          <span class="dmi-ico green">⏱️</span>
+          <span class="dmi-lb">Ongoing<br>Deliveries</span>
+          ${ongoing.length ? `<span class="dmi-count">${ongoing.length}</span>` : ''}
+        </button>
+      </div>
+
+      <div class="delivery-recent-title">Recent Activity</div>
+      <div style="display:flex;flex-direction:column;gap:8px">${recentHTML}</div>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+function wireDeliveryHeroMap(){
+  setTimeout(()=>{
+    const el = document.getElementById('deliveryHeroMap');
+    if(!el) return;
+    if(S.heroMap){ try{ S.heroMap.remove(); }catch(e){} S.heroMap = null; }
+    const coords = S.userCoords || {lat: -15.4167, lng: 28.2833};
+    S.heroMap = L.map('deliveryHeroMap', {zoomControl:false, attributionControl:false}).setView([coords.lat, coords.lng], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, subdomains:'abc'}).addTo(S.heroMap);
+    // User marker
+    const userIcon = L.divIcon({
+      className:'',
+      html:'<div style="width:18px;height:18px;border-radius:50%;background:#0f7a34;border:3px solid #fff;box-shadow:0 2px 10px rgba(15,122,52,.5)"></div>',
+      iconSize:[18,18], iconAnchor:[9,9]
+    });
+    L.marker([coords.lat, coords.lng], {icon:userIcon, zIndexOffset:1000}).addTo(S.heroMap);
+    // Green circle pulse
+    L.circle([coords.lat, coords.lng], {
+      radius: 800, color:'#0f7a34', fillColor:'#0f7a34',
+      fillOpacity:.08, weight:1.5, opacity:.35
+    }).addTo(S.heroMap);
+    // Listen for nearby drivers
+    const driversGroup = L.layerGroup().addTo(S.heroMap);
+    const nearby = ref(db, 'providers');
+    const unsub = onValue(nearby, (snap)=>{
+      driversGroup.clearLayers();
+      const data = snap.val() || {};
+      let count = 0;
+      Object.entries(data).forEach(([uid, p])=>{
+        if(!p || p.online !== true || p.status !== 'approved') return;
+        const loc = p.location;
+        if(!loc || !isFinite(loc.lat) || !isFinite(loc.lng)) return;
+        const d = haversineMeters(coords.lat, coords.lng, loc.lat, loc.lng);
+        if(d > 15000) return;
+        const icon = L.divIcon({
+          className:'',
+          html:'<div style="width:22px;height:22px;border-radius:50%;background:#16a34a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3)">🚗</div>',
+          iconSize:[22,22], iconAnchor:[11,11]
+        });
+        L.marker([loc.lat, loc.lng], {icon, interactive:false}).addTo(driversGroup);
+        count++;
+      });
+      const cd = document.getElementById('deliveryDriverCount');
+      const cdt = document.getElementById('deliveryDriverCountText');
+      if(count > 0){
+        cd?.classList.remove('hidden-count');
+        if(cdt) cdt.textContent = count === 1 ? '1 driver nearby' : count + ' drivers nearby';
+      } else {
+        cd?.classList.add('hidden-count');
+      }
+    }, ()=>{});
+    S.heroDriverListener = unsub;
+  }, 100);
+}
+window.recenterDeliveryHero = ()=>{
+  if(S.heroMap && S.userCoords){
+    S.heroMap.setView([S.userCoords.lat, S.userCoords.lng], 15);
+  } else {
+    toast('Getting your location…');
+    detectUserCityAndWeather(true);
+  }
+};
+function haversineMeters(lat1, lon1, lat2, lon2){
+  const R = 6371000;
+  const p1 = lat1 * Math.PI / 180, p2 = lat2 * Math.PI / 180;
+  const dp = (lat2 - lat1) * Math.PI / 180;
+  const dl = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dp/2)**2 + Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)**2;
+  return 2 * R * Math.asin(Math.min(1, Math.sqrt(a)));
+}
+
+/* ============================================================
+   SCREEN: DELIVERY HISTORY
+   ============================================================ */
+function renderDeliveryHistory(){
+  const all = (S.allDeliveries || [])
+    .filter(d=>d.requester_id === S.user.uid)
+    .filter(d=>['delivered','completed','cancelled'].includes(d.status))
+    .sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+  const list = all.length ? all.map(d=>deliveryCardHTML(d, true)).join('') : `
+    <div class="empty">
+      <div class="e-ic">📜</div>
+      <h3>No delivery history</h3>
+      <p>Completed deliveries will appear here.</p>
+    </div>`;
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Delivery History</div>
+    </div>
+    <div style="padding:14px 18px 18px">${list}</div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   SCREEN: ONGOING DELIVERIES
+   ============================================================ */
+function renderOngoingDeliveries(){
+  const all = (S.allDeliveries || [])
+    .filter(d=>d.requester_id === S.user.uid)
+    .filter(d=>['searching','accepted','arrived','in_progress','picked_up'].includes(d.status))
+    .sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+  const list = all.length ? all.map(d=>deliveryCardHTML(d, false)).join('') : `
+    <div class="empty">
+      <div class="e-ic">⏱️</div>
+      <h3>No ongoing deliveries</h3>
+      <p>Active deliveries will show up here.</p>
+    </div>`;
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Ongoing Deliveries</div>
+    </div>
+    <div style="padding:14px 18px 18px">${list}</div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+function deliveryCardHTML(d, isHistory){
+  const status = d.status || 'searching';
+  const tagCls = status;
+  return `
+    <div class="card" style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:800;color:var(--td);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(d.pickupLabel||'Pickup')} → ${esc(d.dropoffLabel||'Drop-off')}</div>
+          <div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:3px">${esc(d.cargo || 'Goods')} · ${esc(d.vehicleLabel || d.vehicleType || 'Any')}</div>
+          <div style="font-size:11px;color:var(--tm);font-weight:600;margin-top:2px">📅 ${esc(d.date || '—')} · ${timeAgo(d.createdAt)}</div>
+          ${d.fare ? `<div style="font-size:12px;font-weight:900;color:var(--p-d);margin-top:5px">${fmtZMK(d.fare)}</div>`:''}
+        </div>
+        <span class="dri-tag ${tagCls}">${esc(status.replace(/_/g,' '))}</span>
+      </div>
+      ${d.providerName ? `
+        <div style="display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bd)">
+          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--p-d));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;overflow:hidden">
+            ${d.providerPhoto ? `<img src="${esc(d.providerPhoto)}" style="width:100%;height:100%;object-fit:cover">` : initials(d.providerName)}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:12px;font-weight:800;color:var(--td)">${esc(d.providerName)}</div>
+            <div style="font-size:10.5px;color:var(--tl);font-weight:600">${esc(d.providerRole || 'Provider')}</div>
+          </div>
+          ${d.providerPhone ? `<a href="tel:${esc(d.providerPhone)}" style="width:34px;height:34px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px">📞</a>`:''}
+        </div>
+      `:''}
+      ${!isHistory && status === 'searching' ? `
+        <button class="btn btn-s btn-sm" style="width:100%;margin-top:10px" onclick="openDeliverySearching()">View Search Status</button>
+      `:''}
+    </div>`;
+}
+
+/* ============================================================
+   SCREEN: REQUEST DELIVERY (full flow)
    ============================================================ */
 function renderRequestDelivery(){
+  const defaultPickup = S.userLocation || '';
   return `
   <div class="scroll no-nav">
     <div class="topbar bordered">
@@ -4214,129 +4365,100 @@ function renderRequestDelivery(){
       </button>
       <div class="tb-title">Request Delivery</div>
     </div>
-
-    <div class="map-wrap" id="del-map-wrap" style="height:250px">
-      <div class="map-badge" id="del-map-badge"><i>📍</i> Tap map or search to set pickup &amp; destination</div>
+    <div style="padding:14px 18px 0">
+      <div class="location-input" id="del-pickup-row">
+        <span class="loc-dot"></span>
+        <input type="text" id="del-pickup" placeholder="Pickup — building, house, road, area" value="${esc(defaultPickup)}" autocomplete="off">
+        <button type="button" class="loc-clear" onclick="useCurrentForDelivery('pickup')">📍</button>
+      </div>
+      <div class="location-input" id="del-dropoff-row">
+        <span class="loc-dot dest"></span>
+        <input type="text" id="del-dropoff" placeholder="Drop-off — building, house, road, area" autocomplete="off">
+      </div>
+    </div>
+    <div class="map-search-results" id="del-search-results"></div>
+    <div class="map-wrap" id="del-map-wrap">
+      <div class="map-badge" id="del-map-badge"><i>📍</i> Tap map or search to set locations</div>
       <div id="deliveryMap"></div>
       <div class="map-actions">
         <button id="del-locate-btn" title="My location">🎯</button>
         <button id="del-fit-btn" title="Fit route">🔍</button>
       </div>
     </div>
-
-    <div style="padding:14px 18px 0">
-      <div class="location-input" id="del-pickup-row">
-        <span class="loc-dot"></span>
-        <input type="text" id="del-pickup" placeholder="Pickup location (precise)" autocomplete="off">
-        <button type="button" class="loc-clear" onclick="useCurrentForDelivery('pickup')">📍</button>
+    <form class="frm" onsubmit="submitDelivery(event)" style="padding-top:0">
+      <div class="fld">
+        <label>Sender Name</label>
+        <input id="del-sender" class="inp" placeholder="Who is sending?" required>
       </div>
-      <div class="fld" style="margin-bottom:10px">
-        <label style="font-size:10.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em">Pickup details (editable)</label>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <input id="del-pickup-building" class="inp" style="padding:10px 12px;font-size:13px" placeholder="Building / House No.">
-          <input id="del-pickup-road" class="inp" style="padding:10px 12px;font-size:13px" placeholder="Road / Street">
-        </div>
-        <div style="height:6px"></div>
-        <input id="del-pickup-area" class="inp" style="padding:10px 12px;font-size:13px" placeholder="Area / Neighbourhood / City">
+      <div class="fld">
+        <label>Sender Phone</label>
+        <input id="del-sender-phone" class="inp" type="tel" value="${esc(S.profile.phone||'')}" required>
       </div>
-
-      <div class="location-input" id="del-dropoff-row">
-        <span class="loc-dot dest"></span>
-        <input type="text" id="del-dropoff" placeholder="Destination — search within your city" autocomplete="off">
+      <div class="fld">
+        <label>Receiver Name</label>
+        <input id="del-receiver" class="inp" placeholder="Who receives it?" required>
       </div>
-    </div>
-    <div class="map-search-results" id="del-search-results"></div>
-
-    <div style="padding:0 18px 0">
-      <div id="del-details-section" style="display:none">
-        <div class="fld" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-          <div><label>Sender name</label><input id="del-sender-name" class="inp" placeholder="Sender"></div>
-          <div><label>Sender phone</label><input id="del-sender-phone" class="inp" type="tel" placeholder="Phone"></div>
+      <div class="fld">
+        <label>Receiver Phone</label>
+        <input id="del-receiver-phone" class="inp" type="tel" required>
+      </div>
+      <div class="fld" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div>
+          <label>Goods</label>
+          <input id="del-cargo" class="inp" placeholder="e.g. Maize" required>
         </div>
-        <div class="fld" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-          <div><label>Receiver name</label><input id="del-recv-name" class="inp" placeholder="Receiver"></div>
-          <div><label>Receiver phone</label><input id="del-recv-phone" class="inp" type="tel" placeholder="Phone"></div>
-        </div>
-        <div class="fld">
-          <label>Parcel name</label>
-          <input id="del-parcel-name" class="inp" placeholder="e.g. Documents / Groceries / Maize bags">
-        </div>
-        <div class="fld">
-          <label>Parcel description</label>
-          <textarea id="del-parcel-desc" class="inp" rows="2" placeholder="Weight, size, handling notes…"></textarea>
-        </div>
-        <div class="fld">
-          <label>Pickup date</label>
-          <input id="del-date" class="inp" type="date" value="${new Date().toISOString().slice(0,10)}">
-        </div>
-        <div class="fld">
-          <label>Notes for driver</label>
-          <textarea id="del-notes" class="inp" rows="2" placeholder="Fragile, temperature sensitive, gate code, etc."></textarea>
+        <div>
+          <label>Weight (kg)</label>
+          <input id="del-weight" class="inp" type="number" min="0" placeholder="e.g. 500" required>
         </div>
       </div>
-      <div id="del-error" style="color:var(--danger);font-size:13px;font-weight:600;display:none;padding:10px 12px;background:#fef2f2;border:1px solid rgba(220,38,38,.2);border-radius:var(--r-sm);margin-bottom:10px"></div>
-      <button class="btn btn-p" id="del-continue" style="margin-bottom:14px" onclick="proceedToVehicleChoice()">
-        Continue · Choose Vehicle
-      </button>
-    </div>
-  </div>`;
+      <div class="fld">
+        <label>Pickup Date</label>
+        <input id="del-date" class="inp" type="date" value="${new Date().toISOString().slice(0,10)}" required>
+      </div>
+      <div class="fld">
+        <label>Notes (optional)</label>
+        <textarea id="del-notes" class="inp" rows="2" placeholder="Fragile, temperature sensitive, etc."></textarea>
+      </div>
+      <div id="del-error" style="color:var(--danger);font-size:13px;font-weight:600;display:none;padding:10px 12px;background:#fef2f2;border:1px solid rgba(220,38,38,.2);border-radius:var(--r-sm)"></div>
+      <button type="submit" class="btn btn-p" id="del-submit">Continue to Pricing</button>
+    </form>
+  </div>
+  ${bottomNavHTML()}`;
 }
 
-/* Delivery map init + search (precise within city) */
-let deliveryMap = null;
-let deliveryPickupMarker = null;
-let deliveryDropoffMarker = null;
-let deliveryRouteLine = null;
-let deliveryPickup = null;
-let deliveryDropoff = null;
-let deliverySearchMode = null;
-let deliverySearchAbort = null;
+let delMap = null;
+let delPickupMarker = null;
+let delDropoffMarker = null;
+let delRouteLayer = null;
+let delSearchAbort = null;
+let delSearchMode = null;
+let delPickupLoc = null;
+let delDropoffLoc = null;
+let delRouteInfo = null;
 
-function wireDeliveryMap(){
-  setTimeout(async()=>{
-    initDeliveryMap();
-    setupDeliverySearch();
-    /* Auto-set precise pickup location */
-    if(S.userCoords){
-      const place = await reverseGeocodePrecise(S.userCoords.lat, S.userCoords.lng);
-      if(place){
-        deliveryPickup = {
-          lat: S.userCoords.lat, lng: S.userCoords.lng,
-          label: place.label,
-          primary: place.primary, secondary: place.secondary,
-          houseNumber: place.house, road: place.road,
-          neighbourhood: place.neighbourhood, suburb: place.suburb,
-          city: place.city, postcode: place.postcode, country: place.country
-        };
-        const pu = document.getElementById('del-pickup');
-        const pb = document.getElementById('del-pickup-building');
-        const pr = document.getElementById('del-pickup-road');
-        const pa = document.getElementById('del-pickup-area');
-        if(pu) pu.value = place.label;
-        if(pb) pb.value = [place.house, place.poiName].filter(Boolean).join(' ') || '';
-        if(pr) pr.value = place.road || '';
-        if(pa) pa.value = [place.neighbourhood||place.suburb||place.city, place.city].filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i).join(', ');
-        drawDeliveryPoint('pickup', S.userCoords.lat, S.userCoords.lng);
-      }
-    }
-  }, 200);
+function wireRequestDelivery(){
+  setTimeout(()=>{ initDeliveryMap(); setupDeliverySearch(); }, 250);
 }
 
 function initDeliveryMap(){
   const mapEl = document.getElementById('deliveryMap');
   if(!mapEl) return;
-  if(deliveryMap){ try{ deliveryMap.remove(); }catch(e){} deliveryMap = null; }
-  deliveryMap = L.map('deliveryMap', {zoomControl: false, attributionControl: false}).setView(
-    [S.userCoords?.lat||-15.4167, S.userCoords?.lng||28.2833], 13);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19, subdomains: 'abc', crossOrigin: true}).addTo(deliveryMap);
-  deliveryMap.on('click', (e)=>{
-    if(deliverySearchMode === 'pickup') setDeliveryPoint('pickup', e.latlng.lat, e.latlng.lng);
-    else if(deliverySearchMode === 'dropoff') setDeliveryPoint('dropoff', e.latlng.lat, e.latlng.lng);
+  if(delMap){ try{ delMap.remove(); }catch(e){} delMap = null; }
+  delMap = L.map('deliveryMap', {zoomControl:false, attributionControl:false}).setView([-15.4167, 28.2833], 12);
+  // Green-tinted tiles
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, subdomains:'abc'}).addTo(delMap);
+  delMap.on('click', (e)=>{
+    if(delSearchMode === 'pickup') setDeliveryPoint('pickup', e.latlng.lat, e.latlng.lng);
+    else if(delSearchMode === 'dropoff') setDeliveryPoint('dropoff', e.latlng.lat, e.latlng.lng);
   });
-  if(S.userCoords) deliveryMap.setView([S.userCoords.lat, S.userCoords.lng], 14);
+  if(S.userCoords) delMap.setView([S.userCoords.lat, S.userCoords.lng], 14);
+  // Restore existing
+  if(delPickupLoc) setDeliveryPoint('pickup', delPickupLoc.lat, delPickupLoc.lng, delPickupLoc.label);
+  if(delDropoffLoc) setDeliveryPoint('dropoff', delDropoffLoc.lat, delDropoffLoc.lng, delDropoffLoc.label);
   document.getElementById('del-locate-btn')?.addEventListener('click', ()=>{
     if(!S.userCoords) return;
-    deliveryMap.setView([S.userCoords.lat, S.userCoords.lng], 16);
+    delMap.setView([S.userCoords.lat, S.userCoords.lng], 16);
   });
   document.getElementById('del-fit-btn')?.addEventListener('click', fitDeliveryRoute);
 }
@@ -4349,32 +4471,39 @@ function setupDeliverySearch(){
   const results = document.getElementById('del-search-results');
   if(!pickupInput || !dropoffInput) return;
   const onFocus = (mode)=>{
-    deliverySearchMode = mode;
+    delSearchMode = mode;
     pickupRow?.classList.toggle('active', mode === 'pickup');
     dropoffRow?.classList.toggle('active', mode === 'dropoff');
+    const badge = document.getElementById('del-map-badge');
+    if(badge) badge.innerHTML = `<i>📍</i> Tap map or search to set ${mode === 'pickup' ? 'pickup' : 'drop-off'}`;
   };
   pickupInput.addEventListener('focus', ()=>onFocus('pickup'));
   dropoffInput.addEventListener('focus', ()=>onFocus('dropoff'));
   const debounce = (fn, ms)=>{ let t; return (...a)=>{ clearTimeout(t); t = setTimeout(()=>fn(...a), ms); }; };
   const runSearch = async (q, mode)=>{
     if(!q || q.length < 3){ results.classList.remove('open'); return; }
-    if(deliverySearchAbort) deliverySearchAbort.abort();
-    deliverySearchAbort = new AbortController();
+    if(delSearchAbort) delSearchAbort.abort();
+    delSearchAbort = new AbortController();
     try{
-      /* Search within user city */
-      const city = S.weatherCity || S.userLocation || '';
-      const url = `https://nominatim.openstreetmap.org/search?format=json&limit=12&addressdetails=1&accept-language=en&q=${encodeURIComponent(q + (city?', '+city:''))}`;
-      const r = await fetch(url, {signal: deliverySearchAbort.signal});
+      // Restrict to user's city by appending it to query
+      let query = q;
+      if(S.weatherCity && !q.toLowerCase().includes(S.weatherCity.toLowerCase())){
+        query = q + ', ' + S.weatherCity;
+      }
+      const url = `https://nominatim.openstreetmap.org/search?format=json&limit=10&addressdetails=1&accept-language=en&q=${encodeURIComponent(query)}`;
+      const r = await fetch(url, {signal: delSearchAbort.signal});
       const arr = await r.json();
       if(!arr.length){ results.classList.remove('open'); return; }
       results.innerHTML = arr.map((p, i)=>{
         const name = p.name || (p.display_name || '').split(',')[0];
+        const dist = S.userCoords ? haversineMeters(S.userCoords.lat, S.userCoords.lng, parseFloat(p.lat), parseFloat(p.lon)) : null;
         return `<button type="button" class="map-search-item" data-idx="${i}">
           <span class="ms-ic">📍</span>
           <span class="ms-body">
             <span class="ms-name">${esc(name)}</span>
             <span class="ms-sub">${esc(p.display_name || '')}</span>
           </span>
+          ${dist != null ? `<span class="ms-dist">${dist < 1000 ? Math.round(dist)+' m' : (dist/1000).toFixed(1)+' km'}</span>`:''}
         </button>`;
       }).join('');
       results.classList.add('open');
@@ -4392,63 +4521,34 @@ function setupDeliverySearch(){
   dropoffInput.addEventListener('input', debounce(()=>runSearch(dropoffInput.value.trim(), 'dropoff'), 320));
 }
 
-async function setDeliveryPoint(mode, lat, lng, fallbackLabel){
+async function setDeliveryPoint(mode, lat, lng, label){
   const place = await reverseGeocodePrecise(lat, lng);
-  const finalLabel = place?.label || fallbackLabel || `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+  const finalLabel = label || (place ? place.label : `${lat.toFixed(4)}, ${lng.toFixed(4)}`);
   if(mode === 'pickup'){
-    deliveryPickup = {
-      lat, lng, label: finalLabel,
-      primary: place?.primary || '',
-      secondary: place?.secondary || '',
-      houseNumber: place?.house || '',
-      road: place?.road || '',
-      neighbourhood: place?.neighbourhood || '',
-      suburb: place?.suburb || '',
-      city: place?.city || '',
-      postcode: place?.postcode || '',
-      country: place?.country || ''
-    };
+    delPickupLoc = {lat, lng, label: finalLabel, address: place?.address || finalLabel};
     const el = document.getElementById('del-pickup');
     if(el) el.value = finalLabel;
-    const pb = document.getElementById('del-pickup-building');
-    const pr = document.getElementById('del-pickup-road');
-    const pa = document.getElementById('del-pickup-area');
-    if(pb) pb.value = [place?.house, place?.poiName].filter(Boolean).join(' ') || '';
-    if(pr) pr.value = place?.road || '';
-    if(pa){
-      const parts = [place?.neighbourhood||place?.suburb||place?.city, place?.city].filter(Boolean);
-      pa.value = parts.filter((v,i,a)=>a.indexOf(v)===i).join(', ');
+    if(delPickupMarker && delMap) delMap.removeLayer(delPickupMarker);
+    if(delMap){
+      delPickupMarker = L.marker([lat, lng], {icon: L.divIcon({
+        className:'', html:'<div style="width:18px;height:18px;border-radius:50%;background:#0f7a34;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3)"></div>',
+        iconSize:[18,18], iconAnchor:[9,9]
+      })}).addTo(delMap);
     }
-    if(deliveryPickupMarker) deliveryMap.removeLayer(deliveryPickupMarker);
-    deliveryPickupMarker = L.marker([lat, lng], {icon: L.divIcon({
-      className:'', html:'<div style="width:18px;height:18px;border-radius:50%;background:#0f7a34;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3)"></div>',
-      iconSize:[18,18], iconAnchor:[9,9]
-    })}).addTo(deliveryMap);
   } else {
-    deliveryDropoff = {
-      lat, lng, label: finalLabel,
-      primary: place?.primary || '',
-      secondary: place?.secondary || '',
-      houseNumber: place?.house || '',
-      road: place?.road || '',
-      neighbourhood: place?.neighbourhood || '',
-      suburb: place?.suburb || '',
-      city: place?.city || '',
-      postcode: place?.postcode || '',
-      country: place?.country || ''
-    };
+    delDropoffLoc = {lat, lng, label: finalLabel, address: place?.address || finalLabel};
     const el = document.getElementById('del-dropoff');
     if(el) el.value = finalLabel;
-    if(deliveryDropoffMarker) deliveryMap.removeLayer(deliveryDropoffMarker);
-    deliveryDropoffMarker = L.marker([lat, lng], {icon: L.divIcon({
-      className:'', html:'<div style="width:18px;height:18px;background:#2563eb;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3);border-radius:50% 50% 50% 0;transform:rotate(-45deg)"></div>',
-      iconSize:[18,18], iconAnchor:[9,18]
-    })}).addTo(deliveryMap);
+    if(delDropoffMarker && delMap) delMap.removeLayer(delDropoffMarker);
+    if(delMap){
+      delDropoffMarker = L.marker([lat, lng], {icon: L.divIcon({
+        className:'', html:'<div style="width:18px;height:18px;background:#2563eb;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3);border-radius:50% 50% 50% 0;transform:rotate(-45deg)"></div>',
+        iconSize:[18,18], iconAnchor:[9,18]
+      })}).addTo(delMap);
+    }
   }
   drawDeliveryRoute();
-  checkDeliveryDetailsVisible();
 }
-function drawDeliveryPoint(){ /* placeholder */ }
 
 window.useCurrentForDelivery = async (mode)=>{
   if(!S.userCoords){
@@ -4465,356 +4565,254 @@ window.useCurrentForDelivery = async (mode)=>{
 };
 
 async function drawDeliveryRoute(){
-  if(!deliveryMap || !deliveryPickup || !deliveryDropoff) return;
+  if(!delMap || !delPickupLoc || !delDropoffLoc) return;
   try{
-    const url = `https://router.project-osrm.org/route/v1/driving/${deliveryPickup.lng},${deliveryPickup.lat};${deliveryDropoff.lng},${deliveryDropoff.lat}?overview=full&geometries=geojson`;
+    const url = `https://router.project-osrm.org/route/v1/driving/${delPickupLoc.lng},${delPickupLoc.lat};${delDropoffLoc.lng},${delDropoffLoc.lat}?overview=full&geometries=geojson`;
     const r = await fetch(url);
     const j = await r.json();
     if(!j.routes || !j.routes.length) return;
+    delRouteInfo = { distance: j.routes[0].distance, duration: j.routes[0].duration };
     const coords = j.routes[0].geometry.coordinates.map(([lng, lat])=>[lat, lng]);
-    if(deliveryRouteLine) deliveryMap.removeLayer(deliveryRouteLine);
-    deliveryRouteLine = L.layerGroup().addTo(deliveryMap);
-    L.polyline(coords, {color:'#ffffff', weight:8, opacity:.95, lineJoin:'round', lineCap:'round'}).addTo(deliveryRouteLine);
-    L.polyline(coords, {color:'#0f7a34', weight:4.5, opacity:1, lineJoin:'round', lineCap:'round'}).addTo(deliveryRouteLine);
+    if(delRouteLayer) delMap.removeLayer(delRouteLayer);
+    delRouteLayer = L.layerGroup().addTo(delMap);
+    L.polyline(coords, {color:'#ffffff', weight:8, opacity:.95, lineJoin:'round', lineCap:'round'}).addTo(delRouteLayer);
+    L.polyline(coords, {color:'#0f7a34', weight:4.5, opacity:1, lineJoin:'round', lineCap:'round'}).addTo(delRouteLayer);
     const badge = document.getElementById('del-map-badge');
     const distKm = (j.routes[0].distance/1000).toFixed(1);
     const durMin = Math.round(j.routes[0].duration/60);
     if(badge) badge.innerHTML = `<i>🛣️</i> ${distKm} km · ~${durMin} min`;
-    /* store route for fare computation */
-    S.delivery.route = { distance: j.routes[0].distance, duration: j.routes[0].duration };
-    deliveryMap.fitBounds(L.latLngBounds(coords), {padding: [30, 30]});
+    delMap.fitBounds(L.latLngBounds(coords), {padding: [30, 30]});
   }catch(e){ console.warn('route', e); }
 }
+
 function fitDeliveryRoute(){
-  if(!deliveryMap) return;
+  if(!delMap) return;
   const pts = [];
-  if(deliveryPickup) pts.push([deliveryPickup.lat, deliveryPickup.lng]);
-  if(deliveryDropoff) pts.push([deliveryDropoff.lat, deliveryDropoff.lng]);
-  if(pts.length === 2) deliveryMap.fitBounds(L.latLngBounds(pts), {padding: [40, 40]});
-}
-function checkDeliveryDetailsVisible(){
-  const sec = document.getElementById('del-details-section');
-  if(!sec) return;
-  if(deliveryPickup && deliveryDropoff){
-    sec.style.display = 'block';
-    /* prefill sender defaults */
-    const sn = document.getElementById('del-sender-name');
-    const sp = document.getElementById('del-sender-phone');
-    if(sn && !sn.value) sn.value = (S.profile.firstName||'')+' '+(S.profile.lastName||'');
-    if(sp && !sp.value) sp.value = S.profile.phone || '';
-  } else {
-    sec.style.display = 'none';
-  }
+  if(delPickupLoc) pts.push([delPickupLoc.lat, delPickupLoc.lng]);
+  if(delDropoffLoc) pts.push([delDropoffLoc.lat, delDropoffLoc.lng]);
+  if(pts.length === 2) delMap.fitBounds(L.latLngBounds(pts), {padding: [40, 40]});
 }
 
-/* ============================================================
-   VEHICLE PRICE POPUP + PROCEED FLOW
-   ============================================================ */
-window.proceedToVehicleChoice = async ()=>{
+window.submitDelivery = async (ev)=>{
+  ev.preventDefault();
   const err = document.getElementById('del-error');
   err.style.display='none';
-  if(!deliveryPickup || !deliveryDropoff){
+  const btn = document.getElementById('del-submit');
+  btn.disabled = true;
+  if(!delPickupLoc){
+    const v = document.getElementById('del-pickup').value.trim();
+    if(v){
+      try{
+        const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(v)}`;
+        const r = await fetch(url); const arr = await r.json();
+        if(arr[0]) await setDeliveryPoint('pickup', parseFloat(arr[0].lat), parseFloat(arr[0].lon));
+      }catch(e){}
+    }
+  }
+  if(!delDropoffLoc){
+    const v = document.getElementById('del-dropoff').value.trim();
+    if(v){
+      try{
+        const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(v)}`;
+        const r = await fetch(url); const arr = await r.json();
+        if(arr[0]) await setDeliveryPoint('dropoff', parseFloat(arr[0].lat), parseFloat(arr[0].lon));
+      }catch(e){}
+    }
+  }
+  if(!delPickupLoc || !delDropoffLoc){
     err.textContent = 'Please set both pickup and drop-off locations.';
-    err.style.display = 'block';
-    return;
+    err.style.display='block';
+    btn.disabled=false; return;
   }
-  const senderName = document.getElementById('del-sender-name')?.value.trim() || '';
-  const senderPhone = document.getElementById('del-sender-phone')?.value.trim() || '';
-  const recvName = document.getElementById('del-recv-name')?.value.trim() || '';
-  const recvPhone = document.getElementById('del-recv-phone')?.value.trim() || '';
-  const parcelName = document.getElementById('del-parcel-name')?.value.trim() || '';
-  const parcelDesc = document.getElementById('del-parcel-desc')?.value.trim() || '';
-  if(!senderName || !senderPhone || !recvName || !recvPhone || !parcelName){
-    err.textContent = 'Please fill in sender, receiver and parcel details.';
-    err.style.display = 'block';
-    return;
+  if(!delRouteInfo){
+    try{ await drawDeliveryRoute(); }catch(e){}
   }
-  /* Make sure we have a route */
-  if(!S.delivery.route){
-    await drawDeliveryRoute();
+  if(!delRouteInfo){
+    // Fallback: straight line
+    const straight = haversineMeters(delPickupLoc.lat, delPickupLoc.lng, delDropoffLoc.lat, delDropoffLoc.lng);
+    delRouteInfo = { distance: straight, duration: (straight/1000) / 30 * 3600 };
   }
-  const route = S.delivery.route;
-  if(!route){
-    /* Fallback straight-line estimate */
-    const d = haversineMeters(deliveryPickup.lat, deliveryPickup.lng, deliveryDropoff.lat, deliveryDropoff.lng);
-    const duration = (d/1000)/30*3600;
-    S.delivery.route = {distance: d, duration};
+  const sender = document.getElementById('del-sender').value.trim();
+  const senderPhone = document.getElementById('del-sender-phone').value.trim();
+  const receiver = document.getElementById('del-receiver').value.trim();
+  const receiverPhone = document.getElementById('del-receiver-phone').value.trim();
+  const cargo = document.getElementById('del-cargo').value.trim();
+  const weight = document.getElementById('del-weight').value;
+  const date = document.getElementById('del-date').value;
+  const notes = document.getElementById('del-notes').value.trim();
+  if(!sender || !senderPhone || !receiver || !receiverPhone || !cargo || !weight){
+    err.textContent = 'Please fill in all sender, receiver & goods fields.';
+    err.style.display='block';
+    btn.disabled=false; return;
   }
-  /* Show the vehicle popup */
-  showVehiclePricePopup();
+  // Show vehicle selection sheet
+  showVehicleSheet({
+    sender, senderPhone, receiver, receiverPhone, cargo, weight: Number(weight),
+    date, notes,
+    pickup: delPickupLoc, dropoff: delDropoffLoc,
+    distance: delRouteInfo.distance, duration: delRouteInfo.duration
+  });
+  btn.disabled = false;
 };
 
-function showVehiclePricePopup(){
-  const route = S.delivery.route;
-  const distLabel = formatDistanceM(route.distance);
-  const durLabel = formatDurationS(route.duration);
-  const cards = DELIVERY_VEHICLES.map(v=>{
-    const fare = computeDeliveryFare(v.id, route.distance, route.duration).finalFare;
-    return `<button type="button" class="vehicle-option" onclick="selectDeliveryVehicle('${esc(v.id)}')">
-      <span class="vo-ico">${v.icon}</span>
-      <span class="vo-body"><strong>${esc(v.label)}</strong><span>${esc(v.desc)}</span></span>
-      <span class="vo-price"><strong>K ${fare}</strong><small>ESTIMATE</small></span>
+function showVehicleSheet(delData){
+  window._pendingDel = delData;
+  const rows = Object.values(DELIVERY_VEHICLES).map(v=>{
+    const fare = computeDeliveryFare(v.id, delData.distance, delData.duration);
+    return `<button class="vsheet-item" onclick="chooseDeliveryVehicle('${v.id}')">
+      <span class="vsi-ico">${v.icon}</span>
+      <span class="vsi-info">
+        <strong>${esc(v.label)}</strong>
+        <span>${esc(v.desc)} · ${(delData.distance/1000).toFixed(1)} km</span>
+      </span>
+      <span class="vsi-price">
+        <strong>K ${fare}</strong>
+        <small>Estimate</small>
+      </span>
     </button>`;
   }).join('');
-  modal(`
-    <div class="price-modal-card" style="text-align:left">
-      <h3>Choose vehicle</h3>
-      <div class="pm-sub">Prices based on K${DELIVERY_RATE_PER_KM}/km + time</div>
-      <div class="pm-trip">
-        <div class="pm-row"><span class="pm-dot"></span><span>${esc(deliveryPickup?.label || 'Pickup')}</span></div>
-        <div class="pm-row"><span class="pm-dot dest"></span><span>${esc(deliveryDropoff?.label || 'Drop-off')}</span></div>
-        <div class="pm-meta"><span>📏 ${distLabel}</span><span>⏱️ ${durLabel}</span></div>
-      </div>
-      <div class="vehicle-options">${cards}</div>
-      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
-    </div>
-  `);
+  $vsheetList.innerHTML = rows;
+  $vsheetOverlay.classList.add('open');
 }
+window.closeVsheet = ()=>{ $vsheetOverlay.classList.remove('open'); };
 
-window.selectDeliveryVehicle = async (vehicleId)=>{
-  closeModal();
-  const v = DELIVERY_VEHICLES.find(x=>x.id===vehicleId);
-  if(!v) return;
-  S.delivery.vehicle = v;
-  const route = S.delivery.route;
-  const fare = computeDeliveryFare(v.id, route.distance, route.duration).finalFare;
-
-  const requestId = 'DLV-' + Date.now().toString(36).toUpperCase();
-  const senderName = document.getElementById('del-sender-name')?.value.trim() || '';
-  const senderPhone = document.getElementById('del-sender-phone')?.value.trim() || '';
-  const recvName = document.getElementById('del-recv-name')?.value.trim() || '';
-  const recvPhone = document.getElementById('del-recv-phone')?.value.trim() || '';
-  const parcelName = document.getElementById('del-parcel-name')?.value.trim() || '';
-  const parcelDesc = document.getElementById('del-parcel-desc')?.value.trim() || '';
-  const date = document.getElementById('del-date')?.value || new Date().toISOString().slice(0,10);
-  const notes = document.getElementById('del-notes')?.value.trim() || '';
-  /* pickup details override */
-  const pb = document.getElementById('del-pickup-building')?.value.trim();
-  const pr = document.getElementById('del-pickup-road')?.value.trim();
-  const pa = document.getElementById('del-pickup-area')?.value.trim();
-  const enrichedPickup = {
-    ...deliveryPickup,
-    building: pb || deliveryPickup.houseNumber || '',
-    road: pr || deliveryPickup.road || '',
-    area: pa || deliveryPickup.neighbourhood || deliveryPickup.suburb || deliveryPickup.city || ''
-  };
-
+window.chooseDeliveryVehicle = async (vehicleId)=>{
+  const delData = window._pendingDel;
+  if(!delData) return;
+  closeVsheet();
+  const vehicle = DELIVERY_VEHICLES[vehicleId];
+  const fare = computeDeliveryFare(vehicleId, delData.distance, delData.duration);
+  const id = 'DLV-' + Date.now().toString(36).toUpperCase();
   try{
-    await set(ref(db, 'deliveryRequests/'+requestId), {
+    await set(ref(db, 'deliveryRequests/'+id), {
       requester_id: S.user.uid,
       requesterName: (S.profile.firstName||'')+' '+(S.profile.lastName||''),
-      requesterPhone: senderPhone,
-      pickup: enrichedPickup,
-      dropoff: deliveryDropoff,
-      pickupLabel: enrichedPickup.label,
-      dropoffLabel: deliveryDropoff.label,
-      senderName, senderPhone,
-      receiverName: recvName, receiverPhone: recvPhone,
-      cargo: parcelName, parcelName, parcelDesc,
-      vehicleType: v.id, vehicleLabel: v.label,
-      distance: route.distance, duration: route.duration, fare,
-      date, notes,
+      requesterPhone: delData.senderPhone,
+      pickup: delData.pickup,
+      dropoff: delData.dropoff,
+      pickupLabel: delData.pickup.label,
+      dropoffLabel: delData.dropoff.label,
+      senderName: delData.sender,
+      senderPhone: delData.senderPhone,
+      receiverName: delData.receiver,
+      receiverPhone: delData.receiverPhone,
+      cargo: delData.cargo,
+      weight: delData.weight,
+      vehicleType: vehicleId,
+      vehicleLabel: vehicle.label,
+      distance: delData.distance,
+      duration: delData.duration,
+      fare,
+      date: delData.date,
+      notes: delData.notes,
       status: 'searching',
       createdAt: Date.now()
     });
     await pushNotification({
-      type:'delivery', severity:'info',
-      title:'Delivery requested',
-      text:`Your ${v.label} delivery (${requestId}) is being matched with a provider.`
+      type:'delivery',
+      title:'🚚 Delivery requested',
+      text:`Your delivery (${id}) is searching for a ${vehicle.label.toLowerCase()}.`,
+      link:'screen:ongoing-deliveries'
     });
-    /* Switch to searching pane */
-    showDeliverySearching(v, fare, requestId);
+    // Show searching overlay
+    $searchingIcon.textContent = vehicle.icon;
+    $searchingTitle.textContent = `Searching for a ${vehicle.label}`;
+    $searchingSubtitle.textContent = `Looking for a ${vehicle.label.toLowerCase()} near ${delData.pickup.label || 'you'}…`;
+    $searchingOverlay.classList.add('open');
+    S.delActiveId = id;
+    // Save reference
+    if(!S.allDeliveries) S.allDeliveries = [];
+    S.allDeliveries.unshift({
+      id, requester_id: S.user.uid,
+      pickup: delData.pickup, dropoff: delData.dropoff,
+      pickupLabel: delData.pickup.label, dropoffLabel: delData.dropoff.label,
+      cargo: delData.cargo, weight: delData.weight,
+      vehicleType: vehicleId, vehicleLabel: vehicle.label,
+      distance: delData.distance, duration: delData.duration,
+      fare, date: delData.date, notes: delData.notes,
+      senderName: delData.sender, senderPhone: delData.senderPhone,
+      receiverName: delData.receiver, receiverPhone: delData.receiverPhone,
+      status:'searching', createdAt: Date.now()
+    });
+    // Reset form
+    window._pendingDel = null;
+    delPickupLoc = null; delDropoffLoc = null; delRouteInfo = null;
+    try{
+      if(delPickupMarker && delMap) delMap.removeLayer(delPickupMarker);
+      if(delDropoffMarker && delMap) delMap.removeLayer(delDropoffMarker);
+      if(delRouteLayer) delMap.removeLayer(delRouteLayer);
+    }catch(e){}
+    // Watch for acceptance
+    watchDeliveryAcceptance(id);
+    // Navigate to delivery dashboard after a beat
+    setTimeout(()=>{ 
+      closeSearching();
+      navTo('ongoing-deliveries');
+    }, 5000);
   }catch(e){
+    console.error(e);
     toast('Failed: '+(e.message||e));
   }
 };
 
-function showDeliverySearching(vehicle, fare, requestId){
-  /* We reuse the delivery screen with an overlay */
-  const scr = document.getElementById('screen-request-delivery');
-  if(!scr) return;
-  S.delivery.activeId = requestId;
-  const distLabel = formatDistanceM(S.delivery.route?.distance || 0);
-  scr.innerHTML = `
-  <div class="scroll no-nav">
-    <div class="topbar bordered">
-      <button class="tb-back" onclick="cancelActiveDelivery('${esc(requestId)}')">
-        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-      </button>
-      <div class="tb-title">Finding a ${esc(vehicle.label)}</div>
-    </div>
-    <div class="searching-wrap">
-      <div class="pane-radar">
-        <div class="radar-ring"></div>
-        <div class="radar-ring"></div>
-        <div class="radar-ring"></div>
-        <div class="radar-center">${vehicle.icon}</div>
-      </div>
-      <div class="active-pane-head">
-        <h2>Searching for a ${esc(vehicle.label)}</h2>
-        <p>Looking for a ${esc(vehicle.label.toLowerCase())} near your pickup point…</p>
-      </div>
-      <div class="price-modal-card" style="max-width:340px;padding:16px;margin:0 auto;width:100%;text-align:left">
-        <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;color:var(--tl);margin-bottom:6px">
-          <span>Fare estimate</span>
-          <span style="color:var(--p-d);font-weight:900;font-size:15px">K ${fare}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:11.5px;font-weight:600;color:var(--tl)">
-          <span>${esc(deliveryPickup?.primary || 'Pickup')}</span>
-          <span>→</span>
-          <span style="text-align:right;flex:1;margin-left:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(deliveryDropoff?.primary || 'Drop-off')}</span>
-        </div>
-        <div style="display:flex;gap:12px;justify-content:space-around;margin-top:10px;padding-top:10px;border-top:1px dashed var(--bd);font-size:11px;font-weight:700;color:var(--p)">
-          <span>📏 ${distLabel}</span>
-          <span>⏱️ ${formatDurationS(S.delivery.route?.duration || 0)}</span>
-        </div>
-      </div>
-      <div style="height:14px"></div>
-      <button class="pane-cancel-btn" style="max-width:300px" onclick="cancelActiveDelivery('${esc(requestId)}')">Cancel Request</button>
-    </div>
-  </div>`;
-  /* Watch for provider */
-  if(S.delivery.tripUnsub) S.delivery.tripUnsub();
-  S.delivery.tripUnsub = onValue(ref(db, 'deliveryRequests/'+requestId), (snap)=>{
+window.closeSearching = ()=>{ $searchingOverlay.classList.remove('open'); };
+window.cancelDeliverySearch = async ()=>{
+  closeSearching();
+  if(S.delActiveId){
+    try{
+      await update(ref(db, 'deliveryRequests/'+S.delActiveId), {status:'cancelled', cancelledAt:Date.now()});
+      toast('Delivery cancelled');
+    }catch(e){}
+  }
+};
+
+function watchDeliveryAcceptance(id){
+  const r = ref(db, 'deliveryRequests/'+id);
+  if(S.delActiveUnsub) S.delActiveUnsub();
+  S.delActiveUnsub = onValue(r, (snap)=>{
     if(!snap.exists()) return;
     const d = snap.val();
-    S.delivery.activeTrip = d;
-    if(d.status === 'accepted' && d.providerId){
-      showDeliveryProvider(d, vehicle, fare);
-    } else if(d.status === 'cancelled'){
-      S.delivery.tripUnsub(); S.delivery.tripUnsub = null;
-      toast('Delivery cancelled');
-      setTimeout(()=>navTo('delivery'), 400);
-    } else if(d.status === 'delivered'){
-      S.delivery.tripUnsub(); S.delivery.tripUnsub = null;
-      toast('Delivery completed 🎉');
-      pushNotification({type:'delivery', severity:'info', title:'Delivery complete', text:`Your delivery ${requestId} was completed.`});
-      setTimeout(()=>navTo('delivery'), 400);
+    // Update local cache
+    const idx = (S.allDeliveries||[]).findIndex(x=>x.id===id);
+    if(idx >= 0){
+      S.allDeliveries[idx] = {id, ...d};
     }
+    if(d.status === 'accepted' && d.providerName){
+      $searchingIcon.textContent = '✅';
+      $searchingTitle.textContent = `${d.providerName} accepted!`;
+      $searchingSubtitle.textContent = `${d.providerRole || 'Provider'} is on the way to pickup`;
+      // Notify
+      pushNotification({
+        type:'delivery',
+        title:'🚚 Delivery accepted',
+        text:`${d.providerName} is on the way to ${d.pickupLabel||'pickup'}`,
+        link:'screen:ongoing-deliveries'
+      });
+      setTimeout(()=>{ closeSearching(); navTo('ongoing-deliveries'); }, 1800);
+    } else if(d.status === 'in_progress'){
+      pushNotification({type:'delivery', title:'📦 Delivery picked up', text:`Your delivery is in progress`, link:'screen:ongoing-deliveries'});
+    } else if(d.status === 'delivered' || d.status === 'completed'){
+      pushNotification({type:'delivery', title:'✅ Delivery complete', text:`Your delivery has been completed`, link:'screen:delivery-history'});
+    } else if(d.status === 'cancelled'){
+      pushNotification({type:'delivery', title:'❌ Delivery cancelled', text:`Your delivery was cancelled`, link:'screen:delivery-history'});
+    }
+    // Update screens
+    if(S.screen === 'ongoing-deliveries') route();
+    if(S.screen === 'delivery-history') route();
+    if(S.screen === 'delivery') route();
   });
 }
 
-function showDeliveryProvider(d, vehicle, fare){
-  const scr = document.getElementById('screen-request-delivery');
-  if(!scr) return;
-  const provider = {
-    name: d.providerName || 'Provider',
-    phone: d.providerPhone || '',
-    photo: d.providerPhoto || ''
-  };
-  scr.innerHTML = `
-  <div class="scroll no-nav">
-    <div class="topbar bordered">
-      <button class="tb-back" onclick="navTo('delivery')">
-        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-      </button>
-      <div class="tb-title">${esc(provider.name)} is on the way</div>
-    </div>
-    <div style="padding:16px 18px">
-      <div class="card" style="display:flex;gap:12px;align-items:center">
-        <div style="width:54px;height:54px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,var(--p),var(--p-d));color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">
-          ${provider.photo ? `<img src="${esc(provider.photo)}" style="width:100%;height:100%;object-fit:cover">` : '👤'}
-        </div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:14px;font-weight:900;color:var(--td)">${esc(provider.name)}</div>
-          <div style="font-size:11px;color:var(--tl);font-weight:700;margin-top:2px">${vehicle.icon} ${esc(vehicle.label)}</div>
-        </div>
-        ${provider.phone ? `<a href="tel:${esc(provider.phone)}" style="width:42px;height:42px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:16px">📞</a>` : ''}
-      </div>
-      <div class="cta-banner" style="margin:14px 0 0;background:linear-gradient(135deg,#d1fae5 0%,#a7f3d0 100%)">
-        <div class="cta-txt">
-          <h4>Status: ${esc(d.status === 'accepted' ? 'Accepted — heading to pickup' : d.status)}</h4>
-          <p>Fare: <strong>K ${fare}</strong> · Distance ${formatDistanceM(S.delivery.route?.distance||0)}</p>
-        </div>
-      </div>
-      <div style="height:14px"></div>
-      <button class="btn btn-p" onclick="navTo('delivery')">Back to Delivery</button>
-      <div style="height:8px"></div>
-      <button class="btn btn-s" onclick="cancelActiveDelivery('${esc(d.deliveryId || S.delivery.activeId || '')}')">Cancel Delivery</button>
-    </div>
-  </div>`;
-}
-
-window.cancelActiveDelivery = async (id)=>{
-  if(!id) return;
-  try{
-    await update(ref(db, 'deliveryRequests/'+id), {status:'cancelled', cancelledAt: Date.now()});
-    if(S.delivery.tripUnsub){ S.delivery.tripUnsub(); S.delivery.tripUnsub = null; }
-    toast('Delivery cancelled');
-    setTimeout(()=>navTo('delivery'), 400);
-  }catch(e){ toast('Failed: '+(e.message||e)); }
+window.openDeliverySearching = ()=>{
+  if(!S.delActiveId) return;
+  $searchingIcon.textContent = '🚚';
+  $searchingTitle.textContent = 'Searching for provider';
+  $searchingSubtitle.textContent = 'Hang tight — a provider will accept soon';
+  $searchingOverlay.classList.add('open');
 };
 
 /* ============================================================
-   SCREEN: DELIVERY HISTORY + ONGOING
-   ============================================================ */
-function renderDeliveryHistory(){
-  const completed = (S.myDeliveries || []).filter(d=>d.status === 'delivered');
-  const list = completed.length ? completed.map(d=>`
-    <div class="card" style="margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
-        <div style="flex:1;min-width:0">
-          <div style="font-size:13px;font-weight:800;color:var(--td);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(d.pickupLabel || 'Pickup')} → ${esc(d.dropoffLabel || 'Drop-off')}</div>
-          <div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:3px">${esc(d.cargo || 'Goods')} · ${esc(d.vehicleLabel || d.vehicleType || 'Any')}</div>
-          <div style="font-size:11px;color:var(--tm);font-weight:600;margin-top:2px">📅 ${esc(d.date || '—')} · ${timeAgo(d.createdAt)}</div>
-        </div>
-        <span class="fa-tag ready">Delivered</span>
-      </div>
-    </div>
-  `).join('') : `
-    <div class="empty">
-      <div class="e-ic">📜</div>
-      <h3>No delivery history yet</h3>
-      <p>Your completed deliveries will appear here.</p>
-    </div>`;
-  return `
-  <div class="scroll">
-    <div class="topbar bordered">
-      <button class="tb-back" onclick="goBack()">
-        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-      </button>
-      <div class="tb-title">Delivery History</div>
-    </div>
-    <div style="padding:14px 18px 0">${list}</div>
-  </div>
-  ${bottomNavHTML()}`;
-}
-function renderOngoingDeliveries(){
-  const ongoing = (S.myDeliveries || []).filter(d=>d.status !== 'delivered' && d.status !== 'cancelled');
-  const list = ongoing.length ? ongoing.map(d=>`
-    <div class="card" style="margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
-        <div style="flex:1;min-width:0">
-          <div style="font-size:13px;font-weight:800;color:var(--td);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(d.pickupLabel || 'Pickup')} → ${esc(d.dropoffLabel || 'Drop-off')}</div>
-          <div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:3px">${esc(d.cargo || 'Goods')} · ${esc(d.vehicleLabel || d.vehicleType || 'Any')}</div>
-          <div style="font-size:11px;color:var(--tm);font-weight:600;margin-top:2px">📅 ${esc(d.date || '—')} · ${timeAgo(d.createdAt)}</div>
-        </div>
-        <span class="fa-tag ${d.status==='searching'?'grow':(d.status==='accepted'?'ready':'')}">${esc(d.status || 'Searching')}</span>
-      </div>
-    </div>
-  `).join('') : `
-    <div class="empty">
-      <div class="e-ic">🚚</div>
-      <h3>No ongoing deliveries</h3>
-      <p>Request a delivery to see it here.</p>
-      <div style="height:14px"></div>
-      <button class="btn btn-p" style="max-width:220px;margin:0 auto" onclick="navTo('request-delivery')">+ Request Delivery</button>
-    </div>`;
-  return `
-  <div class="scroll">
-    <div class="topbar bordered">
-      <button class="tb-back" onclick="goBack()">
-        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-      </button>
-      <div class="tb-title">Ongoing Deliveries</div>
-    </div>
-    <div style="padding:14px 18px 0">${list}</div>
-  </div>
-  ${bottomNavHTML()}`;
-}
-
-/* ============================================================
-   SCREEN: BUY SUPPLIES / CART / CHECKOUT
+   SCREEN: BUY SUPPLIES
    ============================================================ */
 function renderBuySupplies(cat){
   cat = cat || 'all';
@@ -4877,6 +4875,9 @@ function renderBuySupplies(cat){
   ${bottomNavHTML()}`;
 }
 
+/* ============================================================
+   SCREEN: SUPPLIER CART
+   ============================================================ */
 function renderSupplierCart(){
   const items = S.cart.map(c=>{
     const p = S.supplierProducts.find(x=>x.id === c.productId);
@@ -4927,6 +4928,9 @@ function renderSupplierCart(){
   ${bottomNavHTML()}`;
 }
 
+/* ============================================================
+   SCREEN: SUPPLIER CHECKOUT
+   ============================================================ */
 function renderSupplierCheckout(){
   const subtotal = S.cart.reduce((s,c)=>{
     const p = S.supplierProducts.find(x=>x.id === c.productId);
@@ -4962,7 +4966,6 @@ function renderSupplierCheckout(){
           </div>
         </div>
         <input type="hidden" id="sc-proof-url">
-        <div class="hint warn">⚠️ Your order will only be processed once the supplier approves the payment.</div>
       </div>
       <div class="card">
         <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:900;color:var(--p-d)"><span>Total</span><span>${fmtZMK(subtotal)}</span></div>
@@ -5027,12 +5030,12 @@ window.submitSupplierOrder = async (ev)=>{
     for(const sid of supplierIds){
       try{
         const nref = push(ref(db, `users/${sid}/notifications`));
-        await set(nref, { type:'order', severity:'warn', title:'New order awaiting approval', text:`${document.getElementById('sc-name').value} placed order ${id}. Review payment proof.`, createdAt: Date.now(), read:false });
+        await set(nref, { type:'order', severity:'warn', title:'📦 New order awaiting approval', text:`${document.getElementById('sc-name').value} placed order ${id}. Review payment proof.`, createdAt: Date.now(), read:false });
       }catch(e){}
     }
     S.cart = [];
     updateCartFloat();
-    modal(`<h3>Order submitted ✅</h3><p>Reference: <strong>${esc(id)}</strong><br>Your payment proof has been uploaded. The supplier will review and approve your order shortly. You'll be notified.</p><button class="btn btn-p" onclick="closeModal();navTo('home')">Back to Home</button>`);
+    modal(`<h3>Order submitted ✅</h3><p>Reference: <strong>${esc(id)}</strong><br>Your payment proof has been uploaded. The supplier will review and approve your order shortly.</p><button class="btn btn-p" onclick="closeModal();navTo('home')">Back to Home</button>`);
   }catch(e){
     err.textContent = 'Error: ' + (e.message||e);
     err.style.display = 'block';
@@ -5097,7 +5100,6 @@ function renderWeather(){
 function renderAnalysis(){
   const activities = S.allActivities || [];
   const listings = S.marketplace || [];
-
   const yearStart = new Date(new Date().getFullYear(), 0, 1).getTime();
   const thisYearActivities = activities.filter(a => (a.planted_date || a.createdAt || 0) >= yearStart);
   const cropCounts = {};
@@ -5107,21 +5109,18 @@ function renderAnalysis(){
   });
   const topCrops = Object.entries(cropCounts).sort((a,b)=>b[1]-a[1]).slice(0, 8);
   const maxCropCount = topCrops.length ? topCrops[0][1] : 1;
-
   const boughtCounts = {};
   listings.forEach(l=>{
     const name = l.productName || l.title || 'Unknown';
     boughtCounts[name] = (boughtCounts[name] || 0) + 1;
   });
   const topBought = Object.entries(boughtCounts).sort((a,b)=>b[1]-a[1]).slice(0, 6);
-
   const cityCounts = {};
   activities.forEach(a=>{
     const c = a.location || 'Unknown';
     cityCounts[c] = (cityCounts[c] || 0) + 1;
   });
   const topCities = Object.entries(cityCounts).sort((a,b)=>b[1]-a[1]).slice(0, 6);
-
   const totalActivities = activities.length;
   const totalListings = listings.length;
   const activeCrops = activities.filter(a => a.status === 'active' || a.status === 'ready_for_sale').length;
@@ -5247,17 +5246,13 @@ function renderAnalysis(){
           <div class="gs-arrow">→</div>
         </a>
       `).join('')}
-      <div style="margin-top:12px;padding:14px;background:var(--p-ll);border:1px solid rgba(15,122,52,.14);border-radius:var(--r)">
-        <div style="font-size:11px;font-weight:800;color:var(--p);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">💡 Pro Tip</div>
-        <p style="font-size:12px;color:var(--p-d);line-height:1.55;font-weight:600">Check the Ministry of Agriculture monthly market bulletins before selling. Prices for maize, soya, and groundnuts change significantly between December and April.</p>
-      </div>
     </div>
   </div>
   ${bottomNavHTML()}`;
 }
 
 /* ============================================================
-   SCREEN: PROFILE (with NRC pictures)
+   SCREEN: PROFILE (with NRC pics)
    ============================================================ */
 function renderProfile(){
   const p = S.profile||{};
@@ -5265,7 +5260,8 @@ function renderProfile(){
   const initial = initials(fullName);
   const listings = S.myListings || [];
   const posts = (S.community||[]).filter(x=>x.authorId === S.user.uid);
-  const hasNrc = !!(p.nrcFrontUrl || p.nrcBackUrl);
+  const following = Object.keys(S.following||{}).length;
+  const hasNrc = !!(p.nrcUrl || p.idDocumentUrl);
   const verified = hasNrc || p.verified;
   return `
   <div class="scroll">
@@ -5286,23 +5282,28 @@ function renderProfile(){
       <div class="prof-stats">
         <div><div class="ps-n">${(S.myActivities||[]).length}</div><div class="ps-l">Activities</div></div>
         <div><div class="ps-n">${listings.length}</div><div class="ps-l">Listings</div></div>
-        <div><div class="ps-n">${posts.length}</div><div class="ps-l">Posts</div></div>
+        <div><div class="ps-n">${following}</div><div class="ps-l">Following</div></div>
       </div>
     </div>
 
-    <div class="sec-h" style="padding-top:0"><h3>NRC Documents</h3></div>
-    <div class="nrc-row">
-      <div class="nrc-slot ${p.nrcFrontUrl?'has-img':''}" id="nrc-front-slot" onclick="uploadNrc('front')">
-        <img src="${p.nrcFrontUrl?esc(p.nrcFrontUrl):''}" alt="">
-        <div class="nrc-ic">🪪</div>
-        <div class="nrc-lb">NRC Front</div>
-        <button class="nrc-del" onclick="event.stopPropagation();removeNrc('front')">×</button>
+    <!-- NRC Pictures -->
+    <div style="padding:0 18px 6px">
+      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">National Registration Card (NRC)</div>
+    </div>
+    <div class="nrc-strip">
+      <div class="nrc-tile" onclick="uploadNrcPic('nrcFrontUrl')">
+        <div class="nrc-img">
+          ${p.nrcFrontUrl || p.nrcUrl ? `<img src="${esc(p.nrcFrontUrl||p.nrcUrl)}" alt="NRC Front">` : '🪪'}
+        </div>
+        <div class="nrc-lbl">NRC — Front</div>
+        <div class="nrc-edit">✎</div>
       </div>
-      <div class="nrc-slot ${p.nrcBackUrl?'has-img':''}" id="nrc-back-slot" onclick="uploadNrc('back')">
-        <img src="${p.nrcBackUrl?esc(p.nrcBackUrl):''}" alt="">
-        <div class="nrc-ic">🪪</div>
-        <div class="nrc-lb">NRC Back</div>
-        <button class="nrc-del" onclick="event.stopPropagation();removeNrc('back')">×</button>
+      <div class="nrc-tile" onclick="uploadNrcPic('nrcBackUrl')">
+        <div class="nrc-img">
+          ${p.nrcBackUrl ? `<img src="${esc(p.nrcBackUrl)}" alt="NRC Back">` : '🪪'}
+        </div>
+        <div class="nrc-lbl">NRC — Back</div>
+        <div class="nrc-edit">✎</div>
       </div>
     </div>
 
@@ -5314,37 +5315,32 @@ function renderProfile(){
       </div>
       <div class="menu-item" onclick="navTo('follow-ups')">
         <div class="mi-ic">👥</div>
-        <div class="mi-tx"><div class="mi-tt">Follow Ups</div><div class="mi-sb">Farmers, farms, listings & posts you follow</div></div>
+        <div class="mi-tx"><div class="mi-tt">Follow Ups</div><div class="mi-sb">${following} following</div></div>
         <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
       </div>
       <div class="menu-item" onclick="navTo('my-posts',{tab:'active'})">
         <div class="mi-ic">📋</div>
-        <div class="mi-tx"><div class="mi-tt">My Posts</div><div class="mi-sb">Manage listings · edit · delete · reports</div></div>
+        <div class="mi-tx"><div class="mi-tt">My Posts</div><div class="mi-sb">Manage listings · edit · delete</div></div>
         <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
       </div>
       <div class="menu-item" onclick="navTo('revenue')">
         <div class="mi-ic">💰</div>
-        <div class="mi-tx"><div class="mi-tt">Revenue Report</div><div class="mi-sb">Sales, payouts & earnings</div></div>
+        <div class="mi-tx"><div class="mi-tt">Revenue Report</div><div class="mi-sb">Sales, payouts &amp; earnings</div></div>
         <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
       </div>
       <div class="menu-item" onclick="navTo('analysis')">
         <div class="mi-ic">📊</div>
-        <div class="mi-tx"><div class="mi-tt">Farm Analysis</div><div class="mi-sb">Trends, top crops & market insights</div></div>
+        <div class="mi-tx"><div class="mi-tt">Farm Analysis</div><div class="mi-sb">Trends, top crops &amp; market insights</div></div>
         <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
       </div>
       <div class="menu-item" onclick="navTo('docs')">
         <div class="mi-ic">🪪</div>
-        <div class="mi-tx"><div class="mi-tt">Documents & Verification</div><div class="mi-sb">${hasNrc?'✓ NRC uploaded':'Upload NRC'}</div></div>
+        <div class="mi-tx"><div class="mi-tt">Documents &amp; Verification</div><div class="mi-sb">${hasNrc?'✓ Documents uploaded':'Upload NRC &amp; farm permit'}</div></div>
         <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
       </div>
       <div class="menu-item" onclick="navTo('weather')">
         <div class="mi-ic">☁️</div>
         <div class="mi-tx"><div class="mi-tt">Weather</div><div class="mi-sb">Local forecast for ${esc(S.weatherCity||S.userLocation)}</div></div>
-        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-      </div>
-      <div class="menu-item" onclick="navTo('buy-supplies')">
-        <div class="mi-ic">🛒</div>
-        <div class="mi-tx"><div class="mi-tt">Farm Inputs</div><div class="mi-sb">Buy seeds, fertilizer, tools</div></div>
         <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
       </div>
       <div class="menu-item" onclick="refreshLocation()">
@@ -5360,31 +5356,17 @@ function renderProfile(){
   </div>
   ${bottomNavHTML()}`;
 }
-function wireProfile(){ /* no-op; inline handlers */ }
 
-window.uploadNrc = async (side)=>{
+window.uploadNrcPic = async (field)=>{
   try{
     const url = await uploadImage('nrc');
-    const field = side === 'front' ? 'nrcFrontUrl' : 'nrcBackUrl';
-    await update(ref(db, 'users/'+S.user.uid), { [field]: url, updatedAt: Date.now() });
-    if(!S.profile) S.profile = {};
+    if(!url) return;
+    await update(ref(db, 'users/'+S.user.uid), { [field]: url, verified: true, updatedAt: Date.now() });
     S.profile[field] = url;
-    if(S.profile.nrcFrontUrl && S.profile.nrcBackUrl){
-      await update(ref(db, 'users/'+S.user.uid), { verified: true });
-      S.profile.verified = true;
-    }
-    toast('NRC ' + side + ' uploaded ✓');
-    if(S.screen === 'profile') route();
+    S.profile.verified = true;
+    toast('NRC picture uploaded ✓');
+    setTimeout(()=>navTo('profile'), 300);
   }catch(e){ if(!String(e).includes('cancel')) toast('Upload failed'); }
-};
-window.removeNrc = async (side)=>{
-  const field = side === 'front' ? 'nrcFrontUrl' : 'nrcBackUrl';
-  try{
-    await update(ref(db, 'users/'+S.user.uid), { [field]: null });
-    if(S.profile) delete S.profile[field];
-    toast('Removed');
-    if(S.screen === 'profile') route();
-  }catch(e){ toast('Failed'); }
 };
 
 window.refreshLocation = async ()=>{
@@ -5412,11 +5394,10 @@ window.confirmLogout = async ()=>{
 function renderDocs(){
   const p = S.profile || {};
   const docs = [
-    {id:'nrc_front', label:'NRC Front', icon:'🪪', url: p.nrcFrontUrl},
-    {id:'nrc_back', label:'NRC Back', icon:'🪪', url: p.nrcBackUrl},
+    {id:'nrc', label:'NRC Front', icon:'🪪', url: p.nrcFrontUrl || p.nrcUrl},
+    {id:'nrcBack', label:'NRC Back', icon:'🪪', url: p.nrcBackUrl},
     {id:'farm_permit', label:'Farm Permit', icon:'📜', url: p.farmPermitUrl},
-    {id:'land_title', label:'Land Title', icon:'🏞️', url: p.landTitleUrl},
-    {id:'farmer_cert', label:'Farmer Cert', icon:'🎓', url: p.farmerCertUrl}
+    {id:'land_title', label:'Land Title', icon:'🏞️', url: p.landTitleUrl}
   ];
   return `
   <div class="scroll">
@@ -5424,7 +5405,7 @@ function renderDocs(){
       <button class="tb-back" onclick="goBack()">
         <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
       </button>
-      <div class="tb-title">Documents & Verification</div>
+      <div class="tb-title">Documents &amp; Verification</div>
     </div>
     <div style="padding:14px 18px 0">
       <p style="font-size:13px;color:var(--tl);font-weight:600;line-height:1.55;margin-bottom:14px">Upload your official documents to get verified. Verified farmers get priority in the marketplace and community.</p>
@@ -5438,41 +5419,20 @@ function renderDocs(){
         </div>
       `).join('')}
     </div>
-    ${(p.nrcFrontUrl || p.nrcBackUrl || p.farmPermitUrl || p.landTitleUrl || p.farmerCertUrl) ? `
-      <div style="padding:0 18px 18px">
-        <div class="sec-h" style="padding:0 0 10px"><h3>Uploaded Files</h3></div>
-        ${[['NRC Front', p.nrcFrontUrl],['NRC Back', p.nrcBackUrl],['Farm Permit', p.farmPermitUrl],['Land Title', p.landTitleUrl],['Farmer Cert', p.farmerCertUrl]].filter(([k,v])=>v).map(([k,v])=>`
-          <div class="card" style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-            <div style="width:44px;height:44px;border-radius:8px;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:18px">📄</div>
-            <div style="flex:1;min-width:0">
-              <div style="font-size:13px;font-weight:800;color:var(--td)">${esc(k)}</div>
-              <div style="font-size:10.5px;color:var(--tl);font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(v)}</div>
-            </div>
-            <a href="${esc(v)}" target="_blank" style="font-size:12px;font-weight:800;color:var(--p)">View →</a>
-          </div>
-        `).join('')}
-      </div>
-    `:''}
   </div>
   ${bottomNavHTML()}`;
 }
 
 window.uploadDoc = async (type)=>{
-  const fieldMap = {
-    nrc_front:'nrcFrontUrl', nrc_back:'nrcBackUrl',
-    farm_permit:'farmPermitUrl', land_title:'landTitleUrl', farmer_cert:'farmerCertUrl'
-  };
+  const fieldMap = {nrc:'nrcFrontUrl', nrcBack:'nrcBackUrl', farm_permit:'farmPermitUrl', land_title:'landTitleUrl', farmer_cert:'farmerCertUrl'};
   const field = fieldMap[type];
   if(!field) return;
   try{
     const url = await uploadImage('docs');
     if(!url) return;
-    await update(ref(db, 'users/'+S.user.uid), { [field]: url, updatedAt: Date.now() });
+    await update(ref(db, 'users/'+S.user.uid), { [field]: url, verified: true, updatedAt: Date.now() });
     S.profile[field] = url;
-    if(S.profile.nrcFrontUrl && S.profile.nrcBackUrl){
-      await update(ref(db, 'users/'+S.user.uid), { verified: true });
-      S.profile.verified = true;
-    }
+    S.profile.verified = true;
     toast('Document uploaded ✓');
     setTimeout(()=>navTo('docs'), 300);
   }catch(e){ if(!String(e).includes('cancel')) toast('Upload failed'); }
@@ -5492,7 +5452,6 @@ function renderMyPosts(tab){
     {id:'all', label:`All (${all.length})`}
   ];
   const list = tab === 'active' ? active : tab === 'sold' ? sold : all;
-
   const items = list.length ? list.map(m=>`
     <div class="card" style="display:flex;gap:10px;margin-bottom:10px;align-items:center">
       <div style="width:56px;height:56px;border-radius:10px;background:${gradFor(m.title||'')};display:flex;align-items:center;justify-content:center;font-size:24px;overflow:hidden;flex-shrink:0">
@@ -5597,7 +5556,7 @@ window.markListingSold = async (id)=>{
 };
 
 /* ============================================================
-   SCREEN: REVENUE REPORT
+   SCREEN: REVENUE
    ============================================================ */
 function renderRevenue(){
   const all = S.myListings || [];
@@ -5661,7 +5620,7 @@ function renderRevenue(){
 }
 
 /* ============================================================
-   LOCATION PERMISSION + CITY DETECTION
+   LOCATION PERMISSION
    ============================================================ */
 function showLocationPermissionModal(){
   return new Promise((resolve)=>{
@@ -5674,14 +5633,15 @@ function showLocationPermissionModal(){
           <button class="btn btn-p" id="loc-allow-btn">Allow Location</button>
           <button class="btn btn-s" id="loc-skip-btn">Not Now</button>
         </div>
-        <p style="font-size:11px;color:var(--tm);margin-top:12px;margin-bottom:0">Your location is only used to improve your experience.</p>
       </div>
     `);
     document.getElementById('loc-allow-btn').addEventListener('click', ()=>{
-      closeModal(); resolve(true);
+      closeModal();
+      resolve(true);
     });
     document.getElementById('loc-skip-btn').addEventListener('click', ()=>{
-      closeModal(); resolve(false);
+      closeModal();
+      resolve(false);
     });
   });
 }
@@ -5795,26 +5755,27 @@ async function startApp(){
     S.profile = ud.profile || {};
     S.myActivities = ud.activities || [];
     S.myListings = ud.listings || [];
-    S.following = S.profile.following || {};
-    S.followedFarms = S.profile.followedFarms || {};
+    S.following = ud.following || {};
     if(S.profile.location) S.userLocation = S.profile.location;
     if(S.profile.city) S.weatherCity = S.profile.city;
 
     const [acts, mkt, sup] = await Promise.all([loadAllActivities(), loadMarketplace(), loadSuppliers()]);
     S.allActivities = acts; S.marketplace = mkt; S.suppliers = sup;
 
+    // Load deliveries
+    loadAllDeliveries();
+
     startCommunityListener();
     startSupplierProductsListener();
     startNotificationsListener();
-    startProvidersListener();
-    startContentWatchers();
+    startContentNotificationListeners();
+    startFollowingListener();
 
     const app = document.getElementById('app');
     app.innerHTML = `<div class="screen-wrap"></div>`;
     const wrap = app.querySelector('.screen-wrap');
     const home = document.createElement('div');
-    home.className = 'screen';
-    home.id = 'screen-home';
+    home.className = 'screen'; home.id = 'screen-home';
     wrap.appendChild(home);
     activeScreenEl = home; S.screen = 'home';
     home.classList.add('active');
@@ -5826,6 +5787,16 @@ async function startApp(){
     loadMyDeliveries();
   });
 }
+
+function startFollowingListener(){
+  if(!S.user) return;
+  if(S.followUnsub) S.followUnsub();
+  S.followUnsub = onValue(ref(db, `users/${S.user.uid}/following`), (snap)=>{
+    const data = snap.val() || {};
+    S.following = data;
+  });
+}
+
 function startWeatherRefresh(){
   clearInterval(S.weatherRefreshTimer);
   S.weatherRefreshTimer = setInterval(async ()=>{
@@ -5838,6 +5809,7 @@ function startWeatherRefresh(){
     }
   }, 30 * 60 * 1000);
 }
+
 async function loadMyDeliveries(){
   if(!S.user) return;
   try{
@@ -5850,7 +5822,22 @@ async function loadMyDeliveries(){
     });
     mine.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
     S.myDeliveries = mine;
-    updateNav(S.screen);
+    S.allDeliveries = mine;
+    if(S.screen === 'delivery') route();
+  }catch(e){}
+}
+
+async function loadAllDeliveries(){
+  try{
+    const snap = await get(ref(db, 'deliveryRequests'));
+    if(!snap.exists()) return;
+    const data = snap.val();
+    const mine = [];
+    Object.entries(data).forEach(([id, d])=>{
+      if(d.requester_id === S.user.uid) mine.push({id, ...d});
+    });
+    mine.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+    S.allDeliveries = mine;
   }catch(e){}
 }
 
@@ -5882,6 +5869,14 @@ window.startFromCatalogue = (id)=>{
   }, 100);
 };
 window.openCatalogueItem = (id)=>{ navTo('catalogue-detail', {id}); };
+
+/* Cleanup on unload */
+window.addEventListener('beforeunload', ()=>{
+  S.notifListeners.forEach(u=>{ try{u();}catch(e){} });
+  if(S.heroDriverListener){ try{S.heroDriverListener();}catch(e){} }
+  if(S.delActiveUnsub){ try{S.delActiveUnsub();}catch(e){} }
+  if(S.followUnsub){ try{S.followUnsub();}catch(e){} }
+});
 </script>
 
 </body>
