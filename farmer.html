@@ -30,6 +30,8 @@
   --plant:#0f7a34; --plant-l:#e6f5eb;
   --manage:#2563eb; --manage-l:#dbeafe;
   --harvest:#ea580c; --harvest-l:#ffedd5;
+  --market:#7c3aed; --market-l:#ede9fe;
+  --delivery:#0891b2; --delivery-l:#cffafe;
   --td:#0f172a; --tb:#334155; --tl:#64748b; --tm:#94a3b8;
   --bd:#e2e8f0; --bd-s:#cbd5e1;
   --sf:#ffffff; --sf2:#f8fafc; --bg:#f4f7f5;
@@ -140,18 +142,309 @@ a{color:inherit;text-decoration:none}
   background:var(--danger);border:1.5px solid #fff;
 }
 .topbar .tb-avatar{
-  width:40px;height:40px;border-radius:50%;overflow:hidden;
+  width:44px;height:44px;border-radius:50%;overflow:hidden;
   background:linear-gradient(135deg,var(--p),var(--p-d));
   color:#fff;display:flex;align-items:center;justify-content:center;
-  font-weight:800;font-size:15px;flex-shrink:0;cursor:pointer;
+  font-weight:800;font-size:16px;flex-shrink:0;cursor:pointer;
   border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.1);
 }
 .topbar .tb-avatar img{width:100%;height:100%;object-fit:cover}
 
-/* ============ 3 BIG TABS (Plant / Manage / Harvest) ============ */
+.greet{padding:2px 18px 12px}
+.greet h2{font-size:22px;font-weight:900;letter-spacing:-.03em;color:var(--td);line-height:1.2}
+.greet h2 span{color:var(--p)}
+.greet p{font-size:12.5px;color:var(--tl);margin-top:2px;font-weight:500}
+
+.live-clock{
+  display:flex;align-items:center;gap:8px;padding:0 18px 10px;
+  font-size:12px;color:var(--tl);font-weight:700;
+}
+.live-clock .lc-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--ok);
+  box-shadow:0 0 0 3px rgba(22,163,74,.15);
+  animation:lcPulse 2s ease-in-out infinite;
+}
+@keyframes lcPulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.weather-card{
+  margin:0 18px 14px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#0f7a34 0%,#0b5f28 60%,#084d20 100%);
+  border-radius:var(--r-lg);padding:18px;color:#fff;
+  box-shadow:var(--sh-brand);
+}
+.weather-card::before{
+  content:'';position:absolute;top:-30px;right:-20px;width:140px;height:140px;
+  background:radial-gradient(circle,rgba(255,255,255,.22) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;
+}
+.weather-card::after{
+  content:'';position:absolute;bottom:-40px;left:-30px;width:120px;height:120px;
+  background:radial-gradient(circle,rgba(134,239,172,.25) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;
+}
+.wc-head{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1}
+.wc-loc{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;opacity:.95}
+.wc-loc svg{width:13px;height:13px;fill:#fff}
+.wc-temp{font-size:38px;font-weight:900;letter-spacing:-.04em;line-height:1;margin:8px 0 4px;position:relative;z-index:1}
+.wc-desc{font-size:13px;font-weight:600;opacity:.92;position:relative;z-index:1}
+.wc-range{font-size:12px;font-weight:600;opacity:.85;margin-top:3px;position:relative;z-index:1}
+.wc-icon{
+  position:absolute;top:14px;right:16px;font-size:44px;
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,.2));
+  animation:bob 3s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+/* ============ QUICK ACTIONS ============ */
+.qa-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
+  padding:0 18px 16px;
+}
+.qa{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:12px 4px 10px;border-radius:var(--r);
+  background:var(--sf2);border:1px solid var(--bd);
+  transition:all .22s var(--e);
+}
+.qa:active{transform:scale(.94);background:var(--p-l);border-color:var(--p)}
+.qa .qa-ic{
+  width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:22px;line-height:1;
+}
+.qa .qa-lb{font-size:10px;font-weight:800;letter-spacing:.02em;color:var(--td);text-transform:uppercase;text-align:center}
+.qa-ic.c1{background:linear-gradient(145deg,#d1fae5,#10b981)}
+.qa-ic.c2{background:linear-gradient(145deg,#dbeafe,#2563eb)}
+.qa-ic.c3{background:linear-gradient(145deg,#ffedd5,#ea580c)}
+.qa-ic.c4{background:linear-gradient(145deg,#ede9fe,#7c3aed)}
+
+/* ============ MY FARM HORIZONTAL SCROLL ============ */
+.sec-h{padding:4px 18px 10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sec-h h3{font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--td)}
+.sec-h button{
+  font-size:12px;font-weight:700;color:var(--p);
+  display:inline-flex;align-items:center;gap:4px;padding:4px 6px;border-radius:8px;
+}
+.mf-row{
+  display:flex;gap:10px;padding:0 18px 16px;overflow-x:auto;
+  scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.mf-row::-webkit-scrollbar{display:none}
+.mf-card{
+  flex:0 0 160px;background:var(--sf);border:1px solid var(--bd);
+  border-radius:var(--r);overflow:hidden;scroll-snap-align:start;
+  transition:transform .22s var(--e);
+  box-shadow:var(--sh-xs);cursor:pointer;
+}
+.mf-card:active{transform:scale(.97)}
+.mf-card .mf-img{
+  height:88px;background:var(--sf2);position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;font-size:42px;
+}
+.mf-card .mf-img img{width:100%;height:100%;object-fit:cover}
+.mf-card .mf-body{padding:9px 10px 11px}
+.mf-card .mf-name{font-size:12.5px;font-weight:800;color:var(--td);letter-spacing:-.01em;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mf-card .mf-sub{font-size:10.5px;color:var(--tl);font-weight:600;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mf-card .mf-tag{
+  display:inline-block;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+  padding:3px 8px;border-radius:var(--r-p);margin-top:6px;
+  background:var(--p-l);color:var(--p-d);
+}
+.mf-card .mf-tag.warn{background:#fef3c7;color:#92400e}
+.mf-card .mf-tag.ok{background:#d1fae5;color:#065f46}
+.mf-card .mf-tag.ready{background:#ffedd5;color:#9a3412}
+.mf-card .mf-days{
+  display:flex;align-items:center;gap:4px;font-size:9.5px;font-weight:800;
+  color:var(--p);margin-top:4px;
+}
+.mf-days .mf-dot{width:5px;height:5px;border-radius:50%;background:var(--p);animation:lcPulse 1.5s infinite}
+.mf-add{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:22px 8px;text-align:center;border-style:dashed !important;
+}
+.mf-add .mf-plus{font-size:32px;margin-bottom:6px}
+.mf-add .mf-lb{font-size:11.5px;font-weight:800;color:var(--p)}
+
+/* ==================================================
+   SERVICE CARDS — ZAMLIFT STYLE
+   ================================================== */
+.service-hero{
+  margin:0 18px 12px;position:relative;overflow:hidden;
+  border-radius:var(--r-xl);height:180px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:18px;cursor:pointer;color:#fff;
+  transition:transform .25s var(--e);
+  box-shadow:0 12px 30px -8px rgba(15,23,42,.25);
+}
+.service-hero:active{transform:scale(.985)}
+.service-hero .sh-bg{
+  position:absolute;inset:0;z-index:0;
+  background:linear-gradient(135deg,#0f7a34 0%,#0b5f28 100%);
+}
+.service-hero .sh-bg::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.5) 100%);
+}
+.service-hero .sh-art{
+  position:absolute;top:-10px;right:-10px;width:200px;height:180px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:130px;line-height:1;opacity:.9;
+  transform:rotate(-8deg);z-index:1;
+  filter:drop-shadow(0 12px 20px rgba(0,0,0,.3));
+}
+.service-hero .sh-content{
+  position:relative;z-index:2;
+}
+.service-hero .sh-title{
+  font-size:22px;font-weight:900;letter-spacing:-.02em;line-height:1.1;
+  text-shadow:0 2px 12px rgba(0,0,0,.4);
+  display:flex;align-items:center;gap:10px;
+}
+.service-hero .sh-title .sh-ic{
+  width:34px;height:34px;border-radius:12px;background:rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  backdrop-filter:blur(10px);
+}
+.service-hero .sh-sub{
+  font-size:12.5px;font-weight:600;opacity:.92;margin-top:4px;
+  text-shadow:0 1px 6px rgba(0,0,0,.4);
+}
+.service-hero .sh-cta{
+  position:absolute;top:18px;right:18px;z-index:3;
+  font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  padding:6px 12px;border-radius:var(--r-p);
+  background:rgba(255,255,255,.2);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.3);
+}
+.service-hero.plant .sh-bg{background:linear-gradient(135deg,#0f7a34 0%,#084d20 100%)}
+.service-hero.manage .sh-bg{background:linear-gradient(135deg,#2563eb 0%,#1e40af 100%)}
+.service-hero.harvest .sh-bg{background:linear-gradient(135deg,#ea580c 0%,#9a3412 100%)}
+.service-hero.market .sh-bg{background:linear-gradient(135deg,#7c3aed 0%,#4c1d95 100%)}
+
+.service-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  padding:0 18px 14px;
+}
+.service-card{
+  position:relative;overflow:hidden;
+  border-radius:var(--r-lg);height:140px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:14px;cursor:pointer;color:#fff;
+  transition:transform .25s var(--e);
+  box-shadow:0 8px 20px -6px rgba(15,23,42,.2);
+}
+.service-card:active{transform:scale(.97)}
+.service-card .sc-bg{
+  position:absolute;inset:0;z-index:0;
+}
+.service-card .sc-bg::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.55) 100%);
+}
+.service-card .sc-art{
+  position:absolute;top:-6px;right:-10px;width:120px;height:120px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:78px;line-height:1;opacity:.85;z-index:1;
+  filter:drop-shadow(0 8px 16px rgba(0,0,0,.3));
+}
+.service-card .sc-content{position:relative;z-index:2}
+.service-card .sc-title{
+  font-size:14px;font-weight:900;letter-spacing:-.01em;line-height:1.15;
+  text-shadow:0 2px 8px rgba(0,0,0,.4);
+  display:flex;align-items:center;gap:6px;
+}
+.service-card .sc-title .sc-ic{
+  width:22px;height:22px;border-radius:8px;background:rgba(255,255,255,.22);
+  display:flex;align-items:center;justify-content:center;font-size:12px;
+  backdrop-filter:blur(8px);flex-shrink:0;
+}
+.service-card .sc-sub{
+  font-size:10.5px;font-weight:600;opacity:.92;margin-top:3px;
+  text-shadow:0 1px 4px rgba(0,0,0,.4);
+  line-height:1.35;
+}
+.service-card.blue .sc-bg{background:linear-gradient(135deg,#2563eb 0%,#1e40af 100%)}
+.service-card.orange .sc-bg{background:linear-gradient(135deg,#ea580c 0%,#9a3412 100%)}
+.service-card.purple .sc-bg{background:linear-gradient(135deg,#7c3aed 0%,#4c1d95 100%)}
+.service-card.teal .sc-bg{background:linear-gradient(135deg,#0891b2 0%,#155e75 100%)}
+.service-card.pink .sc-bg{background:linear-gradient(135deg,#db2777 0%,#9d174d 100%)}
+.service-card.amber .sc-bg{background:linear-gradient(135deg,#d97706 0%,#92400e 100%)}
+
+/* List rows (My Orders / My Wallet style) */
+.list-row{
+  margin:0 18px 10px;padding:16px 18px;
+  background:#fff;border:1px solid var(--bd);border-radius:var(--r-lg);
+  display:flex;align-items:center;gap:14px;
+  box-shadow:var(--sh-xs);cursor:pointer;
+  transition:all .2s var(--e);
+}
+.list-row:active{transform:scale(.985);background:var(--p-ll)}
+.list-row .lr-ic{
+  width:48px;height:48px;border-radius:14px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+}
+.list-row .lr-ic.green{background:linear-gradient(145deg,#d1fae5,#10b981)}
+.list-row .lr-ic.blue{background:linear-gradient(145deg,#dbeafe,#2563eb)}
+.list-row .lr-ic.orange{background:linear-gradient(145deg,#ffedd5,#ea580c)}
+.list-row .lr-ic.purple{background:linear-gradient(145deg,#ede9fe,#7c3aed)}
+.list-row .lr-tx{flex:1;min-width:0}
+.list-row .lr-tt{font-size:15px;font-weight:900;color:var(--td);letter-spacing:-.02em}
+.list-row .lr-sb{font-size:12px;color:var(--tl);font-weight:600;margin-top:3px;line-height:1.35}
+.list-row .lr-arrow{
+  width:28px;height:28px;flex-shrink:0;color:var(--tm);
+  display:flex;align-items:center;justify-content:center;
+}
+.list-row .lr-arrow svg{width:18px;height:18px;fill:currentColor}
+
+/* ============ BATCH CARD ============ */
+.batch-card{
+  background:#fff;border:1px solid var(--bd);border-radius:var(--r-lg);
+  overflow:hidden;margin-bottom:12px;box-shadow:var(--sh-sm);
+  transition:transform .2s var(--e);cursor:pointer;
+}
+.batch-card:active{transform:scale(.99)}
+.batch-card .bc-top{display:flex;align-items:center;gap:12px;padding:14px}
+.batch-card .bc-crop-ic{
+  width:54px;height:54px;border-radius:16px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:26px;
+  overflow:hidden;
+}
+.batch-card .bc-info{flex:1;min-width:0}
+.batch-card .bc-crop{font-size:15px;font-weight:900;color:var(--td);letter-spacing:-.02em}
+.batch-card .bc-variety{font-size:11.5px;color:var(--tl);font-weight:600;margin-top:2px}
+.batch-card .bc-batch-num{
+  font-size:10px;color:var(--p);font-weight:800;letter-spacing:.04em;
+  margin-top:4px;font-family:'SF Mono','Roboto Mono',monospace;
+}
+.batch-card .bc-stat{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.batch-card .bc-status{
+  font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+  padding:4px 9px;border-radius:var(--r-p);
+}
+.batch-card .bc-status.planted{background:#dbeafe;color:#1e40af}
+.batch-card .bc-status.growing{background:#e6f5eb;color:var(--p-d)}
+.batch-card .bc-status.flowering{background:#fef3c7;color:#92400e}
+.batch-card .bc-status.fruiting{background:#ede9fe;color:#5b21b6}
+.batch-card .bc-status.harvesting{background:#ffedd5;color:#9a3412}
+.batch-card .bc-status.harvested{background:#f1f5f9;color:#475569}
+.batch-card .bc-area{font-size:11px;color:var(--tl);font-weight:700}
+.batch-card .bc-bar-wrap{padding:0 14px 14px}
+.batch-card .bc-progress{height:8px;border-radius:4px;background:var(--bd);overflow:hidden}
+.batch-card .bc-progress-fill{
+  height:100%;background:linear-gradient(90deg,var(--p),var(--acc));
+  transition:width .8s var(--e);border-radius:4px;
+}
+.batch-card .bc-progress-meta{
+  display:flex;justify-content:space-between;margin-top:6px;
+  font-size:10.5px;font-weight:700;color:var(--tl);
+}
+.batch-card .bc-progress-meta strong{color:var(--p-d)}
+
+/* ============ THREE TABS ON FARM SCREEN ============ */
 .three-tabs{
   display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
-  padding:12px 18px 4px;
+  padding:12px 18px 14px;
 }
 .three-tab{
   padding:14px 8px 12px;border-radius:var(--r);
@@ -181,147 +474,6 @@ a{color:inherit;text-decoration:none}
   padding:0 5px;border:2px solid #fff;
 }
 
-/* ============ BIG ACTION CARDS ============ */
-.big-card{
-  display:flex;align-items:center;gap:16px;padding:20px;
-  border-radius:var(--r-lg);background:#fff;border:1px solid var(--bd);
-  box-shadow:var(--sh-sm);margin-bottom:12px;
-  transition:all .22s var(--e);cursor:pointer;
-}
-.big-card:active{transform:scale(.985)}
-.big-card .bc-ic{
-  width:64px;height:64px;border-radius:20px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:32px;
-}
-.big-card .bc-tx{flex:1;min-width:0}
-.big-card .bc-tt{font-size:17px;font-weight:900;color:var(--td);letter-spacing:-.02em;margin-bottom:4px}
-.big-card .bc-sb{font-size:12.5px;color:var(--tl);font-weight:600;line-height:1.4}
-.big-card .bc-arrow{
-  width:36px;height:36px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  background:var(--sf2);color:var(--tl);
-}
-.big-card .bc-arrow svg{width:16px;height:16px;fill:currentColor}
-
-.greet{padding:4px 18px 12px}
-.greet h2{font-size:22px;font-weight:900;letter-spacing:-.03em;color:var(--td);line-height:1.2}
-.greet h2 span{color:var(--p)}
-.greet p{font-size:12.5px;color:var(--tl);margin-top:2px;font-weight:500}
-
-.live-clock{
-  display:flex;align-items:center;gap:8px;padding:0 18px 10px;
-  font-size:12px;color:var(--tl);font-weight:700;
-}
-.live-clock .lc-dot{
-  width:7px;height:7px;border-radius:50%;background:var(--ok);
-  box-shadow:0 0 0 3px rgba(22,163,74,.15);
-  animation:lcPulse 2s ease-in-out infinite;
-}
-@keyframes lcPulse{0%,100%{opacity:1}50%{opacity:.4}}
-
-.weather-card{
-  margin:0 18px 16px;position:relative;overflow:hidden;
-  background:linear-gradient(135deg,#0f7a34 0%,#0b5f28 60%,#084d20 100%);
-  border-radius:var(--r-lg);padding:18px;color:#fff;
-  box-shadow:var(--sh-brand);
-}
-.weather-card::before{
-  content:'';position:absolute;top:-30px;right:-20px;width:140px;height:140px;
-  background:radial-gradient(circle,rgba(255,255,255,.22) 0%,transparent 70%);
-  border-radius:50%;pointer-events:none;
-}
-.wc-head{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1}
-.wc-loc{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;opacity:.95}
-.wc-loc svg{width:13px;height:13px;fill:#fff}
-.wc-temp{font-size:38px;font-weight:900;letter-spacing:-.04em;line-height:1;margin:8px 0 4px;position:relative;z-index:1}
-.wc-desc{font-size:13px;font-weight:600;opacity:.92;position:relative;z-index:1}
-.wc-range{font-size:12px;font-weight:600;opacity:.85;margin-top:3px;position:relative;z-index:1}
-.wc-icon{
-  position:absolute;top:14px;right:16px;font-size:44px;
-  filter:drop-shadow(0 4px 12px rgba(0,0,0,.2));
-  animation:bob 3s ease-in-out infinite;
-}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-
-.qa-row{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
-  padding:0 18px 18px;
-}
-.qa{
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-  padding:12px 4px 10px;border-radius:var(--r);
-  background:var(--sf2);border:1px solid var(--bd);
-  transition:all .22s var(--e);
-}
-.qa:active{transform:scale(.94);background:var(--p-l);border-color:var(--p)}
-.qa .qa-ic{
-  width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:22px;line-height:1;
-}
-.qa .qa-lb{font-size:10px;font-weight:800;letter-spacing:.02em;color:var(--td);text-transform:uppercase;text-align:center}
-.qa-ic.c1{background:linear-gradient(145deg,#d1fae5,#10b981)}
-.qa-ic.c2{background:linear-gradient(145deg,#dbeafe,#2563eb)}
-.qa-ic.c3{background:linear-gradient(145deg,#ffedd5,#ea580c)}
-.qa-ic.c4{background:linear-gradient(145deg,#ede9fe,#7c3aed)}
-
-.sec-h{padding:4px 18px 10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
-.sec-h h3{font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--td)}
-.sec-h button{
-  font-size:12px;font-weight:700;color:var(--p);
-  display:inline-flex;align-items:center;gap:4px;padding:4px 6px;border-radius:8px;
-}
-
-/* ============ BATCH CARDS ============ */
-.batch-card{
-  background:#fff;border:1px solid var(--bd);border-radius:var(--r-lg);
-  overflow:hidden;margin-bottom:12px;box-shadow:var(--sh-sm);
-  transition:transform .2s var(--e);cursor:pointer;
-}
-.batch-card:active{transform:scale(.99)}
-.batch-card .bc-top{
-  display:flex;align-items:center;gap:12px;padding:14px;
-}
-.batch-card .bc-crop-ic{
-  width:54px;height:54px;border-radius:16px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:26px;
-}
-.batch-card .bc-info{flex:1;min-width:0}
-.batch-card .bc-crop{font-size:15px;font-weight:900;color:var(--td);letter-spacing:-.02em}
-.batch-card .bc-variety{font-size:11.5px;color:var(--tl);font-weight:600;margin-top:2px}
-.batch-card .bc-batch-num{
-  font-size:10px;color:var(--p);font-weight:800;letter-spacing:.04em;
-  margin-top:4px;font-family:'SF Mono','Roboto Mono',monospace;
-}
-.batch-card .bc-stat{
-  display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;
-}
-.batch-card .bc-status{
-  font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
-  padding:4px 9px;border-radius:var(--r-p);
-}
-.batch-card .bc-status.planted{background:#dbeafe;color:#1e40af}
-.batch-card .bc-status.growing{background:#e6f5eb;color:var(--p-d)}
-.batch-card .bc-status.flowering{background:#fef3c7;color:#92400e}
-.batch-card .bc-status.harvesting{background:#ffedd5;color:#9a3412}
-.batch-card .bc-status.harvested{background:#f1f5f9;color:#475569}
-.batch-card .bc-area{font-size:11px;color:var(--tl);font-weight:700}
-
-.batch-card .bc-bar-wrap{
-  padding:0 14px 14px;
-}
-.batch-card .bc-progress{
-  height:8px;border-radius:4px;background:var(--bd);overflow:hidden;
-}
-.batch-card .bc-progress-fill{
-  height:100%;background:linear-gradient(90deg,var(--p),var(--acc));
-  transition:width .8s var(--e);border-radius:4px;
-}
-.batch-card .bc-progress-meta{
-  display:flex;justify-content:space-between;margin-top:6px;
-  font-size:10.5px;font-weight:700;color:var(--tl);
-}
-.batch-card .bc-progress-meta strong{color:var(--p-d)}
-
 /* ============ STEP WIZARD ============ */
 .steps-indicator{
   display:flex;align-items:center;gap:6px;padding:14px 18px 6px;
@@ -344,7 +496,7 @@ a{color:inherit;text-decoration:none}
   padding:0 18px 14px;font-size:13px;color:var(--tl);font-weight:600;line-height:1.5;
 }
 
-/* ============ CROP PICKER ============ */
+/* CROP PICKER GRID */
 .crop-grid{
   display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
   padding:0 18px 18px;
@@ -367,10 +519,10 @@ a{color:inherit;text-decoration:none}
   text-align:center;line-height:1.15;letter-spacing:-.01em;
 }
 
-/* ============ VARIETY CARDS ============ */
+/* VARIETY CARDS */
 .variety-card{
   background:#fff;border:2px solid var(--bd);border-radius:var(--r);
-  padding:14px;margin-bottom:10px;cursor:pointer;
+  padding:14px;margin-bottom:10px;cursor:pointer;text-align:left;width:100%;
   transition:all .2s var(--e);
 }
 .variety-card:active{transform:scale(.98)}
@@ -389,11 +541,8 @@ a{color:inherit;text-decoration:none}
 }
 .variety-card .vc-note{font-size:11.5px;color:var(--tl);font-weight:500;margin-top:8px;line-height:1.5}
 
-/* ============ AREA INPUT ============ */
-.area-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:12px;
-  padding:0 18px 14px;
-}
+/* AREA INPUT */
+.area-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 18px 14px}
 .area-box{
   background:#fff;border:2px solid var(--bd);border-radius:var(--r);
   padding:16px 12px;text-align:center;
@@ -418,12 +567,12 @@ a{color:inherit;text-decoration:none}
 .area-result .ar-v{font-size:28px;font-weight:900;color:var(--p-d);letter-spacing:-.03em;line-height:1}
 .area-result .ar-s{font-size:11px;color:var(--p);font-weight:600;margin-top:4px}
 
-/* ============ TOWN PICKER ============ */
+/* TOWN LIST */
 .town-list{padding:0 18px 18px}
 .town-item{
-  display:flex;align-items:center;gap:12px;padding:14px;
+  display:flex;align-items:center;gap:12px;padding:14px;width:100%;
   background:#fff;border:2px solid var(--bd);border-radius:var(--r);
-  margin-bottom:8px;transition:all .2s var(--e);cursor:pointer;
+  margin-bottom:8px;transition:all .2s var(--e);cursor:pointer;text-align:left;
 }
 .town-item:active{transform:scale(.98)}
 .town-item.selected{border-color:var(--p);background:var(--p-l)}
@@ -435,169 +584,7 @@ a{color:inherit;text-decoration:none}
 .town-item .ti-name{font-size:14px;font-weight:800;color:var(--td)}
 .town-item .ti-sub{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px}
 
-/* ============ REVIEW CARD ============ */
-.review-card{
-  margin:0 18px 14px;padding:16px;border-radius:var(--r-lg);
-  background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);
-  border:1.5px solid rgba(180,83,9,.18);
-}
-.review-card h4{font-size:12px;font-weight:800;color:#78350f;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
-.review-row{
-  display:flex;justify-content:space-between;gap:10px;
-  padding:8px 0;border-bottom:1px dashed rgba(120,53,15,.15);
-  font-size:13px;
-}
-.review-row:last-child{border-bottom:none}
-.review-row .rr-k{color:#92400e;font-weight:700}
-.review-row .rr-v{color:#78350f;font-weight:800;text-align:right;word-break:break-word}
-
-/* ============ BATCH DETAIL ============ */
-.detail-hero{
-  height:180px;background:var(--sf2);position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;font-size:80px;
-}
-.detail-hero img{width:100%;height:100%;object-fit:cover}
-.detail-body{padding:16px 18px 24px}
-.detail-body h1{font-size:22px;font-weight:900;letter-spacing:-.03em;color:var(--td);margin-bottom:6px}
-.detail-body .d-sc{font-size:13px;color:var(--tl);font-weight:600;margin-bottom:12px}
-
-.batch-num-box{
-  display:flex;align-items:center;gap:10px;padding:12px 14px;
-  background:linear-gradient(135deg,#e6f5eb 0%,#d1fae5 100%);
-  border:1px solid rgba(15,122,52,.18);border-radius:var(--r);
-  margin-bottom:14px;
-}
-.batch-num-box .bn-lb{font-size:10px;font-weight:800;color:var(--p);text-transform:uppercase;letter-spacing:.05em}
-.batch-num-box .bn-v{
-  font-family:'SF Mono','Roboto Mono',monospace;
-  font-size:13px;font-weight:800;color:var(--p-d);letter-spacing:.02em;margin-top:2px;
-  word-break:break-all;
-}
-
-.d-section{margin-bottom:16px}
-.d-section h3{
-  font-size:12.5px;font-weight:900;color:var(--td);letter-spacing:-.01em;
-  text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;
-}
-.d-section h3::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--bd),transparent)}
-
-.info-table{
-  background:#fff;border:1px solid var(--bd);border-radius:var(--r);
-  overflow:hidden;
-}
-.info-row{
-  display:flex;justify-content:space-between;gap:10px;
-  padding:11px 14px;border-bottom:1px solid var(--bd);
-  font-size:12.5px;
-}
-.info-row:last-child{border-bottom:none}
-.info-row .ir-k{color:var(--tl);font-weight:700;flex-shrink:0}
-.info-row .ir-v{color:var(--td);font-weight:800;text-align:right;word-break:break-word;max-width:60%}
-
-.timeline-stage{
-  display:flex;align-items:flex-start;gap:10px;
-  padding:10px 12px;border-radius:var(--r-sm);
-  background:var(--sf2);border:1px solid var(--bd);
-  margin-bottom:6px;
-}
-.timeline-stage .ts-dot{
-  width:20px;height:20px;border-radius:50%;flex-shrink:0;
-  background:var(--bd);color:#fff;
-  display:flex;align-items:center;justify-content:center;
-  font-size:10px;font-weight:800;margin-top:1px;
-}
-.timeline-stage.done .ts-dot{background:var(--p)}
-.timeline-stage.active{background:var(--p-ll);border-color:var(--p)}
-.timeline-stage.active .ts-dot{background:var(--p);box-shadow:0 0 0 4px rgba(15,122,52,.15)}
-.timeline-stage .ts-lb{font-size:12.5px;font-weight:700;color:var(--td);text-transform:capitalize}
-.timeline-stage.done .ts-lb{color:var(--p-d)}
-.timeline-stage .ts-dur{font-size:10.5px;color:var(--tl);font-weight:600;margin-top:2px}
-
-.schedule-row{
-  display:flex;justify-content:space-between;gap:10px;
-  padding:10px 12px;background:#fff;border:1px solid var(--bd);
-  border-radius:var(--r-sm);margin-bottom:6px;
-}
-.schedule-row .sr-left{flex:1;min-width:0}
-.schedule-row .sr-title{font-size:12.5px;font-weight:800;color:var(--td)}
-.schedule-row .sr-sub{font-size:10.5px;color:var(--tl);font-weight:600;margin-top:2px;line-height:1.4}
-.schedule-row .sr-right{text-align:right;flex-shrink:0;max-width:45%}
-.schedule-row .sr-rate{font-size:12.5px;font-weight:900;color:var(--p-d)}
-.schedule-row .sr-time{font-size:10px;color:var(--tl);font-weight:700;margin-top:2px}
-
-.knowledge-block{
-  background:#fff;border:1px solid var(--bd);border-radius:var(--r);
-  padding:14px;margin-bottom:10px;
-}
-.knowledge-block h4{
-  font-size:12.5px;font-weight:900;color:var(--td);
-  margin-bottom:6px;display:flex;align-items:center;gap:6px;
-}
-.knowledge-block p{font-size:12.5px;color:var(--tb);line-height:1.55;font-weight:500}
-.knowledge-block ul{list-style:none;padding:0;margin-top:6px}
-.knowledge-block ul li{
-  font-size:12px;color:var(--tb);font-weight:600;
-  padding:5px 0;padding-left:16px;position:relative;line-height:1.45;
-}
-.knowledge-block ul li::before{
-  content:'●';color:var(--p);font-size:8px;position:absolute;left:2px;top:8px;
-}
-
-/* ============ HARVEST INPUT ============ */
-.harvest-box{
-  margin:0 18px 14px;padding:18px;border-radius:var(--r-lg);
-  background:linear-gradient(135deg,#ffedd5 0%,#fed7aa 100%);
-  border:1.5px solid rgba(234,88,12,.18);
-}
-.harvest-box h4{
-  font-size:13px;font-weight:900;color:#9a3412;
-  text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;
-  display:flex;align-items:center;gap:8px;
-}
-.harvest-input-row{
-  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;
-}
-.harvest-input-box{
-  background:#fff;border:1.5px solid rgba(234,88,12,.22);
-  border-radius:var(--r);padding:12px;text-align:center;
-}
-.harvest-input-box label{
-  display:block;font-size:10.5px;font-weight:800;color:#9a3412;
-  text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;
-}
-.harvest-input-box input{
-  width:100%;border:none;background:none;outline:none;text-align:center;
-  font-size:24px;font-weight:900;color:var(--td);letter-spacing:-.03em;
-}
-.harvest-input-box .hib-unit{
-  font-size:10.5px;color:#9a3412;font-weight:800;margin-top:4px;letter-spacing:.03em;
-}
-
-.compare-card{
-  margin:0 18px 14px;padding:14px;border-radius:var(--r);
-  background:#fff;border:1px solid var(--bd);
-}
-.compare-card h4{
-  font-size:12px;font-weight:900;color:var(--td);
-  text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;
-}
-.compare-bars{margin-top:8px}
-.compare-bar-row{margin-bottom:10px}
-.compare-bar-row .cbr-top{
-  display:flex;justify-content:space-between;font-size:11.5px;
-  font-weight:800;color:var(--tb);margin-bottom:4px;
-}
-.compare-bar-row .cbr-top span:first-child{color:var(--tl);font-weight:700}
-.compare-bar-track{
-  height:10px;border-radius:5px;background:var(--bd);overflow:hidden;
-}
-.compare-bar-fill{
-  height:100%;border-radius:5px;transition:width .8s var(--e);
-}
-.compare-bar-fill.expected{background:linear-gradient(90deg,#86efac,#16a34a)}
-.compare-bar-fill.actual{background:linear-gradient(90deg,#fdba74,#ea580c)}
-
-/* ============ FORM ELEMENTS ============ */
+/* FORM ELEMENTS */
 .frm{padding:0 18px 18px;display:flex;flex-direction:column;gap:12px}
 .fld{position:relative}
 .fld label{
@@ -627,84 +614,159 @@ a{color:inherit;text-decoration:none}
 .btn-s:active:not(:disabled){background:var(--sf2)}
 .btn-danger{background:var(--sf);color:var(--danger);border:1.5px solid var(--danger)}
 .btn-sm{padding:10px 14px;font-size:13px}
-
 .btn-row{display:flex;gap:10px;padding:0 18px 18px}
 .btn-row .btn{flex:1}
 
-/* ============ BOTTOM NAV ============ */
-.bnav{
-  position:absolute;left:0;right:0;bottom:0;height:calc(var(--nav-h) + var(--safe-b));
-  padding-bottom:var(--safe-b);
-  background:rgba(255,255,255,.97);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-top:1px solid var(--bd);
-  display:flex;align-items:center;justify-content:space-around;
-  z-index:20;
+/* BATCH DETAIL */
+.detail-hero{
+  height:180px;background:var(--sf2);position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;font-size:80px;
 }
-.bnav .bn{
-  flex:1;height:var(--nav-h);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
-  color:var(--tm);transition:color .25s var(--e);position:relative;padding:0 2px;
+.detail-hero img{width:100%;height:100%;object-fit:cover}
+.detail-body{padding:16px 18px 24px}
+.detail-body h1{font-size:22px;font-weight:900;letter-spacing:-.03em;color:var(--td);margin-bottom:6px}
+.detail-body .d-sc{font-size:13px;color:var(--tl);font-weight:600;margin-bottom:12px}
+
+.batch-num-box{
+  display:flex;align-items:center;gap:10px;padding:12px 14px;
+  background:linear-gradient(135deg,#e6f5eb 0%,#d1fae5 100%);
+  border:1px solid rgba(15,122,52,.18);border-radius:var(--r);
+  margin-bottom:14px;
 }
-.bnav .bn svg{
-  width:22px;height:22px;fill:currentColor;
-  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
-}
-.bnav .bn .bn-lb{
-  font-size:9.5px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;
-}
-.bnav .bn.active{color:var(--p)}
-.bnav .bn.active svg{transform:scale(1.45)}
-.bnav .bn.active::before{
-  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:28px;height:3px;border-radius:0 0 3px 3px;background:var(--p);
-  box-shadow:0 2px 6px -1px var(--p-glow);
-}
-.bnav .bn .bn-badge{
-  position:absolute;top:8px;right:calc(50% - 18px);
-  min-width:16px;height:16px;padding:0 4px;
-  background:var(--danger);color:#fff;font-size:9px;font-weight:800;
-  border-radius:8px;display:flex;align-items:center;justify-content:center;
-  border:1.5px solid var(--sf);
+.batch-num-box .bn-lb{font-size:10px;font-weight:800;color:var(--p);text-transform:uppercase;letter-spacing:.05em}
+.batch-num-box .bn-v{
+  font-family:'SF Mono','Roboto Mono',monospace;
+  font-size:13px;font-weight:800;color:var(--p-d);letter-spacing:.02em;margin-top:2px;
+  word-break:break-all;
 }
 
-/* ============ MODAL / TOAST ============ */
-.modal{
-  position:fixed;inset:0;background:rgba(15,23,42,.5);
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  display:none;align-items:center;justify-content:center;padding:20px;z-index:500;
-  animation:fadeIn .22s ease;
+.d-section{margin-bottom:16px}
+.d-section h3{
+  font-size:12.5px;font-weight:900;color:var(--td);letter-spacing:-.01em;
+  text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;
 }
-.modal.open{display:flex}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal-card{
-  background:#fff;border-radius:var(--r-xl);width:100%;max-width:420px;
-  padding:24px;text-align:center;
-  box-shadow:0 30px 70px -20px rgba(15,23,42,.35);
-  animation:modalIn .32s cubic-bezier(.34,1.4,.64,1);
-  max-height:85vh;overflow-y:auto;
-}
-@keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(14px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.modal-card h3{font-size:18px;font-weight:900;color:var(--td);margin-bottom:8px;letter-spacing:-.02em}
-.modal-card p{font-size:13.5px;color:var(--tl);line-height:1.55;margin-bottom:16px}
+.d-section h3::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--bd),transparent)}
 
-.toast{
-  position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 20px);left:50%;
-  transform:translate(-50%,30px);background:rgba(15,23,42,.94);color:#fff;
-  padding:12px 20px;border-radius:var(--r-p);font-size:13.5px;font-weight:700;
-  opacity:0;pointer-events:none;transition:all .3s var(--e);z-index:600;
-  box-shadow:0 12px 30px -8px rgba(0,0,0,.4);max-width:calc(100vw - 40px);text-align:center;
+.info-table{background:#fff;border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.info-row{
+  display:flex;justify-content:space-between;gap:10px;
+  padding:11px 14px;border-bottom:1px solid var(--bd);
+  font-size:12.5px;
 }
-.toast.show{opacity:1;transform:translate(-50%,0)}
+.info-row:last-child{border-bottom:none}
+.info-row .ir-k{color:var(--tl);font-weight:700;flex-shrink:0}
+.info-row .ir-v{color:var(--td);font-weight:800;text-align:right;word-break:break-word;max-width:60%}
 
-.empty{padding:40px 24px;text-align:center;color:var(--tl)}
-.empty .e-ic{font-size:56px;margin-bottom:12px;opacity:.5}
-.empty h3{font-size:15px;font-weight:800;color:var(--td);margin-bottom:6px}
-.empty p{font-size:12.5px;line-height:1.5}
-
-.success-burst{
-  text-align:center;padding:20px 0;
+.timeline-stage{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 12px;border-radius:var(--r-sm);
+  background:var(--sf2);border:1px solid var(--bd);
+  margin-bottom:6px;
 }
+.timeline-stage .ts-dot{
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;
+  background:var(--bd);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;margin-top:1px;
+}
+.timeline-stage.done .ts-dot{background:var(--p)}
+.timeline-stage.active{background:var(--p-ll);border-color:var(--p)}
+.timeline-stage.active .ts-dot{background:var(--p);box-shadow:0 0 0 4px rgba(15,122,52,.15)}
+.timeline-stage .ts-lb{font-size:12.5px;font-weight:700;color:var(--td);text-transform:capitalize}
+.timeline-stage.done .ts-lb{color:var(--p-d)}
+.timeline-stage .ts-dur{font-size:10.5px;color:var(--tl);font-weight:600;margin-top:2px}
+
+.schedule-row{
+  display:flex;justify-content:space-between;gap:10px;
+  padding:10px 12px;background:#fff;border:1px solid var(--bd);
+  border-radius:var(--r-sm);margin-bottom:6px;
+}
+.schedule-row .sr-left{flex:1;min-width:0}
+.schedule-row .sr-title{font-size:12.5px;font-weight:800;color:var(--td)}
+.schedule-row .sr-sub{font-size:10.5px;color:var(--tl);font-weight:600;margin-top:2px;line-height:1.4}
+.schedule-row .sr-right{text-align:right;flex-shrink:0;max-width:45%}
+.schedule-row .sr-rate{font-size:12.5px;font-weight:900;color:var(--p-d)}
+.schedule-row .sr-time{font-size:10px;color:var(--tl);font-weight:700;margin-top:2px}
+
+.knowledge-block{
+  background:#fff;border:1px solid var(--bd);border-radius:var(--r);
+  padding:14px;margin-bottom:10px;
+}
+.knowledge-block h4{font-size:12.5px;font-weight:900;color:var(--td);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.knowledge-block p{font-size:12.5px;color:var(--tb);line-height:1.55;font-weight:500}
+.knowledge-block ul{list-style:none;padding:0;margin-top:6px}
+.knowledge-block ul li{
+  font-size:12px;color:var(--tb);font-weight:600;
+  padding:5px 0;padding-left:16px;position:relative;line-height:1.45;
+}
+.knowledge-block ul li::before{
+  content:'●';color:var(--p);font-size:8px;position:absolute;left:2px;top:8px;
+}
+
+/* Details toggle */
+.details-toggle{
+  width:100%;padding:14px;border-radius:var(--r);
+  background:var(--sf2);border:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:13px;font-weight:800;color:var(--td);margin-bottom:8px;
+  transition:all .2s var(--e);
+}
+.details-toggle:active{transform:scale(.98);background:var(--p-l)}
+.details-toggle .dt-chev{transition:transform .3s var(--e)}
+.details-toggle.open .dt-chev{transform:rotate(180deg)}
+.details-content{
+  max-height:0;overflow:hidden;
+  transition:max-height .4s var(--e);
+}
+.details-content.open{max-height:3000px}
+
+/* HARVEST INPUT */
+.harvest-box{
+  margin:0 18px 14px;padding:18px;border-radius:var(--r-lg);
+  background:linear-gradient(135deg,#ffedd5 0%,#fed7aa 100%);
+  border:1.5px solid rgba(234,88,12,.18);
+}
+.harvest-box h4{
+  font-size:13px;font-weight:900;color:#9a3412;
+  text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;
+  display:flex;align-items:center;gap:8px;
+}
+.harvest-input-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.harvest-input-box{
+  background:#fff;border:1.5px solid rgba(234,88,12,.22);
+  border-radius:var(--r);padding:12px;text-align:center;
+}
+.harvest-input-box label{
+  display:block;font-size:10.5px;font-weight:800;color:#9a3412;
+  text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;
+}
+.harvest-input-box input{
+  width:100%;border:none;background:none;outline:none;text-align:center;
+  font-size:24px;font-weight:900;color:var(--td);letter-spacing:-.03em;
+}
+.harvest-input-box .hib-unit{
+  font-size:10.5px;color:#9a3412;font-weight:800;margin-top:4px;letter-spacing:.03em;
+}
+
+.compare-card{
+  margin:0 18px 14px;padding:14px;border-radius:var(--r);
+  background:#fff;border:1px solid var(--bd);
+}
+.compare-card h4{font-size:12px;font-weight:900;color:var(--td);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.compare-bars{margin-top:8px}
+.compare-bar-row{margin-bottom:10px}
+.compare-bar-row .cbr-top{
+  display:flex;justify-content:space-between;font-size:11.5px;
+  font-weight:800;color:var(--tb);margin-bottom:4px;
+}
+.compare-bar-row .cbr-top span:first-child{color:var(--tl);font-weight:700}
+.compare-bar-track{height:10px;border-radius:5px;background:var(--bd);overflow:hidden}
+.compare-bar-fill{height:100%;border-radius:5px;transition:width .8s var(--e)}
+.compare-bar-fill.expected{background:linear-gradient(90deg,#86efac,#16a34a)}
+.compare-bar-fill.actual{background:linear-gradient(90deg,#fdba74,#ea580c)}
+
+/* SUCCESS SCREEN */
+.success-burst{text-align:center;padding:20px 0}
 .success-burst .sb-ic{
   width:96px;height:96px;border-radius:50%;margin:0 auto 16px;
   background:linear-gradient(145deg,#a7f3d0,#0f7a34);color:#fff;
@@ -739,28 +801,79 @@ a{color:inherit;text-decoration:none}
 .batch-result .br-row span:first-child{color:var(--p);font-weight:700}
 .batch-result .br-row span:last-child{color:var(--p-d);font-weight:800;text-align:right}
 
-/* Details toggle */
-.details-toggle{
-  width:100%;padding:14px;border-radius:var(--r);
-  background:var(--sf2);border:1px solid var(--bd);
-  display:flex;align-items:center;justify-content:space-between;
-  font-size:13px;font-weight:800;color:var(--td);
-  margin-bottom:8px;
-  transition:all .2s var(--e);
+/* BOTTOM NAV */
+.bnav{
+  position:absolute;left:0;right:0;bottom:0;height:calc(var(--nav-h) + var(--safe-b));
+  padding-bottom:var(--safe-b);
+  background:rgba(255,255,255,.97);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:space-around;
+  z-index:20;
 }
-.details-toggle:active{transform:scale(.98);background:var(--p-l)}
-.details-toggle .dt-chev{transition:transform .3s var(--e)}
-.details-toggle.open .dt-chev{transform:rotate(180deg)}
-.details-content{
-  max-height:0;overflow:hidden;
-  transition:max-height .4s var(--e);
+.bnav .bn{
+  flex:1;height:var(--nav-h);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  color:var(--tm);transition:color .25s var(--e);position:relative;padding:0 2px;
 }
-.details-content.open{max-height:3000px}
+.bnav .bn svg{
+  width:22px;height:22px;fill:currentColor;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.bnav .bn .bn-lb{font-size:9.5px;font-weight:800;letter-spacing:.03em;text-transform:uppercase}
+.bnav .bn.active{color:var(--p)}
+.bnav .bn.active svg{transform:scale(1.45)}
+.bnav .bn.active::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:28px;height:3px;border-radius:0 0 3px 3px;background:var(--p);
+  box-shadow:0 2px 6px -1px var(--p-glow);
+}
+.bnav .bn .bn-badge{
+  position:absolute;top:8px;right:calc(50% - 18px);
+  min-width:16px;height:16px;padding:0 4px;
+  background:var(--danger);color:#fff;font-size:9px;font-weight:800;
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  border:1.5px solid var(--sf);
+}
+
+/* MODAL + TOAST */
+.modal{
+  position:fixed;inset:0;background:rgba(15,23,42,.5);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;padding:20px;z-index:500;
+  animation:fadeIn .22s ease;
+}
+.modal.open{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-card{
+  background:#fff;border-radius:var(--r-xl);width:100%;max-width:420px;
+  padding:24px;text-align:center;
+  box-shadow:0 30px 70px -20px rgba(15,23,42,.35);
+  animation:modalIn .32s cubic-bezier(.34,1.4,.64,1);
+  max-height:85vh;overflow-y:auto;
+}
+@keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(14px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-card h3{font-size:18px;font-weight:900;color:var(--td);margin-bottom:8px;letter-spacing:-.02em}
+.modal-card p{font-size:13.5px;color:var(--tl);line-height:1.55;margin-bottom:16px}
+
+.toast{
+  position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 20px);left:50%;
+  transform:translate(-50%,30px);background:rgba(15,23,42,.94);color:#fff;
+  padding:12px 20px;border-radius:var(--r-p);font-size:13.5px;font-weight:700;
+  opacity:0;pointer-events:none;transition:all .3s var(--e);z-index:600;
+  box-shadow:0 12px 30px -8px rgba(0,0,0,.4);max-width:calc(100vw - 40px);text-align:center;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+.empty{padding:40px 24px;text-align:center;color:var(--tl)}
+.empty .e-ic{font-size:56px;margin-bottom:12px;opacity:.5}
+.empty h3{font-size:15px;font-weight:800;color:var(--td);margin-bottom:6px}
+.empty p{font-size:12.5px;line-height:1.5}
 
 @media(max-width:380px){
   .crop-grid{grid-template-columns:repeat(3,1fr)}
-  .big-card .bc-ic{width:56px;height:56px;font-size:28px}
-  .big-card .bc-tt{font-size:15px}
+  .service-hero{height:160px}
+  .service-hero .sh-art{font-size:110px;width:170px;height:160px}
 }
 </style>
 </head>
@@ -790,7 +903,7 @@ a{color:inherit;text-decoration:none}
 <script type="module">
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { getDatabase, ref, get, set, update, push, child, onValue, serverTimestamp, remove } from "firebase/database";
+import { getDatabase, ref, get, set, update, push, onValue, remove } from "firebase/database";
 
 /* ============================================================
    FIREBASE
@@ -816,41 +929,23 @@ const UPLOAD_PRESET = 'h3eyhc2o';
 const S = {
   user: null, profile: null,
   catalogue: [],
-  varieties: {},           // { cropId: [varieties] }
-  cropSpacing: {},          // { cropId: [spacing] }
-  fertilizerSchedules: {},  // { cropId: { basal, topDress, ... } }
+  varieties: {},
+  cropSpacing: {},
+  fertilizerSchedules: {},
   soilTypes: [],
   irrigationTypes: [],
-  detailedStages: {},       // { cropId: [stages] }
-
+  detailedStages: {},
   screen: 'splash', screenData: {},
-  farmTab: 'plant',          // plant | manage | harvest
-
-  // Plant wizard
-  plantWizard: {
-    step: 1,
-    cropId: null,
-    varietyName: null,
-    length: null, width: null,
-    town: null
-  },
-
-  myBatches: [],              // all batches of this farmer
-  myActivities: [],           // legacy
+  farmTab: 'plant',
+  plantWizard: { step: 1, cropId: null, varietyName: null, length: null, width: null, town: null },
+  myBatches: [],
   myListings: [],
-  allActivities: [],
   marketplace: [],
-  community: [],
-  cart: [],
   weather: null, weatherCity: '',
   userCoords: null, userLocation: 'Lusaka',
-  notifications: [], unreadNotifCount: 0,
-  following: {},
-  suppliers: [], supplierProducts: [],
-  deliveries: [],
-  expandedDetails: {},
   locationPermissionAsked: false,
-  liveClockTimer: null
+  liveClockTimer: null,
+  deliveries: []
 };
 
 const $modal = document.getElementById('modal');
@@ -866,10 +961,7 @@ function toast(msg, ms=2400){
   clearTimeout($toast._t);
   $toast._t = setTimeout(()=>$toast.classList.remove('show'), ms);
 }
-function modal(html){
-  $modalCard.innerHTML = html;
-  $modal.classList.add('open');
-}
+function modal(html){ $modalCard.innerHTML = html; $modal.classList.add('open'); }
 function closeModal(){ $modal.classList.remove('open'); }
 $modal.addEventListener('click', e=>{ if(e.target===$modal) closeModal(); });
 
@@ -899,13 +991,10 @@ function timeAgo(ts){
   if(s<604800) return Math.floor(s/86400)+'d ago';
   return new Date(ts).toLocaleDateString();
 }
-function daysBetween(a, b){
-  return Math.max(0, Math.floor((b - a) / 86400000));
-}
 function nowMs(){ return Date.now(); }
 
 /* ============================================================
-   BATCH NUMBER GENERATOR — BATCH-NNN_YYYY_MM_DD
+   BATCH NUMBER
    ============================================================ */
 async function generateBatchNumber(){
   const now = new Date();
@@ -913,7 +1002,6 @@ async function generateBatchNumber(){
   const m = String(now.getMonth()+1).padStart(2,'0');
   const d = String(now.getDate()).padStart(2,'0');
   const dateKey = `${y}_${m}_${d}`;
-  // count all batches belonging to this user + others today
   let seq = 1;
   try{
     const snap = await get(ref(db, 'batches'));
@@ -922,13 +1010,13 @@ async function generateBatchNumber(){
       let maxToday = 0;
       Object.values(all).forEach(b=>{
         if(b && b.batchDateKey === dateKey){
-          const n = parseInt((b.batchSeq || 0), 10);
+          const n = parseInt(b.batchSeq || 0, 10);
           if(n > maxToday) maxToday = n;
         }
       });
       seq = maxToday + 1;
     }
-  }catch(e){ /* fallback to 1 */ }
+  }catch(e){}
   const seqStr = String(seq).padStart(3, '0');
   return { batchNumber: `BATCH-${seqStr}_${dateKey}`, batchSeq: seq, batchDateKey: dateKey };
 }
@@ -949,7 +1037,6 @@ function computeArea(length, width){
    YIELD FORECAST
    ============================================================ */
 function parseYieldRange(str){
-  // e.g. "80–90 t/ha", "6–8 t/ha", "40–60 t/ha"
   if(!str) return { low:0, high:0 };
   const m = String(str).match(/([\d.]+)\s*[–-]\s*([\d.]+)/);
   if(m) return { low: parseFloat(m[1]), high: parseFloat(m[2]) };
@@ -957,90 +1044,75 @@ function parseYieldRange(str){
   if(single) return { low: parseFloat(single[1]), high: parseFloat(single[1]) };
   return { low:0, high:0 };
 }
-
 function computeForecast(cropId, varietyName, areaHa){
-  const varietiesForCrop = S.varieties[cropId] || [];
-  const variety = varietiesForCrop.find(v=>v.name === varietyName);
-  if(!variety){
-    return { lowKg:0, highKg:0, baseKg:0, variety:null };
-  }
+  const list = S.varieties[cropId] || [];
+  const variety = list.find(v=>v.name === varietyName);
+  if(!variety) return { lowKg:0, highKg:0, baseKg:0, variety:null };
   const range = parseYieldRange(variety.yield);
-  const lowKg = range.low * 1000 * areaHa;
-  const highKg = range.high * 1000 * areaHa;
-  const baseKg = (range.low + range.high) / 2 * 1000 * areaHa;
-  return { lowKg, highKg, baseKg, variety };
+  return {
+    lowKg: range.low * 1000 * areaHa,
+    highKg: range.high * 1000 * areaHa,
+    baseKg: ((range.low + range.high) / 2) * 1000 * areaHa,
+    variety
+  };
 }
 
 /* ============================================================
    ICONS + GRADIENTS
    ============================================================ */
-const ICONS = {
-  tomato:'🍅', maize:'🌽', cow:'🐄', onion:'🧅', apple:'🍎', truck:'🚚',
-  wheat:'🌾', rice:'🍚', sorghum:'🌾', millet:'🌾', peas:'🫛', soy:'🫘', groundnut:'🥜',
-  beans:'🫘', cowpea:'🫘', carrot:'🥕', cabbage:'🥬', kale:'🥬', spinach:'🥬',
-  lettuce:'🥬', beetroot:'🟣', potato:'🥔', pepper:'🫑', chilli:'🌶️', eggplant:'🍆',
-  okra:'🥒', sweetCorn:'🌽', mushroom:'🍄', banana:'🍌', mango:'🥭', avocado:'🥑',
-  citrus:'🍊', papaya:'🍈', cashew:'🌰', goat:'🐐', sheep:'🐑', pig:'🐖',
-  rabbit:'🐇', donkey:'🫏', horse:'🐴', dog:'🐕', bee:'🐝',
-  chicken:'🐔', hen:'🐔', duck:'🦆', turkey:'🦃', guineaFowl:'🐦', quail:'🐦',
-  pigeon:'🕊️', goose:'🦢', fish:'🐟', catfish:'🐟', trout:'🐟', carp:'🐟', prawn:'🦐',
-  seeds:'🌱', fertilizer:'💧', pesticide:'🧴', tools:'🔧', feed:'🌾', medicine:'💊',
-  crop:'🌱', livestock:'🐄', fisheries:'🐟', market:'🛒', delivery:'🚚',
-  default:'🌿'
-};
 function pickIcon(name){
-  if(!name) return ICONS.default;
+  if(!name) return '🌿';
   const n = String(name).toLowerCase();
-  if(n.includes('tomato')) return ICONS.tomato;
-  if(n.includes('maize')||n.includes('corn')) return ICONS.maize;
-  if(n.includes('cow')||n.includes('cattle')||n.includes('beef')||n.includes('dairy')) return ICONS.cow;
-  if(n.includes('onion')) return ICONS.onion;
-  if(n.includes('wheat')) return ICONS.wheat;
-  if(n.includes('rice')) return ICONS.rice;
-  if(n.includes('sorghum')) return ICONS.sorghum;
-  if(n.includes('millet')) return ICONS.millet;
-  if(n.includes('pea')) return ICONS.peas;
-  if(n.includes('soy')) return ICONS.soy;
-  if(n.includes('groundnut')||n.includes('peanut')) return ICONS.groundnut;
-  if(n.includes('cowpea')) return ICONS.cowpea;
-  if(n.includes('bean')) return ICONS.beans;
-  if(n.includes('carrot')) return ICONS.carrot;
-  if(n.includes('cabbage')) return ICONS.cabbage;
-  if(n.includes('kale')||n.includes('rape')) return ICONS.kale;
-  if(n.includes('spinach')||n.includes('amaranth')) return ICONS.spinach;
-  if(n.includes('lettuce')) return ICONS.lettuce;
-  if(n.includes('beet')) return ICONS.beetroot;
-  if(n.includes('potato')) return ICONS.potato;
-  if(n.includes('chilli')||n.includes('chili')) return ICONS.chilli;
-  if(n.includes('pepper')) return ICONS.pepper;
-  if(n.includes('eggplant')||n.includes('aubergine')) return ICONS.eggplant;
-  if(n.includes('okra')) return ICONS.okra;
-  if(n.includes('mushroom')) return ICONS.mushroom;
-  if(n.includes('banana')||n.includes('plantain')) return ICONS.banana;
-  if(n.includes('mango')) return ICONS.mango;
-  if(n.includes('avocado')) return ICONS.avocado;
-  if(n.includes('citrus')||n.includes('orange')||n.includes('lemon')||n.includes('lime')) return ICONS.citrus;
-  if(n.includes('papaya')||n.includes('pawpaw')) return ICONS.papaya;
-  if(n.includes('cashew')) return ICONS.cashew;
-  if(n.includes('goat')) return ICONS.goat;
-  if(n.includes('sheep')) return ICONS.sheep;
-  if(n.includes('pig')) return ICONS.pig;
-  if(n.includes('rabbit')) return ICONS.rabbit;
-  if(n.includes('bee')&&!n.includes('keep')) return ICONS.bee;
-  if(n.includes('broiler')||n.includes('chicken')||n.includes('poultry')) return ICONS.chicken;
-  if(n.includes('layer')||n.includes('hen')) return ICONS.hen;
-  if(n.includes('duck')) return ICONS.duck;
-  if(n.includes('turkey')) return ICONS.turkey;
-  if(n.includes('guinea')) return ICONS.guineaFowl;
-  if(n.includes('quail')) return ICONS.quail;
-  if(n.includes('pigeon')) return ICONS.pigeon;
-  if(n.includes('goose')||n.includes('geese')) return ICONS.goose;
-  if(n.includes('tilapia')||n.includes('fish')||n.includes('fisher')) return ICONS.fish;
-  if(n.includes('catfish')) return ICONS.catfish;
-  if(n.includes('trout')) return ICONS.trout;
-  if(n.includes('carp')) return ICONS.carp;
-  if(n.includes('prawn')) return ICONS.prawn;
-  return ICONS.default;
+  if(n.includes('tomato')) return '🍅';
+  if(n.includes('maize')||n.includes('corn')) return '🌽';
+  if(n.includes('cow')||n.includes('cattle')||n.includes('beef')||n.includes('dairy')) return '🐄';
+  if(n.includes('onion')) return '🧅';
+  if(n.includes('wheat')) return '🌾';
+  if(n.includes('rice')) return '🍚';
+  if(n.includes('sorghum')) return '🌾';
+  if(n.includes('millet')) return '🌾';
+  if(n.includes('pea')) return '🫛';
+  if(n.includes('soy')) return '🫘';
+  if(n.includes('groundnut')||n.includes('peanut')) return '🥜';
+  if(n.includes('cowpea')) return '🫘';
+  if(n.includes('bean')) return '🫘';
+  if(n.includes('carrot')) return '🥕';
+  if(n.includes('cabbage')) return '🥬';
+  if(n.includes('kale')||n.includes('rape')) return '🥬';
+  if(n.includes('spinach')||n.includes('amaranth')) return '🥬';
+  if(n.includes('lettuce')) return '🥬';
+  if(n.includes('beet')) return '🟣';
+  if(n.includes('potato')) return '🥔';
+  if(n.includes('chilli')||n.includes('chili')) return '🌶️';
+  if(n.includes('pepper')) return '🫑';
+  if(n.includes('eggplant')||n.includes('aubergine')) return '🍆';
+  if(n.includes('okra')) return '🥒';
+  if(n.includes('mushroom')) return '🍄';
+  if(n.includes('banana')||n.includes('plantain')) return '🍌';
+  if(n.includes('mango')) return '🥭';
+  if(n.includes('avocado')) return '🥑';
+  if(n.includes('citrus')||n.includes('orange')||n.includes('lemon')||n.includes('lime')) return '🍊';
+  if(n.includes('papaya')||n.includes('pawpaw')) return '🍈';
+  if(n.includes('cashew')) return '🌰';
+  if(n.includes('goat')) return '🐐';
+  if(n.includes('sheep')) return '🐑';
+  if(n.includes('pig')) return '🐖';
+  if(n.includes('rabbit')) return '🐇';
+  if(n.includes('bee')&&!n.includes('keep')) return '🐝';
+  if(n.includes('broiler')||n.includes('chicken')||n.includes('poultry')) return '🐔';
+  if(n.includes('layer')||n.includes('hen')) return '🐔';
+  if(n.includes('duck')) return '🦆';
+  if(n.includes('turkey')) return '🦃';
+  if(n.includes('guinea')) return '🐦';
+  if(n.includes('quail')) return '🐦';
+  if(n.includes('pigeon')) return '🕊️';
+  if(n.includes('goose')||n.includes('geese')) return '🦢';
+  if(n.includes('tilapia')||n.includes('fish')||n.includes('fisher')) return '🐟';
+  if(n.includes('catfish')) return '🐟';
+  if(n.includes('trout')) return '🐟';
+  if(n.includes('carp')) return '🐟';
+  if(n.includes('prawn')) return '🦐';
+  return '🌿';
 }
 const GRADS = [
   'linear-gradient(145deg,#d1fae5,#10b981)',
@@ -1072,13 +1144,7 @@ async function loadWeatherByCoords(lat, lng){
       code: j.current.weather_code,
       isDay: j.current.is_day === 1,
       hi: Math.round(j.daily.temperature_2m_max[0]),
-      lo: Math.round(j.daily.temperature_2m_min[0]),
-      daily: j.daily.time.slice(1,4).map((d,i)=>({
-        day: new Date(d).toLocaleDateString('en-GB',{weekday:'short'}),
-        hi: Math.round(j.daily.temperature_2m_max[i+1]),
-        lo: Math.round(j.daily.temperature_2m_min[i+1]),
-        code: j.daily.weather_code[i+1]
-      }))
+      lo: Math.round(j.daily.temperature_2m_min[0])
     };
   }catch(e){ return null; }
 }
@@ -1106,13 +1172,12 @@ function weatherDescFor(code){
   if(code <= 82) return 'Rain showers';
   return 'Thunderstorm';
 }
-
 function formatLiveClock(d){
   const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   const hh = String(d.getHours()).padStart(2,'0');
   const mm = String(d.getMinutes()).padStart(2,'0');
-  return `${hh}:${mm} ${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()} ${d.getFullYear()}`;
+  return `${hh}:${mm} ${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()}`;
 }
 function startLiveClock(){
   const tick = ()=>{
@@ -1122,33 +1187,6 @@ function startLiveClock(){
   tick();
   clearInterval(S.liveClockTimer);
   S.liveClockTimer = setInterval(tick, 30000);
-}
-
-/* ============================================================
-   CLOUDINARY
-   ============================================================ */
-function uploadImage(folder='agri', resourceType='image'){
-  return new Promise((resolve, reject)=>{
-    if(typeof cloudinary === 'undefined' || !cloudinary.openUploadWidget){
-      reject(new Error('Upload widget not loaded'));
-      return;
-    }
-    cloudinary.openUploadWidget({
-      cloudName: CLOUD_NAME,
-      uploadPreset: UPLOAD_PRESET,
-      sources:['local','camera'],
-      multiple:false,
-      maxFiles:1,
-      maxFileSize:50000000,
-      resourceType: resourceType,
-      clientAllowedFormats: resourceType === 'video' ? ['mp4','mov','webm'] : ['jpg','jpeg','png','webp','heic'],
-      cropping:false,
-      folder:'agri/'+folder
-    }, (err, res)=>{
-      if(err) return reject(err);
-      if(res && res.event==='success' && res.info) resolve(res.info.secure_url);
-    });
-  });
 }
 
 /* ============================================================
@@ -1166,7 +1204,6 @@ function buildScreen(id){
   }
   return el;
 }
-
 function showScreen(id, data={}, pushHistory=true){
   S.screenData = data || {};
   const target = buildScreen(id);
@@ -1176,15 +1213,12 @@ function showScreen(id, data={}, pushHistory=true){
   activeScreenEl = target;
   S.screen = id;
   route();
-  if(pushHistory){
-    try{ history.pushState({screen:id, data}, '', '#'+id); }catch(e){}
-  }
+  if(pushHistory){ try{ history.pushState({screen:id, data}, '', '#'+id); }catch(e){} }
   const sc = target.querySelector('.scroll');
   if(sc) sc.scrollTop = 0;
   updateNav(id);
   startLiveClock();
 }
-
 window.addEventListener('popstate', e=>{
   if($modal.classList.contains('open')){ closeModal(); return; }
   const st = e.state || {};
@@ -1192,7 +1226,6 @@ window.addEventListener('popstate', e=>{
   if(!document.getElementById('screen-'+id)){ showScreen('home', {}, false); return; }
   showScreen(id, st.data || {}, false);
 });
-
 function updateNav(id){
   const nav = document.getElementById('bnav');
   if(!nav) return;
@@ -1200,15 +1233,15 @@ function updateNav(id){
     const s = b.dataset.nav;
     let active = false;
     if(s === 'home') active = id === 'home';
-    if(s === 'farm') active = id === 'farm' || id.startsWith('plant-') || id === 'batch-detail' || id === 'harvest-record';
-    if(s === 'market') active = id === 'marketplace' || id === 'product-detail' || id === 'cart' || id === 'checkout' || id === 'post-ready-goods';
-    if(s === 'delivery') active = id === 'delivery' || id === 'request-delivery' || id === 'delivery-history';
-    if(s === 'profile') active = id === 'profile' || id === 'my-posts' || id === 'revenue' || id === 'docs' || id === 'analysis' || id === 'follow-ups' || id === 'weather' || id === 'community' || id === 'create-post' || id === 'post-detail';
+    if(s === 'farm') active = ['farm','plant-step-1','plant-step-2','plant-step-3','plant-step-4','plant-success','batch-detail','harvest-record'].includes(id);
+    if(s === 'market') active = ['marketplace','product-detail','post-ready-goods'].includes(id);
+    if(s === 'delivery') active = ['delivery','request-delivery','delivery-history'].includes(id);
+    if(s === 'profile') active = ['profile','weather','analysis'].includes(id);
     b.classList.toggle('active', active);
   });
 }
-
 function bottomNavHTML(){
+  const activeBatches = S.myBatches.filter(b=>b.status !== 'harvested').length;
   return `
   <nav class="bnav" id="bnav">
     <button class="bn" data-nav="home" onclick="goHome()">
@@ -1218,7 +1251,7 @@ function bottomNavHTML(){
     <button class="bn" data-nav="farm" onclick="goFarm()">
       <svg viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg>
       <span class="bn-lb">Farm</span>
-      ${S.myBatches.filter(b=>b.status==='harvesting').length ? `<span class="bn-badge">${S.myBatches.filter(b=>b.status==='harvesting').length}</span>`:''}
+      ${activeBatches ? `<span class="bn-badge">${activeBatches}</span>`:''}
     </button>
     <button class="bn" data-nav="market" onclick="goMarket()">
       <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
@@ -1234,7 +1267,6 @@ function bottomNavHTML(){
     </button>
   </nav>`;
 }
-
 window.goHome = ()=> showScreen('home');
 window.goFarm = ()=> showScreen('farm');
 window.goMarket = ()=> showScreen('marketplace');
@@ -1259,28 +1291,21 @@ function route(){
     case 'plant-step-4': el.innerHTML = renderPlantStep4(); break;
     case 'plant-success': el.innerHTML = renderPlantSuccess(S.screenData); break;
     case 'batch-detail': el.innerHTML = renderBatchDetail(S.screenData.id, S.screenData.tab); break;
-    case 'harvest-record': el.innerHTML = renderHarvestRecord(S.screenData.id); wireHarvestRecord(S.screenData.id); break;
+    case 'harvest-record': el.innerHTML = renderHarvestRecord(S.screenData.id); break;
     case 'marketplace': el.innerHTML = renderMarketplace(); break;
     case 'product-detail': el.innerHTML = renderProduct(S.screenData.id); break;
-    case 'post-ready-goods': el.innerHTML = renderPostReadyGoods(S.screenData); wirePostReadyGoods(); break;
+    case 'post-ready-goods': el.innerHTML = renderPostReadyGoods(); break;
     case 'delivery': el.innerHTML = renderDelivery(); break;
     case 'request-delivery': el.innerHTML = renderRequestDelivery(); break;
     case 'delivery-history': el.innerHTML = renderDeliveryHistory(); break;
     case 'profile': el.innerHTML = renderProfile(); break;
-    case 'my-posts': el.innerHTML = renderMyPosts(S.screenData.tab); break;
-    case 'docs': el.innerHTML = renderDocs(); break;
-    case 'analysis': el.innerHTML = renderAnalysis(); break;
     case 'weather': el.innerHTML = renderWeather(); break;
-    case 'follow-ups': el.innerHTML = renderFollowUps(); break;
-    case 'community': el.innerHTML = renderCommunity(); break;
-    case 'create-post': el.innerHTML = renderCreatePost(); wireCreatePost(); break;
-    case 'post-detail': el.innerHTML = renderPostDetail(S.screenData.id); wirePostDetail(); break;
     default: el.innerHTML = renderHome();
   }
 }
 
 /* ============================================================
-   SCREEN: HOME
+   HOME
    ============================================================ */
 function renderHome(){
   const p = S.profile || {};
@@ -1288,6 +1313,7 @@ function renderHome(){
   const initial = initials(firstName + ' ' + (p.lastName||''));
   const w = S.weather;
   const cityDisplay = S.weatherCity || S.userLocation;
+
   const weatherHTML = w ? `
     <div class="weather-card">
       <div class="wc-icon">${weatherIconFor(w.code, w.isDay)}</div>
@@ -1307,8 +1333,36 @@ function renderHome(){
       <div class="wc-desc">Fetching live weather…</div>
     </div>`;
 
-  const activeBatches = S.myBatches.filter(b=>b.status !== 'harvested');
-  const harvestReady = S.myBatches.filter(b=>b.status === 'harvesting');
+  const batchList = S.myBatches.slice(0,6);
+  const mfCards = batchList.length ? batchList.map(b=>{
+    const crop = S.catalogue.find(c=>c.id === b.cropId);
+    const ic = crop ? pickIcon(crop.name) : '🌱';
+    const grad = crop ? gradFor(crop.name) : gradFor(b.cropName||'');
+    const stage = b.stage || 'planted';
+    const statusLabel = {
+      planted:'Planted', growing:'Growing', flowering:'Flowering',
+      fruiting:'Fruiting', harvesting:'Ready', harvested:'Harvested'
+    }[stage] || stage;
+    const statusCls = stage === 'harvesting' ? 'ready' : (stage === 'harvested' ? 'ok' : '');
+    const totalDays = b.totalDays || 120;
+    const daysIn = b.plantedDate ? Math.max(0, Math.floor((Date.now() - b.plantedDate)/86400000)) : 0;
+    const pct = Math.min(100, Math.round(daysIn / totalDays * 100));
+    return `
+      <div class="mf-card" onclick="openBatch('${esc(b.id)}','manage')">
+        <div class="mf-img" style="background:${grad}">${ic}</div>
+        <div class="mf-body">
+          <div class="mf-name">${esc(b.cropName)}</div>
+          <div class="mf-sub">${esc(b.varietyName||'')} · ${b.areaHa ? b.areaHa.toFixed(2)+' ha' : ''}</div>
+          <span class="mf-tag ${statusCls}">${statusLabel}</span>
+          <div class="mf-days"><span class="mf-dot"></span>${pct}% to harvest</div>
+        </div>
+      </div>`;
+  }).join('') : '';
+  const addCard = `
+    <div class="mf-card mf-add" onclick="startPlantFlow()">
+      <div class="mf-plus">➕</div>
+      <div class="mf-lb">Plant a Crop</div>
+    </div>`;
 
   return `
   <div class="scroll">
@@ -1328,77 +1382,134 @@ function renderHome(){
 
     ${weatherHTML}
 
-    <!-- 3 BIG ACTIONS -->
-    <div style="padding:0 18px 6px">
-      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">What would you like to do?</div>
-    </div>
-
-    <div style="padding:0 18px 18px">
-      <div class="big-card" onclick="startPlantFlow()">
-        <div class="bc-ic" style="background:${gradFor('plant')}">🌱</div>
-        <div class="bc-tx">
-          <div class="bc-tt">Plant a Crop</div>
-          <div class="bc-sb">Choose crop, variety & field size</div>
-        </div>
-        <div class="bc-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-      </div>
-
-      <div class="big-card" onclick="goFarm()">
-        <div class="bc-ic" style="background:${gradFor('manage')}">🔧</div>
-        <div class="bc-tx">
-          <div class="bc-tt">Manage My Farm</div>
-          <div class="bc-sb">${activeBatches.length} active batch${activeBatches.length===1?'':'es'} · spacing, fertilizer, irrigation</div>
-        </div>
-        <div class="bc-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-      </div>
-
-      <div class="big-card" onclick="goFarm('harvest')">
-        <div class="bc-ic" style="background:${gradFor('harvest')}">🌾</div>
-        <div class="bc-tx">
-          <div class="bc-tt">Record Harvest</div>
-          <div class="bc-sb">${harvestReady.length ? harvestReady.length + ' batch ready to harvest' : 'Record what you harvested'}</div>
-        </div>
-        <div class="bc-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-      </div>
-
-      <div class="big-card" onclick="goMarket()">
-        <div class="bc-ic" style="background:${gradFor('market')}">💰</div>
-        <div class="bc-tx">
-          <div class="bc-tt">Sell My Goods</div>
-          <div class="bc-sb">Post to marketplace · find buyers</div>
-        </div>
-        <div class="bc-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-      </div>
-    </div>
-
     <div class="qa-row">
+      <button class="qa" onclick="startPlantFlow()">
+        <div class="qa-ic c1">🌱</div><div class="qa-lb">Plant</div>
+      </button>
       <button class="qa" onclick="goFarm()">
-        <div class="qa-ic c1">🌱</div><div class="qa-lb">My Farm</div>
+        <div class="qa-ic c2">🔧</div><div class="qa-lb">Manage</div>
+      </button>
+      <button class="qa" onclick="goFarm('harvest')">
+        <div class="qa-ic c3">🌾</div><div class="qa-lb">Harvest</div>
       </button>
       <button class="qa" onclick="goMarket()">
-        <div class="qa-ic c2">🛒</div><div class="qa-lb">Market</div>
-      </button>
-      <button class="qa" onclick="goDelivery()">
-        <div class="qa-ic c3">🚚</div><div class="qa-lb">Delivery</div>
-      </button>
-      <button class="qa" onclick="navTo('analysis')">
-        <div class="qa-ic c4">📊</div><div class="qa-lb">Insights</div>
+        <div class="qa-ic c4">💰</div><div class="qa-lb">Sell</div>
       </button>
     </div>
+
+    <!-- MY FARM HORIZONTAL SCROLL -->
+    <div class="sec-h">
+      <h3>My Farm</h3>
+      <button onclick="goFarm()">View all ›</button>
+    </div>
+    <div class="mf-row">${addCard}${mfCards}</div>
+
+    <!-- ============================================
+         SERVICE CARDS — ZamLift-style
+         ============================================ -->
+    <div style="padding:0 18px 8px">
+      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em">Farm Services</div>
+    </div>
+
+    <!-- HERO: PLANT A CROP -->
+    <div class="service-hero plant" onclick="startPlantFlow()">
+      <div class="sh-bg"></div>
+      <div class="sh-art">🌱</div>
+      <div class="sh-cta">Start Now</div>
+      <div class="sh-content">
+        <div class="sh-title">
+          <span class="sh-ic">🌱</span>
+          Plant a Crop
+        </div>
+        <div class="sh-sub">Choose crop → variety → field size → town</div>
+      </div>
+    </div>
+
+    <!-- TWO SMALL: MANAGE + HARVEST -->
+    <div class="service-grid">
+      <div class="service-card blue" onclick="goFarm('manage')">
+        <div class="sc-bg"></div>
+        <div class="sc-art">🔧</div>
+        <div class="sc-content">
+          <div class="sc-title"><span class="sc-ic">🔧</span>Manage Farm</div>
+          <div class="sc-sub">Spacing, fertilizer, irrigation</div>
+        </div>
+      </div>
+      <div class="service-card orange" onclick="goFarm('harvest')">
+        <div class="sc-bg"></div>
+        <div class="sc-art">🌾</div>
+        <div class="sc-content">
+          <div class="sc-title"><span class="sc-ic">🌾</span>Record Harvest</div>
+          <div class="sc-sub">Log what you harvested</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TWO SMALL: MARKET + DELIVERY -->
+    <div class="service-grid">
+      <div class="service-card purple" onclick="goMarket()">
+        <div class="sc-bg"></div>
+        <div class="sc-art">💰</div>
+        <div class="sc-content">
+          <div class="sc-title"><span class="sc-ic">💰</span>Marketplace</div>
+          <div class="sc-sub">Sell your produce</div>
+        </div>
+      </div>
+      <div class="service-card teal" onclick="goDelivery()">
+        <div class="sc-bg"></div>
+        <div class="sc-art">🚚</div>
+        <div class="sc-content">
+          <div class="sc-title"><span class="sc-ic">🚚</span>Delivery</div>
+          <div class="sc-sub">Ship goods to any town</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIST ROWS -->
+    <div class="list-row" onclick="goFarm()">
+      <div class="lr-ic green">📋</div>
+      <div class="lr-tx">
+        <div class="lr-tt">My Batches</div>
+        <div class="lr-sb">${S.myBatches.length} batch${S.myBatches.length===1?'':'es'} · track & update</div>
+      </div>
+      <div class="lr-arrow">
+        <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+      </div>
+    </div>
+
+    <div class="list-row" onclick="navTo('weather')">
+      <div class="lr-ic blue">☀️</div>
+      <div class="lr-tx">
+        <div class="lr-tt">Weather Forecast</div>
+        <div class="lr-sb">Live weather for ${esc(cityDisplay)}</div>
+      </div>
+      <div class="lr-arrow">
+        <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+      </div>
+    </div>
+
+    <div class="list-row" onclick="navTo('delivery-history')">
+      <div class="lr-ic orange">📜</div>
+      <div class="lr-tx">
+        <div class="lr-tt">Delivery History</div>
+        <div class="lr-sb">Past deliveries and shipments</div>
+      </div>
+      <div class="lr-arrow">
+        <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+      </div>
+    </div>
+
+    <div style="height:8px"></div>
   </div>
   ${bottomNavHTML()}`;
 }
 
 /* ============================================================
-   SCREEN: FARM (Plant / Manage / Harvest tabs)
+   FARM SCREEN
    ============================================================ */
 window.switchFarmTab = (tab)=>{
   S.farmTab = tab;
   route();
-  // update three-tabs visual
-  document.querySelectorAll('.three-tab').forEach(t=>{
-    t.classList.toggle('active', t.dataset.tab === tab);
-  });
 };
 
 function renderFarm(){
@@ -1407,22 +1518,27 @@ function renderFarm(){
   <div class="scroll">
     <div class="topbar bordered">
       <div class="tb-title">My Farm</div>
+      <div class="tb-actions">
+        <button class="tb-btn" onclick="startPlantFlow()">
+          <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>
+        </button>
+      </div>
     </div>
 
     <div class="three-tabs">
-      <button class="three-tab plant ${tab==='plant'?'active':''}" data-tab="plant" onclick="switchFarmTab('plant')">
+      <button class="three-tab plant ${tab==='plant'?'active':''}" onclick="switchFarmTab('plant')">
         <div class="tt-ic">🌱</div>
         <div class="tt-lb">Plant</div>
       </button>
-      <button class="three-tab manage ${tab==='manage'?'active':''}" data-tab="manage" onclick="switchFarmTab('manage')">
+      <button class="three-tab manage ${tab==='manage'?'active':''}" onclick="switchFarmTab('manage')">
         <div class="tt-ic">🔧</div>
         <div class="tt-lb">Manage</div>
-        ${S.myBatches.filter(b=>b.status!=='harvested').length ? `<span class="tt-badge">${S.myBatches.filter(b=>b.status!=='harvested').length}</span>`:''}
+        ${S.myBatches.filter(b=>b.status !== 'harvested').length ? `<span class="tt-badge">${S.myBatches.filter(b=>b.status !== 'harvested').length}</span>`:''}
       </button>
-      <button class="three-tab harvest ${tab==='harvest'?'active':''}" data-tab="harvest" onclick="switchFarmTab('harvest')">
+      <button class="three-tab harvest ${tab==='harvest'?'active':''}" onclick="switchFarmTab('harvest')">
         <div class="tt-ic">🌾</div>
         <div class="tt-lb">Harvest</div>
-        ${S.myBatches.filter(b=>b.status==='harvesting').length ? `<span class="tt-badge">${S.myBatches.filter(b=>b.status==='harvesting').length}</span>`:''}
+        ${S.myBatches.filter(b=>b.stage==='harvesting').length ? `<span class="tt-badge">${S.myBatches.filter(b=>b.stage==='harvesting').length}</span>`:''}
       </button>
     </div>
 
@@ -1433,36 +1549,36 @@ function renderFarm(){
   ${bottomNavHTML()}`;
 }
 
-/* ---------- FARM > PLANT TAB ---------- */
 function renderFarmPlant(){
   return `
-  <div style="padding:14px 18px 18px">
-    <div class="big-card" onclick="startPlantFlow()" style="background:linear-gradient(135deg,#e6f5eb 0%,#d1fae5 100%);border-color:rgba(15,122,52,.18)">
-      <div class="bc-ic" style="background:#fff">🌱</div>
-      <div class="bc-tx">
-        <div class="bc-tt" style="color:var(--p-d)">Start New Planting</div>
-        <div class="bc-sb" style="color:var(--p)">Choose crop → variety → field size → town</div>
+  <div style="padding:0 18px 18px">
+    <div class="service-hero plant" onclick="startPlantFlow()" style="margin-bottom:16px">
+      <div class="sh-bg"></div>
+      <div class="sh-art">🌱</div>
+      <div class="sh-cta">Start</div>
+      <div class="sh-content">
+        <div class="sh-title">
+          <span class="sh-ic">🌱</span>
+          New Planting
+        </div>
+        <div class="sh-sub">Choose crop → variety → field size → town</div>
       </div>
-      <div class="bc-arrow" style="background:var(--p);color:#fff"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
     </div>
 
-    <div style="margin-top:20px">
-      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Recent Plantings</div>
-      ${S.myBatches.length ? S.myBatches.slice(0,3).map(b=>renderBatchCard(b)).join('') : `
-        <div class="empty">
-          <div class="e-ic">🌱</div>
-          <h3>No plantings yet</h3>
-          <p>Tap "Start New Planting" to record your first crop.</p>
-        </div>`}
-    </div>
+    <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Recent Plantings</div>
+    ${S.myBatches.length ? S.myBatches.slice(0,5).map(b=>renderBatchCard(b)).join('') : `
+      <div class="empty">
+        <div class="e-ic">🌱</div>
+        <h3>No plantings yet</h3>
+        <p>Tap the card above to record your first crop.</p>
+      </div>`}
   </div>`;
 }
 
-/* ---------- FARM > MANAGE TAB ---------- */
 function renderFarmManage(){
   const active = S.myBatches.filter(b=>b.status !== 'harvested');
   return `
-  <div style="padding:14px 18px 18px">
+  <div style="padding:0 18px 18px">
     <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Active Batches</div>
     ${active.length ? active.map(b=>renderBatchCard(b, 'manage')).join('') : `
       <div class="empty">
@@ -1473,12 +1589,11 @@ function renderFarmManage(){
   </div>`;
 }
 
-/* ---------- FARM > HARVEST TAB ---------- */
 function renderFarmHarvest(){
-  const harvestReady = S.myBatches.filter(b=>b.status === 'harvesting');
-  const harvested = S.myBatches.filter(b=>b.status === 'harvested');
+  const harvestReady = S.myBatches.filter(b=>b.stage === 'harvesting');
+  const harvested = S.myBatches.filter(b=>b.stage === 'harvested');
   return `
-  <div style="padding:14px 18px 18px">
+  <div style="padding:0 18px 18px">
     <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Ready to Harvest</div>
     ${harvestReady.length ? harvestReady.map(b=>renderBatchCard(b, 'harvest')).join('') : `
       <div class="empty">
@@ -1486,7 +1601,6 @@ function renderFarmHarvest(){
         <h3>Nothing ready to harvest</h3>
         <p>Batches will appear here when they reach the harvesting stage.</p>
       </div>`}
-
     ${harvested.length ? `
       <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin:22px 0 10px">Harvested</div>
       ${harvested.map(b=>renderBatchCard(b, 'harvested')).join('')}
@@ -1494,40 +1608,29 @@ function renderFarmHarvest(){
   </div>`;
 }
 
-/* ---------- BATCH CARD ---------- */
 function renderBatchCard(b, mode='manage'){
   const crop = S.catalogue.find(c=>c.id === b.cropId);
   const ic = crop ? pickIcon(crop.name) : '🌱';
   const grad = crop ? gradFor(crop.name) : gradFor(b.cropName||'');
   const stage = b.stage || 'planted';
-  const statusCls = stage;
   const totalDays = b.totalDays || 120;
   const daysIn = b.plantedDate ? Math.max(0, Math.floor((Date.now() - b.plantedDate)/86400000)) : 0;
   const pct = Math.min(100, Math.round(daysIn / totalDays * 100));
-
   const statusLabel = {
-    planted: 'Planted',
-    growing: 'Growing',
-    flowering: 'Flowering',
-    fruiting: 'Fruiting',
-    harvesting: 'Ready to Harvest',
-    harvested: 'Harvested'
+    planted:'Planted', growing:'Growing', flowering:'Flowering',
+    fruiting:'Fruiting', harvesting:'Ready', harvested:'Harvested'
   }[stage] || stage;
-
-  const actionLabel = mode === 'harvest' ? 'Record Harvest →' :
-                     mode === 'harvested' ? 'View →' : 'Manage →';
-
   return `
   <div class="batch-card" onclick="openBatch('${esc(b.id)}','${esc(mode)}')">
     <div class="bc-top">
       <div class="bc-crop-ic" style="background:${grad}">${ic}</div>
       <div class="bc-info">
-        <div class="bc-crop">${esc(crop ? crop.name : b.cropName)}</div>
+        <div class="bc-crop">${esc(b.cropName)}</div>
         <div class="bc-variety">${esc(b.varietyName || '')}</div>
         <div class="bc-batch-num">${esc(b.batchNumber || '')}</div>
       </div>
       <div class="bc-stat">
-        <div class="bc-status ${statusCls}">${esc(statusLabel)}</div>
+        <div class="bc-status ${stage}">${esc(statusLabel)}</div>
         <div class="bc-area">${b.areaHa ? b.areaHa.toFixed(2)+' ha' : ''}</div>
       </div>
     </div>
@@ -1544,10 +1647,7 @@ function renderBatchCard(b, mode='manage'){
   </div>`;
 }
 
-window.openBatch = (id, mode)=>{
-  showScreen('batch-detail', {id, tab: mode || 'manage'});
-};
-
+window.openBatch = (id, mode)=> showScreen('batch-detail', {id, tab: mode || 'manage'});
 window.startPlantFlow = ()=>{
   S.plantWizard = { step: 1, cropId: null, varietyName: null, length: null, width: null, town: null };
   showScreen('plant-step-1');
@@ -1565,9 +1665,7 @@ function renderStepsIndicator(active, total=4){
   return html;
 }
 
-/* STEP 1: CHOOSE CROP */
 function renderPlantStep1(){
-  // Only show CROPS (field crops, pulses, vegetables, fruits)
   const crops = S.catalogue.filter(c =>
     ['Field Crops','Pulses','Vegetables','Fruits','Crop'].includes(c.category) ||
     ['Cereal','Pulse','Fruiting Vegetable','Leafy Vegetable','Root / Bulb','Root / Tuber','Brassica','Fruit / Orchard','Specialty'].includes(c.group)
@@ -1622,11 +1720,9 @@ window.filterCrops = (q)=>{
 
 window.pickCrop = (cropId)=>{
   S.plantWizard.cropId = cropId;
-  S.plantWizard.step = 2;
   showScreen('plant-step-2');
 };
 
-/* STEP 2: CHOOSE VARIETY */
 function renderPlantStep2(){
   const cropId = S.plantWizard.cropId;
   const crop = S.catalogue.find(c=>c.id === cropId);
@@ -1674,13 +1770,10 @@ function renderPlantStep2(){
 
 window.pickVariety = (name)=>{
   S.plantWizard.varietyName = name;
-  S.plantWizard.step = 3;
   showScreen('plant-step-3');
 };
 
-/* STEP 3: FIELD SIZE */
 function renderPlantStep3(){
-  const crop = S.catalogue.find(c=>c.id === S.plantWizard.cropId);
   const w = S.plantWizard;
   const area = computeArea(w.length, w.width);
   return `
@@ -1713,7 +1806,7 @@ function renderPlantStep3(){
       </div>
     </div>
 
-    <div class="area-result" id="area-result">
+    <div class="area-result">
       <div>
         <div class="ar-l">Total area</div>
         <div class="ar-v" id="area-ha">${area.ha.toFixed(3)}</div>
@@ -1730,7 +1823,7 @@ function renderPlantStep3(){
 
     <div class="btn-row" style="padding-top:16px">
       <button class="btn btn-s" onclick="showScreen('plant-step-2')">← Back</button>
-      <button class="btn btn-p" id="plant-step3-next" onclick="goPlantStep4()" disabled>Continue →</button>
+      <button class="btn btn-p" id="plant-step3-next" onclick="goPlantStep4()" ${!(w.length>0 && w.width>0) ? 'disabled' : ''}>Continue →</button>
     </div>
   </div>`;
 }
@@ -1753,11 +1846,9 @@ window.goPlantStep4 = ()=>{
     toast('Please enter length and width');
     return;
   }
-  S.plantWizard.step = 4;
   showScreen('plant-step-4');
 };
 
-/* STEP 4: TOWN */
 const ZAMBIA_TOWNS = [
   'Lusaka','Kitwe','Ndola','Kabwe','Chingola','Mufulira','Livingstone','Luanshya','Chipata','Kafue',
   'Mazabuka','Kasama','Mongu','Solwezi','Mansa','Choma','Mpika','Petauke','Kalulushi','Chililabombwe',
@@ -1768,7 +1859,6 @@ const ZAMBIA_TOWNS = [
 function renderPlantStep4(){
   const detected = S.weatherCity || S.userLocation || 'Lusaka';
   const sel = S.plantWizard.town || detected;
-  // Put detected first
   const ordered = [detected, ...ZAMBIA_TOWNS.filter(t=>t!==detected)];
   return `
   <div class="scroll">
@@ -1803,7 +1893,7 @@ function renderPlantStep4(){
 
     <div class="btn-row" style="padding-top:16px">
       <button class="btn btn-s" onclick="showScreen('plant-step-3')">← Back</button>
-      <button class="btn btn-p" id="plant-finish" onclick="finishPlanting()" ${!sel ? 'disabled' : ''}>Finish ✓</button>
+      <button class="btn btn-p" id="plant-finish" onclick="finishPlanting()">Finish ✓</button>
     </div>
   </div>`;
 }
@@ -1823,11 +1913,8 @@ window.pickTown = (town)=>{
   document.querySelectorAll('.town-item').forEach(el=>{
     el.classList.toggle('selected', el.querySelector('.ti-name').textContent === town);
   });
-  const btn = document.getElementById('plant-finish');
-  if(btn) btn.disabled = false;
 };
 
-/* FINISH PLANTING — create batch */
 window.finishPlanting = async ()=>{
   const w = S.plantWizard;
   if(!w.cropId || !w.varietyName || !w.length || !w.width || !w.town){
@@ -1844,7 +1931,6 @@ window.finishPlanting = async ()=>{
   const forecast = computeForecast(w.cropId, w.varietyName, area.ha);
   const { batchNumber, batchSeq, batchDateKey } = await generateBatchNumber();
 
-  // Compute total days from detailedStages or variety maturity
   let totalDays = 120;
   const v = (S.varieties[w.cropId]||[]).find(x=>x.name === w.varietyName);
   if(v && v.maturity){
@@ -1857,7 +1943,7 @@ window.finishPlanting = async ()=>{
     if(dm) totalDays = Math.max(totalDays, parseInt(dm[1],10));
   }
 
-  const plantedDate = Date.now();
+  const plantedDate = nowMs();
   const harvestStart = plantedDate + Math.round(totalDays * 0.85) * 86400000;
   const harvestEnd = plantedDate + Math.round(totalDays * 1.15) * 86400000;
 
@@ -1885,7 +1971,6 @@ window.finishPlanting = async ()=>{
     expectedYieldUnit: 'kg',
     createdAt: nowMs(),
     updatedAt: nowMs(),
-    growthUpdates: [],
     harvestRecords: []
   };
 
@@ -1894,14 +1979,6 @@ window.finishPlanting = async ()=>{
     await set(newRef, batch);
     batch.id = newRef.key;
     S.myBatches.unshift(batch);
-
-    // Also write under user's own batches for quick access
-    try{
-      await set(ref(db, `users/${S.user.uid}/batches/${newRef.key}`), true);
-    }catch(e){}
-
-    // If today's BATCH-NNN counter — nothing else needed, batchSeq is stored
-
     showScreen('plant-success', {batch});
   }catch(e){
     console.error(e);
@@ -1910,27 +1987,23 @@ window.finishPlanting = async ()=>{
   }
 };
 
-/* SUCCESS SCREEN */
 function renderPlantSuccess(data){
   const b = data.batch;
   if(!b){
-    return `<div class="scroll"><div class="empty"><h3>Something went wrong</h3><p>Please try again.</p></div></div>`;
+    return `<div class="scroll"><div class="empty"><h3>Something went wrong</h3></div></div>`;
   }
-  const crop = S.catalogue.find(c=>c.id === b.cropId);
-  const ic = crop ? pickIcon(crop.name) : '🌱';
   return `
   <div class="scroll">
     <div style="padding:30px 18px 18px">
       <div class="success-burst">
         <div class="sb-ic">✓</div>
         <h2>Batch Created!</h2>
-        <p>Your planting has been saved and will be published to the marketplace.</p>
+        <p>Your planting has been saved and published to the marketplace.</p>
       </div>
 
       <div class="batch-result">
         <div class="br-lb">Your Batch Number</div>
         <div class="br-num">${esc(b.batchNumber)}</div>
-
         <div class="br-row"><span>Crop</span><span>${esc(b.cropName)}</span></div>
         <div class="br-row"><span>Variety</span><span>${esc(b.varietyName)}</span></div>
         <div class="br-row"><span>Field size</span><span>${b.lengthM}m × ${b.widthM}m</span></div>
@@ -1952,7 +2025,7 @@ function renderPlantSuccess(data){
 }
 
 /* ============================================================
-   BATCH DETAIL — manage / harvest
+   BATCH DETAIL
    ============================================================ */
 function renderBatchDetail(id, tab){
   const b = S.myBatches.find(x=>x.id === id);
@@ -1972,9 +2045,8 @@ function renderBatchDetail(id, tab){
   const totalDays = b.totalDays || 120;
   const pct = Math.min(100, Math.round(daysIn / totalDays * 100));
 
-  // stage timeline
   const stageKeys = ['planted','growing','flowering','fruiting','harvesting','harvested'];
-  const stageIdx = stageKeys.indexOf(b.stage);
+  const stageIdx = stageKeys.indexOf(b.stage || 'planted');
 
   return `
   <div class="scroll">
@@ -2011,7 +2083,6 @@ function renderBatchDetail(id, tab){
         </div>
       </div>
 
-      <!-- STAGE PROGRESS -->
       <div class="d-section">
         <h3>Growth Progress</h3>
         <div style="background:var(--p-ll);border:1px solid rgba(15,122,52,.14);border-radius:var(--r);padding:14px;margin-bottom:10px">
@@ -2057,13 +2128,11 @@ function renderBatchDetail(id, tab){
               <option value="flowering" ${b.stage==='flowering'?'selected':''}>Flowering</option>
               <option value="fruiting" ${b.stage==='fruiting'?'selected':''}>Fruiting / Filling</option>
               <option value="harvesting" ${b.stage==='harvesting'?'selected':''}>Ready to harvest</option>
-              <option value="harvested" ${b.stage==='harvested'?'selected':''}>Harvested (mark complete)</option>
             </select>
           </div>
         `:''}
       </div>
 
-      <!-- HARVEST RECORD BUTTON -->
       ${b.stage !== 'harvested' ? `
         <button class="btn btn-p" onclick="showScreen('harvest-record',{id:'${esc(b.id)}'})" style="margin-bottom:16px">
           🌾 Record Harvest
@@ -2071,11 +2140,10 @@ function renderBatchDetail(id, tab){
       ` : `
         <div style="padding:14px;border-radius:var(--r);background:linear-gradient(135deg,#f1f5f9,#e2e8f0);border:1px solid var(--bd);margin-bottom:16px">
           <div style="font-size:12px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Harvested</div>
-          <div style="font-size:14px;font-weight:800;color:var(--td)">This batch has been harvested ✓</div>
+          <div style="font-size:14px;font-weight:800;color:var(--td)">Total harvested: ${((b.totalHarvestKg||0)/1000).toFixed(2)} t (${(b.totalHarvestBoxes||0)} boxes)</div>
         </div>
       `}
 
-      <!-- KNOWLEDGE BASE SECTIONS -->
       ${spacing.length ? renderSpacingBlock(spacing) : ''}
       ${fert && Object.keys(fert).length ? renderFertilizerBlock(fert) : ''}
       ${renderSoilBlock()}
@@ -2107,7 +2175,7 @@ function renderSpacingBlock(spacing){
   <div class="d-section">
     <h3>Crop Spacing</h3>
     <div class="details-toggle" onclick="toggleDetails(this)">
-      <span>📏 View spacing guide (${spacing.length} system${spacing.length===1?'':'s'})</span>
+      <span>📏 View spacing guide (${spacing.length})</span>
       <span class="dt-chev">▼</span>
     </div>
     <div class="details-content">
@@ -2145,7 +2213,7 @@ function renderFertilizerBlock(fert){
   <div class="d-section">
     <h3>Fertilizer Schedule</h3>
     <div class="details-toggle" onclick="toggleDetails(this)">
-      <span>💧 View fertilizer plan (${rows.length} step${rows.length===1?'':'s'})</span>
+      <span>💧 View fertilizer plan (${rows.length})</span>
       <span class="dt-chev">▼</span>
     </div>
     <div class="details-content">
@@ -2174,7 +2242,7 @@ function renderSoilBlock(){
   <div class="d-section">
     <h3>Soil Types in Zambia</h3>
     <div class="details-toggle" onclick="toggleDetails(this)">
-      <span>🪨 View soil guide (${S.soilTypes.length} types)</span>
+      <span>🪨 View soil guide (${S.soilTypes.length})</span>
       <span class="dt-chev">▼</span>
     </div>
     <div class="details-content">
@@ -2200,7 +2268,7 @@ function renderIrrigationBlock(){
   <div class="d-section">
     <h3>Irrigation Types</h3>
     <div class="details-toggle" onclick="toggleDetails(this)">
-      <span>💦 View irrigation guide (${S.irrigationTypes.length} types)</span>
+      <span>💦 View irrigation guide (${S.irrigationTypes.length})</span>
       <span class="dt-chev">▼</span>
     </div>
     <div class="details-content">
@@ -2265,17 +2333,14 @@ window.updateBatchStage = async (id, newStage)=>{
   try{
     await update(ref(db, 'batches/'+id), { stage: newStage, updatedAt: nowMs() });
     const b = S.myBatches.find(x=>x.id === id);
-    if(b){
-      b.stage = newStage;
-      if(newStage === 'harvested') b.status = 'harvested';
-    }
+    if(b) b.stage = newStage;
     toast('Stage updated ✓');
     route();
   }catch(e){ toast('Failed: ' + (e.message||e)); }
 };
 
 /* ============================================================
-   HARVEST RECORD SCREEN
+   HARVEST RECORD
    ============================================================ */
 function renderHarvestRecord(id){
   const b = S.myBatches.find(x=>x.id === id);
@@ -2284,7 +2349,6 @@ function renderHarvestRecord(id){
   }
   const crop = S.catalogue.find(c=>c.id === b.cropId);
   const ic = crop ? pickIcon(crop.name) : '🌱';
-
   const expectedBase = b.expectedYieldBaseKg || 0;
   const expectedLow = b.expectedYieldLowKg || 0;
   const expectedHigh = b.expectedYieldHighKg || 0;
@@ -2323,14 +2387,12 @@ function renderHarvestRecord(id){
           <div class="hib-unit">optional</div>
         </div>
       </div>
-
       <div style="margin-bottom:12px">
         <label style="font-size:11.5px;font-weight:800;color:#9a3412;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px">Harvest date</label>
         <input type="date" id="hv-date" value="${new Date().toISOString().slice(0,10)}"
                style="width:100%;padding:11px 14px;border:1.5px solid rgba(234,88,12,.22);border-radius:var(--r);background:#fff;font-size:14px;font-weight:600;outline:none">
       </div>
-
-      <div style="margin-bottom:12px">
+      <div style="margin-bottom:0">
         <label style="font-size:11.5px;font-weight:800;color:#9a3412;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px">Notes (optional)</label>
         <textarea id="hv-notes" rows="2" placeholder="Any issues? Pests, weather, quality…"
                   style="width:100%;padding:11px 14px;border:1.5px solid rgba(234,88,12,.22);border-radius:var(--r);background:#fff;font-size:13.5px;font-family:inherit;outline:none;resize:vertical"></textarea>
@@ -2340,7 +2402,7 @@ function renderHarvestRecord(id){
     <div class="compare-card">
       <h4>📊 Expected vs Actual</h4>
       <div style="font-size:11.5px;color:var(--tl);font-weight:600;margin-bottom:10px">
-        Your variety was expected to produce ${Math.round(expectedLow/1000*10)/10}–${Math.round(expectedHigh/1000*10)/10} tonnes on this field.
+        Expected: ${Math.round(expectedLow/1000*10)/10}–${Math.round(expectedHigh/1000*10)/10} tonnes for this field.
       </div>
       <div class="compare-bars">
         <div class="compare-bar-row">
@@ -2359,7 +2421,7 @@ function renderHarvestRecord(id){
     </div>
 
     <div id="hv-reason-block" style="display:none;padding:0 18px 14px">
-      <label style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px">Why did the yield differ?</label>
+      <label style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px">Why did yield differ?</label>
       <select id="hv-reason" class="inp" style="width:100%;padding:12px 14px;border:1.5px solid var(--bd);border-radius:var(--r);background:#fff;font-size:14px;font-weight:600;outline:none">
         <option value="as_expected">As expected</option>
         <option value="drought">Drought / no rain</option>
@@ -2381,8 +2443,6 @@ function renderHarvestRecord(id){
   </div>
   ${bottomNavHTML()}`;
 }
-
-function wireHarvestRecord(id){ /* setup happens via oninput handlers */ }
 
 window.updateHarvestPreview = (id)=>{
   const b = S.myBatches.find(x=>x.id === id);
@@ -2425,19 +2485,15 @@ window.submitHarvest = async (id)=>{
     expectedKg: b.expectedYieldBaseKg || 0,
     recordedAt: nowMs()
   };
-
   try{
     const newRef = push(ref(db, `batches/${id}/harvestRecords`));
     await set(newRef, record);
-
-    // Update batch totals
-    const prevRecords = b.harvestRecords || [];
-    const allRecords = [...prevRecords, {id:newRef.key, ...record}];
-    const totalKg = allRecords.reduce((s,r)=>s + (Number(r.kg)||0), 0);
-    const totalBoxes = allRecords.reduce((s,r)=>s + (Number(r.boxes)||0), 0);
-
+    const prev = b.harvestRecords || [];
+    const all = [...prev, {id:newRef.key, ...record}];
+    const totalKg = all.reduce((s,r)=>s + (Number(r.kg)||0), 0);
+    const totalBoxes = all.reduce((s,r)=>s + (Number(r.boxes)||0), 0);
     await update(ref(db, 'batches/'+id), {
-      harvestRecords: allRecords,
+      harvestRecords: all,
       totalHarvestKg: totalKg,
       totalHarvestBoxes: totalBoxes,
       lastHarvestAt: nowMs(),
@@ -2445,13 +2501,11 @@ window.submitHarvest = async (id)=>{
       status: 'harvested',
       updatedAt: nowMs()
     });
-
-    b.harvestRecords = allRecords;
+    b.harvestRecords = all;
     b.totalHarvestKg = totalKg;
     b.totalHarvestBoxes = totalBoxes;
     b.stage = 'harvested';
     b.status = 'harvested';
-
     toast('Harvest saved ✓');
     setTimeout(()=>{
       showScreen('batch-detail', {id, tab:'manage'});
@@ -2464,7 +2518,7 @@ window.submitHarvest = async (id)=>{
 };
 
 /* ============================================================
-   SCREEN: MARKETPLACE (kept simple)
+   MARKETPLACE
    ============================================================ */
 function renderMarketplace(){
   const items = S.marketplace || [];
@@ -2490,7 +2544,7 @@ function renderMarketplace(){
       <h3>No listings yet</h3>
       <p>Be the first to post goods for sale.</p>
       <div style="height:14px"></div>
-      <button class="btn btn-p" style="max-width:220px;margin:0 auto" onclick="navTo('post-ready-goods')">+ Post Ready Goods</button>
+      <button class="btn btn-p" style="max-width:240px;margin:0 auto" onclick="navTo('post-ready-goods')">+ Post Ready Goods</button>
     </div>`;
   return `
   <div class="scroll">
@@ -2506,8 +2560,6 @@ function renderMarketplace(){
   </div>
   ${bottomNavHTML()}`;
 }
-
-window.navTo = (id, data)=> showScreen(id, data);
 
 function renderProduct(id){
   const m = S.marketplace.find(x=>x.id === id);
@@ -2531,8 +2583,6 @@ function renderProduct(id){
       ${m.description?`<div class="d-section"><h3>Description</h3><p style="font-size:13px;line-height:1.6;color:var(--tb);font-weight:500">${esc(m.description)}</p></div>`:''}
       <div class="info-table" style="margin-top:14px">
         <div class="info-row"><span class="ir-k">Seller</span><span class="ir-v">${esc(m.sellerName||'Farmer')}</span></div>
-        <div class="info-row"><span class="ir-k">Target market</span><span class="ir-v">${esc(m.targetMarket||'—')}</span></div>
-        <div class="info-row"><span class="ir-k">Fulfilment</span><span class="ir-v">${esc(m.fulfilment||'—')}</span></div>
       </div>
       <div style="margin-top:16px">
         <button class="btn btn-p" onclick="toast('Contact seller — coming soon')">💬 Contact Seller</button>
@@ -2542,10 +2592,7 @@ function renderProduct(id){
   ${bottomNavHTML()}`;
 }
 
-/* ============================================================
-   SCREEN: POST READY GOODS — simple version
-   ============================================================ */
-function renderPostReadyGoods(data){
+function renderPostReadyGoods(){
   const crops = S.catalogue.filter(c=>['Field Crops','Pulses','Vegetables','Fruits','Crop'].includes(c.category));
   const options = crops.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
   return `
@@ -2589,7 +2636,6 @@ function renderPostReadyGoods(data){
   </div>
   ${bottomNavHTML()}`;
 }
-function wirePostReadyGoods(){}
 
 window.submitListing = async (ev)=>{
   ev.preventDefault();
@@ -2632,7 +2678,7 @@ window.submitListing = async (ev)=>{
 };
 
 /* ============================================================
-   SCREEN: DELIVERY (simple version)
+   DELIVERY
    ============================================================ */
 function renderDelivery(){
   return `
@@ -2641,21 +2687,23 @@ function renderDelivery(){
       <div class="tb-title">Delivery</div>
     </div>
     <div style="padding:14px 18px 18px">
-      <div class="big-card" onclick="navTo('request-delivery')">
-        <div class="bc-ic" style="background:${gradFor('truck')}">📦</div>
-        <div class="bc-tx">
-          <div class="bc-tt">Request Delivery</div>
-          <div class="bc-sb">Send goods to any town in Zambia</div>
+      <div class="service-hero market" onclick="navTo('request-delivery')" style="margin-bottom:16px">
+        <div class="sh-bg" style="background:linear-gradient(135deg,#0891b2,#155e75)"></div>
+        <div class="sh-art">🚚</div>
+        <div class="sh-cta">New</div>
+        <div class="sh-content">
+          <div class="sh-title"><span class="sh-ic">🚚</span>Request Delivery</div>
+          <div class="sh-sub">Send goods to any town in Zambia</div>
         </div>
-        <div class="bc-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
       </div>
-      <div class="big-card" onclick="navTo('delivery-history')">
-        <div class="bc-ic" style="background:${gradFor('history')}">📜</div>
-        <div class="bc-tx">
-          <div class="bc-tt">Delivery History</div>
-          <div class="bc-sb">View past deliveries</div>
+
+      <div class="list-row" onclick="navTo('delivery-history')">
+        <div class="lr-ic orange">📜</div>
+        <div class="lr-tx">
+          <div class="lr-tt">Delivery History</div>
+          <div class="lr-sb">View past deliveries</div>
         </div>
-        <div class="bc-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+        <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
       </div>
     </div>
   </div>
@@ -2732,7 +2780,7 @@ function renderDeliveryHistory(){
 }
 
 /* ============================================================
-   SCREEN: PROFILE
+   PROFILE
    ============================================================ */
 function renderProfile(){
   const p = S.profile || {};
@@ -2743,23 +2791,50 @@ function renderProfile(){
     <div class="topbar bordered">
       <div class="tb-title">Profile</div>
     </div>
-    <div class="prof-hero">
-      <div class="p-av">${p.profileUrl?`<img src="${esc(p.profileUrl)}" alt="">`:initial}</div>
-      <h2>${esc(fullName)}</h2>
-      <div class="p-loc">📍 ${esc(S.weatherCity || S.userLocation)}</div>
-      <div class="prof-stats">
-        <div><div class="ps-n">${S.myBatches.length}</div><div class="ps-l">Batches</div></div>
-        <div><div class="ps-n">${S.myListings.length}</div><div class="ps-l">Listings</div></div>
-        <div><div class="ps-n">${Object.keys(S.following||{}).length}</div><div class="ps-l">Following</div></div>
+    <div style="margin:0 18px 16px;padding:20px;border-radius:var(--r-lg);background:linear-gradient(135deg,#0f7a34 0%,#0b5f28 100%);color:#fff;text-align:center;position:relative;overflow:hidden;box-shadow:var(--sh-brand)">
+      <div style="width:76px;height:76px;border-radius:50%;margin:0 auto 12px;background:rgba(255,255,255,.2);border:3px solid #fff;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;position:relative;z-index:1">
+        ${p.profileUrl?`<img src="${esc(p.profileUrl)}" style="width:100%;height:100%;object-fit:cover">`:initial}
+      </div>
+      <h2 style="font-size:19px;font-weight:900;letter-spacing:-.03em;position:relative;z-index:1">${esc(fullName)}</h2>
+      <div style="font-size:12px;font-weight:600;opacity:.92;margin-top:8px;position:relative;z-index:1">📍 ${esc(S.weatherCity || S.userLocation)}</div>
+      <div style="display:flex;justify-content:space-around;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.16);position:relative;z-index:1">
+        <div style="text-align:center;flex:1">
+          <div style="font-size:20px;font-weight:900;letter-spacing:-.03em">${S.myBatches.length}</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.85;margin-top:2px">Batches</div>
+        </div>
+        <div style="text-align:center;flex:1">
+          <div style="font-size:20px;font-weight:900;letter-spacing:-.03em">${S.myListings.length}</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.85;margin-top:2px">Listings</div>
+        </div>
+        <div style="text-align:center;flex:1">
+          <div style="font-size:20px;font-weight:900;letter-spacing:-.03em">${S.myBatches.filter(b=>b.stage==='harvested').length}</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.85;margin-top:2px">Harvested</div>
+        </div>
       </div>
     </div>
+
     <div style="padding:0 18px 18px">
-      <div class="big-card" onclick="doLogout()">
-        <div class="bc-ic" style="background:linear-gradient(145deg,#fee2e2,#dc2626);color:#fff">🚪</div>
-        <div class="bc-tx">
-          <div class="bc-tt" style="color:var(--danger)">Sign Out</div>
-          <div class="bc-sb">Log out of your account</div>
-        </div>
+      <div class="list-row" onclick="goFarm()">
+        <div class="lr-ic green">🌱</div>
+        <div class="lr-tx"><div class="lr-tt">My Batches</div><div class="lr-sb">${S.myBatches.length} batch${S.myBatches.length===1?'':'es'}</div></div>
+        <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+
+      <div class="list-row" onclick="goMarket()">
+        <div class="lr-ic purple">💰</div>
+        <div class="lr-tx"><div class="lr-tt">My Listings</div><div class="lr-sb">${S.myListings.length} listing${S.myListings.length===1?'':'s'}</div></div>
+        <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+
+      <div class="list-row" onclick="navTo('weather')">
+        <div class="lr-ic blue">☀️</div>
+        <div class="lr-tx"><div class="lr-tt">Weather</div><div class="lr-sb">Live forecast</div></div>
+        <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+
+      <div class="list-row" onclick="doLogout()">
+        <div class="lr-ic" style="background:linear-gradient(145deg,#fee2e2,#dc2626);color:#fff">🚪</div>
+        <div class="lr-tx"><div class="lr-tt" style="color:var(--danger)">Sign Out</div><div class="lr-sb">Log out of your account</div></div>
       </div>
     </div>
   </div>
@@ -2780,16 +2855,10 @@ window.confirmLogout = async ()=>{
   window.location.href = 'index.html';
 };
 
-/* ============================================================
-   STUB SCREENS
-   ============================================================ */
-function renderMyPosts(){ return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button><div class="tb-title">My Posts</div></div><div class="empty" style="padding:60px 24px"><div class="e-ic">📋</div><h3>Coming soon</h3></div></div>${bottomNavHTML()}`; }
-function renderDocs(){ return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button><div class="tb-title">Documents</div></div><div class="empty" style="padding:60px 24px"><div class="e-ic">🪪</div><h3>Coming soon</h3></div></div>${bottomNavHTML()}`; }
-function renderAnalysis(){ return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button><div class="tb-title">Insights</div></div><div class="empty" style="padding:60px 24px"><div class="e-ic">📊</div><h3>Coming soon</h3></div></div>${bottomNavHTML()}`; }
 function renderWeather(){
   const w = S.weather;
   if(!w){
-    return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button><div class="tb-title">Weather</div></div><div class="empty"><h3>Loading…</h3></div></div>`;
+    return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button><div class="tb-title">Weather</div></div><div class="empty"><h3>Loading…</h3></div></div>${bottomNavHTML()}`;
   }
   return `
   <div class="scroll">
@@ -2811,15 +2880,9 @@ function renderWeather(){
   </div>
   ${bottomNavHTML()}`;
 }
-function renderFollowUps(){ return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button><div class="tb-title">Following</div></div><div class="empty" style="padding:60px 24px"><div class="e-ic">👥</div><h3>No follow-ups yet</h3></div></div>${bottomNavHTML()}`; }
-function renderCommunity(){ return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button><div class="tb-title">Community</div></div><div class="empty" style="padding:60px 24px"><div class="e-ic">💬</div><h3>Community coming soon</h3></div></div>${bottomNavHTML()}`; }
-function renderCreatePost(){ return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button><div class="tb-title">New Post</div></div></div>${bottomNavHTML()}`; }
-function wireCreatePost(){}
-function renderPostDetail(){ return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button><div class="tb-title">Post</div></div></div>${bottomNavHTML()}`; }
-function wirePostDetail(){}
 
 /* ============================================================
-   LOCATION + WEATHER
+   LOCATION
    ============================================================ */
 async function reverseGeocodeCity(lat, lng){
   try{
@@ -2828,8 +2891,7 @@ async function reverseGeocodeCity(lat, lng){
     if(!r.ok) return null;
     const j = await r.json();
     const a = j.address || {};
-    const city = a.city || a.town || a.village || a.municipality || a.county || a.state_district || '';
-    return { city };
+    return { city: a.city || a.town || a.village || a.municipality || a.county || a.state_district || '' };
   }catch(e){ return null; }
 }
 
@@ -2885,7 +2947,7 @@ async function detectUserCityAndWeather(force){
 }
 
 /* ============================================================
-   LOAD KNOWLEDGE BASE
+   LOAD KNOWLEDGE
    ============================================================ */
 async function loadKnowledgeBase(){
   try{
@@ -2893,7 +2955,6 @@ async function loadKnowledgeBase(){
     if(!snap.exists()) return false;
     const data = snap.val();
 
-    // Catalogue
     const cat = [];
     const push = (obj, category, group)=>{
       if(!obj) return;
@@ -2924,23 +2985,11 @@ async function loadKnowledgeBase(){
     if(data.fisheries?.capture)     push(data.fisheries.capture, 'Fisheries', 'Capture');
 
     S.catalogue = cat;
-
-    // Varieties
     S.varieties = data.varieties || {};
-
-    // Spacing
     S.cropSpacing = data.cropSpacing || {};
-
-    // Fertilizer
     S.fertilizerSchedules = data.fertilizerSchedules || {};
-
-    // Soil types
     S.soilTypes = data.soilTypes || [];
-
-    // Irrigation types
     S.irrigationTypes = data.irrigationTypes || [];
-
-    // Detailed stages
     S.detailedStages = data.detailedStages || {};
 
     console.log('[AgriCare] Knowledge loaded:', {
@@ -2950,7 +2999,7 @@ async function loadKnowledgeBase(){
       fertilizers: Object.keys(S.fertilizerSchedules).length,
       soils: S.soilTypes.length,
       irrigation: S.irrigationTypes.length,
-      detailedStages: Object.keys(S.detailedStages).length
+      stages: Object.keys(S.detailedStages).length
     });
     return true;
   }catch(e){
@@ -2959,9 +3008,6 @@ async function loadKnowledgeBase(){
   }
 }
 
-/* ============================================================
-   LOAD USER DATA
-   ============================================================ */
 async function loadUserData(uid){
   try{
     const p = await get(ref(db,'users/'+uid));
@@ -2969,9 +3015,7 @@ async function loadUserData(uid){
       S.profile = p.val();
       if(S.profile.location) S.userLocation = S.profile.location;
       if(S.profile.city) S.weatherCity = S.profile.city;
-      if(S.profile.following) S.following = S.profile.following;
     }
-    // My batches
     const batchesSnap = await get(ref(db, 'batches'));
     if(batchesSnap.exists()){
       const all = batchesSnap.val() || {};
@@ -2980,7 +3024,6 @@ async function loadUserData(uid){
         .map(([k,v]) => ({id:k, ...v}))
         .sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
     }
-    // My listings
     const listSnap = await get(ref(db, 'marketListings'));
     if(listSnap.exists()){
       const all = listSnap.val() || {};
@@ -3040,7 +3083,6 @@ async function startApp(){
 
     await detectUserCityAndWeather();
 
-    // Fade out splash
     const splashEl = document.getElementById('splash');
     if(splashEl){
       splashEl.classList.remove('show');
