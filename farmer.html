@@ -52,14 +52,19 @@
   --sf2:#f8fafc;
   --bg:#f4f7f5;
   --danger:#dc2626;
+  --danger-soft:#fee2e2;
   --warn:#b45309;
+  --warn-soft:#fef3c7;
   --ok:#16a34a;
+  --ok-soft:#d1fae5;
   --info:#2563eb;
+  --info-soft:#dbeafe;
   --r-sm:10px;
   --r:14px;
   --r-lg:20px;
   --r-xl:26px;
   --r-2xl:32px;
+  --r-3xl:40px;
   --r-p:999px;
   --e:cubic-bezier(.22,1,.36,1);
   --e-bounce:cubic-bezier(.34,1.56,.64,1);
@@ -193,12 +198,8 @@ a{
   display:none;
 }
 
-.scroll.no-nav{
-  padding-bottom:var(--safe-b);
-}
-
 /* ============================================================
-   SPLASH SCREEN
+   SPLASH
    ============================================================ */
 #splash{
   background:#000;
@@ -303,7 +304,7 @@ a{
   border-bottom:1px solid var(--bd);
 }
 
-.topbar .tb-back{
+.tb-back{
   width:38px;
   height:38px;
   border-radius:50%;
@@ -316,19 +317,19 @@ a{
   transition:all .2s var(--e);
 }
 
-.topbar .tb-back:active{
+.tb-back:active{
   transform:scale(.92);
   background:var(--p-l);
   border-color:var(--p);
 }
 
-.topbar .tb-back svg{
+.tb-back svg{
   width:18px;
   height:18px;
   fill:var(--td);
 }
 
-.topbar .tb-title{
+.tb-title{
   flex:1;
   font-size:17px;
   font-weight:800;
@@ -339,13 +340,13 @@ a{
   white-space:nowrap;
 }
 
-.topbar .tb-actions{
+.tb-actions{
   display:flex;
   gap:8px;
   align-items:center;
 }
 
-.topbar .tb-btn{
+.tb-btn{
   width:38px;
   height:38px;
   border-radius:50%;
@@ -358,18 +359,18 @@ a{
   position:relative;
 }
 
-.topbar .tb-btn:active{
+.tb-btn:active{
   transform:scale(.92);
   background:var(--p-l);
 }
 
-.topbar .tb-btn svg{
+.tb-btn svg{
   width:18px;
   height:18px;
   fill:var(--td);
 }
 
-.topbar .tb-btn .dot{
+.tb-btn .dot{
   position:absolute;
   top:8px;
   right:8px;
@@ -380,7 +381,7 @@ a{
   border:1.5px solid #fff;
 }
 
-.topbar .tb-avatar{
+.tb-avatar{
   width:44px;
   height:44px;
   border-radius:50%;
@@ -398,63 +399,10 @@ a{
   box-shadow:0 2px 8px rgba(0,0,0,.1);
 }
 
-.topbar .tb-avatar img{
+.tb-avatar img{
   width:100%;
   height:100%;
   object-fit:cover;
-}
-
-/* ============================================================
-   GREETING
-   ============================================================ */
-.greet{
-  padding:4px 18px 12px;
-}
-
-.greet h2{
-  font-size:22px;
-  font-weight:900;
-  letter-spacing:-.03em;
-  color:var(--td);
-  line-height:1.2;
-}
-
-.greet h2 span{
-  color:var(--p);
-}
-
-.greet p{
-  font-size:12.5px;
-  color:var(--tl);
-  margin-top:2px;
-  font-weight:500;
-}
-
-/* ============================================================
-   LIVE CLOCK
-   ============================================================ */
-.live-clock{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:0 18px 10px;
-  font-size:12px;
-  color:var(--tl);
-  font-weight:700;
-}
-
-.live-clock .lc-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--ok);
-  box-shadow:0 0 0 3px rgba(22,163,74,.15);
-  animation:lcPulse 2s ease-in-out infinite;
-}
-
-@keyframes lcPulse{
-  0%,100%{opacity:1}
-  50%{opacity:.4}
 }
 
 /* ============================================================
@@ -503,19 +451,47 @@ a{
   z-index:1;
 }
 
+.wc-profile{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.wc-profile-pic{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  overflow:hidden;
+  background:rgba(255,255,255,.25);
+  border:2px solid rgba(255,255,255,.5);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  font-weight:900;
+  color:#fff;
+  flex-shrink:0;
+}
+
+.wc-profile-pic img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
 .wc-greeting{
-  font-size:13px;
+  font-size:12px;
   font-weight:700;
   opacity:.9;
   letter-spacing:.02em;
 }
 
 .wc-name{
-  font-size:22px;
+  font-size:20px;
   font-weight:900;
   letter-spacing:-.02em;
   line-height:1.2;
-  margin-top:3px;
+  margin-top:2px;
 }
 
 .wc-name span{
@@ -539,7 +515,7 @@ a{
 }
 
 .wc-temp{
-  font-size:40px;
+  font-size:42px;
   font-weight:900;
   letter-spacing:-.04em;
   line-height:1;
@@ -580,7 +556,7 @@ a{
 }
 
 /* ============================================================
-   QUICK ACTIONS ROW
+   QUICK ACTIONS
    ============================================================ */
 .qa-row{
   display:grid;
@@ -608,7 +584,7 @@ a{
   border-color:var(--p);
 }
 
-.qa .qa-ic{
+.qa-ic{
   width:38px;
   height:38px;
   border-radius:50%;
@@ -620,7 +596,7 @@ a{
   box-shadow:0 3px 10px rgba(0,0,0,.08);
 }
 
-.qa .qa-lb{
+.qa-lb{
   font-size:9.5px;
   font-weight:800;
   letter-spacing:.02em;
@@ -670,7 +646,7 @@ a{
 }
 
 /* ============================================================
-   MY FARM HORIZONTAL SCROLL CARDS
+   MY FARM CARDS
    ============================================================ */
 .mf-row{
   display:flex;
@@ -687,7 +663,7 @@ a{
 }
 
 .mf-card{
-  flex:0 0 158px;
+  flex:0 0 162px;
   background:var(--sf);
   border:1px solid var(--bd);
   border-radius:var(--r-lg);
@@ -702,7 +678,7 @@ a{
   transform:scale(.97);
 }
 
-.mf-card .mf-img{
+.mf-img{
   height:88px;
   background:var(--sf2);
   position:relative;
@@ -713,17 +689,17 @@ a{
   font-size:42px;
 }
 
-.mf-card .mf-img img{
+.mf-img img{
   width:100%;
   height:100%;
   object-fit:cover;
 }
 
-.mf-card .mf-body{
+.mf-body{
   padding:10px 11px 12px;
 }
 
-.mf-card .mf-name{
+.mf-name{
   font-size:12.5px;
   font-weight:800;
   color:var(--td);
@@ -734,7 +710,7 @@ a{
   white-space:nowrap;
 }
 
-.mf-card .mf-sub{
+.mf-sub{
   font-size:10.5px;
   color:var(--tl);
   font-weight:600;
@@ -744,7 +720,7 @@ a{
   white-space:nowrap;
 }
 
-.mf-card .mf-tag{
+.mf-tag{
   display:inline-block;
   font-size:9.5px;
   font-weight:800;
@@ -757,22 +733,11 @@ a{
   color:var(--p-d);
 }
 
-.mf-card .mf-tag.warn{
-  background:#fef3c7;
-  color:#92400e;
-}
+.mf-tag.warn{background:var(--warn-soft);color:#92400e}
+.mf-tag.ok{background:var(--ok-soft);color:#065f46}
+.mf-tag.ready{background:#ffedd5;color:#9a3412}
 
-.mf-card .mf-tag.ok{
-  background:#d1fae5;
-  color:#065f46;
-}
-
-.mf-card .mf-tag.ready{
-  background:#ffedd5;
-  color:#9a3412;
-}
-
-.mf-card .mf-days{
+.mf-days{
   display:flex;
   align-items:center;
   gap:4px;
@@ -782,7 +747,7 @@ a{
   margin-top:4px;
 }
 
-.mf-days .mf-dot{
+.mf-dot{
   width:5px;
   height:5px;
   border-radius:50%;
@@ -800,19 +765,19 @@ a{
   border-style:dashed !important;
 }
 
-.mf-add .mf-plus{
+.mf-plus{
   font-size:32px;
   margin-bottom:6px;
 }
 
-.mf-add .mf-lb{
+.mf-lb{
   font-size:11.5px;
   font-weight:800;
   color:var(--p);
 }
 
 /* ============================================================
-   SERVICE HERO CARD
+   SERVICE CARDS
    ============================================================ */
 .service-hero{
   margin:0 18px 12px;
@@ -834,21 +799,21 @@ a{
   transform:scale(.985);
 }
 
-.service-hero .sh-bg{
+.sh-bg{
   position:absolute;
   inset:0;
   z-index:0;
   background:linear-gradient(135deg,#0f7a34 0%,#084d20 100%);
 }
 
-.service-hero .sh-bg::after{
+.sh-bg::after{
   content:'';
   position:absolute;
   inset:0;
   background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.6) 100%);
 }
 
-.service-hero .sh-art{
+.sh-art{
   position:absolute;
   top:-14px;
   right:-14px;
@@ -865,12 +830,12 @@ a{
   filter:drop-shadow(0 14px 22px rgba(0,0,0,.35));
 }
 
-.service-hero .sh-content{
+.sh-content{
   position:relative;
   z-index:2;
 }
 
-.service-hero .sh-title{
+.sh-title{
   font-size:22px;
   font-weight:900;
   letter-spacing:-.02em;
@@ -881,7 +846,7 @@ a{
   gap:10px;
 }
 
-.service-hero .sh-title .sh-ic{
+.sh-ic{
   width:34px;
   height:34px;
   border-radius:12px;
@@ -893,7 +858,7 @@ a{
   backdrop-filter:blur(10px);
 }
 
-.service-hero .sh-sub{
+.sh-sub{
   font-size:12.5px;
   font-weight:600;
   opacity:.95;
@@ -901,7 +866,7 @@ a{
   text-shadow:0 1px 6px rgba(0,0,0,.5);
 }
 
-.service-hero .sh-cta{
+.sh-cta{
   position:absolute;
   top:18px;
   right:18px;
@@ -917,9 +882,6 @@ a{
   border:1px solid rgba(255,255,255,.32);
 }
 
-/* ============================================================
-   SERVICE GRID (2x2 cards)
-   ============================================================ */
 .service-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -946,20 +908,20 @@ a{
   transform:scale(.97);
 }
 
-.service-card .sc-bg{
+.sc-bg{
   position:absolute;
   inset:0;
   z-index:0;
 }
 
-.service-card .sc-bg::after{
+.sc-bg::after{
   content:'';
   position:absolute;
   inset:0;
   background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,.6) 100%);
 }
 
-.service-card .sc-art{
+.sc-art{
   position:absolute;
   top:-8px;
   right:-14px;
@@ -975,12 +937,12 @@ a{
   filter:drop-shadow(0 8px 16px rgba(0,0,0,.3));
 }
 
-.service-card .sc-content{
+.sc-content{
   position:relative;
   z-index:2;
 }
 
-.service-card .sc-title{
+.sc-title{
   font-size:14px;
   font-weight:900;
   letter-spacing:-.01em;
@@ -991,7 +953,7 @@ a{
   gap:6px;
 }
 
-.service-card .sc-title .sc-ic{
+.sc-ic{
   width:22px;
   height:22px;
   border-radius:8px;
@@ -1004,7 +966,7 @@ a{
   flex-shrink:0;
 }
 
-.service-card .sc-sub{
+.sc-sub{
   font-size:10.5px;
   font-weight:600;
   opacity:.95;
@@ -1017,11 +979,11 @@ a{
 .service-card.orange .sc-bg{background:linear-gradient(135deg,#ea580c 0%,#9a3412 100%)}
 .service-card.purple .sc-bg{background:linear-gradient(135deg,#7c3aed 0%,#4c1d95 100%)}
 .service-card.teal .sc-bg{background:linear-gradient(135deg,#0891b2 0%,#155e75 100%)}
-.service-card.pink .sc-bg{background:linear-gradient(135deg,#db2777 0%,#9d174d 100%)}
 .service-card.amber .sc-bg{background:linear-gradient(135deg,#d97706 0%,#92400e 100%)}
+.service-card.pink .sc-bg{background:linear-gradient(135deg,#db2777 0%,#9d174d 100%)}
 
 /* ============================================================
-   LIST ROWS (Floating curved)
+   LIST ROWS
    ============================================================ */
 .list-row{
   margin:0 18px 10px;
@@ -1043,7 +1005,7 @@ a{
   box-shadow:var(--sh);
 }
 
-.list-row .lr-ic{
+.lr-ic{
   width:48px;
   height:48px;
   border-radius:16px;
@@ -1055,25 +1017,25 @@ a{
   box-shadow:0 3px 10px rgba(0,0,0,.08);
 }
 
-.list-row .lr-ic.green{background:linear-gradient(145deg,#d1fae5,#10b981)}
-.list-row .lr-ic.blue{background:linear-gradient(145deg,#dbeafe,#2563eb)}
-.list-row .lr-ic.orange{background:linear-gradient(145deg,#ffedd5,#ea580c)}
-.list-row .lr-ic.purple{background:linear-gradient(145deg,#ede9fe,#7c3aed)}
-.list-row .lr-ic.amber{background:linear-gradient(145deg,#fef3c7,#d97706)}
+.lr-ic.green{background:linear-gradient(145deg,#d1fae5,#10b981)}
+.lr-ic.blue{background:linear-gradient(145deg,#dbeafe,#2563eb)}
+.lr-ic.orange{background:linear-gradient(145deg,#ffedd5,#ea580c)}
+.lr-ic.purple{background:linear-gradient(145deg,#ede9fe,#7c3aed)}
+.lr-ic.amber{background:linear-gradient(145deg,#fef3c7,#d97706)}
 
-.list-row .lr-tx{
+.lr-tx{
   flex:1;
   min-width:0;
 }
 
-.list-row .lr-tt{
+.lr-tt{
   font-size:15px;
   font-weight:900;
   color:var(--td);
   letter-spacing:-.02em;
 }
 
-.list-row .lr-sb{
+.lr-sb{
   font-size:12px;
   color:var(--tl);
   font-weight:600;
@@ -1081,7 +1043,7 @@ a{
   line-height:1.35;
 }
 
-.list-row .lr-arrow{
+.lr-arrow{
   width:28px;
   height:28px;
   flex-shrink:0;
@@ -1091,7 +1053,7 @@ a{
   justify-content:center;
 }
 
-.list-row .lr-arrow svg{
+.lr-arrow svg{
   width:18px;
   height:18px;
   fill:currentColor;
@@ -1116,14 +1078,14 @@ a{
   box-shadow:var(--sh-md);
 }
 
-.batch-card .bc-top{
+.bc-top{
   display:flex;
   align-items:center;
   gap:12px;
   padding:16px;
 }
 
-.batch-card .bc-crop-ic{
+.bc-crop-ic{
   width:56px;
   height:56px;
   border-radius:18px;
@@ -1136,26 +1098,26 @@ a{
   box-shadow:0 3px 10px rgba(0,0,0,.08);
 }
 
-.batch-card .bc-info{
+.bc-info{
   flex:1;
   min-width:0;
 }
 
-.batch-card .bc-crop{
+.bc-crop{
   font-size:15px;
   font-weight:900;
   color:var(--td);
   letter-spacing:-.02em;
 }
 
-.batch-card .bc-variety{
+.bc-variety{
   font-size:11.5px;
   color:var(--tl);
   font-weight:600;
   margin-top:2px;
 }
 
-.batch-card .bc-batch-num{
+.bc-batch-num{
   font-size:10px;
   color:var(--p);
   font-weight:800;
@@ -1164,7 +1126,18 @@ a{
   font-family:'SF Mono','Roboto Mono',monospace;
 }
 
-.batch-card .bc-stat{
+.bc-est-boxes{
+  font-size:9.5px;
+  color:#9a3412;
+  font-weight:800;
+  margin-top:3px;
+  background:#fef3c7;
+  padding:2px 7px;
+  border-radius:var(--r-p);
+  display:inline-block;
+}
+
+.bc-stat{
   display:flex;
   flex-direction:column;
   align-items:flex-end;
@@ -1172,7 +1145,7 @@ a{
   flex-shrink:0;
 }
 
-.batch-card .bc-status{
+.bc-status{
   font-size:10px;
   font-weight:800;
   text-transform:uppercase;
@@ -1181,38 +1154,32 @@ a{
   border-radius:var(--r-p);
 }
 
-.batch-card .bc-status.planted{background:#dbeafe;color:#1e40af}
-.batch-card .bc-status.growing{background:#e6f5eb;color:var(--p-d)}
-.batch-card .bc-status.flowering{background:#fef3c7;color:#92400e}
-.batch-card .bc-status.fruiting{background:#ede9fe;color:#5b21b6}
-.batch-card .bc-status.harvesting{background:#ffedd5;color:#9a3412}
-.batch-card .bc-status.harvested{background:#f1f5f9;color:#475569}
+.bc-status.planted{background:var(--info-soft);color:#1e40af}
+.bc-status.growing{background:var(--p-l);color:var(--p-d)}
+.bc-status.flowering{background:var(--warn-soft);color:#92400e}
+.bc-status.fruiting{background:#ede9fe;color:#5b21b6}
+.bc-status.harvesting{background:#ffedd5;color:#9a3412}
+.bc-status.harvested{background:#f1f5f9;color:#475569}
 
-.batch-card .bc-area{
-  font-size:11px;
-  color:var(--tl);
-  font-weight:700;
-}
-
-.batch-card .bc-bar-wrap{
+.bc-bar-wrap{
   padding:0 16px 16px;
 }
 
-.batch-card .bc-progress{
+.bc-progress{
   height:8px;
   border-radius:4px;
   background:var(--bd);
   overflow:hidden;
 }
 
-.batch-card .bc-progress-fill{
+.bc-progress-fill{
   height:100%;
   background:linear-gradient(90deg,var(--p),var(--acc));
   transition:width .8s var(--e);
   border-radius:4px;
 }
 
-.batch-card .bc-progress-meta{
+.bc-progress-meta{
   display:flex;
   justify-content:space-between;
   margin-top:6px;
@@ -1221,12 +1188,12 @@ a{
   color:var(--tl);
 }
 
-.batch-card .bc-progress-meta strong{
+.bc-progress-meta strong{
   color:var(--p-d);
 }
 
 /* ============================================================
-   THREE TABS (Plant / Manage / Harvest)
+   THREE TABS
    ============================================================ */
 .three-tabs{
   display:grid;
@@ -1252,7 +1219,7 @@ a{
   transform:scale(.96);
 }
 
-.three-tab .tt-ic{
+.tt-ic{
   width:46px;
   height:46px;
   border-radius:50%;
@@ -1263,7 +1230,7 @@ a{
   transition:all .25s var(--e);
 }
 
-.three-tab .tt-lb{
+.tt-lb{
   font-size:11.5px;
   font-weight:900;
   letter-spacing:.04em;
@@ -1316,7 +1283,7 @@ a{
   color:#ea580c;
 }
 
-.three-tab .tt-badge{
+.tt-badge{
   position:absolute;
   top:6px;
   right:6px;
@@ -1335,7 +1302,7 @@ a{
 }
 
 /* ============================================================
-   WIZARD STEPS INDICATOR
+   WIZARD STEPS
    ============================================================ */
 .steps-indicator{
   display:flex;
@@ -1426,7 +1393,7 @@ a{
 }
 
 /* ============================================================
-   CROP PICKER GRID
+   CROP PICKER
    ============================================================ */
 .crop-grid{
   display:grid;
@@ -1465,7 +1432,7 @@ a{
   box-shadow:0 6px 16px -6px var(--p-glow);
 }
 
-.crop-pick .cp-ic{
+.cp-ic{
   width:52px;
   height:52px;
   border-radius:50%;
@@ -1481,7 +1448,7 @@ a{
   background:#fff;
 }
 
-.crop-pick .cp-lb{
+.cp-lb{
   font-size:10.5px;
   font-weight:800;
   color:var(--td);
@@ -1491,7 +1458,7 @@ a{
 }
 
 /* ============================================================
-   VARIETY SHEET (POPUP)
+   VARIETY SHEET POPUP
    ============================================================ */
 .sheet-overlay{
   position:fixed;
@@ -1574,7 +1541,7 @@ a{
   border-color:var(--p);
 }
 
-.sheet-item .si-ico{
+.si-ico{
   width:46px;
   height:46px;
   border-radius:14px;
@@ -1588,12 +1555,12 @@ a{
   box-shadow:0 3px 10px rgba(15,122,52,.3);
 }
 
-.sheet-item .si-info{
+.si-info{
   flex:1;
   min-width:0;
 }
 
-.sheet-item .si-info strong{
+.si-info strong{
   display:block;
   font-size:13.5px;
   font-weight:800;
@@ -1601,19 +1568,19 @@ a{
   margin-bottom:2px;
 }
 
-.sheet-item .si-info span{
+.si-info span{
   display:block;
   font-size:11px;
   color:var(--tl);
   font-weight:600;
 }
 
-.sheet-item .si-price{
+.si-price{
   text-align:right;
   flex-shrink:0;
 }
 
-.sheet-item .si-price strong{
+.si-price strong{
   display:block;
   font-size:16px;
   font-weight:900;
@@ -1621,7 +1588,7 @@ a{
   color:var(--p-d);
 }
 
-.sheet-item .si-price small{
+.si-price small{
   display:block;
   font-size:9.5px;
   color:var(--tl);
@@ -1691,11 +1658,6 @@ a{
   font-weight:800;
   box-shadow:0 1px 3px rgba(15,122,52,.15);
   border:1px solid rgba(15,122,52,.12);
-  transition:transform .2s var(--e);
-}
-
-.farm-grid-cell:active{
-  transform:scale(.92);
 }
 
 .farm-grid-legend{
@@ -1748,7 +1710,7 @@ a{
   pointer-events:none;
 }
 
-.box-estimate-card .bec-label{
+.bec-label{
   font-size:11px;
   font-weight:800;
   color:#9a3412;
@@ -1760,7 +1722,7 @@ a{
   gap:6px;
 }
 
-.box-estimate-card .bec-value{
+.bec-value{
   font-size:40px;
   font-weight:900;
   letter-spacing:-.04em;
@@ -1768,14 +1730,14 @@ a{
   line-height:1;
 }
 
-.box-estimate-card .bec-unit{
+.bec-unit{
   font-size:14px;
   font-weight:800;
   color:#9a3412;
   margin-top:4px;
 }
 
-.box-estimate-card .bec-range{
+.bec-range{
   font-size:11.5px;
   color:#7c2d12;
   font-weight:600;
@@ -1785,13 +1747,13 @@ a{
   border-top:1px dashed rgba(234,88,12,.25);
 }
 
-.box-estimate-card .bec-range strong{
+.bec-range strong{
   color:#7c2d12;
   font-weight:800;
 }
 
 /* ============================================================
-   AREA INPUT GRID
+   AREA INPUT
    ============================================================ */
 .area-grid{
   display:grid;
@@ -1831,7 +1793,7 @@ a{
   letter-spacing:-.03em;
 }
 
-.area-box .ab-unit{
+.ab-unit{
   font-size:11px;
   color:var(--tl);
   font-weight:700;
@@ -1866,14 +1828,14 @@ a{
   border-color:var(--p);
 }
 
-.select-trigger .st-value{
+.st-value{
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
   flex:1;
 }
 
-.select-trigger .st-arrow{
+.st-arrow{
   font-size:11px;
   color:var(--tm);
   transition:transform .25s var(--e);
@@ -1929,11 +1891,11 @@ a{
   font-weight:800;
 }
 
-.select-option .so-ic{
+.so-ic{
   font-size:18px;
 }
 
-.select-option .so-check{
+.so-check{
   margin-left:auto;
   color:var(--p);
   font-weight:800;
@@ -2057,21 +2019,9 @@ a{
 }
 
 .btn-danger{
-  background:var(--sf);
+  background:var(--danger-soft);
   color:var(--danger);
-  border:1.5px solid var(--danger);
-}
-
-.btn-sm{
-  padding:10px 14px;
-  font-size:13px;
-}
-
-.btn-ico{
-  width:44px;
-  height:44px;
-  padding:0;
-  flex-shrink:0;
+  border:1.5px solid rgba(220,38,38,.25);
 }
 
 .btn-row{
@@ -2092,7 +2042,7 @@ a{
   padding:20px 0;
 }
 
-.success-burst .sb-ic{
+.sb-ic{
   width:96px;
   height:96px;
   border-radius:50%;
@@ -2128,7 +2078,7 @@ a{
 }
 
 /* ============================================================
-   BATCH RESULT BOX
+   BATCH RESULT
    ============================================================ */
 .batch-result{
   padding:18px;
@@ -2140,7 +2090,7 @@ a{
   box-shadow:var(--sh-md);
 }
 
-.batch-result .br-lb{
+.br-lb{
   font-size:10.5px;
   font-weight:800;
   color:var(--p);
@@ -2149,7 +2099,7 @@ a{
   margin-bottom:4px;
 }
 
-.batch-result .br-num{
+.br-num{
   font-family:'SF Mono','Roboto Mono',monospace;
   font-size:16px;
   font-weight:900;
@@ -2159,7 +2109,7 @@ a{
   margin-bottom:12px;
 }
 
-.batch-result .br-row{
+.br-row{
   display:flex;
   justify-content:space-between;
   padding:7px 0;
@@ -2167,23 +2117,23 @@ a{
   border-bottom:1px dashed rgba(15,122,52,.18);
 }
 
-.batch-result .br-row:last-child{
+.br-row:last-child{
   border-bottom:none;
 }
 
-.batch-result .br-row span:first-child{
+.br-row span:first-child{
   color:var(--p);
   font-weight:700;
 }
 
-.batch-result .br-row span:last-child{
+.br-row span:last-child{
   color:var(--p-d);
   font-weight:800;
   text-align:right;
 }
 
 /* ============================================================
-   DETAILS TOGGLE (collapsible sections)
+   DETAILS TOGGLE
    ============================================================ */
 .details-toggle{
   width:100%;
@@ -2206,7 +2156,7 @@ a{
   background:var(--p-l);
 }
 
-.details-toggle .dt-chev{
+.dt-chev{
   transition:transform .3s var(--e);
 }
 
@@ -2302,13 +2252,13 @@ a{
   border-bottom:none;
 }
 
-.info-row .ir-k{
+.ir-k{
   color:var(--tl);
   font-weight:700;
   flex-shrink:0;
 }
 
-.info-row .ir-v{
+.ir-v{
   color:var(--td);
   font-weight:800;
   text-align:right;
@@ -2348,7 +2298,7 @@ a{
   margin-bottom:6px;
 }
 
-.detail-body .d-sc{
+.d-sc{
   font-size:13px;
   color:var(--tl);
   font-weight:600;
@@ -2369,7 +2319,7 @@ a{
   margin-bottom:14px;
 }
 
-.batch-num-box .bn-lb{
+.bn-lb{
   font-size:10px;
   font-weight:800;
   color:var(--p);
@@ -2377,7 +2327,7 @@ a{
   letter-spacing:.05em;
 }
 
-.batch-num-box .bn-v{
+.bn-v{
   font-family:'SF Mono','Roboto Mono',monospace;
   font-size:13px;
   font-weight:800;
@@ -2387,8 +2337,19 @@ a{
   word-break:break-all;
 }
 
+.bn-est{
+  font-size:11px;
+  font-weight:800;
+  color:#9a3412;
+  background:#fef3c7;
+  padding:3px 9px;
+  border-radius:var(--r-p);
+  margin-left:8px;
+  display:inline-block;
+}
+
 /* ============================================================
-   DETAIL SECTIONS
+   SECTIONS
    ============================================================ */
 .d-section{
   margin-bottom:16px;
@@ -2414,7 +2375,7 @@ a{
 }
 
 /* ============================================================
-   TIMELINE STAGES
+   TIMELINE
    ============================================================ */
 .timeline-stage{
   display:flex;
@@ -2427,7 +2388,7 @@ a{
   margin-bottom:6px;
 }
 
-.timeline-stage .ts-dot{
+.ts-dot{
   width:22px;
   height:22px;
   border-radius:50%;
@@ -2456,7 +2417,7 @@ a{
   box-shadow:0 0 0 4px rgba(15,122,52,.15);
 }
 
-.timeline-stage .ts-lb{
+.ts-lb{
   font-size:12.5px;
   font-weight:700;
   color:var(--td);
@@ -2467,7 +2428,7 @@ a{
   color:var(--p-d);
 }
 
-.timeline-stage .ts-dur{
+.ts-dur{
   font-size:10.5px;
   color:var(--tl);
   font-weight:600;
@@ -2488,18 +2449,18 @@ a{
   margin-bottom:6px;
 }
 
-.schedule-row .sr-left{
+.sr-left{
   flex:1;
   min-width:0;
 }
 
-.schedule-row .sr-title{
+.sr-title{
   font-size:12.5px;
   font-weight:800;
   color:var(--td);
 }
 
-.schedule-row .sr-sub{
+.sr-sub{
   font-size:10.5px;
   color:var(--tl);
   font-weight:600;
@@ -2507,19 +2468,19 @@ a{
   line-height:1.4;
 }
 
-.schedule-row .sr-right{
+.sr-right{
   text-align:right;
   flex-shrink:0;
   max-width:45%;
 }
 
-.schedule-row .sr-rate{
+.sr-rate{
   font-size:12.5px;
   font-weight:900;
   color:var(--p-d);
 }
 
-.schedule-row .sr-time{
+.sr-time{
   font-size:10px;
   color:var(--tl);
   font-weight:700;
@@ -2587,7 +2548,7 @@ a{
   letter-spacing:-.03em;
 }
 
-.harvest-input-box .hib-unit{
+.hib-unit{
   font-size:10.5px;
   color:#9a3412;
   font-weight:800;
@@ -2616,15 +2577,11 @@ a{
   margin-bottom:10px;
 }
 
-.compare-bars{
-  margin-top:8px;
-}
-
 .compare-bar-row{
   margin-bottom:10px;
 }
 
-.compare-bar-row .cbr-top{
+.cbr-top{
   display:flex;
   justify-content:space-between;
   font-size:11.5px;
@@ -2633,7 +2590,7 @@ a{
   margin-bottom:4px;
 }
 
-.compare-bar-row .cbr-top span:first-child{
+.cbr-top span:first-child{
   color:var(--tl);
   font-weight:700;
 }
@@ -2660,61 +2617,442 @@ a{
 }
 
 /* ============================================================
-   HARVEST POST BUTTON
+   SOIL / IRRIGATION CLICKABLE CARDS
    ============================================================ */
-.harvest-post-btn{
-  width:100%;
-  padding:18px;
-  border-radius:var(--r-xl);
-  background:linear-gradient(135deg,#ea580c 0%,#9a3412 100%);
-  color:#fff;
+.info-card{
   display:flex;
   align-items:center;
-  gap:14px;
-  text-align:left;
-  margin-bottom:14px;
-  box-shadow:0 12px 30px -10px rgba(234,88,12,.55);
-  transition:transform .25s var(--e);
-  border:none;
+  gap:12px;
+  padding:14px;
+  background:#fff;
+  border:1px solid var(--bd);
+  border-radius:var(--r-lg);
+  margin-bottom:8px;
+  cursor:pointer;
+  transition:all .2s var(--e);
+  box-shadow:var(--sh-xs);
 }
 
-.harvest-post-btn:active{
-  transform:scale(.985);
+.info-card:active{
+  transform:scale(.98);
+  background:var(--p-l);
+  border-color:var(--p);
 }
 
-.harvest-post-btn .hp-ico{
-  width:52px;
-  height:52px;
-  border-radius:16px;
-  background:rgba(255,255,255,.2);
+.info-card .ic-ico{
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  background:var(--p-l);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:26px;
+  font-size:20px;
   flex-shrink:0;
 }
 
-.harvest-post-btn .hp-tx{
+.info-card .ic-tx{
   flex:1;
   min-width:0;
 }
 
-.harvest-post-btn .hp-tt{
-  font-size:16px;
-  font-weight:900;
-  letter-spacing:-.02em;
+.info-card .ic-title{
+  font-size:13.5px;
+  font-weight:800;
+  color:var(--td);
+}
+
+.info-card .ic-sub{
+  font-size:11px;
+  color:var(--tl);
+  font-weight:600;
+  margin-top:2px;
+}
+
+.info-card .ic-arrow{
+  width:24px;
+  height:24px;
+  color:var(--tm);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.info-card .ic-arrow svg{
+  width:16px;
+  height:16px;
+  fill:currentColor;
+}
+
+/* ============================================================
+   SUN ARC
+   ============================================================ */
+.sun-arc-wrap{
+  margin:0 18px 14px;
+  padding:20px;
+  border-radius:var(--r-xl);
+  background:linear-gradient(135deg,#fff7ed 0%,#ffedd5 100%);
+  border:1.5px solid rgba(234,88,12,.18);
+  box-shadow:var(--sh-md);
+  position:relative;
+  overflow:hidden;
+}
+
+.sun-arc-title{
+  font-size:11.5px;
+  font-weight:800;
+  color:#9a3412;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.sun-arc-svg{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+.sun-arc-info{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+  font-size:11px;
+  color:#9a3412;
+  font-weight:700;
+}
+
+/* ============================================================
+   WINDMILL
+   ============================================================ */
+.windmill-wrap{
+  margin:0 18px 14px;
+  padding:20px;
+  border-radius:var(--r-xl);
+  background:linear-gradient(135deg,#ecfeff 0%,#cffafe 100%);
+  border:1.5px solid rgba(8,145,178,.18);
+  box-shadow:var(--sh-md);
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+
+.windmill{
+  width:80px;
+  height:80px;
+  position:relative;
+  flex-shrink:0;
+}
+
+.windmill-tower{
+  position:absolute;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:8px;
+  height:44px;
+  background:linear-gradient(180deg,#94a3b8,#64748b);
+  border-radius:2px;
+}
+
+.windmill-blades{
+  position:absolute;
+  top:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:60px;
+  height:60px;
+  animation:windmillSpin 2s linear infinite;
+}
+
+.windmill-blades::before,
+.windmill-blades::after{
+  content:'';
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:4px;
+  height:28px;
+  background:#0891b2;
+  border-radius:2px;
+  transform-origin:center bottom;
+}
+
+.windmill-blades::before{
+  transform:translate(-50%,-100%) rotate(0deg);
+}
+
+.windmill-blades::after{
+  transform:translate(-50%,-100%) rotate(120deg);
+}
+
+.windmill-blades .blade3{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:4px;
+  height:28px;
+  background:#0891b2;
+  border-radius:2px;
+  transform-origin:center bottom;
+  transform:translate(-50%,-100%) rotate(240deg);
+}
+
+@keyframes windmillSpin{
+  from{transform:translateX(-50%) rotate(0deg)}
+  to{transform:translateX(-50%) rotate(360deg)}
+}
+
+.windmill-info{
+  flex:1;
+}
+
+.windmill-info .wi-title{
+  font-size:11px;
+  font-weight:800;
+  color:#155e75;
+  text-transform:uppercase;
+  letter-spacing:.05em;
   margin-bottom:4px;
 }
 
-.harvest-post-btn .hp-sb{
-  font-size:11.5px;
-  font-weight:600;
-  color:rgba(255,255,255,.85);
+.windmill-info .wi-val{
+  font-size:28px;
+  font-weight:900;
+  color:#0e7490;
+  letter-spacing:-.03em;
+  line-height:1;
 }
 
-.harvest-post-btn .hp-arrow{
+.windmill-info .wi-unit{
+  font-size:12px;
+  font-weight:800;
+  color:#155e75;
+  margin-top:2px;
+}
+
+.windmill-info .wi-sub{
+  font-size:11px;
+  color:#155e75;
+  font-weight:600;
+  margin-top:6px;
+  line-height:1.4;
+}
+
+/* ============================================================
+   HUMIDITY GAUGE
+   ============================================================ */
+.humidity-card{
+  margin:0 18px 14px;
+  padding:18px;
+  border-radius:var(--r-xl);
+  background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);
+  border:1.5px solid rgba(37,99,235,.18);
+  box-shadow:var(--sh-md);
+}
+
+.humidity-title{
+  font-size:11px;
+  font-weight:800;
+  color:#1e40af;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.humidity-bar{
+  height:14px;
+  border-radius:7px;
+  background:rgba(37,99,235,.15);
+  overflow:hidden;
+  margin-bottom:6px;
+}
+
+.humidity-fill{
+  height:100%;
+  border-radius:7px;
+  background:linear-gradient(90deg,#60a5fa,#2563eb);
+  transition:width .8s var(--e);
+}
+
+.humidity-val{
+  font-size:28px;
+  font-weight:900;
+  color:#1e3a8a;
+  letter-spacing:-.03em;
+  line-height:1;
+}
+
+.humidity-sub{
+  font-size:11px;
+  color:#1e40af;
+  font-weight:600;
+  margin-top:4px;
+}
+
+/* ============================================================
+   MARKET ANALYSIS
+   ============================================================ */
+.ma-header{
+  margin:0 18px 14px;
+  padding:20px;
+  border-radius:var(--r-xl);
+  background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
+  color:#fff;
+  box-shadow:var(--sh-xl);
+  position:relative;
+  overflow:hidden;
+}
+
+.ma-header::before{
+  content:'';
+  position:absolute;
+  top:-40px;
+  right:-30px;
+  width:160px;
+  height:160px;
+  background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%);
+  border-radius:50%;
+}
+
+.ma-header h2{
   font-size:20px;
-  color:rgba(255,255,255,.7);
+  font-weight:900;
+  letter-spacing:-.02em;
+  position:relative;
+  z-index:1;
+}
+
+.ma-header p{
+  font-size:12.5px;
+  font-weight:600;
+  opacity:.85;
+  margin-top:4px;
+  position:relative;
+  z-index:1;
+  line-height:1.5;
+}
+
+.ma-stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  padding:0 18px 14px;
+}
+
+.ma-stat{
+  padding:16px;
+  border-radius:var(--r-lg);
+  background:#fff;
+  border:1px solid var(--bd);
+  box-shadow:var(--sh-sm);
+}
+
+.ma-stat .ms-lb{
+  font-size:10.5px;
+  font-weight:800;
+  color:var(--tl);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin-bottom:6px;
+}
+
+.ma-stat .ms-v{
+  font-size:22px;
+  font-weight:900;
+  color:var(--td);
+  letter-spacing:-.03em;
+  line-height:1;
+}
+
+.ma-stat .ms-sub{
+  font-size:11px;
+  color:var(--tl);
+  font-weight:600;
+  margin-top:4px;
+}
+
+.ma-section{
+  margin:0 18px 14px;
+  padding:16px;
+  border-radius:var(--r-lg);
+  background:#fff;
+  border:1px solid var(--bd);
+  box-shadow:var(--sh-sm);
+}
+
+.ma-section h3{
+  font-size:12.5px;
+  font-weight:900;
+  color:var(--td);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.ma-bar-row{
+  margin-bottom:10px;
+}
+
+.ma-bar-top{
+  display:flex;
+  justify-content:space-between;
+  font-size:11.5px;
+  font-weight:800;
+  color:var(--tb);
+  margin-bottom:4px;
+}
+
+.ma-bar-top span:first-child{
+  color:var(--tl);
+  font-weight:700;
+}
+
+.ma-bar-track{
+  height:10px;
+  border-radius:5px;
+  background:var(--bd);
+  overflow:hidden;
+}
+
+.ma-bar-fill{
+  height:100%;
+  border-radius:5px;
+  background:linear-gradient(90deg,#86efac,#16a34a);
+  transition:width .8s var(--e);
+}
+
+.ma-bar-fill.warn{
+  background:linear-gradient(90deg,#fde68a,#d97706);
+}
+
+.ma-bar-fill.danger{
+  background:linear-gradient(90deg,#fecaca,#dc2626);
+}
+
+.ma-warning{
+  padding:12px 14px;
+  border-radius:var(--r);
+  background:#fef3c7;
+  border:1px solid rgba(180,83,9,.2);
+  font-size:12px;
+  color:#92400e;
+  font-weight:600;
+  line-height:1.5;
+  margin-bottom:10px;
+}
+
+.ma-warning strong{
+  font-weight:800;
 }
 
 /* ============================================================
@@ -2744,7 +3082,7 @@ a{
 }
 
 .modal-card{
-  background:#ffffff !important;
+  background:#fff !important;
   border-radius:var(--r-2xl);
   width:100%;
   max-width:420px;
@@ -2777,25 +3115,6 @@ a{
   margin-bottom:16px;
 }
 
-.modal-card .inp{
-  width:100%;
-  padding:14px 16px;
-  border:1.5px solid var(--bd);
-  border-radius:var(--r-lg);
-  background:#fff;
-  font-size:15px;
-  font-weight:500;
-  color:var(--td);
-  outline:none;
-  transition:all .2s var(--e);
-  text-align:left;
-}
-
-.modal-card .inp:focus{
-  border-color:var(--p);
-  box-shadow:var(--ring);
-}
-
 /* ============================================================
    TOAST
    ============================================================ */
@@ -2825,49 +3144,7 @@ a{
 }
 
 /* ============================================================
-   STATE SCREENS
-   ============================================================ */
-.state-screen{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:40px 28px;
-  text-align:center;
-  gap:16px;
-}
-
-.state-screen .st-ic{
-  width:90px;
-  height:90px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:42px;
-}
-
-.state-screen h1{
-  font-size:22px;
-  font-weight:900;
-  color:var(--td);
-  letter-spacing:-.03em;
-  line-height:1.25;
-}
-
-.state-screen p{
-  font-size:14px;
-  color:var(--tl);
-  line-height:1.6;
-  max-width:360px;
-}
-
-.st-ic.danger{background:linear-gradient(145deg,#fecaca,#dc2626);color:#fff}
-.st-ic.warn{background:linear-gradient(145deg,#fde68a,#d97706);color:#fff}
-
-/* ============================================================
-   EMPTY STATE
+   EMPTY
    ============================================================ */
 .empty{
   padding:40px 24px;
@@ -2919,7 +3196,7 @@ a{
   border-radius:50%;
 }
 
-.prof-hero .p-av{
+.p-av{
   width:80px;
   height:80px;
   border-radius:50%;
@@ -2936,7 +3213,7 @@ a{
   z-index:1;
 }
 
-.prof-hero .p-av img{
+.p-av img{
   width:100%;
   height:100%;
   object-fit:cover;
@@ -2950,7 +3227,7 @@ a{
   z-index:1;
 }
 
-.prof-hero .p-ver{
+.p-ver{
   display:inline-flex;
   align-items:center;
   gap:5px;
@@ -2966,11 +3243,7 @@ a{
   z-index:1;
 }
 
-.prof-hero .p-ver.unverified{
-  background:rgba(220,38,38,.35);
-}
-
-.prof-hero .p-loc{
+.p-loc{
   font-size:12px;
   font-weight:600;
   opacity:.92;
@@ -2994,13 +3267,13 @@ a{
   flex:1;
 }
 
-.prof-stats .ps-n{
+.ps-n{
   font-size:20px;
   font-weight:900;
   letter-spacing:-.03em;
 }
 
-.prof-stats .ps-l{
+.ps-l{
   font-size:10px;
   font-weight:700;
   text-transform:uppercase;
@@ -3010,70 +3283,7 @@ a{
 }
 
 /* ============================================================
-   NRC TILES
-   ============================================================ */
-.nrc-strip{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin:0 18px 16px;
-}
-
-.nrc-tile{
-  background:var(--sf);
-  border:1px solid var(--bd);
-  border-radius:var(--r-lg);
-  padding:10px;
-  box-shadow:var(--sh-sm);
-  position:relative;
-}
-
-.nrc-tile .nrc-img{
-  aspect-ratio:16/10;
-  border-radius:10px;
-  overflow:hidden;
-  background:var(--sf2);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:32px;
-  color:var(--tm);
-}
-
-.nrc-tile .nrc-img img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.nrc-tile .nrc-lbl{
-  font-size:9.5px;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:.04em;
-  color:var(--tl);
-  text-align:center;
-  margin-top:6px;
-}
-
-.nrc-tile .nrc-edit{
-  position:absolute;
-  top:14px;
-  right:14px;
-  width:26px;
-  height:26px;
-  border-radius:50%;
-  background:rgba(15,122,52,.95);
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:11px;
-  box-shadow:0 2px 8px rgba(0,0,0,.15);
-}
-
-/* ============================================================
-   MENU LIST
+   MENU
    ============================================================ */
 .menu-list{
   padding:0 18px 18px;
@@ -3099,7 +3309,7 @@ a{
   transform:scale(.985);
 }
 
-.menu-item .mi-ic{
+.mi-ic{
   width:38px;
   height:38px;
   border-radius:50%;
@@ -3111,33 +3321,33 @@ a{
   flex-shrink:0;
 }
 
-.menu-item .mi-tx{
+.mi-tx{
   flex:1;
   min-width:0;
 }
 
-.menu-item .mi-tt{
+.mi-tt{
   font-size:13.5px;
   font-weight:800;
   color:var(--td);
   letter-spacing:-.01em;
 }
 
-.menu-item .mi-sb{
+.mi-sb{
   font-size:11px;
   color:var(--tl);
   font-weight:600;
   margin-top:2px;
 }
 
-.menu-item .mi-ar svg{
+.mi-ar svg{
   width:16px;
   height:16px;
   fill:var(--tm);
 }
 
 /* ============================================================
-   BOTTOM NAVIGATION (FULLY STYLED)
+   BOTTOM NAV
    ============================================================ */
 .bnav{
   position:absolute;
@@ -3224,7 +3434,7 @@ a{
 }
 
 /* ============================================================
-   FLOAT CART BUTTON
+   CART FLOAT
    ============================================================ */
 .cart-float{
   position:fixed;
@@ -3253,7 +3463,7 @@ a{
   to{opacity:1;transform:translateY(0)}
 }
 
-.cart-float .cf-count{
+.cf-count{
   background:#fff;
   color:var(--p);
   border-radius:50%;
@@ -3267,7 +3477,7 @@ a{
 }
 
 /* ============================================================
-   NOTIFICATIONS PANEL
+   NOTIFICATIONS
    ============================================================ */
 .notif-panel{
   position:fixed;
@@ -3328,12 +3538,6 @@ a{
   align-items:center;
   justify-content:center;
   font-size:16px;
-  transition:all .2s var(--e);
-}
-
-.notif-head button:active{
-  transform:scale(.9);
-  background:var(--p-l);
 }
 
 .notif-body{
@@ -3346,12 +3550,6 @@ a{
   padding:60px 24px;
   text-align:center;
   color:var(--tl);
-}
-
-.notif-empty .ne-ic{
-  font-size:52px;
-  opacity:.4;
-  margin-bottom:12px;
 }
 
 /* ============================================================
@@ -3390,7 +3588,7 @@ a{
 }
 
 /* ============================================================
-   CARD
+   MISC
    ============================================================ */
 .card{
   background:var(--sf);
@@ -3400,56 +3598,6 @@ a{
   box-shadow:var(--sh-xs);
 }
 
-/* ============================================================
-   BATCH SUMMARY BOX
-   ============================================================ */
-.summary-box{
-  margin:0 18px 14px;
-  padding:18px;
-  border-radius:var(--r-xl);
-  background:linear-gradient(135deg,#e0f2fe 0%,#bae6fd 100%);
-  border:1.5px solid rgba(37,99,235,.2);
-  box-shadow:0 8px 24px -8px rgba(37,99,235,.25);
-}
-
-.summary-box .sb-title{
-  font-size:11px;
-  font-weight:800;
-  color:#1e40af;
-  text-transform:uppercase;
-  letter-spacing:.06em;
-  margin-bottom:8px;
-  display:flex;
-  align-items:center;
-  gap:6px;
-}
-
-.summary-box .sb-row{
-  display:flex;
-  justify-content:space-between;
-  padding:6px 0;
-  font-size:13px;
-  border-bottom:1px dashed rgba(37,99,235,.2);
-}
-
-.summary-box .sb-row:last-child{
-  border-bottom:none;
-}
-
-.summary-box .sb-row span:first-child{
-  color:#1e40af;
-  font-weight:700;
-}
-
-.summary-box .sb-row span:last-child{
-  color:#1e3a8a;
-  font-weight:800;
-  text-align:right;
-}
-
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
 @media(min-width:560px){
   .mk-grid{
     grid-template-columns:repeat(3,1fr);
@@ -3466,7 +3614,7 @@ a{
 <body>
 
 <!-- ============================================================
-     SPLASH SCREEN
+     SPLASH
      ============================================================ -->
 <div id="app">
   <div class="screen-wrap">
@@ -3487,7 +3635,7 @@ a{
 </div>
 
 <!-- ============================================================
-     NOTIFICATIONS PANEL
+     NOTIFICATIONS
      ============================================================ -->
 <div class="notif-overlay" id="notifOverlay"></div>
 <aside class="notif-panel" id="notifPanel">
@@ -3497,21 +3645,21 @@ a{
   </div>
   <div class="notif-body" id="notifBody">
     <div class="notif-empty">
-      <div class="ne-ic">🔔</div>
+      <div style="font-size:52px;opacity:.4;margin-bottom:12px">🔔</div>
       <div>No notifications yet</div>
     </div>
   </div>
 </aside>
 
 <!-- ============================================================
-     FLOATING CART BUTTON
+     CART FLOAT
      ============================================================ -->
 <button class="cart-float" id="cartFloat" onclick="openSupplierCart()">
   🛒 <span>View Cart</span> <span class="cf-count" id="cartCount">0</span>
 </button>
 
 <!-- ============================================================
-     MODAL + TOAST + LOADER
+     MODAL + LOADER + TOAST + SHEET
      ============================================================ -->
 <div class="modal" id="modal"><div class="modal-card" id="modalCard"></div></div>
 <div class="modal" id="loaderModal">
@@ -3524,10 +3672,6 @@ a{
   </div>
 </div>
 <div class="toast" id="toast"></div>
-
-<!-- ============================================================
-     VARIETY SHEET POPUP
-     ============================================================ -->
 <div class="sheet-overlay" id="varietySheetOverlay">
   <div class="sheet" id="varietySheetContent"></div>
 </div>
@@ -3571,9 +3715,7 @@ const S = {
   catalogue: [],
   myActivities: [],
   myListings: [],
-  allActivities: [],
   marketplace: [],
-  supplierProducts: [],
   cart: [],
   weather: null,
   weatherCity: '',
@@ -3588,6 +3730,7 @@ const S = {
   following: {},
   followUnsub: null,
   myBatches: [],
+  allFarmersBatches: [],
   plantWizard: {
     step: 1,
     cropId: null,
@@ -3604,7 +3747,8 @@ const S = {
   detailedStages: {},
   liveClockTimer: null,
   weatherRefreshTimer: null,
-  supplierProductsUnsub: null
+  supplierProductsUnsub: null,
+  allBatchesUnsub: null
 };
 
 /* ============================================================
@@ -3751,7 +3895,7 @@ function pickIcon(name) {
 }
 
 /* ============================================================
-   GRADIENT PICKER
+   GRADIENTS
    ============================================================ */
 const GRADS = [
   'linear-gradient(145deg,#d1fae5,#10b981)',
@@ -3771,44 +3915,80 @@ function gradFor(str) {
 }
 
 /* ============================================================
-   TOMATO BOX ESTIMATION — RESEARCH BACKED
-   ============================================================
-   Zambian tomato yield research (multiple sources):
-   - Typical smallholder open-field: 25,000–40,000 kg per hectare
-   - Good management systems: 40,000–50,000 kg per hectare
-   - Commercial intensive: up to 80,000 kg per hectare
-   - Standard tomato crate/box: 20 kg
-   - 1 hectare = 1,500 boxes @ 30 t/ha average
-   For other crops: generic 20 kg bag estimation.
+   BOX ESTIMATION — CROPS, LIVESTOCK, FISHERIES
    ============================================================ */
 const BOX_KG = 20;
-const TOMATO_YIELD_KG_PER_HA = 30000; // 30 t/ha conservative average
-const TOMATO_YIELD_LOW_KG_PER_HA = 25000; // 25 t/ha pessimistic
-const TOMATO_YIELD_HIGH_KG_PER_HA = 40000; // 40 t/ha optimistic
 
-function estimateBoxes(lengthM, widthM, cropName) {
+const ESTIMATION = {
+  crop: {
+    tomato: { mid: 30000, low: 25000, high: 40000 },
+    maize: { mid: 5000, low: 3000, high: 7000 },
+    default: { mid: 15000, low: 10000, high: 20000 }
+  },
+  livestock: {
+    cattle: { meatPerHead: 200, low: 150, high: 250 },
+    goat: { meatPerHead: 20, low: 15, high: 25 },
+    pig: { meatPerHead: 70, low: 55, high: 85 },
+    sheep: { meatPerHead: 25, low: 18, high: 32 },
+    default: { meatPerHead: 40, low: 30, high: 50 }
+  },
+  poultry: {
+    broiler: { meatPerBird: 2, low: 1.5, high: 2.5 },
+    layer: { eggsPerBird: 300, low: 250, high: 350 },
+    default: { meatPerBird: 2, low: 1.5, high: 2.5 }
+  },
+  fisheries: {
+    tilapia: { kgPerM2: 5, low: 3, high: 7 },
+    catfish: { kgPerM2: 8, low: 5, high: 11 },
+    default: { kgPerM2: 5, low: 3, high: 7 }
+  }
+};
+
+function estimateBoxes(category, lengthM, widthM, cropName, animalCount) {
+  const cat = String(category || 'Crop').toLowerCase();
+  const name = String(cropName || '').toLowerCase();
+
+  if (cat.includes('livestock') || cat.includes('poultry')) {
+    const count = parseInt(animalCount) || 0;
+    if (cat.includes('poultry')) {
+      if (name.includes('layer') || name.includes('hen')) {
+        const eggs = count * 300;
+        const boxes = Math.max(1, Math.round(eggs / 360));
+        return { boxes, lowBoxes: Math.max(1, Math.round(count * 250 / 360)), highBoxes: Math.max(1, Math.round(count * 350 / 360)), totalKg: eggs * 0.06, unit: 'trays (30 eggs)' };
+      }
+      const meat = count * 2;
+      return { boxes: Math.max(1, Math.round(meat / BOX_KG)), lowBoxes: Math.max(1, Math.round(count * 1.5 / BOX_KG)), highBoxes: Math.max(1, Math.round(count * 2.5 / BOX_KG)), totalKg: meat, unit: 'boxes (20 kg)' };
+    }
+    const key = name.includes('cattle') || name.includes('cow') ? 'cattle' : name.includes('goat') ? 'goat' : name.includes('pig') ? 'pig' : name.includes('sheep') ? 'sheep' : 'default';
+    const e = ESTIMATION.livestock[key];
+    const totalKg = count * e.meatPerHead;
+    return { boxes: Math.max(1, Math.round(totalKg / BOX_KG)), lowBoxes: Math.max(1, Math.round(count * e.low / BOX_KG)), highBoxes: Math.max(1, Math.round(count * e.high / BOX_KG)), totalKg, unit: 'boxes (20 kg)' };
+  }
+
+  if (cat.includes('fisher')) {
+    const m2 = (parseFloat(lengthM) || 0) * (parseFloat(widthM) || 0);
+    const key = name.includes('catfish') ? 'catfish' : 'tilapia';
+    const e = ESTIMATION.fisheries[key];
+    const totalKg = m2 * e.kgPerM2;
+    return { boxes: Math.max(1, Math.round(totalKg / BOX_KG)), lowBoxes: Math.max(1, Math.round(m2 * e.low / BOX_KG)), highBoxes: Math.max(1, Math.round(m2 * e.high / BOX_KG)), totalKg, unit: 'boxes (20 kg)' };
+  }
+
   const m2 = (parseFloat(lengthM) || 0) * (parseFloat(widthM) || 0);
   const ha = m2 / 10000;
-  const crop = String(cropName || '').toLowerCase();
-  
-  if (crop.includes('tomato')) {
-    const totalKg = ha * TOMATO_YIELD_KG_PER_HA;
-    const boxes = Math.max(1, Math.round(totalKg / BOX_KG));
-    const lowBoxes = Math.max(1, Math.round((ha * TOMATO_YIELD_LOW_KG_PER_HA) / BOX_KG));
-    const highBoxes = Math.max(1, Math.round((ha * TOMATO_YIELD_HIGH_KG_PER_HA) / BOX_KG));
-    return { boxes, lowBoxes, highBoxes, totalKg, m2 };
-  }
-  
-  // Generic fallback for other crops
-  const totalKg = ha * 15000;
-  const boxes = Math.max(1, Math.round(totalKg / BOX_KG));
-  const lowBoxes = Math.max(1, Math.round((ha * 10000) / BOX_KG));
-  const highBoxes = Math.max(1, Math.round((ha * 20000) / BOX_KG));
-  return { boxes, lowBoxes, highBoxes, totalKg, m2 };
+  const key = name.includes('tomato') ? 'tomato' : name.includes('maize') ? 'maize' : 'default';
+  const e = ESTIMATION.crop[key];
+  const totalKg = ha * e.mid;
+  return {
+    boxes: Math.max(1, Math.round(totalKg / BOX_KG)),
+    lowBoxes: Math.max(1, Math.round(ha * e.low / BOX_KG)),
+    highBoxes: Math.max(1, Math.round(ha * e.high / BOX_KG)),
+    totalKg,
+    unit: 'boxes (20 kg)'
+  };
 }
 
 /* ============================================================
-   AREA MATH
+   AREA
    ============================================================ */
 function computeArea(length, width) {
   const L = parseFloat(length) || 0;
@@ -3818,28 +3998,9 @@ function computeArea(length, width) {
   return { m2, ha };
 }
 
-function parseYieldRange(str) {
-  if (!str) return { low: 0, high: 0 };
-  const m = String(str).match(/([\d.]+)\s*[–-]\s*([\d.]+)/);
-  if (m) return { low: parseFloat(m[1]), high: parseFloat(m[2]) };
-  const s = String(str).match(/([\d.]+)/);
-  if (s) return { low: parseFloat(s[1]), high: parseFloat(s[1]) };
-  return { low: 0, high: 0 };
-}
-
-function computeForecast(cropId, varietyName, areaHa) {
-  const list = S.varieties[cropId] || [];
-  const variety = list.find(v => v.name === varietyName);
-  if (!variety) return { lowKg: 0, highKg: 0, baseKg: 0, variety: null };
-  const range = parseYieldRange(variety.yield);
-  return {
-    lowKg: range.low * 1000 * areaHa,
-    highKg: range.high * 1000 * areaHa,
-    baseKg: ((range.low + range.high) / 2) * 1000 * areaHa,
-    variety
-  };
-}
-
+/* ============================================================
+   BATCH NUMBER
+   ============================================================ */
 async function generateBatchNumber() {
   const now = new Date();
   const y = now.getFullYear();
@@ -3861,9 +4022,8 @@ async function generateBatchNumber() {
       seq = maxToday + 1;
     }
   } catch (e) {}
-  const seqStr = String(seq).padStart(3, '0');
   return {
-    batchNumber: `BATCH-${seqStr}_${dateKey}`,
+    batchNumber: `BATCH-${String(seq).padStart(3, '0')}_${dateKey}`,
     batchSeq: seq,
     batchDateKey: dateKey
   };
@@ -3874,7 +4034,7 @@ async function generateBatchNumber() {
    ============================================================ */
 async function loadWeatherByCoords(lat, lng) {
   try {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=4`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=7`;
     const r = await fetch(url);
     const j = await r.json();
     return {
@@ -3884,7 +4044,13 @@ async function loadWeatherByCoords(lat, lng) {
       code: j.current.weather_code,
       isDay: j.current.is_day === 1,
       hi: Math.round(j.daily.temperature_2m_max[0]),
-      lo: Math.round(j.daily.temperature_2m_min[0])
+      lo: Math.round(j.daily.temperature_2m_min[0]),
+      daily: j.daily.time.map((d, i) => ({
+        day: new Date(d).toLocaleDateString('en-GB', { weekday: 'short' }),
+        hi: Math.round(j.daily.temperature_2m_max[i]),
+        lo: Math.round(j.daily.temperature_2m_min[i]),
+        code: j.daily.weather_code[i]
+      }))
     };
   } catch (e) {
     return null;
@@ -3915,22 +4081,6 @@ function weatherDescFor(code) {
   if (code <= 77) return 'Snow';
   if (code <= 82) return 'Rain showers';
   return 'Thunderstorm';
-}
-
-function formatLiveClock(d) {
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} ${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()} ${d.getFullYear()}`;
-}
-
-function startLiveClock() {
-  const tick = () => {
-    const el = document.getElementById('liveClockText');
-    if (el) el.textContent = formatLiveClock(new Date());
-  };
-  tick();
-  clearInterval(S.liveClockTimer);
-  S.liveClockTimer = setInterval(tick, 30000);
 }
 
 async function reverseGeocodeCity(lat, lng) {
@@ -3978,32 +4128,48 @@ async function detectUserCityAndWeather(force) {
 }
 
 /* ============================================================
-   CLOUDINARY UPLOAD
+   LIVE CLOCK
    ============================================================ */
-function uploadImage(folder = 'agri') {
-  return new Promise((resolve, reject) => {
-    if (typeof cloudinary === 'undefined' || !cloudinary.openUploadWidget) {
-      reject(new Error('Upload widget not loaded'));
-      return;
+function startLiveClock() {
+  const tick = () => {
+    const el = document.getElementById('liveClockText');
+    if (el) {
+      const d = new Date();
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      el.textContent = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} ${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()} ${d.getFullYear()}`;
     }
-    cloudinary.openUploadWidget({
-      cloudName: CLOUD_NAME,
-      uploadPreset: UPLOAD_PRESET,
-      sources: ['local', 'camera'],
-      multiple: false,
-      maxFiles: 1,
-      maxFileSize: 50000000,
-      resourceType: 'image',
-      clientAllowedFormats: ['jpg', 'jpeg', 'png', 'webp', 'heic'],
-      cropping: false,
-      folder: 'agri/' + folder
-    }, (err, res) => {
-      if (err) return reject(err);
-      if (res && res.event === 'success' && res.info) {
-        resolve(res.info.secure_url);
-      }
-    });
-  });
+  };
+  tick();
+  clearInterval(S.liveClockTimer);
+  S.liveClockTimer = setInterval(tick, 30000);
+}
+
+/* ============================================================
+   MARKETS PER CITY
+   ============================================================ */
+const CITY_MARKETS = {
+  Lusaka: ['Soweto Market', 'City Market', 'Mtendere Market', 'Chilenje Market', 'Matero Market', 'Kabwata Market', 'Northmead Market', 'Chelston Market', 'Kalingalinga Market'],
+  Kitwe: ['Chisokone Market', 'Buchi Market', 'Chamboli Market', 'Wusakile Market', 'Nkana East Market'],
+  Ndola: ['Masala Market', 'Chifubu Market', 'Kansenshi Market', 'Twapia Market', 'Dola Hill Market'],
+  Kabwe: ['Kabwe Main Market', 'Kasanda Market', 'Bwacha Market', 'Makululu Market'],
+  Chipata: ['Chipata Main Market', 'Kapata Market', 'Mchini Market', 'Mtendere Market'],
+  Livingstone: ['Mukuni Market', 'Maramba Market', 'Town Centre Market'],
+  Chingola: ['Chingola Main Market', 'Kabundi Market', 'Nchanga Market'],
+  Mufulira: ['Mufulira Main Market', 'Kankoyo Market', 'Butondo Market'],
+  Luanshya: ['Luanshya Main Market', 'Roan Market', 'Mpatamatu Market'],
+  Kasama: ['Kasama Main Market', 'Chiba Market', 'New Town Market'],
+  Mongu: ['Mongu Main Market', 'Sefula Market', 'Lealui Market'],
+  Solwezi: ['Solwezi Main Market', 'Kansanshi Market', 'St Francis Market'],
+  Mansa: ['Mansa Main Market', 'Chembe Market', 'Senama Market'],
+  Choma: ['Choma Main Market', 'Mbabala Market', 'Batoka Market'],
+  Mazabuka: ['Mazabuka Main Market', 'Nakambala Market', 'Magoye Market'],
+  Kafue: ['Kafue Main Market', 'Nangongwe Market', 'Chilanga Market'],
+  default: ['Main Market', 'Town Centre Market', 'Local Farmers Market']
+};
+
+function marketsForCity(city) {
+  return CITY_MARKETS[city] || CITY_MARKETS.default;
 }
 
 /* ============================================================
@@ -4066,17 +4232,17 @@ function updateNav(id) {
     profile: 'profile'
   };
   let key = id;
-  if (['plant-step-1', 'plant-step-2', 'plant-step-3', 'plant-step-4', 'plant-confirm', 'plant-success', 'batch-detail', 'harvest-record', 'post-harvest-goods'].includes(id)) key = 'farm';
+  if (['plant-loader', 'plant-step-1', 'plant-step-3', 'plant-step-4', 'plant-confirm', 'plant-success', 'batch-detail', 'harvest-record', 'post-harvest-goods'].includes(id)) key = 'farm';
   if (['marketplace', 'product-detail', 'post-ready-goods', 'buy-supplies', 'supplier-cart', 'supplier-checkout'].includes(id)) key = 'market';
   if (['delivery-history', 'request-delivery'].includes(id)) key = 'delivery';
-  if (['profile', 'weather', 'analysis', 'government', 'follow-ups', 'my-posts', 'explore', 'catalogue-detail'].includes(id)) key = 'profile';
+  if (['profile', 'weather', 'analysis', 'government', 'follow-ups', 'my-posts', 'explore', 'catalogue-detail', 'market-analysis', 'weather-detail'].includes(id)) key = 'profile';
   nav.querySelectorAll('.bn').forEach(b => {
     b.classList.toggle('active', map[key] === b.dataset.nav);
   });
 }
 
 /* ============================================================
-   BOTTOM NAV HTML
+   BOTTOM NAV
    ============================================================ */
 function bottomNavHTML() {
   const harvestCount = (S.myBatches || []).filter(b => b.stage === 'harvesting').length;
@@ -4271,6 +4437,17 @@ async function loadMarketplace() {
   return out.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 }
 
+function startAllBatchesListener() {
+  if (S.allBatchesUnsub) S.allBatchesUnsub();
+  S.allBatchesUnsub = onValue(ref(db, 'batches'), (snap) => {
+    const data = snap.val() || {};
+    const arr = Object.entries(data).map(([id, v]) => ({ id, ...v }));
+    arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    S.allFarmersBatches = arr;
+    if (S.screen === 'market-analysis') route();
+  });
+}
+
 /* ============================================================
    ROUTER DISPATCHER
    ============================================================ */
@@ -4282,26 +4459,24 @@ function route() {
   switch (id) {
     case 'home': el.innerHTML = renderHome(); break;
     case 'farm': el.innerHTML = renderFarm(); break;
-
     case 'plant-loader': el.innerHTML = renderPlantLoader(); break;
     case 'plant-step-1': el.innerHTML = renderPlantStep1(); break;
     case 'plant-step-3': el.innerHTML = renderPlantStep3(); break;
     case 'plant-step-4': el.innerHTML = renderPlantStep4(); break;
     case 'plant-confirm': el.innerHTML = renderPlantConfirm(); break;
     case 'plant-success': el.innerHTML = renderPlantSuccess(S.screenData); break;
-
     case 'batch-detail':
       el.innerHTML = renderBatchDetail(S.screenData.id, S.screenData.tab);
       wireBatchDetail(S.screenData.id);
       break;
-
+    case 'harvest-record': el.innerHTML = renderHarvestRecord(S.screenData.id); break;
+    case 'post-harvest-goods': el.innerHTML = renderPostHarvestGoods(S.screenData.id); break;
     case 'marketplace': el.innerHTML = renderMarketplace(); break;
     case 'delivery': el.innerHTML = renderDelivery(); break;
     case 'profile': el.innerHTML = renderProfile(); break;
-    case 'weather': el.innerHTML = renderWeather(); break;
-    case 'analysis': el.innerHTML = renderAnalysis(); break;
+    case 'weather-detail': el.innerHTML = renderWeatherDetail(); break;
+    case 'market-analysis': el.innerHTML = renderMarketAnalysis(); break;
     case 'government': el.innerHTML = renderGovernment(); break;
-
     default: el.innerHTML = renderHome();
   }
 
@@ -4313,19 +4488,25 @@ function route() {
    ============================================================ */
 function renderHome() {
   const p = S.profile || {};
-  const firstName = p.firstName || p.displayName || 'Farmer';
-  const fullName = ((p.firstName || '') + ' ' + (p.lastName || '')).trim() || firstName;
+  const fullName = ((p.firstName || '') + ' ' + (p.lastName || '')).trim() || p.displayName || 'Farmer';
   const initial = initials(fullName);
   const w = S.weather;
   const cityDisplay = S.weatherCity || S.userLocation;
+
+  const activeBatches = (S.myBatches || []).filter(b => b.stage !== 'harvested');
 
   const weatherHTML = w ? `
     <div class="weather-card">
       <div class="wc-icon">${weatherIconFor(w.code, w.isDay)}</div>
       <div class="wc-head">
         <div>
-          <div class="wc-greeting">Good ${new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'},</div>
-          <div class="wc-name"><span>${esc(fullName)}</span> 👋</div>
+          <div class="wc-profile">
+            <div class="wc-profile-pic">${p.profileUrl ? `<img src="${esc(p.profileUrl)}" alt="">` : initial}</div>
+            <div>
+              <div class="wc-greeting">Good ${new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'},</div>
+              <div class="wc-name"><span>${esc(fullName)}</span> 👋</div>
+            </div>
+          </div>
           <div class="wc-loc">
             <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
             ${esc(cityDisplay)}
@@ -4340,8 +4521,13 @@ function renderHome() {
     <div class="weather-card">
       <div class="wc-head">
         <div>
-          <div class="wc-greeting">Good ${new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'},</div>
-          <div class="wc-name"><span>${esc(fullName)}</span> 👋</div>
+          <div class="wc-profile">
+            <div class="wc-profile-pic">${p.profileUrl ? `<img src="${esc(p.profileUrl)}" alt="">` : initial}</div>
+            <div>
+              <div class="wc-greeting">Good ${new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'},</div>
+              <div class="wc-name"><span>${esc(fullName)}</span> 👋</div>
+            </div>
+          </div>
           <div class="wc-loc">📍 Detecting city…</div>
         </div>
       </div>
@@ -4349,16 +4535,12 @@ function renderHome() {
     </div>
   `;
 
-  const batches = (S.myBatches || []).slice(0, 8);
-  const mfHTML = batches.length ? batches.map(b => {
+  const mfHTML = activeBatches.slice(0, 8).map(b => {
     const crop = S.catalogue.find(c => c.id === b.cropId);
     const ic = crop ? pickIcon(crop.name) : '🌱';
     const grad = crop ? gradFor(crop.name) : gradFor(b.cropName || '');
     const stage = b.stage || 'planted';
-    const stageLabel = {
-      planted: 'Planted', growing: 'Growing', flowering: 'Flowering',
-      fruiting: 'Fruiting', harvesting: 'Ready', harvested: 'Harvested'
-    }[stage] || stage;
+    const stageLabel = { planted: 'Planted', growing: 'Growing', flowering: 'Flowering', fruiting: 'Fruiting', harvesting: 'Ready', harvested: 'Harvested' }[stage] || stage;
     const tag = stage === 'harvesting' ? 'ready' : (stage === 'harvested' ? 'ok' : '');
     const daysIn = b.plantedDate ? Math.max(0, Math.floor((Date.now() - b.plantedDate) / 86400000)) : 0;
     const pct = Math.min(100, Math.round(daysIn / (b.totalDays || 120) * 100));
@@ -4372,7 +4554,7 @@ function renderHome() {
           <div class="mf-days"><span class="mf-dot"></span>${pct}% to harvest</div>
         </div>
       </div>`;
-  }).join('') : '';
+  }).join('');
 
   const addCard = `
     <div class="mf-card mf-add" onclick="startPlantFlow()">
@@ -4383,8 +4565,7 @@ function renderHome() {
   return `
   <div class="scroll">
     <div class="topbar" style="padding-bottom:4px">
-      <div class="tb-avatar" onclick="goProfile()">${p.profileUrl ? `<img src="${esc(p.profileUrl)}" alt="">` : initial}</div>
-      <div style="flex:1;min-width:0"></div>
+      <div style="flex:1"></div>
       <button class="tb-btn" onclick="openNotif()" style="position:relative">
         <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
         ${S.unreadNotifCount ? `<span class="dot"></span>` : ''}
@@ -4394,13 +4575,13 @@ function renderHome() {
     ${weatherHTML}
 
     <div class="qa-row">
-      <button class="qa" onclick="navTo('explore',{filter:'crops'})">
+      <button class="qa" onclick="navTo('plant-step-1')">
         <div class="qa-ic c1">🌱</div><div class="qa-lb">Crops</div>
       </button>
-      <button class="qa" onclick="navTo('explore',{filter:'livestock'})">
+      <button class="qa" onclick="navTo('plant-step-1')">
         <div class="qa-ic c2">🐄</div><div class="qa-lb">Livestock</div>
       </button>
-      <button class="qa" onclick="navTo('explore',{filter:'fisheries'})">
+      <button class="qa" onclick="navTo('plant-step-1')">
         <div class="qa-ic c3">🐟</div><div class="qa-lb">Fisheries</div>
       </button>
       <button class="qa" onclick="goMarket()">
@@ -4411,11 +4592,11 @@ function renderHome() {
       </button>
     </div>
 
-    <div class="sec-h"><h3>My Farm</h3><button onclick="goFarm()">View all ›</button></div>
+    <div class="sec-h"><h3>Active Farm</h3><button onclick="goFarm()">View all ›</button></div>
     <div class="mf-row">${addCard}${mfHTML}</div>
 
     <div style="padding:0 18px 8px">
-      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em">Farm Services</div>
+      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em">Services</div>
     </div>
 
     <div class="service-hero" onclick="startPlantFlow()">
@@ -4423,8 +4604,8 @@ function renderHome() {
       <div class="sh-art">🌱</div>
       <div class="sh-cta">Start Now</div>
       <div class="sh-content">
-        <div class="sh-title"><span class="sh-ic">🌱</span>Plant a Crop</div>
-        <div class="sh-sub">Choose crop → variety → field size → town</div>
+        <div class="sh-title"><span class="sh-ic">🌱</span>Plant / Raise</div>
+        <div class="sh-sub">Crops · Livestock · Fisheries</div>
       </div>
     </div>
 
@@ -4432,50 +4613,33 @@ function renderHome() {
       <div class="service-card blue" onclick="goFarm()">
         <div class="sc-bg"></div><div class="sc-art">🔧</div>
         <div class="sc-content">
-          <div class="sc-title"><span class="sc-ic">🔧</span>Manage Farm</div>
+          <div class="sc-title"><span class="sc-ic">🔧</span>Manage</div>
           <div class="sc-sub">Soil, irrigation, spacing</div>
         </div>
       </div>
       <div class="service-card orange" onclick="goFarm()">
         <div class="sc-bg"></div><div class="sc-art">🌾</div>
         <div class="sc-content">
-          <div class="sc-title"><span class="sc-ic">🌾</span>Record Harvest</div>
-          <div class="sc-sub">Log what you harvested</div>
+          <div class="sc-title"><span class="sc-ic">🌾</span>Harvest</div>
+          <div class="sc-sub">Record boxes</div>
         </div>
       </div>
     </div>
 
-    <div class="service-grid">
-      <div class="service-card purple" onclick="goMarket()">
-        <div class="sc-bg"></div><div class="sc-art">💰</div>
-        <div class="sc-content">
-          <div class="sc-title"><span class="sc-ic">💰</span>Marketplace</div>
-          <div class="sc-sub">Sell your produce</div>
-        </div>
-      </div>
-      <div class="service-card teal" onclick="goDelivery()">
-        <div class="sc-bg"></div><div class="sc-art">🚚</div>
-        <div class="sc-content">
-          <div class="sc-title"><span class="sc-ic">🚚</span>Delivery</div>
-          <div class="sc-sub">Ship to any town</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="list-row" onclick="goFarm()">
-      <div class="lr-ic green">📋</div>
+    <div class="list-row" onclick="navTo('market-analysis')">
+      <div class="lr-ic purple">📊</div>
       <div class="lr-tx">
-        <div class="lr-tt">My Batches</div>
-        <div class="lr-sb">${S.myBatches.length} batch${S.myBatches.length === 1 ? '' : 'es'} · track &amp; update</div>
+        <div class="lr-tt">Market Analysis</div>
+        <div class="lr-sb">See what all farmers are planting</div>
       </div>
       <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
     </div>
 
-    <div class="list-row" onclick="navTo('weather')">
+    <div class="list-row" onclick="navTo('weather-detail')">
       <div class="lr-ic blue">☀️</div>
       <div class="lr-tx">
-        <div class="lr-tt">Weather Forecast</div>
-        <div class="lr-sb">Live weather for ${esc(cityDisplay)}</div>
+        <div class="lr-tt">Weather Report</div>
+        <div class="lr-sb">Sun position · Wind · Humidity</div>
       </div>
       <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
     </div>
@@ -4484,16 +4648,7 @@ function renderHome() {
       <div class="lr-ic green">🇿🇲</div>
       <div class="lr-tx">
         <div class="lr-tt">Government Resources</div>
-        <div class="lr-sb">Ministry, ZARI, AMIC &amp; more</div>
-      </div>
-      <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-    </div>
-
-    <div class="list-row" onclick="navTo('analysis')">
-      <div class="lr-ic purple">📊</div>
-      <div class="lr-tx">
-        <div class="lr-tt">Farm Analysis</div>
-        <div class="lr-sb">Trends, top crops &amp; market insights</div>
+        <div class="lr-sb">Ministry, ZARI, AMIC</div>
       </div>
       <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
     </div>
@@ -4506,8 +4661,12 @@ function renderHome() {
 /* ============================================================
    FARM
    ============================================================ */
+window.switchFarmTab = (tab) => { S.farmTab = tab; route(); };
+
 function renderFarm() {
   const tab = S.farmTab || 'plant';
+  const active = (S.myBatches || []).filter(b => b.stage !== 'harvested').length;
+  const ready = (S.myBatches || []).filter(b => b.stage === 'harvesting').length;
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -4525,9 +4684,11 @@ function renderFarm() {
       </button>
       <button class="three-tab manage ${tab === 'manage' ? 'active' : ''}" onclick="switchFarmTab('manage')">
         <div class="tt-ic">🔧</div><div class="tt-lb">Manage</div>
+        ${active ? `<span class="tt-badge">${active}</span>` : ''}
       </button>
       <button class="three-tab harvest ${tab === 'harvest' ? 'active' : ''}" onclick="switchFarmTab('harvest')">
         <div class="tt-ic">🌾</div><div class="tt-lb">Harvest</div>
+        ${ready ? `<span class="tt-badge">${ready}</span>` : ''}
       </button>
     </div>
 
@@ -4538,8 +4699,6 @@ function renderFarm() {
   ${bottomNavHTML()}`;
 }
 
-window.switchFarmTab = (tab) => { S.farmTab = tab; route(); };
-
 function renderFarmPlant() {
   return `
   <div style="padding:0 18px 18px">
@@ -4549,7 +4708,7 @@ function renderFarmPlant() {
       <div class="sh-cta">Start</div>
       <div class="sh-content">
         <div class="sh-title"><span class="sh-ic">🌱</span>New Planting</div>
-        <div class="sh-sub">Choose crop → variety → field size → town</div>
+        <div class="sh-sub">Crops · Livestock · Fisheries</div>
       </div>
     </div>
     <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Recent Plantings</div>
@@ -4603,10 +4762,7 @@ function renderBatchCard(b, mode = 'manage') {
   const totalDays = b.totalDays || 120;
   const daysIn = b.plantedDate ? Math.max(0, Math.floor((Date.now() - b.plantedDate) / 86400000)) : 0;
   const pct = Math.min(100, Math.round(daysIn / totalDays * 100));
-  const statusLabel = {
-    planted: 'Planted', growing: 'Growing', flowering: 'Flowering',
-    fruiting: 'Fruiting', harvesting: 'Ready', harvested: 'Harvested'
-  }[stage] || stage;
+  const statusLabel = { planted: 'Planted', growing: 'Growing', flowering: 'Flowering', fruiting: 'Fruiting', harvesting: 'Ready', harvested: 'Harvested' }[stage] || stage;
   return `
   <div class="batch-card" onclick="openBatch('${esc(b.id)}','${esc(mode)}')">
     <div class="bc-top">
@@ -4615,6 +4771,7 @@ function renderBatchCard(b, mode = 'manage') {
         <div class="bc-crop">${esc(b.cropName)}</div>
         <div class="bc-variety">${esc(b.varietyName || '')}</div>
         <div class="bc-batch-num">${esc(b.batchNumber || '')}</div>
+        ${b.estimatedBoxes ? `<span class="bc-est-boxes">📦 Est. ${b.estimatedBoxes.toLocaleString()} boxes</span>` : ''}
       </div>
       <div class="bc-stat">
         <div class="bc-status ${stage}">${esc(statusLabel)}</div>
@@ -4627,7 +4784,7 @@ function renderBatchCard(b, mode = 'manage') {
       </div>
       <div class="bc-progress-meta">
         <span>Day <strong>${daysIn}</strong> of ~${totalDays}</span>
-        <span><strong>${pct}%</strong> to harvest</span>
+        <span><strong>${pct}%</strong></span>
       </div>
     </div>` : ''}
   </div>`;
@@ -4665,18 +4822,20 @@ function renderPlantLoader() {
         Preparing your farm<span id="plant-loader-dots"></span>
       </h2>
       <p style="font-size:13px;color:var(--tl);font-weight:600;line-height:1.5;max-width:280px">
-        Loading crops, varieties and farm data…
+        Loading crops, livestock and fisheries…
       </p>
     </div>
   </div>`;
 }
 
 /* ============================================================
-   STEP 1: CROP PICKER
+   STEP 1: CROP PICKER (ALL CATEGORIES)
    ============================================================ */
 function renderPlantStep1() {
-  const crops = S.catalogue.filter(c => ['Field Crops', 'Pulses', 'Vegetables', 'Fruits', 'Crop'].includes(c.category));
-  const popular = crops.slice(0, 30);
+  const allCrops = S.catalogue;
+  const categories = ['Field Crops', 'Pulses', 'Vegetables', 'Fruits', 'Livestock', 'Poultry', 'Fisheries'];
+  const shown = allCrops.filter(c => categories.includes(c.category));
+
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -4687,16 +4846,16 @@ function renderPlantStep1() {
     </div>
     ${renderStepsIndicator(1)}
     <div class="step-label">Step 1 of 4</div>
-    <div class="step-title">What do you want to plant?</div>
-    <div class="step-sub">Tap the crop you want to plant.</div>
+    <div class="step-title">What do you want to plant / raise?</div>
+    <div class="step-sub">Choose a crop, livestock or fish.</div>
     <div style="padding:0 18px 10px">
-      <input type="text" id="crop-search" placeholder="🔍 Search crops…"
+      <input type="text" id="crop-search" placeholder="🔍 Search…"
              oninput="filterCrops(this.value)"
              style="width:100%;padding:14px 16px;border:1.5px solid var(--bd);border-radius:var(--r-lg);font-size:15px;outline:none;background:#fff;box-shadow:var(--sh-xs)">
     </div>
     <div class="crop-grid" id="crop-grid">
-      ${popular.length ? popular.map(c => `
-        <button class="crop-pick" data-name="${esc(c.name.toLowerCase())}" onclick="pickCrop('${esc(c.id)}')">
+      ${shown.length ? shown.map(c => `
+        <button class="crop-pick" data-name="${esc(c.name.toLowerCase())}" data-cat="${esc(c.category)}" onclick="pickCrop('${esc(c.id)}')">
           <div class="cp-ic">${pickIcon(c.name)}</div>
           <div class="cp-lb">${esc(c.name)}</div>
         </button>
@@ -4727,7 +4886,7 @@ window.pickCrop = (id) => {
 };
 
 /* ============================================================
-   VARIETY POPUP SHEET
+   VARIETY SHEET
    ============================================================ */
 function showVarietySheet(cropId) {
   const crop = S.catalogue.find(c => c.id === cropId);
@@ -4737,7 +4896,7 @@ function showVarietySheet(cropId) {
     <div class="sheet-handle"></div>
     <div class="sheet-head">
       <h3>Choose a variety</h3>
-      <p>${esc(crop.name)} · Select the variety you planted</p>
+      <p>${esc(crop.name)} · Select the variety</p>
     </div>
     <div class="sheet-list">
       ${varieties.length ? varieties.map(v => `
@@ -4778,12 +4937,44 @@ window.selectVariety = (name) => {
 };
 
 /* ============================================================
-   STEP 3: FIELD SIZE
+   STEP 3: FIELD SIZE / COUNT
    ============================================================ */
 function renderPlantStep3() {
   const w = S.plantWizard;
+  const crop = S.catalogue.find(c => c.id === w.cropId);
+  const isLivestock = crop && (crop.category.includes('Livestock') || crop.category.includes('Poultry'));
   const area = computeArea(w.length, w.width);
-  const est = (w.length > 0 && w.width > 0) ? estimateBoxes(w.length, w.width, '') : null;
+  const est = (w.length > 0 && w.width > 0) ? estimateBoxes(crop ? crop.category : 'Crop', w.length, w.width, crop ? crop.name : '', w.animalCount) : null;
+
+  if (isLivestock) {
+    return `
+    <div class="scroll">
+      <div class="topbar bordered">
+        <button class="tb-back" onclick="showScreen('plant-step-1')">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        </button>
+        <div class="tb-title">Number of Animals</div>
+      </div>
+      ${renderStepsIndicator(3)}
+      <div class="step-label">Step 3 of 4</div>
+      <div class="step-title">How many animals?</div>
+      <div class="step-sub">Enter the number of ${crop ? crop.name : 'animals'}.</div>
+      <div style="padding:0 18px 14px">
+        <div class="area-box" style="max-width:260px;margin:0 auto">
+          <label>Count</label>
+          <input type="number" id="animal-count" min="1" step="1" placeholder="0"
+                 value="${w.animalCount || ''}"
+                 oninput="updateAnimalCount(this.value)">
+          <div class="ab-unit">animals</div>
+        </div>
+      </div>
+      <div class="btn-row" style="padding-top:16px">
+        <button class="btn btn-s" onclick="showScreen('plant-step-1')">← Back</button>
+        <button class="btn btn-p" onclick="goPlantStep4()">Continue →</button>
+      </div>
+    </div>`;
+  }
+
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -4795,7 +4986,7 @@ function renderPlantStep3() {
     ${renderStepsIndicator(3)}
     <div class="step-label">Step 3 of 4</div>
     <div class="step-title">How big is your field?</div>
-    <div class="step-sub">Enter length and width in metres. We'll estimate how many boxes you can harvest.</div>
+    <div class="step-sub">Enter length and width in metres. We'll estimate boxes.</div>
     <div class="area-grid">
       <div class="area-box">
         <label>Length</label>
@@ -4812,19 +5003,17 @@ function renderPlantStep3() {
         <div class="ab-unit">metres (m)</div>
       </div>
     </div>
-    <div class="area-result" id="area-result" style="margin:0 18px 14px;padding:16px 18px;border-radius:var(--r-lg);background:linear-gradient(135deg,#e6f5eb,#d1fae5);border:1.5px solid rgba(15,122,52,.18);display:flex;align-items:center;justify-content:space-between;gap:10px">
-      <div>
-        <div style="font-size:12px;font-weight:800;color:var(--p);text-transform:uppercase;letter-spacing:.05em">Total field area</div>
-        <div style="font-size:32px;font-weight:900;color:var(--p-d);letter-spacing:-.03em;line-height:1" id="area-m2-value">0</div>
-        <div style="font-size:11px;color:var(--p);font-weight:600;margin-top:4px" id="area-detail">square metres</div>
-      </div>
-      <div style="font-size:42px">📐</div>
-    </div>
-    <div style="padding:0 18px 8px">
-      <div style="font-size:11.5px;color:var(--tl);font-weight:600;line-height:1.55;background:var(--sf2);padding:12px 14px;border-radius:var(--r);border:1px solid var(--bd)">
-        💡 <strong>Tip:</strong> Walk the length and count your steps (~1 step ≈ 1 metre).
+    ${est ? `
+    <div class="box-estimate-card">
+      <div class="bec-label">📦 Estimated Harvest</div>
+      <div class="bec-value">${est.boxes.toLocaleString()}</div>
+      <div class="bec-unit">${est.unit}</div>
+      <div class="bec-range">
+        Range: <strong>${est.lowBoxes.toLocaleString()}</strong> to <strong>${est.highBoxes.toLocaleString()}</strong> ${est.unit}.
+        <br>Based on ${area.m2.toFixed(0)} m² field.
       </div>
     </div>
+    ` : ''}
     <div class="btn-row" style="padding-top:16px">
       <button class="btn btn-s" onclick="showScreen('plant-step-1')">← Back</button>
       <button class="btn btn-p" id="plant-step3-next" onclick="goPlantStep4()" ${!(w.length > 0 && w.width > 0) ? 'disabled' : ''}>Continue →</button>
@@ -4836,25 +5025,29 @@ window.updateArea = (field, value) => {
   const v = parseFloat(value) || 0;
   if (field === 'length') S.plantWizard.length = v;
   if (field === 'width') S.plantWizard.width = v;
-  const area = computeArea(S.plantWizard.length, S.plantWizard.width);
-  const m2El = document.getElementById('area-m2-value');
-  const detailEl = document.getElementById('area-detail');
-  if (m2El) m2El.textContent = area.m2.toFixed(0);
-  if (detailEl) detailEl.textContent = `${area.m2.toFixed(0)} square metres (${area.m2.toFixed(0)} m²)`;
   const btn = document.getElementById('plant-step3-next');
   if (btn) btn.disabled = !(S.plantWizard.length > 0 && S.plantWizard.width > 0);
+  route();
+};
+
+window.updateAnimalCount = (value) => {
+  S.plantWizard.animalCount = parseInt(value) || 0;
 };
 
 window.goPlantStep4 = () => {
-  if (!S.plantWizard.length || !S.plantWizard.width) {
-    toast('Please enter length and width');
-    return;
+  const w = S.plantWizard;
+  const crop = S.catalogue.find(c => c.id === w.cropId);
+  const isLivestock = crop && (crop.category.includes('Livestock') || crop.category.includes('Poultry'));
+  if (isLivestock) {
+    if (!w.animalCount || w.animalCount <= 0) { toast('Please enter number of animals'); return; }
+  } else {
+    if (!w.length || !w.width) { toast('Please enter length and width'); return; }
   }
   showScreen('plant-step-4');
 };
 
 /* ============================================================
-   STEP 4: CITY DROPDOWN (auto-selected current)
+   STEP 4: TOWN DROPDOWN
    ============================================================ */
 const ZAMBIA_TOWNS = [
   'Lusaka', 'Kitwe', 'Ndola', 'Kabwe', 'Chingola', 'Mufulira', 'Livingstone',
@@ -4943,15 +5136,15 @@ window.goPlantConfirm = () => {
 };
 
 /* ============================================================
-   CONFIRMATION PAGE WITH 6x7 FARM GRID
+   CONFIRMATION WITH GRID + BOXES
    ============================================================ */
 function renderPlantConfirm() {
   const w = S.plantWizard;
   const crop = S.catalogue.find(c => c.id === w.cropId);
+  const isLivestock = crop && (crop.category.includes('Livestock') || crop.category.includes('Poultry'));
   const area = computeArea(w.length, w.width);
-  const est = estimateBoxes(w.length, w.width, crop ? crop.name : '');
+  const est = estimateBoxes(crop ? crop.category : 'Crop', w.length, w.width, crop ? crop.name : '', w.animalCount);
 
-  // 6 columns × 7 rows = 42 planting stations
   const cols = 6;
   const rows = 7;
   const cells = [];
@@ -4967,7 +5160,7 @@ function renderPlantConfirm() {
       <button class="tb-back" onclick="showScreen('plant-step-4')">
         <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
       </button>
-      <div class="tb-title">Confirm Planting</div>
+      <div class="tb-title">Confirm</div>
     </div>
     <div style="padding:16px 18px 0">
       <div style="text-align:center;margin-bottom:16px">
@@ -4976,33 +5169,26 @@ function renderPlantConfirm() {
         <p style="font-size:13px;color:var(--tl);font-weight:600;margin-top:4px">${esc(w.varietyName || '')} · ${esc(w.town || '')}</p>
       </div>
 
-      <div class="summary-box">
-        <div class="sb-title">📋 Your Selection</div>
-        <div class="sb-row"><span>Variety</span><span>${esc(w.varietyName || '—')}</span></div>
-        <div class="sb-row"><span>Town</span><span>${esc(w.town || '—')}</span></div>
-        <div class="sb-row"><span>Field length</span><span>${w.length}m</span></div>
-        <div class="sb-row"><span>Field width</span><span>${w.width}m</span></div>
-        <div class="sb-row"><span>Total area</span><span>${area.m2.toFixed(0)} m²</span></div>
+      <div class="batch-result" style="background:linear-gradient(135deg,#e6f5eb,#d1fae5)">
+        <div class="br-row"><span>Variety</span><span>${esc(w.varietyName || '—')}</span></div>
+        <div class="br-row"><span>Town</span><span>${esc(w.town || '—')}</span></div>
+        ${isLivestock ? `<div class="br-row"><span>Animals</span><span>${w.animalCount || 0}</span></div>` : `<div class="br-row"><span>Field</span><span>${w.length}m × ${w.width}m</span></div>`}
+        ${!isLivestock ? `<div class="br-row"><span>Area</span><span>${area.m2.toFixed(0)} m²</span></div>` : ''}
       </div>
 
       <div class="farm-grid-wrap">
-        <div class="farm-grid-title">🌱 Farm layout (6 × 7 planting grid)</div>
+        <div class="farm-grid-title">🌱 Farm layout (6 × 7 grid)</div>
         <div class="farm-grid" style="grid-template-columns:repeat(${cols},1fr);grid-template-rows:repeat(${rows},1fr)">
           ${cells.join('')}
-        </div>
-        <div class="farm-grid-legend">
-          <span><span class="dot"></span> Planting station</span>
-          <span>${crop ? pickIcon(crop.name) : '🌱'} ${crop ? esc(crop.name) : 'Crop'} · ${esc(w.varietyName || '')}</span>
         </div>
       </div>
 
       <div class="box-estimate-card">
         <div class="bec-label">📦 Estimated Harvest</div>
         <div class="bec-value">${est.boxes.toLocaleString()}</div>
-        <div class="bec-unit">boxes (20 kg each)</div>
+        <div class="bec-unit">${est.unit}</div>
         <div class="bec-range">
-          Range: <strong>${est.lowBoxes.toLocaleString()}</strong> to <strong>${est.highBoxes.toLocaleString()}</strong> boxes.
-          <br>Based on ~${(est.totalKg / 1000).toFixed(1)} tonnes expected yield from ${area.m2.toFixed(0)} m² field.
+          Range: <strong>${est.lowBoxes.toLocaleString()}</strong> to <strong>${est.highBoxes.toLocaleString()}</strong> ${est.unit}.
         </div>
       </div>
 
@@ -5019,10 +5205,6 @@ function renderPlantConfirm() {
    ============================================================ */
 window.finishPlanting = async () => {
   const w = S.plantWizard;
-  if (!w.cropId || !w.varietyName || !w.length || !w.width || !w.town) {
-    toast('Please complete all steps');
-    return;
-  }
   const crop = S.catalogue.find(c => c.id === w.cropId);
   if (!crop) { toast('Crop not found'); return; }
 
@@ -5030,7 +5212,7 @@ window.finishPlanting = async () => {
 
   try {
     const area = computeArea(w.length, w.width);
-    const est = estimateBoxes(w.length, w.width, crop.name);
+    const est = estimateBoxes(crop.category, w.length, w.width, crop.name, w.animalCount);
     const { batchNumber, batchSeq, batchDateKey } = await generateBatchNumber();
 
     let totalDays = 120;
@@ -5041,28 +5223,26 @@ window.finishPlanting = async () => {
     }
 
     const plantedDate = nowMs();
-    const harvestStart = plantedDate + Math.round(totalDays * 0.85) * 86400000;
-    const harvestEnd = plantedDate + Math.round(totalDays * 1.15) * 86400000;
-
     const batch = {
-      batchNumber,
-      batchSeq,
-      batchDateKey,
+      batchNumber, batchSeq, batchDateKey,
       ownerId: S.user.uid,
       ownerName: (S.profile.firstName || '') + ' ' + (S.profile.lastName || ''),
+      ownerCity: S.weatherCity || S.userLocation,
       cropId: w.cropId,
       cropName: crop.name,
       varietyName: w.varietyName,
-      lengthM: w.length,
-      widthM: w.width,
+      category: crop.category,
+      lengthM: w.length || 0,
+      widthM: w.width || 0,
       areaM2: area.m2,
+      animalCount: w.animalCount || 0,
       town: w.town,
       stage: 'planted',
       status: 'active',
       plantedDate,
       totalDays,
-      harvestStart,
-      harvestEnd,
+      harvestStart: plantedDate + Math.round(totalDays * 0.85) * 86400000,
+      harvestEnd: plantedDate + Math.round(totalDays * 1.15) * 86400000,
       estimatedBoxes: est.boxes,
       estimatedBoxesLow: est.lowBoxes,
       estimatedBoxesHigh: est.highBoxes,
@@ -5085,7 +5265,7 @@ window.finishPlanting = async () => {
 };
 
 /* ============================================================
-   SUCCESS SCREEN
+   SUCCESS
    ============================================================ */
 function renderPlantSuccess(data) {
   const b = data.batch;
@@ -5098,29 +5278,26 @@ function renderPlantSuccess(data) {
       <div class="success-burst">
         <div class="sb-ic">✓</div>
         <h2>Batch Created!</h2>
-        <p>Your planting has been saved to your farm.</p>
+        <p>Your planting has been saved.</p>
       </div>
 
       <div class="batch-result">
         <div class="br-lb">Your Batch Number</div>
-        <div class="br-num">${esc(b.batchNumber)}</div>
+        <div class="br-num">${esc(b.batchNumber)} <span class="bn-est">📦 ${est ? est.boxes.toLocaleString() : '—'} boxes</span></div>
         <div class="br-row"><span>Crop</span><span>${esc(b.cropName)}</span></div>
         <div class="br-row"><span>Variety</span><span>${esc(b.varietyName)}</span></div>
-        <div class="br-row"><span>Field size</span><span>${b.lengthM}m × ${b.widthM}m</span></div>
-        <div class="br-row"><span>Area</span><span>${b.areaM2.toFixed(0)} m²</span></div>
         <div class="br-row"><span>Town</span><span>${esc(b.town)}</span></div>
         <div class="br-row"><span>Harvest window</span><span>${fmtDate(b.harvestStart)} – ${fmtDate(b.harvestEnd)}</span></div>
       </div>
 
       ${est ? `
       <div class="box-estimate-card">
-        <div class="bec-label">📦 Estimated Tomato Boxes</div>
+        <div class="bec-label">📦 Estimated Boxes</div>
         <div class="bec-value">${est.boxes.toLocaleString()}</div>
-        <div class="bec-unit">boxes of 20 kg each</div>
+        <div class="bec-unit">${est.unit}</div>
         <div class="bec-range">
-          Range: <strong>${est.lowBoxes.toLocaleString()}</strong> to <strong>${est.highBoxes.toLocaleString()}</strong> boxes.
-          <br>That's about <strong>${(est.totalKg / 1000).toFixed(1)} tonnes</strong> of produce.
-          <br><span style="opacity:.75">Research basis: Zambian tomato yields average 25–40 t/ha with standard 20 kg boxes.</span>
+          Range: <strong>${est.lowBoxes.toLocaleString()}</strong> to <strong>${est.highBoxes.toLocaleString()}</strong>.
+          <br>About <strong>${(est.totalKg / 1000).toFixed(1)} tonnes</strong> expected.
         </div>
       </div>
       ` : ''}
@@ -5142,11 +5319,11 @@ function renderStepsIndicator(active, total = 4) {
 }
 
 /* ============================================================
-   BATCH DETAIL — MANAGEMENT
+   BATCH DETAIL
    ============================================================ */
 function renderBatchDetail(id, tab) {
   const b = S.myBatches.find(x => x.id === id);
-  if (!b) return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goFarm()">←</button><div class="tb-title">Not found</div></div></div>`;
+  if (!b) return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goFarm()">←</button></div></div>`;
   const crop = S.catalogue.find(c => c.id === b.cropId);
   const ic = crop ? pickIcon(crop.name) : '🌱';
   const grad = crop ? gradFor(crop.name) : gradFor(b.cropName || '');
@@ -5158,14 +5335,7 @@ function renderBatchDetail(id, tab) {
   const pct = Math.min(100, Math.round(daysIn / totalDays * 100));
   const stageKeys = ['planted', 'growing', 'flowering', 'fruiting', 'harvesting', 'harvested'];
   const stageIdx = stageKeys.indexOf(b.stage || 'planted');
-  const stageLabels = {
-    planted: 'Planted', growing: 'Growing', flowering: 'Flowering',
-    fruiting: 'Fruiting / Filling', harvesting: 'Harvesting', harvested: 'Harvested'
-  };
-
-  const currentSoil = b.soilType || '';
-  const currentIrrigation = b.irrigationType || '';
-  const currentSpacing = b.spacingSystem || '';
+  const stageLabels = { planted: 'Planted', growing: 'Growing', flowering: 'Flowering', fruiting: 'Fruiting', harvesting: 'Harvesting', harvested: 'Harvested' };
 
   return `
   <div class="scroll">
@@ -5183,7 +5353,7 @@ function renderBatchDetail(id, tab) {
       <div class="batch-num-box">
         <div style="flex:1;min-width:0">
           <div class="bn-lb">Batch Number</div>
-          <div class="bn-v">${esc(b.batchNumber)}</div>
+          <div class="bn-v">${esc(b.batchNumber)} <span class="bn-est">📦 ${b.estimatedBoxes ? b.estimatedBoxes.toLocaleString() : '—'} boxes</span></div>
         </div>
         <button onclick="copyBatchNumber('${esc(b.batchNumber)}')" style="width:40px;height:40px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">📋</button>
       </div>
@@ -5191,181 +5361,170 @@ function renderBatchDetail(id, tab) {
       <!-- FARM SETUP -->
       <div class="d-section">
         <h3>Farm Setup</h3>
-        <div class="knowledge-block">
-          <div style="display:flex;flex-direction:column;gap:12px">
-            <div class="fld" style="position:relative">
-              <label>Soil Type</label>
-              <button type="button" class="select-trigger" id="bs-soil-trigger" onclick="toggleBatchSelect('bs-soil')">
-                <span class="st-value" style="color:${currentSoil ? 'var(--td)' : 'var(--tm)'}">${currentSoil ? esc(currentSoil) : 'Choose soil type…'}</span>
-                <span class="st-arrow">▼</span>
-              </button>
-              <div class="select-options" id="bs-soil-options">
-                ${S.soilTypes.length ? S.soilTypes.map(s => `
-                  <div class="select-option ${currentSoil === s.name ? 'selected' : ''}" data-value="${esc(s.name)}">
-                    <span class="so-ic">🪨</span>
-                    <div style="flex:1">
-                      <div style="font-weight:800;font-size:13.5px">${esc(s.name)}</div>
-                      <div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:2px">pH ${esc(s.pHRange || '—')} · ${esc(s.drainage || '—')}</div>
-                    </div>
-                    <span class="so-check">✓</span>
-                  </div>
-                `).join('') : `<div style="padding:20px;text-align:center;color:var(--tl);font-size:13px">No soil data available</div>`}
-              </div>
-              <input type="hidden" id="bs-soil" value="${esc(currentSoil)}">
-            </div>
-
-            <div class="fld" style="position:relative">
-              <label>Irrigation Type</label>
-              <button type="button" class="select-trigger" id="bs-irr-trigger" onclick="toggleBatchSelect('bs-irr')">
-                <span class="st-value" style="color:${currentIrrigation ? 'var(--td)' : 'var(--tm)'}">${currentIrrigation ? esc(currentIrrigation) : 'Choose irrigation…'}</span>
-                <span class="st-arrow">▼</span>
-              </button>
-              <div class="select-options" id="bs-irr-options">
-                ${S.irrigationTypes.length ? S.irrigationTypes.map(s => `
-                  <div class="select-option ${currentIrrigation === s.name ? 'selected' : ''}" data-value="${esc(s.name)}">
-                    <span class="so-ic">💦</span>
-                    <div style="flex:1">
-                      <div style="font-weight:800;font-size:13.5px">${esc(s.name)}</div>
-                      <div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:2px">Efficiency ${esc(s.efficiency || '—')}</div>
-                    </div>
-                    <span class="so-check">✓</span>
-                  </div>
-                `).join('') : `<div style="padding:20px;text-align:center;color:var(--tl);font-size:13px">No irrigation data available</div>`}
-              </div>
-              <input type="hidden" id="bs-irr" value="${esc(currentIrrigation)}">
-            </div>
-
-            ${spacing.length ? `
-              <div class="fld" style="position:relative">
-                <label>Crop Spacing</label>
-                <button type="button" class="select-trigger" id="bs-space-trigger" onclick="toggleBatchSelect('bs-space')">
-                  <span class="st-value" style="color:${currentSpacing ? 'var(--td)' : 'var(--tm)'}">${currentSpacing ? esc(currentSpacing) : 'Choose spacing…'}</span>
-                  <span class="st-arrow">▼</span>
-                </button>
-                <div class="select-options" id="bs-space-options">
-                  ${spacing.map(s => `
-                    <div class="select-option ${currentSpacing === s.system ? 'selected' : ''}" data-value="${esc(s.system)}">
-                      <span class="so-ic">📏</span>
-                      <div style="flex:1">
-                        <div style="font-weight:800;font-size:13.5px">${esc(s.system || 'Standard')}</div>
-                        <div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:2px">${esc(s.spacing || '')} · ${esc(s.plantPopulation || '')}</div>
-                      </div>
-                      <span class="so-check">✓</span>
-                    </div>
-                  `).join('')}
-                </div>
-                <input type="hidden" id="bs-space" value="${esc(currentSpacing)}">
-              </div>
-            ` : ''}
-
-            <button class="btn btn-p" onclick="saveBatchSetup('${esc(b.id)}')" style="margin-top:4px">Save Farm Setup</button>
+        <div class="info-card" onclick="showSoilInfo()">
+          <div class="ic-ico">🪨</div>
+          <div class="ic-tx">
+            <div class="ic-title">Soil Type</div>
+            <div class="ic-sub">${b.soilType ? esc(b.soilType) : 'Tap to choose'}</div>
           </div>
+          <div class="ic-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
         </div>
+        <div class="info-card" onclick="showIrrigationInfo()">
+          <div class="ic-ico">💦</div>
+          <div class="ic-tx">
+            <div class="ic-title">Irrigation Type</div>
+            <div class="ic-sub">${b.irrigationType ? esc(b.irrigationType) : 'Tap to choose'}</div>
+          </div>
+          <div class="ic-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+        </div>
+        ${spacing.length ? `
+        <div class="info-card" onclick="showSpacingInfo()">
+          <div class="ic-ico">📏</div>
+          <div class="ic-tx">
+            <div class="ic-title">Crop Spacing</div>
+            <div class="ic-sub">${b.spacingSystem ? esc(b.spacingSystem) : 'Tap to choose'}</div>
+          </div>
+          <div class="ic-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+        </div>
+        ` : ''}
+        <button class="btn btn-p" onclick="saveBatchSetup('${esc(b.id)}')" style="margin-top:4px">Save Farm Setup</button>
+        <input type="hidden" id="bs-soil" value="${esc(b.soilType || '')}">
+        <input type="hidden" id="bs-irr" value="${esc(b.irrigationType || '')}">
+        <input type="hidden" id="bs-space" value="${esc(b.spacingSystem || '')}">
       </div>
 
       <!-- SUMMARY -->
       <div class="d-section">
         <h3>Field Summary</h3>
         <div class="info-table">
-          <div class="info-row"><span class="ir-k">Field size</span><span class="ir-v">${b.lengthM}m × ${b.widthM}m</span></div>
-          <div class="info-row"><span class="ir-k">Area</span><span class="ir-v">${b.areaM2.toFixed(0)} m²</span></div>
-          <div class="info-row"><span class="ir-k">Planted on</span><span class="ir-v">${fmtDate(b.plantedDate)}</span></div>
-          <div class="info-row"><span class="ir-k">Expected harvest</span><span class="ir-v">${fmtDate(b.harvestStart)} – ${fmtDate(b.harvestEnd)}</span></div>
-          ${b.estimatedBoxes ? `<div class="info-row"><span class="ir-k">Est. boxes</span><span class="ir-v">${b.estimatedBoxes.toLocaleString()} boxes (20 kg)</span></div>` : ''}
-          ${b.totalHarvestKg ? `<div class="info-row"><span class="ir-k">Harvested</span><span class="ir-v">${(b.totalHarvestKg / 1000).toFixed(2)} t</span></div>` : ''}
+          ${b.lengthM ? `<div class="info-row"><span class="ir-k">Field</span><span class="ir-v">${b.lengthM}m × ${b.widthM}m</span></div>` : ''}
+          ${b.areaM2 ? `<div class="info-row"><span class="ir-k">Area</span><span class="ir-v">${b.areaM2.toFixed(0)} m²</span></div>` : ''}
+          ${b.animalCount ? `<div class="info-row"><span class="ir-k">Animals</span><span class="ir-v">${b.animalCount}</span></div>` : ''}
+          <div class="info-row"><span class="ir-k">Est. boxes</span><span class="ir-v">${b.estimatedBoxes ? b.estimatedBoxes.toLocaleString() : '—'}</span></div>
+          ${b.actualBoxes ? `<div class="info-row"><span class="ir-k">Actual boxes</span><span class="ir-v" style="color:var(--p-d)">${b.actualBoxes.toLocaleString()}</span></div>` : ''}
         </div>
       </div>
 
       <!-- PROGRESS -->
       <div class="d-section">
-        <h3>Growth Progress</h3>
+        <h3>Progress</h3>
         <div style="background:var(--p-ll);border:1px solid rgba(15,122,52,.14);border-radius:var(--r-lg);padding:16px;margin-bottom:10px">
-          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
-            <div>
-              <div style="font-size:11px;font-weight:800;color:var(--p);text-transform:uppercase;letter-spacing:.05em">Day</div>
-              <div style="font-size:24px;font-weight:900;color:var(--p-d);letter-spacing:-.03em;line-height:1">${daysIn} <span style="font-size:14px;color:var(--tl)">of ~${totalDays}</span></div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-size:11px;font-weight:800;color:var(--p);text-transform:uppercase;letter-spacing:.05em">Progress</div>
-              <div style="font-size:24px;font-weight:900;color:var(--p-d);letter-spacing:-.03em;line-height:1">${pct}%</div>
-            </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+            <div><div style="font-size:11px;font-weight:800;color:var(--p)">DAY</div><div style="font-size:24px;font-weight:900;color:var(--p-d)">${daysIn} <span style="font-size:14px;color:var(--tl)">of ~${totalDays}</span></div></div>
+            <div style="text-align:right"><div style="font-size:11px;font-weight:800;color:var(--p)">PROGRESS</div><div style="font-size:24px;font-weight:900;color:var(--p-d)">${pct}%</div></div>
           </div>
-          <div style="height:10px;border-radius:5px;background:rgba(15,122,52,.14);overflow:hidden">
-            <div style="width:${pct}%;height:100%;background:linear-gradient(90deg,var(--p),var(--acc));transition:width .6s var(--e)"></div>
-          </div>
+          <div style="height:10px;border-radius:5px;background:rgba(15,122,52,.14);overflow:hidden"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,var(--p),var(--acc))"></div></div>
         </div>
         ${stageKeys.map((s, i) => {
           const done = i <= stageIdx;
           const active = i === stageIdx;
-          return `
-            <div class="timeline-stage ${done ? 'done' : ''} ${active ? 'active' : ''}">
-              <div class="ts-dot">${done ? '✓' : (i + 1)}</div>
-              <div>
-                <div class="ts-lb">${stageLabels[s]}</div>
-                ${active && i < stageKeys.length - 1 ? `<div class="ts-dur">Current stage</div>` : ''}
-              </div>
-            </div>`;
+          return `<div class="timeline-stage ${done ? 'done' : ''} ${active ? 'active' : ''}"><div class="ts-dot">${done ? '✓' : (i + 1)}</div><div><div class="ts-lb">${stageLabels[s]}</div></div></div>`;
         }).join('')}
-        ${b.stage !== 'harvested' ? `
-          <div style="margin-top:12px">
-            <label style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px">Update stage</label>
-            <select class="inp" style="width:100%;padding:14px;border:1.5px solid var(--bd);border-radius:var(--r-lg);background:#fff;font-size:14px;font-weight:600;outline:none"
-                    onchange="updateBatchStage('${esc(b.id)}', this.value)">
-              <option value="planted" ${b.stage === 'planted' ? 'selected' : ''}>Planted</option>
-              <option value="growing" ${b.stage === 'growing' ? 'selected' : ''}>Growing</option>
-              <option value="flowering" ${b.stage === 'flowering' ? 'selected' : ''}>Flowering</option>
-              <option value="fruiting" ${b.stage === 'fruiting' ? 'selected' : ''}>Fruiting / Filling</option>
-              <option value="harvesting" ${b.stage === 'harvesting' ? 'selected' : ''}>Ready to harvest</option>
-            </select>
-          </div>
-        ` : ''}
       </div>
+
+      ${b.stage !== 'harvested' ? `
+        <button class="btn btn-p" onclick="showScreen('harvest-record',{id:'${esc(b.id)}'})" style="margin-bottom:10px">🌾 Record Harvest</button>
+      ` : `
+        <button class="harvest-post-btn" onclick="showScreen('post-harvest-goods',{id:'${esc(b.id)}'})">
+          <span class="hp-ico">💰</span>
+          <span class="hp-tx"><span class="hp-tt">Post to Market</span><span class="hp-sb">Sell your harvested boxes</span></span>
+          <span class="hp-arrow">›</span>
+        </button>
+      `}
+
+      <button class="btn btn-danger" onclick="confirmDeleteBatch('${esc(b.id)}')" style="margin-top:10px">🗑 Delete Batch</button>
 
       ${spacing.length ? renderSpacingBlock(spacing) : ''}
       ${Object.keys(fert).length ? renderFertilizerBlock(fert) : ''}
       ${stages.length ? renderStagesBlock(stages) : ''}
-      ${crop && crop.managementNotes ? `
-        <div class="d-section">
-          <h3>Management Notes</h3>
-          <div class="knowledge-block"><p>${esc(crop.managementNotes)}</p></div>
-        </div>
-      ` : ''}
     </div>
   </div>
   ${bottomNavHTML()}`;
 }
 
-function wireBatchDetail(id) {
-  ['bs-soil', 'bs-irr', 'bs-space'].forEach(key => {
-    const trigger = document.getElementById(key + '-trigger');
-    const opts = document.getElementById(key + '-options');
-    const hidden = document.getElementById(key);
-    if (!trigger || !opts || !hidden) return;
-    trigger.addEventListener('click', () => {
-      opts.classList.toggle('open');
-      trigger.classList.toggle('open', opts.classList.contains('open'));
-    });
-    opts.querySelectorAll('.select-option').forEach(o => {
-      o.addEventListener('click', () => {
-        const val = o.dataset.value;
-        hidden.value = val;
-        trigger.querySelector('.st-value').textContent = val;
-        trigger.querySelector('.st-value').style.color = 'var(--td)';
-        opts.querySelectorAll('.select-option').forEach(x => x.classList.remove('selected'));
-        o.classList.add('selected');
-        opts.classList.remove('open');
-        trigger.classList.remove('open');
-      });
-    });
-  });
-}
+function wireBatchDetail(id) {}
 
-window.toggleBatchSelect = (key) => {
-  const opts = document.getElementById(key + '-options');
-  const trigger = document.getElementById(key + '-trigger');
-  if (!opts || !trigger) return;
-  opts.classList.toggle('open');
-  trigger.classList.toggle('open', opts.classList.contains('open'));
+window.showSoilInfo = () => {
+  $varietySheetContent.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><h3>Soil Types</h3><p>Choose and learn about soils</p></div>
+    <div class="sheet-list">
+      ${S.soilTypes.map(s => `
+        <button class="sheet-item" onclick="selectSoil('${esc(s.name)}')">
+          <div class="si-ico">🪨</div>
+          <div class="si-info">
+            <strong>${esc(s.name)}</strong>
+            <span>pH ${esc(s.pHRange || '—')} · ${esc(s.drainage || '—')}</span>
+          </div>
+        </button>
+      `).join('')}
+    </div>
+    <button class="sheet-cancel" onclick="closeVarietySheet()">Close</button>
+  `;
+  $varietySheetOverlay.classList.add('open');
+};
+
+window.selectSoil = (name) => {
+  document.getElementById('bs-soil').value = name;
+  closeVarietySheet();
+  toast('Soil: ' + name);
+  route();
+};
+
+window.showIrrigationInfo = () => {
+  $varietySheetContent.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><h3>Irrigation Types</h3><p>Choose irrigation method</p></div>
+    <div class="sheet-list">
+      ${S.irrigationTypes.map(s => `
+        <button class="sheet-item" onclick="selectIrrigation('${esc(s.name)}')">
+          <div class="si-ico">💦</div>
+          <div class="si-info">
+            <strong>${esc(s.name)}</strong>
+            <span>Efficiency ${esc(s.efficiency || '—')}</span>
+          </div>
+        </button>
+      `).join('')}
+    </div>
+    <button class="sheet-cancel" onclick="closeVarietySheet()">Close</button>
+  `;
+  $varietySheetOverlay.classList.add('open');
+};
+
+window.selectIrrigation = (name) => {
+  document.getElementById('bs-irr').value = name;
+  closeVarietySheet();
+  toast('Irrigation: ' + name);
+  route();
+};
+
+window.showSpacingInfo = () => {
+  const b = S.myBatches.find(x => x.id === S.screenData.id);
+  const spacing = S.cropSpacing[b.cropId] || [];
+  $varietySheetContent.innerHTML = `
+    <div class="sheet-handle"></div>
+    <div class="sheet-head"><h3>Crop Spacing</h3><p>Choose spacing system</p></div>
+    <div class="sheet-list">
+      ${spacing.map(s => `
+        <button class="sheet-item" onclick="selectSpacing('${esc(s.system)}')">
+          <div class="si-ico">📏</div>
+          <div class="si-info">
+            <strong>${esc(s.system || 'Standard')}</strong>
+            <span>${esc(s.spacing || '')} · ${esc(s.plantPopulation || '')}</span>
+          </div>
+        </button>
+      `).join('')}
+    </div>
+    <button class="sheet-cancel" onclick="closeVarietySheet()">Close</button>
+  `;
+  $varietySheetOverlay.classList.add('open');
+};
+
+window.selectSpacing = (name) => {
+  document.getElementById('bs-space').value = name;
+  closeVarietySheet();
+  toast('Spacing: ' + name);
+  route();
 };
 
 window.saveBatchSetup = async (id) => {
@@ -5373,11 +5532,11 @@ window.saveBatchSetup = async (id) => {
   const irr = document.getElementById('bs-irr')?.value || '';
   const spc = document.getElementById('bs-space')?.value || '';
   try {
-    const patch = { soilType: soil, irrigationType: irr, spacingSystem: spc, updatedAt: nowMs() };
-    await update(ref(db, 'batches/' + id), patch);
+    await update(ref(db, 'batches/' + id), { soilType: soil, irrigationType: irr, spacingSystem: spc, updatedAt: nowMs() });
     const b = S.myBatches.find(x => x.id === id);
-    if (b) Object.assign(b, patch);
+    if (b) Object.assign(b, { soilType: soil, irrigationType: irr, spacingSystem: spc });
     toast('Farm setup saved ✓');
+    route();
   } catch (e) {
     toast('Failed: ' + (e.message || e));
   }
@@ -5387,53 +5546,17 @@ function renderSpacingBlock(spacing) {
   return `
   <div class="d-section">
     <h3>Crop Spacing</h3>
-    <div class="details-toggle" onclick="toggleDetails(this)">
-      <span>📏 View spacing guide (${spacing.length})</span>
-      <span class="dt-chev">▼</span>
-    </div>
-    <div class="details-content">
-      <div class="knowledge-block" style="margin-top:8px">
-        ${spacing.map(s => `
-          <div style="padding:10px 0;border-bottom:1px dashed var(--bd)">
-            <div style="font-size:12.5px;font-weight:800;color:var(--td);margin-bottom:4px">${esc(s.system || 'Standard')}</div>
-            <div style="font-size:11.5px;color:var(--tb);font-weight:600;line-height:1.55">
-              <div>📐 Spacing: <strong>${esc(s.spacing || '—')}</strong></div>
-              <div>🌾 Plant population: <strong>${esc(s.plantPopulation || '—')}</strong></div>
-              ${s.seedRate ? `<div>🌱 Seed rate: <strong>${esc(s.seedRate)}</strong></div>` : ''}
-              ${s.notes ? `<div style="margin-top:4px;color:var(--tl)">${esc(s.notes)}</div>` : ''}
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
+    ${spacing.map(s => `<div class="knowledge-block"><h4>${esc(s.system || 'Standard')}</h4><p>${esc(s.spacing || '')} · ${esc(s.plantPopulation || '')}</p></div>`).join('')}
   </div>`;
 }
 
 function renderFertilizerBlock(fert) {
-  const order = ['basal', 'topDress', 'topDress1', 'topDress2'];
-  const labels = {
-    basal: 'Basal (at planting)', topDress: 'Top Dressing',
-    topDress1: '1st Top Dressing', topDress2: '2nd Top Dressing'
-  };
-  const rows = order.filter(k => fert[k]).map(k => ({ key: k, label: labels[k] || k, ...fert[k] }));
+  const rows = Object.entries(fert).filter(([k, v]) => v && v.product);
   if (!rows.length) return '';
   return `
   <div class="d-section">
     <h3>Fertilizer Schedule</h3>
-    <div style="margin-top:8px">
-      ${rows.map(r => `
-        <div class="schedule-row">
-          <div class="sr-left">
-            <div class="sr-title">${esc(r.label)}</div>
-            <div class="sr-sub">${esc(r.product || '')}${r.application ? ` · ${esc(r.application)}` : ''}</div>
-          </div>
-          <div class="sr-right">
-            ${r.rate ? `<div class="sr-rate">${esc(r.rate)}</div>` : ''}
-            ${r.timing ? `<div class="sr-time">${esc(r.timing)}</div>` : ''}
-          </div>
-        </div>
-      `).join('')}
-    </div>
+    ${rows.map(([k, v]) => `<div class="schedule-row"><div class="sr-left"><div class="sr-title">${esc(k)}</div><div class="sr-sub">${esc(v.product || '')}</div></div><div class="sr-right">${v.rate ? `<div class="sr-rate">${esc(v.rate)}</div>` : ''}</div></div>`).join('')}
   </div>`;
 }
 
@@ -5441,53 +5564,216 @@ function renderStagesBlock(stages) {
   if (!stages.length) return '';
   return `
   <div class="d-section">
-    <h3>Detailed Growth Stages</h3>
-    <div class="details-toggle" onclick="toggleDetails(this)">
-      <span>📖 View all stages (${stages.length})</span>
-      <span class="dt-chev">▼</span>
-    </div>
-    <div class="details-content">
-      <div style="margin-top:8px">
-        ${stages.map((s, i) => `
-          <div class="timeline-stage" style="align-items:flex-start">
-            <div class="ts-dot" style="background:var(--p);flex-shrink:0">${i + 1}</div>
-            <div style="flex:1;min-width:0">
-              <div class="ts-lb">${esc(s.stage)}</div>
-              ${s.duration ? `<div class="ts-dur">⏱️ ${esc(s.duration)}</div>` : ''}
-              ${s.description ? `<div style="font-size:11.5px;color:var(--tb);font-weight:500;margin-top:5px;line-height:1.5">${esc(s.description)}</div>` : ''}
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
+    <h3>Growth Stages</h3>
+    ${stages.map((s, i) => `<div class="timeline-stage"><div class="ts-dot" style="background:var(--p)">${i + 1}</div><div><div class="ts-lb">${esc(s.stage)}</div>${s.duration ? `<div class="ts-dur">⏱️ ${esc(s.duration)}</div>` : ''}</div></div>`).join('')}
   </div>`;
 }
 
-window.toggleDetails = (el) => {
-  el.classList.toggle('open');
-  const content = el.nextElementSibling;
-  if (content) content.classList.toggle('open');
-};
-
 window.copyBatchNumber = (num) => {
   if (navigator.clipboard) {
-    navigator.clipboard.writeText(num)
-      .then(() => toast('Copied ✓'))
-      .catch(() => toast(num));
-  } else {
-    toast(num);
+    navigator.clipboard.writeText(num).then(() => toast('Copied ✓')).catch(() => toast(num));
+  } else { toast(num); }
+};
+
+window.confirmDeleteBatch = (id) => {
+  modal(`<h3>Delete batch?</h3><p>This will remove the batch and its records. Cannot be undone.</p>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="deleteBatch('${esc(id)}')">Delete</button>
+    </div>`);
+};
+
+window.deleteBatch = async (id) => {
+  try {
+    await remove(ref(db, 'batches/' + id));
+    S.myBatches = S.myBatches.filter(x => x.id !== id);
+    closeModal();
+    toast('Batch deleted');
+    goFarm();
+  } catch (e) {
+    toast('Failed: ' + (e.message || e));
   }
 };
 
-window.updateBatchStage = async (id, newStage) => {
+/* ============================================================
+   HARVEST RECORD — ACTUAL BOXES
+   ============================================================ */
+function renderHarvestRecord(id) {
+  const b = S.myBatches.find(x => x.id === id);
+  if (!b) return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goFarm()">←</button></div></div>`;
+  const crop = S.catalogue.find(c => c.id === b.cropId);
+  const ic = crop ? pickIcon(crop.name) : '🌱';
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="showScreen('batch-detail',{id:'${esc(b.id)}',tab:'manage'})">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Record Harvest</div>
+    </div>
+    <div style="padding:16px 18px 0">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px;background:linear-gradient(135deg,#ffedd5,#fed7aa);border-radius:var(--r);margin-bottom:14px;border:1px solid rgba(234,88,12,.18)">
+        <div style="width:52px;height:52px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:26px">${ic}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:15px;font-weight:900;color:#9a3412">${esc(b.cropName)}</div>
+          <div style="font-size:11.5px;color:#c2410c;font-weight:700;margin-top:2px">${esc(b.varietyName)}</div>
+          <div style="font-size:10px;color:#9a3412;font-weight:800;font-family:monospace;margin-top:3px">${esc(b.batchNumber)}</div>
+        </div>
+      </div>
+    </div>
+    <div class="harvest-box">
+      <h4>🌾 How many boxes did you harvest?</h4>
+      <div class="harvest-input-row">
+        <div class="harvest-input-box">
+          <label>Actual Boxes</label>
+          <input type="number" id="hv-boxes" min="0" step="1" placeholder="0">
+          <div class="hib-unit">boxes (20 kg)</div>
+        </div>
+        <div class="harvest-input-box">
+          <label>Est. Boxes</label>
+          <input type="number" id="hv-est" value="${b.estimatedBoxes || 0}" readonly style="background:transparent;color:var(--tl)">
+          <div class="hib-unit">estimated</div>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-s" onclick="showScreen('batch-detail',{id:'${esc(b.id)}',tab:'manage'})">Cancel</button>
+      <button class="btn btn-p" id="hv-submit" onclick="submitHarvestBoxes('${esc(b.id)}')">Save Harvest</button>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+window.submitHarvestBoxes = async (id) => {
+  const b = S.myBatches.find(x => x.id === id);
+  if (!b) return;
+  const boxes = parseInt(document.getElementById('hv-boxes').value) || 0;
+  if (boxes <= 0) { toast('Please enter number of boxes'); return; }
+  const btn = document.getElementById('hv-submit');
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
   try {
-    await update(ref(db, 'batches/' + id), { stage: newStage, updatedAt: nowMs() });
-    const b = S.myBatches.find(x => x.id === id);
-    if (b) b.stage = newStage;
-    toast('Stage updated ✓');
-    route();
+    await update(ref(db, 'batches/' + id), {
+      actualBoxes: boxes,
+      stage: 'harvested',
+      status: 'harvested',
+      harvestedAt: nowMs(),
+      updatedAt: nowMs()
+    });
+    b.actualBoxes = boxes;
+    b.stage = 'harvested';
+    b.status = 'harvested';
+    toast('Harvest saved ✓');
+    setTimeout(() => showScreen('batch-detail', { id, tab: 'manage' }), 400);
   } catch (e) {
     toast('Failed: ' + (e.message || e));
+    btn.disabled = false;
+    btn.textContent = 'Save Harvest';
+  }
+};
+
+/* ============================================================
+   POST TO MARKET — ONLY HARVESTED
+   ============================================================ */
+function renderPostHarvestGoods(batchId) {
+  const b = S.myBatches.find(x => x.id === batchId);
+  if (!b || b.stage !== 'harvested') {
+    return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button><div class="tb-title">Not harvested</div></div><div class="empty"><h3>Only harvested batches can be posted</h3></div></div>`;
+  }
+  const city = S.weatherCity || S.userLocation;
+  const markets = marketsForCity(city);
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="showScreen('batch-detail',{id:'${esc(b.id)}',tab:'manage'})">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Post to Market</div>
+    </div>
+    <div style="padding:14px 18px 0">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px;background:linear-gradient(135deg,#ffedd5,#fed7aa);border-radius:var(--r);margin-bottom:14px;border:1px solid rgba(234,88,12,.18)">
+        <div style="width:52px;height:52px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:26px">${pickIcon(b.cropName)}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:15px;font-weight:900;color:#9a3412">${esc(b.cropName)}</div>
+          <div style="font-size:11.5px;color:#c2410c;font-weight:700;margin-top:2px">${b.actualBoxes || 0} boxes harvested</div>
+        </div>
+      </div>
+    </div>
+    <form class="frm" onsubmit="submitMarketPost(event,'${esc(b.id)}')">
+      <div class="fld">
+        <label>Title</label>
+        <input id="ph-title" class="inp" value="Fresh ${esc(b.cropName)} – ${b.actualBoxes} boxes" required>
+      </div>
+      <div class="fld" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div><label>Boxes</label><input id="ph-qty" class="inp" type="number" value="${b.actualBoxes || 0}" required></div>
+        <div><label>Price per box (ZMK)</label><input id="ph-price" class="inp" type="number" step="0.01" required></div>
+      </div>
+      <div class="fld">
+        <label>Market (detected in ${esc(city)})</label>
+        <select id="ph-market" class="inp" required>
+          <option value="">Select market…</option>
+          ${markets.map(m => `<option value="${esc(m)}">${esc(m)}</option>`).join('')}
+        </select>
+      </div>
+      <div class="fld">
+        <label>Availability</label>
+        <select id="ph-avail" class="inp" required>
+          <option value="now">Available now</option>
+          <option value="date">Choose a date</option>
+        </select>
+      </div>
+      <div class="fld" id="ph-date-wrap" style="display:none">
+        <label>Date at market</label>
+        <input id="ph-date" class="inp" type="date">
+      </div>
+      <div class="fld">
+        <label>Description</label>
+        <textarea id="ph-desc" class="inp" rows="3">Freshly harvested ${esc(b.cropName)} (${esc(b.varietyName)}). ${b.actualBoxes} boxes available.</textarea>
+      </div>
+      <button type="submit" class="btn btn-p" id="ph-submit">💰 Post to Market</button>
+    </form>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+window.submitMarketPost = async (ev, batchId) => {
+  ev.preventDefault();
+  const b = S.myBatches.find(x => x.id === batchId);
+  if (!b) return;
+  const btn = document.getElementById('ph-submit');
+  btn.disabled = true;
+  const avail = document.getElementById('ph-avail').value;
+  try {
+    const newRef = push(ref(db, 'marketListings'));
+    const data = {
+      seller_id: S.user.uid,
+      sellerName: (S.profile.firstName || '') + ' ' + (S.profile.lastName || ''),
+      sellerPhoto: S.profile.profileUrl || '',
+      catalog_item_id: b.cropId,
+      title: document.getElementById('ph-title').value.trim(),
+      productName: b.cropName,
+      quantity: document.getElementById('ph-qty').value,
+      unit: 'box',
+      priceAmount: Number(document.getElementById('ph-price').value),
+      currency: 'ZMW',
+      city: S.weatherCity || S.userLocation,
+      marketName: document.getElementById('ph-market').value,
+      availability: avail,
+      availabilityDate: avail === 'date' ? document.getElementById('ph-date').value : '',
+      description: document.getElementById('ph-desc').value.trim(),
+      photoUrls: [],
+      status: 'available',
+      fromBatchId: batchId,
+      fromBatchNumber: b.batchNumber,
+      createdAt: nowMs()
+    };
+    await set(newRef, data);
+    S.myListings.unshift({ id: newRef.key, ...data });
+    toast('Posted to market ✓');
+    setTimeout(() => navTo('marketplace'), 500);
+  } catch (e) {
+    toast('Failed: ' + (e.message || e));
+    btn.disabled = false;
   }
 };
 
@@ -5495,15 +5781,22 @@ window.updateBatchStage = async (id, newStage) => {
    MARKETPLACE
    ============================================================ */
 function renderMarketplace() {
+  const harvested = S.myBatches.filter(b => b.stage === 'harvested');
   return `
   <div class="scroll">
-    <div class="topbar bordered">
-      <div class="tb-title">Marketplace</div>
-    </div>
-    <div class="empty">
-      <div class="e-ic">🛒</div>
-      <h3>No listings yet</h3>
-      <p>Post your goods for sale.</p>
+    <div class="topbar bordered"><div class="tb-title">Marketplace</div></div>
+    <div style="padding:14px 18px">
+      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;margin-bottom:10px">Your harvested goods</div>
+      ${harvested.length ? harvested.map(b => `
+        <div class="list-row" onclick="showScreen('post-harvest-goods',{id:'${esc(b.id)}'})">
+          <div class="lr-ic orange">${pickIcon(b.cropName)}</div>
+          <div class="lr-tx">
+            <div class="lr-tt">${esc(b.cropName)}</div>
+            <div class="lr-sb">${b.actualBoxes || 0} boxes · ${esc(b.varietyName)}</div>
+          </div>
+          <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+        </div>
+      `).join('') : `<div class="empty"><div class="e-ic">🛒</div><h3>No harvested batches yet</h3><p>Harvest a batch to post it here.</p></div>`}
     </div>
   </div>
   ${bottomNavHTML()}`;
@@ -5515,14 +5808,8 @@ function renderMarketplace() {
 function renderDelivery() {
   return `
   <div class="scroll">
-    <div class="topbar bordered">
-      <div class="tb-title">Delivery</div>
-    </div>
-    <div class="empty">
-      <div class="e-ic">🚚</div>
-      <h3>Request a delivery</h3>
-      <p>Send goods anywhere in Zambia.</p>
-    </div>
+    <div class="topbar bordered"><div class="tb-title">Delivery</div></div>
+    <div class="empty"><div class="e-ic">🚚</div><h3>Request delivery</h3><p>Send goods anywhere in Zambia.</p></div>
   </div>
   ${bottomNavHTML()}`;
 }
@@ -5534,10 +5821,6 @@ function renderProfile() {
   const p = S.profile || {};
   const fullName = ((p.firstName || '') + ' ' + (p.lastName || '')).trim() || 'Farmer';
   const initial = initials(fullName);
-  const following = Object.keys(S.following || {}).length;
-  const nrcFront = p.nrcFront || '';
-  const nrcBack = p.nrcBack || '';
-  const verified = !!(nrcFront || nrcBack) || p.verified;
   return `
   <div class="scroll">
     <div class="topbar bordered" style="background:transparent;border-bottom:none">
@@ -5552,34 +5835,20 @@ function renderProfile() {
     <div class="prof-hero">
       <div class="p-av">${p.profileUrl ? `<img src="${esc(p.profileUrl)}" alt="">` : initial}</div>
       <h2>${esc(fullName)}</h2>
-      <div class="p-ver ${verified ? '' : 'unverified'}">${verified ? '✓ Verified' : '⚠ Unverified'}</div>
+      <div class="p-ver">✓ Verified</div>
       <div class="p-loc">📍 ${esc(S.weatherCity || S.userLocation)}</div>
       <div class="prof-stats">
         <div><div class="ps-n">${S.myBatches.length}</div><div class="ps-l">Batches</div></div>
         <div><div class="ps-n">${S.myListings.length}</div><div class="ps-l">Listings</div></div>
-        <div><div class="ps-n">${following}</div><div class="ps-l">Following</div></div>
+        <div><div class="ps-n">${Object.keys(S.following || {}).length}</div><div class="ps-l">Following</div></div>
       </div>
     </div>
     <div class="menu-list">
-      <div class="menu-item" onclick="goFarm()">
-        <div class="mi-ic">🌱</div>
-        <div class="mi-tx"><div class="mi-tt">My Farm</div><div class="mi-sb">${S.myBatches.length} batches</div></div>
-        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-      </div>
-      <div class="menu-item" onclick="navTo('weather')">
-        <div class="mi-ic">☁️</div>
-        <div class="mi-tx"><div class="mi-tt">Weather</div><div class="mi-sb">${esc(S.weatherCity || S.userLocation)}</div></div>
-        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-      </div>
-      <div class="menu-item" onclick="navTo('government')">
-        <div class="mi-ic">🇿🇲</div>
-        <div class="mi-tx"><div class="mi-tt">Government Resources</div><div class="mi-sb">Ministry, ZARI, AMIC</div></div>
-        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-      </div>
-      <div class="menu-item" onclick="doLogout()">
-        <div class="mi-ic" style="background:#fee2e2">🚪</div>
-        <div class="mi-tx"><div class="mi-tt" style="color:var(--danger)">Sign Out</div><div class="mi-sb">Log out of your account</div></div>
-      </div>
+      <div class="menu-item" onclick="goFarm()"><div class="mi-ic">🌱</div><div class="mi-tx"><div class="mi-tt">My Farm</div><div class="mi-sb">${S.myBatches.length} batches</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="navTo('weather-detail')"><div class="mi-ic">☁️</div><div class="mi-tx"><div class="mi-tt">Weather</div><div class="mi-sb">${esc(S.weatherCity || S.userLocation)}</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="navTo('market-analysis')"><div class="mi-ic">📊</div><div class="mi-tx"><div class="mi-tt">Market Analysis</div><div class="mi-sb">What all farmers are planting</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="navTo('government')"><div class="mi-ic">🇿🇲</div><div class="mi-tx"><div class="mi-tt">Government</div><div class="mi-sb">Ministry, ZARI, AMIC</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="doLogout()"><div class="mi-ic" style="background:var(--danger-soft)">🚪</div><div class="mi-tx"><div class="mi-tt" style="color:var(--danger)">Sign Out</div></div></div>
     </div>
   </div>
   ${bottomNavHTML()}`;
@@ -5599,60 +5868,194 @@ window.confirmLogout = async () => {
 };
 
 /* ============================================================
-   WEATHER SCREEN
+   WEATHER DETAIL — SUN ARC + WINDMILL
    ============================================================ */
-function renderWeather() {
+function renderWeatherDetail() {
   const w = S.weather;
   if (!w) return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button></div><div class="empty"><h3>Loading…</h3></div></div>`;
+
+  // Sun arc
+  const now = new Date();
+  const hour = now.getHours() + now.getMinutes() / 60;
+  const sunrise = 6;
+  const sunset = 18;
+  const dayProgress = Math.max(0, Math.min(1, (hour - sunrise) / (sunset - sunrise)));
+  const angle = Math.PI * (1 - dayProgress);
+  const cx = 150;
+  const cy = 120;
+  const r = 100;
+  const sunX = cx - r * Math.cos(angle);
+  const sunY = cy - r * Math.sin(angle);
+
   return `
   <div class="scroll">
     <div class="topbar bordered">
       <button class="tb-back" onclick="goBack()">
         <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
       </button>
-      <div class="tb-title">Weather</div>
+      <div class="tb-title">Weather Report</div>
     </div>
+
     <div style="padding:14px 18px">
-      <div style="text-align:center;padding:20px 0">
-        <div style="font-size:13px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">📍 ${esc(S.weatherCity || S.userLocation)}</div>
+      <div style="text-align:center;padding:10px 0 20px">
+        <div style="font-size:13px;font-weight:800;color:var(--tl);text-transform:uppercase;margin-bottom:6px">📍 ${esc(S.weatherCity || S.userLocation)}</div>
         <div style="font-size:68px;line-height:1;margin-bottom:6px">${weatherIconFor(w.code, w.isDay)}</div>
-        <div style="font-size:44px;font-weight:900;color:var(--td);letter-spacing:-.04em;line-height:1">${w.temp}°C</div>
+        <div style="font-size:44px;font-weight:900;color:var(--td);line-height:1">${w.temp}°C</div>
         <div style="font-size:14px;color:var(--tl);font-weight:700;margin-top:4px">${weatherDescFor(w.code)}</div>
-        <div style="font-size:12px;color:var(--tm);font-weight:600;margin-top:4px">H: ${w.hi}° L: ${w.lo}° · 💧 ${w.hum}%</div>
       </div>
     </div>
+
+    <!-- SUN ARC -->
+    <div class="sun-arc-wrap">
+      <div class="sun-arc-title">☀️ Sun Position</div>
+      <svg class="sun-arc-svg" viewBox="0 0 300 140">
+        <defs>
+          <linearGradient id="arcGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#fbbf24" />
+            <stop offset="50%" stop-color="#f59e0b" />
+            <stop offset="100%" stop-color="#fbbf24" />
+          </linearGradient>
+        </defs>
+        <path d="M 50 120 A 100 100 0 0 1 250 120" fill="none" stroke="url(#arcGrad)" stroke-width="3" stroke-dasharray="6,4" />
+        <line x1="50" y1="120" x2="250" y2="120" stroke="#e2e8f0" stroke-width="1" />
+        <circle cx="50" cy="120" r="4" fill="#f59e0b" />
+        <circle cx="250" cy="120" r="4" fill="#f59e0b" />
+        <text x="50" y="136" text-anchor="middle" font-size="9" fill="#9a3412" font-weight="700">6 AM</text>
+        <text x="150" y="136" text-anchor="middle" font-size="9" fill="#9a3412" font-weight="700">12 PM</text>
+        <text x="250" y="136" text-anchor="middle" font-size="9" fill="#9a3412" font-weight="700">6 PM</text>
+        <circle cx="${sunX}" cy="${sunY}" r="12" fill="#fbbf24" stroke="#f59e0b" stroke-width="2">
+          <animate attributeName="r" values="12;14;12" dur="2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="${sunX}" cy="${sunY}" r="20" fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.5">
+          <animate attributeName="r" values="12;24" dur="2s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.5;0" dur="2s" repeatCount="indefinite" />
+        </circle>
+      </svg>
+      <div class="sun-arc-info">
+        <span>🌅 Sunrise: 6:00 AM</span>
+        <span>🌇 Sunset: 6:00 PM</span>
+      </div>
+    </div>
+
+    <!-- WINDMILL -->
+    <div class="windmill-wrap">
+      <div class="windmill">
+        <div class="windmill-tower"></div>
+        <div class="windmill-blades">
+          <div class="blade3"></div>
+        </div>
+      </div>
+      <div class="windmill-info">
+        <div class="wi-title">💨 Wind Speed</div>
+        <div class="wi-val">${w.wind}</div>
+        <div class="wi-unit">km/h</div>
+        <div class="wi-sub">${w.wind > 20 ? 'Strong breeze — secure structures' : w.wind > 10 ? 'Gentle breeze — good for spraying' : 'Calm — ideal for field work'}</div>
+      </div>
+    </div>
+
+    <!-- HUMIDITY -->
+    <div class="humidity-card">
+      <div class="humidity-title">💧 Humidity</div>
+      <div class="humidity-val">${w.hum}%</div>
+      <div class="humidity-bar"><div class="humidity-fill" style="width:${w.hum}%"></div></div>
+      <div class="humidity-sub">${w.hum > 80 ? 'Very humid — watch for fungal disease' : w.hum > 60 ? 'Moderate humidity' : 'Dry air — good for harvest'}</div>
+    </div>
+
+    <!-- 7-DAY -->
+    ${w.daily && w.daily.length ? `
+    <div class="ma-section" style="margin:0 18px 14px">
+      <h3>7-Day Forecast</h3>
+      ${w.daily.map(d => `
+        <div class="info-row">
+          <span class="ir-k">${esc(d.day)}</span>
+          <span class="ir-v">${weatherIconFor(d.code, true)} ${d.hi}° / ${d.lo}°</span>
+        </div>
+      `).join('')}
+    </div>
+    ` : ''}
+
+    <div style="height:8px"></div>
   </div>
   ${bottomNavHTML()}`;
 }
 
 /* ============================================================
-   ANALYSIS
+   MARKET ANALYSIS
    ============================================================ */
-function renderAnalysis() {
-  const batches = S.myBatches || [];
-  const harvested = batches.filter(b => b.stage === 'harvested');
-  const totalKg = harvested.reduce((s, b) => s + (Number(b.totalHarvestKg) || 0), 0);
-  const totalBoxes = harvested.reduce((s, b) => s + (Number(b.totalHarvestBoxes) || 0), 0);
+function renderMarketAnalysis() {
+  const all = S.allFarmersBatches || [];
+  const active = all.filter(b => b.stage !== 'harvested');
+  const harvested = all.filter(b => b.stage === 'harvested');
+
+  const byCrop = {};
+  active.forEach(b => {
+    byCrop[b.cropName] = (byCrop[b.cropName] || 0) + (b.estimatedBoxes || 0);
+  });
+  const sorted = Object.entries(byCrop).sort((a, b) => b[1] - a[1]);
+  const totalBoxes = sorted.reduce((s, [, v]) => s + v, 0);
+
+  const topCrop = sorted[0];
+
   return `
   <div class="scroll">
     <div class="topbar bordered">
       <button class="tb-back" onclick="goBack()">
         <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
       </button>
-      <div class="tb-title">Farm Analysis</div>
+      <div class="tb-title">Market Analysis</div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 18px">
-      <div style="padding:16px;border-radius:var(--r-lg);background:linear-gradient(135deg,#0f7a34,#084d20);color:#fff">
-        <div style="font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,.75);margin-bottom:6px">My Batches</div>
-        <div style="font-size:22px;font-weight:900;color:#fff">${batches.length}</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.75);font-weight:600;margin-top:4px">${batches.filter(b => b.stage !== 'harvested').length} active</div>
-      </div>
-      <div style="padding:16px;border-radius:var(--r-lg);background:var(--sf);border:1px solid var(--bd)">
-        <div style="font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--tl);margin-bottom:6px">Harvested</div>
-        <div style="font-size:22px;font-weight:900;color:var(--td)">${totalBoxes.toLocaleString()} boxes</div>
-        <div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:4px">${(totalKg / 1000).toFixed(1)} t total</div>
+
+    <div class="ma-header">
+      <h2>📊 Market Intelligence</h2>
+      <p>What all AgriCare farmers are planting and expected supply across Zambia.</p>
+    </div>
+
+    <div class="ma-stats">
+      <div class="ma-stat"><div class="ms-lb">Active Batches</div><div class="ms-v">${active.length}</div><div class="ms-sub">all farmers</div></div>
+      <div class="ma-stat"><div class="ms-lb">Expected Boxes</div><div class="ms-v">${totalBoxes.toLocaleString()}</div><div class="ms-sub">in the pipeline</div></div>
+      <div class="ma-stat"><div class="ms-lb">Harvested</div><div class="ms-v">${harvested.length}</div><div class="ms-sub">batches</div></div>
+      <div class="ma-stat"><div class="ms-lb">Top Crop</div><div class="ms-v" style="font-size:16px">${topCrop ? esc(topCrop[0]) : '—'}</div><div class="ms-sub">${topCrop ? topCrop[1].toLocaleString() + ' boxes' : ''}</div></div>
+    </div>
+
+    <div class="ma-section">
+      <h3>Supply by Crop</h3>
+      ${sorted.length ? sorted.map(([name, boxes]) => {
+        const pct = totalBoxes ? Math.round(boxes / totalBoxes * 100) : 0;
+        const cls = pct > 50 ? 'danger' : pct > 30 ? 'warn' : '';
+        return `
+          <div class="ma-bar-row">
+            <div class="ma-bar-top"><span>${pickIcon(name)} ${esc(name)}</span><span>${boxes.toLocaleString()} boxes (${pct}%)</span></div>
+            <div class="ma-bar-track"><div class="ma-bar-fill ${cls}" style="width:${pct}%"></div></div>
+          </div>`;
+      }).join('') : `<div class="empty" style="padding:20px"><p>No active batches yet.</p></div>`}
+    </div>
+
+    ${sorted.length && sorted[0][1] / totalBoxes > 0.5 ? `
+    <div class="ma-section">
+      <div class="ma-warning">
+        ⚠️ <strong>Market saturation risk:</strong> Over 50% of expected supply is <strong>${esc(sorted[0][0])}</strong>.
+        Consider diversifying or negotiating contracts early.
       </div>
     </div>
+    ` : ''}
+
+    <div class="ma-section">
+      <h3>Expected Harvest Windows</h3>
+      ${active.slice(0, 10).map(b => `
+        <div class="info-row">
+          <span class="ir-k">${pickIcon(b.cropName)} ${esc(b.cropName)}</span>
+          <span class="ir-v">${fmtDate(b.harvestStart)} – ${fmtDate(b.harvestEnd)}</span>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="ma-section">
+      <h3>Your Position</h3>
+      <div class="info-row"><span class="ir-k">Your active batches</span><span class="ir-v">${S.myBatches.filter(b => b.stage !== 'harvested').length}</span></div>
+      <div class="info-row"><span class="ir-k">Your expected boxes</span><span class="ir-v">${S.myBatches.filter(b => b.stage !== 'harvested').reduce((s, b) => s + (b.estimatedBoxes || 0), 0).toLocaleString()}</span></div>
+    </div>
+
+    <div style="height:8px"></div>
   </div>
   ${bottomNavHTML()}`;
 }
@@ -5661,13 +6064,13 @@ function renderAnalysis() {
    GOVERNMENT
    ============================================================ */
 const GOV_SITES = [
-  { name: 'Ministry of Agriculture', url: 'https://www.agriculture.gov.zm/', desc: 'Market bulletins, FISP, policy updates', icon: '🏛️' },
-  { name: 'ZARI – Research Institute', url: 'https://www.zari.gov.zm/', desc: 'Crop research, pest diagnostics', icon: '🔬' },
-  { name: 'ZamStats – Crop Forecast', url: 'http://nada.zamstats.gov.zm/', desc: 'National crop production statistics', icon: '📊' },
-  { name: 'FRA – Food Reserve Agency', url: 'https://fra.org.zm/', desc: 'Crop marketing, floor prices', icon: '🌾' },
-  { name: 'SCCI – Seed Certification', url: 'https://www.scci.gov.zm/', desc: 'Certified seed register', icon: '🌱' },
-  { name: 'Zambia Meteorological Dept', url: 'https://www.met.gov.zm/', desc: 'Weather forecasts & rainfall', icon: '⛅' },
-  { name: 'CEEC – Empowerment Fund', url: 'https://www.ceec.org.zm/', desc: 'Agri-business funding', icon: '💼' }
+  { name: 'Ministry of Agriculture', url: 'https://www.agriculture.gov.zm/', desc: 'Market bulletins, FISP, policy', icon: '🏛️' },
+  { name: 'ZARI – Research', url: 'https://www.zari.gov.zm/', desc: 'Crop research, pest diagnostics', icon: '🔬' },
+  { name: 'ZamStats', url: 'http://nada.zamstats.gov.zm/', desc: 'Crop production statistics', icon: '📊' },
+  { name: 'FRA', url: 'https://fra.org.zm/', desc: 'Crop marketing, floor prices', icon: '🌾' },
+  { name: 'SCCI', url: 'https://www.scci.gov.zm/', desc: 'Certified seed register', icon: '🌱' },
+  { name: 'Met Dept', url: 'https://www.met.gov.zm/', desc: 'Weather & rainfall forecasts', icon: '⛅' },
+  { name: 'CEEC', url: 'https://www.ceec.org.zm/', desc: 'Agri-business funding', icon: '💼' }
 ];
 
 function renderGovernment() {
@@ -5719,6 +6122,7 @@ async function startApp() {
 
     S.marketplace = await loadMarketplace();
     startNotificationsListener();
+    startAllBatchesListener();
 
     const app = document.getElementById('app');
     app.innerHTML = `<div class="screen-wrap"></div>`;
