@@ -5364,6 +5364,7 @@ function bottomNavHTML() {
 }
 
 window.navTo = (id, data) => showScreen(id, data);
+window.showScreen  = showScreen;   // ← add this
 window.goHome = () => navTo('home');
 window.goFarm = () => navTo('farm');
 window.goMarket = () => navTo('marketplace');
