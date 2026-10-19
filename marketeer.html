@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0f7a34">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>U-AGRI · Marketeer</title>
+
+<script type="importmap">
+{
+  "imports": {
+    "firebase/app": "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js",
+    "firebase/auth": "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js",
+    "firebase/database": "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js"
+  }
+}
+</script>
+
+<style>
+:root{
+  --p:#0f7a34;--p-h:#0b5f28;--p-d:#084d20;--p-l:#e6f5eb;--p-ll:#f1faf4;--p-glow:rgba(15,122,52,.28);
+  --acc:#16a34a;--acc-soft:#86efac;
+  --td:#0f172a;--tb:#334155;--tl:#64748b;--tm:#94a3b8;
+  --bd:#e2e8f0;--bd-s:#cbd5e1;
+  --sf:#ffffff;--sf2:#f8fafc;--bg:#f4f7f5;
+  --danger:#dc2626;--danger-soft:#fee2e2;
+  --warn:#b45309;--warn-soft:#fef3c7;
+  --ok:#16a34a;--ok-soft:#d1fae5;
+  --info:#2563eb;--info-soft:#dbeafe;
+  --r-sm:10px;--r:14px;--r-lg:20px;--r-xl:26px;--r-2xl:32px;--r-p:999px;
+  --e:cubic-bezier(.22,1,.36,1);
+  --sh-xs:0 1px 2px rgba(15,23,42,.05);
+  --sh-sm:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04);
+  --sh:0 4px 12px rgba(15,23,42,.07),0 2px 4px rgba(15,23,42,.04);
+  --sh-md:0 8px 24px rgba(15,23,42,.09),0 3px 8px rgba(15,23,42,.05);
+  --sh-lg:0 12px 28px rgba(15,23,42,.09),0 4px 10px rgba(15,23,42,.05);
+  --sh-xl:0 20px 48px rgba(15,23,42,.12),0 6px 16px rgba(15,23,42,.06);
+  --sh-brand:0 10px 30px -8px var(--p-glow);
+  --sh-brand-lg:0 20px 50px -10px rgba(15,122,52,.4);
+  --ring:0 0 0 4px rgba(15,122,52,.14);
+  --nav-h:68px;
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--tb);height:100dvh;overflow:hidden;-webkit-font-smoothing:antialiased;overscroll-behavior:none;user-select:none;-webkit-user-select:none}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+
+#app{position:fixed;inset:0;overflow:hidden;display:flex;justify-content:center}
+.screen-wrap{width:100%;max-width:720px;height:100%;position:relative;display:flex;flex-direction:column;background:var(--sf);box-shadow:0 0 60px rgba(15,23,42,.06)}
+@media(min-width:721px){body{background:linear-gradient(135deg,#eef7f0 0%,#e0f2e6 50%,#d5ecdc 100%)}.screen-wrap{margin:0 auto;height:100dvh}}
+
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--sf);opacity:0;transform:translateY(14px);transition:opacity .35s var(--e),transform .4s var(--e);pointer-events:none}
+.screen.active{opacity:1;transform:translateY(0);pointer-events:auto;z-index:5}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:calc(var(--nav-h) + var(--safe-b) + 24px);scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+
+#splash{background:#000;z-index:100;display:flex;align-items:center;justify-content:center;opacity:1;transform:none;pointer-events:auto}
+#splash img{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s ease-in-out}
+#splash.show img{opacity:1}
+#splash .brand-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:calc(var(--safe-t) + 40px) 24px calc(var(--safe-b) + 40px);background:linear-gradient(180deg,rgba(0,0,0,.15) 0%,transparent 40%,transparent 60%,rgba(0,0,0,.55) 100%);pointer-events:none;opacity:0;transition:opacity 1s ease-in-out}
+#splash.show .brand-overlay{opacity:1}
+#splash .brand-top{text-align:center;color:#fff}
+#splash .brand-top .leaf{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 12px;box-shadow:0 12px 30px rgba(0,0,0,.3)}
+#splash .brand-top h1{font-size:34px;font-weight:900;letter-spacing:-.03em;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+#splash .brand-top p{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.95;margin-top:6px}
+#splash .brand-bottom{text-align:center;color:#fff}
+#splash .brand-bottom h2{font-size:22px;font-weight:900;letter-spacing:-.02em;line-height:1.25;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+
+.topbar{padding:calc(var(--safe-t) + 14px) 18px 10px;display:flex;align-items:center;gap:12px;background:var(--sf);flex-shrink:0}
+.topbar.bordered{border-bottom:1px solid var(--bd)}
+.tb-back{width:38px;height:38px;border-radius:50%;background:var(--sf2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s var(--e)}
+.tb-back:active{transform:scale(.92);background:var(--p-l);border-color:var(--p)}
+.tb-back svg{width:18px;height:18px;fill:var(--td)}
+.tb-title{flex:1;font-size:17px;font-weight:800;letter-spacing:-.02em;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-btn{width:38px;height:38px;border-radius:50%;background:var(--sf2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;position:relative;transition:all .2s var(--e)}
+.tb-btn:active{transform:scale(.92);background:var(--p-l)}
+.tb-btn svg{width:18px;height:18px;fill:var(--td)}
+.tb-btn .dot{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--danger);border:1.5px solid #fff}
+
+.hero-card{margin:0 18px 14px;position:relative;overflow:hidden;background:linear-gradient(135deg,#0f7a34 0%,#0b5f28 60%,#084d20 100%);border-radius:var(--r-2xl);padding:20px;color:#fff;box-shadow:var(--sh-brand-lg)}
+.hero-card::before{content:'';position:absolute;top:-30px;right:-20px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,255,255,.22) 0%,transparent 70%);border-radius:50%;pointer-events:none}
+.hc-head{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1;gap:12px}
+.hc-profile{display:flex;align-items:center;gap:12px}
+.hc-avatar{width:48px;height:48px;border-radius:50%;overflow:hidden;background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;flex-shrink:0}
+.hc-avatar img{width:100%;height:100%;object-fit:cover}
+.hc-greet{font-size:12px;font-weight:700;opacity:.9;letter-spacing:.02em}
+.hc-name{font-size:20px;font-weight:900;letter-spacing:-.02em;line-height:1.2;margin-top:2px}
+.hc-name span{color:#a7f3d0}
+.hc-loc{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;opacity:.95;margin-top:8px}
+.hc-loc svg{width:13px;height:13px;fill:#fff}
+.hc-icon{font-size:38px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.2));animation:bob 3s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+.hc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;position:relative;z-index:1}
+.hc-stat{padding:12px 8px;border-radius:var(--r);background:rgba(255,255,255,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);text-align:center;border:1px solid rgba(255,255,255,.2)}
+.hc-stat .hs-n{font-size:22px;font-weight:900;letter-spacing:-.03em;line-height:1}
+.hc-stat .hs-l{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;opacity:.92;margin-top:4px}
+
+.qa-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 18px 16px}
+.qa{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px 10px;border-radius:var(--r-lg);background:var(--sf2);border:1px solid var(--bd);transition:all .22s var(--e)}
+.qa:active{transform:scale(.94);background:var(--p-l);border-color:var(--p)}
+.qa-ic{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;line-height:1;box-shadow:0 3px 10px rgba(0,0,0,.08)}
+.qa-lb{font-size:9.5px;font-weight:800;letter-spacing:.02em;color:var(--td);text-transform:uppercase;text-align:center}
+.qa-ic.c1{background:linear-gradient(145deg,#d1fae5,#10b981)}
+.qa-ic.c2{background:linear-gradient(145deg,#dbeafe,#2563eb)}
+.qa-ic.c3{background:linear-gradient(145deg,#ffedd5,#ea580c)}
+.qa-ic.c4{background:linear-gradient(145deg,#ede9fe,#7c3aed)}
+
+.sec-h{padding:8px 18px 10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sec-h h3{font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--td)}
+.sec-h button{font-size:12px;font-weight:700;color:var(--p);display:inline-flex;align-items:center;gap:4px;padding:6px 10px;border-radius:var(--r-p);transition:background .2s var(--e)}
+.sec-h button:active{background:var(--p-l)}
+
+.market-tabs{display:flex;gap:6px;padding:8px 18px 12px;overflow-x:auto;scrollbar-width:none}
+.market-tabs::-webkit-scrollbar{display:none}
+.market-tab{flex-shrink:0;padding:9px 16px;border-radius:var(--r-p);background:#fff;border:1.5px solid var(--bd);font-size:12px;font-weight:800;color:var(--tb);transition:all .2s var(--e)}
+.market-tab.active{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 4px 12px -4px var(--p-glow)}
+
+.city-chips{display:flex;gap:6px;padding:4px 18px 14px;overflow-x:auto;scrollbar-width:none}
+.city-chips::-webkit-scrollbar{display:none}
+.city-chip{flex-shrink:0;padding:8px 14px;border-radius:var(--r-p);background:#fff;border:1.5px solid var(--bd);font-size:12px;font-weight:800;color:var(--tb);transition:all .2s var(--e);white-space:nowrap}
+.city-chip.active{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 4px 12px -4px var(--p-glow)}
+
+.market-card{margin:0 18px 10px;padding:14px;background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);box-shadow:var(--sh-sm);display:flex;gap:12px;align-items:flex-start;transition:all .2s var(--e);position:relative}
+.market-card:active{transform:scale(.985);box-shadow:var(--sh-md)}
+.mc-thumb{width:60px;height:60px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--sf2);box-shadow:0 3px 10px rgba(0,0,0,.06)}
+.mc-body{flex:1;min-width:0}
+.mc-title{font-size:14px;font-weight:900;color:var(--td);letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mc-meta{font-size:11px;color:var(--tl);font-weight:600;margin-top:3px;line-height:1.4}
+.mc-price{display:flex;align-items:baseline;gap:5px;margin-top:6px}
+.mc-price strong{font-size:16px;font-weight:900;letter-spacing:-.02em;color:var(--p-d)}
+.mc-price small{font-size:10.5px;font-weight:700;color:var(--tl);text-transform:uppercase;letter-spacing:.03em}
+.mc-contact{font-size:10.5px;font-weight:700;color:#065f46;margin-top:4px;display:flex;align-items:center;gap:4px}
+.mc-countdown{font-size:11px;font-weight:900;color:#9a3412;background:#fef3c7;padding:3px 8px;border-radius:var(--r-p);margin-top:4px;display:inline-block;font-variant-numeric:tabular-nums}
+.mc-side{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+.mc-badge{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:var(--r-p)}
+.mc-badge.available{background:var(--ok-soft);color:#065f46}
+.mc-badge.pending{background:#fef3c7;color:#9a3412}
+.mc-badge.soon{background:var(--info-soft);color:#1e40af}
+.mc-time{font-size:10px;color:var(--tm);font-weight:700;white-space:nowrap}
+
+.call-btn{width:44px;height:44px;border-radius:50%;background:linear-gradient(145deg,#12903e,var(--p-d));color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 6px 16px -4px var(--p-glow);transition:all .2s var(--e);flex-shrink:0}
+.call-btn:active{transform:scale(.9)}
+.call-btn svg{width:20px;height:20px;fill:#fff}
+
+.plant-card{margin:0 18px 10px;padding:14px;background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);box-shadow:var(--sh-sm);display:flex;gap:12px;align-items:center;transition:all .2s var(--e)}
+.plant-card:active{transform:scale(.985);box-shadow:var(--sh-md)}
+.pc-ic{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,.06)}
+.pc-body{flex:1;min-width:0}
+.pc-title{font-size:14px;font-weight:900;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pc-meta{font-size:11px;color:var(--tl);font-weight:600;margin-top:3px;line-height:1.4}
+.pc-farmer{font-size:10.5px;font-weight:800;color:var(--p);margin-top:4px;display:flex;align-items:center;gap:4px}
+
+.tip-card{margin:0 18px 10px;padding:16px;border-radius:var(--r-xl);position:relative;overflow:hidden;box-shadow:var(--sh-sm)}
+.tip-card.buy{background:linear-gradient(135deg,#d1fae5 0%,#a7f3d0 100%);border:1.5px solid rgba(22,163,74,.22)}
+.tip-card.wait{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:1.5px solid rgba(180,83,9,.22)}
+.tip-card.avoid{background:linear-gradient(135deg,#fee2e2 0%,#fecaca 100%);border:1.5px solid rgba(220,38,38,.22)}
+.tip-label{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.tip-card.buy .tip-label{color:#065f46}
+.tip-card.wait .tip-label{color:#92400e}
+.tip-card.avoid .tip-label{color:#991b1b}
+.tip-title{font-size:16px;font-weight:900;letter-spacing:-.02em;line-height:1.2;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.tip-card.buy .tip-title{color:#064e3b}
+.tip-card.wait .tip-title{color:#78350f}
+.tip-card.avoid .tip-title{color:#7f1d1d}
+.tip-desc{font-size:12px;font-weight:600;line-height:1.5}
+.tip-card.buy .tip-desc{color:#047857}
+.tip-card.wait .tip-desc{color:#92400e}
+.tip-card.avoid .tip-desc{color:#991b1b}
+
+.analysis-hero{margin:0 18px 14px;padding:20px;border-radius:var(--r-xl);background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#fff;box-shadow:var(--sh-xl);position:relative;overflow:hidden}
+.analysis-hero::before{content:'';position:absolute;top:-40px;right:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(134,239,172,.18) 0%,transparent 70%);border-radius:50%}
+.analysis-hero h2{font-size:19px;font-weight:900;letter-spacing:-.02em;position:relative;z-index:1}
+.analysis-hero p{font-size:12px;font-weight:600;opacity:.85;margin-top:4px;position:relative;z-index:1;line-height:1.5}
+
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 18px 14px}
+.as-card{padding:16px;border-radius:var(--r-lg);background:#fff;border:1px solid var(--bd);box-shadow:var(--sh-sm);position:relative;overflow:hidden}
+.as-card.highlight{background:linear-gradient(135deg,#e6f5eb,#d1fae5);border-color:rgba(15,122,52,.25)}
+.as-card.warn{background:linear-gradient(135deg,#fef3c7,#fde68a);border-color:rgba(180,83,9,.22)}
+.as-ic{font-size:18px;margin-bottom:6px}
+.as-lb{font-size:10px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.as-v{font-size:22px;font-weight:900;color:var(--td);letter-spacing:-.03em;line-height:1}
+.as-card.highlight .as-v{color:var(--p-d)}
+.as-card.warn .as-v{color:#92400e}
+.as-sub{font-size:10.5px;color:var(--tl);font-weight:600;margin-top:4px}
+.as-card.highlight .as-sub{color:#047857}
+.as-card.warn .as-sub{color:#92400e}
+
+.analysis-crop-row{padding:14px;border-radius:var(--r);background:var(--sf2);border:1px solid var(--bd);margin:0 18px 8px}
+.acr-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.acr-name{font-size:13.5px;font-weight:900;color:var(--td);display:flex;align-items:center;gap:6px}
+.acr-top{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:var(--r-p);background:#fef3c7;color:#9a3412}
+.acr-top.warn{background:#fee2e2;color:#991b1b}
+.acr-bars{display:flex;flex-direction:column;gap:6px}
+.acr-bar-row{display:flex;align-items:center;gap:8px;font-size:10.5px;font-weight:700;color:var(--tl)}
+.acr-bar-lb{width:64px;flex-shrink:0;text-transform:uppercase;letter-spacing:.03em}
+.acr-bar-track{flex:1;height:8px;border-radius:4px;background:var(--bd);overflow:hidden}
+.acr-bar-fill{height:100%;border-radius:4px;transition:width .6s var(--e)}
+.acr-bar-fill.exp{background:linear-gradient(90deg,#86efac,#16a34a)}
+.acr-bar-fill.act{background:linear-gradient(90deg,#93c5fd,#2563eb)}
+.acr-bar-val{width:64px;text-align:right;font-weight:800;color:var(--td);flex-shrink:0}
+
+.res-item{display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border:1px solid var(--bd);border-radius:var(--r-lg);margin:0 18px 8px;box-shadow:var(--sh-xs);transition:all .2s var(--e)}
+.res-item:active{transform:scale(.98);background:var(--p-l);border-color:var(--p)}
+.res-ic{width:44px;height:44px;border-radius:12px;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.res-body{flex:1;min-width:0}
+.res-title{font-size:13.5px;font-weight:800;color:var(--td);letter-spacing:-.01em}
+.res-desc{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px}
+.res-arrow{font-size:16px;color:var(--tm)}
+
+.empty{padding:40px 24px;text-align:center;color:var(--tl)}
+.empty .e-ic{font-size:56px;margin-bottom:12px;opacity:.5}
+.empty h3{font-size:15px;font-weight:800;color:var(--td);margin-bottom:6px}
+.empty p{font-size:12.5px;line-height:1.5}
+
+.btn{width:100%;padding:14px 20px;border-radius:var(--r-p);font-size:14.5px;font-weight:800;letter-spacing:-.01em;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .22s var(--e)}
+.btn-p{background:linear-gradient(180deg,#12903e 0%,var(--p) 100%);color:#fff;box-shadow:var(--sh-brand)}
+.btn-p:active:not(:disabled){transform:scale(.97)}
+.btn-s{background:var(--sf);color:var(--td);border:1.5px solid var(--bd)}
+.btn-s:active:not(:disabled){background:var(--sf2)}
+
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;z-index:500}
+.modal.open{display:flex}
+.modal-card{background:#fff;border-radius:var(--r-2xl);width:100%;max-width:400px;padding:24px;text-align:center;box-shadow:var(--sh-xl);max-height:85vh;overflow-y:auto}
+.modal-card h3{font-size:18px;font-weight:900;color:var(--td);margin-bottom:8px;letter-spacing:-.02em}
+.modal-card p{font-size:13px;color:var(--tl);line-height:1.55;margin-bottom:16px}
+.mc-actions{display:flex;gap:8px;margin-top:8px}
+.mc-actions .btn{flex:1}
+
+.toast{position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 20px);left:50%;transform:translate(-50%,30px);background:rgba(15,23,42,.94);color:#fff;padding:12px 22px;border-radius:var(--r-p);font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:all .3s var(--e);z-index:600;box-shadow:0 12px 30px -8px rgba(0,0,0,.4);max-width:calc(100vw - 40px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+.bnav{position:absolute;bottom:0;left:0;right:0;height:var(--nav-h);background:rgba(255,255,255,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-around;padding:0 8px;padding-bottom:var(--safe-b);z-index:20;border-radius:var(--r-xl) var(--r-xl) 0 0;box-shadow:0 -4px 20px rgba(15,23,42,.06)}
+.bn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 0;border-radius:var(--r);transition:all .2s var(--e);color:var(--tm)}
+.bn:active{transform:scale(.9)}
+.bn.active{color:var(--p)}
+.bn svg{width:22px;height:22px;fill:currentColor;transition:transform .2s var(--e)}
+.bn.active svg{transform:translateY(-2px)}
+.bn-lb{font-size:9.5px;font-weight:800;letter-spacing:.02em;text-transform:uppercase}
+.bn.active .bn-lb{font-weight:900}
+
+.prof-hero{margin:0 18px 16px;padding:22px;border-radius:var(--r-2xl);background:linear-gradient(135deg,#0f7a34 0%,#0b5f28 100%);color:#fff;text-align:center;position:relative;overflow:hidden;box-shadow:var(--sh-brand-lg)}
+.p-av{width:80px;height:80px;border-radius:50%;margin:0 auto 12px;background:rgba(255,255,255,.2);border:3px solid #fff;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900}
+.p-av img{width:100%;height:100%;object-fit:cover}
+.prof-hero h2{font-size:19px;font-weight:900;letter-spacing:-.03em;position:relative;z-index:1}
+.p-ver{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;background:rgba(255,255,255,.2);padding:4px 10px;border-radius:var(--r-p);margin-top:6px}
+.p-loc{font-size:12px;font-weight:600;opacity:.92;margin-top:8px}
+.prof-stats{display:flex;justify-content:space-around;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.16)}
+.prof-stats>div{text-align:center;flex:1}
+.ps-n{font-size:20px;font-weight:900;letter-spacing:-.03em}
+.ps-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.85;margin-top:2px}
+
+.menu-list{padding:0 18px 18px}
+.menu-item{display:flex;align-items:center;gap:12px;padding:15px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);margin-bottom:8px;cursor:pointer;transition:all .2s var(--e);box-shadow:var(--sh-xs)}
+.menu-item:active{background:var(--p-l);border-color:var(--p);transform:scale(.985)}
+.mi-ic{width:38px;height:38px;border-radius:50%;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.mi-tx{flex:1;min-width:0}
+.mi-tt{font-size:13.5px;font-weight:800;color:var(--td)}
+.mi-sb{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px}
+.mi-ar svg{width:16px;height:16px;fill:var(--tm)}
+
+.notice-banner{margin:0 18px 12px;padding:12px 14px;border-radius:var(--r-lg);background:#fef3c7;border:1px solid rgba(180,83,9,.22);display:flex;align-items:center;gap:10px}
+.notice-banner .nb-ic{font-size:20px;flex-shrink:0}
+.notice-banner .nb-tx{flex:1;font-size:11.5px;color:#92400e;font-weight:700;line-height:1.4}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="screen-wrap">
+    <div class="screen active" id="splash">
+      <img src="farmer.png" alt="U-AGRI" onerror="this.style.display='none'">
+      <div class="brand-overlay">
+        <div class="brand-top">
+          <div class="leaf">🛒</div>
+          <h1>U-AGRI</h1>
+          <p>Marketeer · Buy · Trade · Sell</p>
+        </div>
+        <div class="brand-bottom">
+          <h2>See the market.<br>Call the farmer. Buy.</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal"><div class="modal-card" id="modalCard"></div></div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getDatabase, ref, get, onValue } from "firebase/database";
+
+/* ============================================================
+   FIREBASE
+   ============================================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyDye0P37QYNjtRRKh2_At84QCkKCqjceAQ",
+  authDomain: "reaper-7b33d.firebaseapp.com",
+  databaseURL: "https://reaper-7b33d-default-rtdb.firebaseio.com",
+  projectId: "reaper-7b33d",
+  storageBucket: "reaper-7b33d.firebasestorage.app",
+  messagingSenderId: "1023523985110",
+  appId: "1:1023523985110:web:889e2200fad1fa5b98db77"
+};
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getDatabase(app);
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const S = {
+  user: null,
+  profile: null,
+  usersById: {},
+  batches: [],
+  listings: [],
+  weather: null,
+  weatherCity: '',
+  userLocation: 'Lusaka',
+  userCoords: null,
+  screen: 'home',
+  screenData: {},
+  marketTab: 'available',   // available | pending | all
+  cityScope: 'my',          // my | nearby | all
+  plantedCity: null,
+  countdownTimer: null,
+  listingsUnsub: null,
+  batchesUnsub: null,
+  notifUnsub: null,
+  notifCount: 0
+};
+
+/* ============================================================
+   DOM
+   ============================================================ */
+const $modal = document.getElementById('modal');
+const $modalCard = document.getElementById('modalCard');
+const $toast = document.getElementById('toast');
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function toast(msg, ms=2400){ $toast.textContent = msg; $toast.classList.add('show'); clearTimeout($toast._t); $toast._t = setTimeout(()=>$toast.classList.remove('show'), ms); }
+function modal(html, noDismiss=false){ $modalCard.innerHTML = html; $modalCard.dataset.noDismiss = noDismiss ? '1' : '0'; $modal.classList.add('open'); }
+function closeModal(){ $modal.classList.remove('open'); }
+$modal.addEventListener('click', e => { if (e.target === $modal && $modalCard.dataset.noDismiss !== '1') closeModal(); });
+function esc(s){ if(s==null) return ''; return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function initials(n){ if(!n) return '?'; return n.trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
+function timeAgo(ts){ if(!ts) return 'just now'; const s=Math.floor((Date.now()-ts)/1000); if(s<60) return 'just now'; if(s<3600) return Math.floor(s/60)+'m ago'; if(s<86400) return Math.floor(s/3600)+'h ago'; if(s<604800) return Math.floor(s/86400)+'d ago'; return new Date(ts).toLocaleDateString(); }
+function fmtZMK(n){ if(n==null||isNaN(n)) return '—'; return 'ZMK ' + Number(n).toLocaleString('en-ZM'); }
+function fmtDate(ts){ if(!ts) return '—'; const d = typeof ts==='number'? new Date(ts): new Date(ts); return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); }
+function pad2(n){ return String(n).padStart(2,'0'); }
+function timeUntil(ts){ const diff = ts - Date.now(); if(diff<=0) return 'Ready'; const h=Math.floor(diff/3600000); const m=Math.floor((diff%3600000)/60000); const s=Math.floor((diff%60000)/1000); return `${pad2(h)}:${pad2(m)}:${pad2(s)}`; }
+function fmtDuration(ms){ if(!ms||ms<0) return 'just now'; const s=Math.floor(ms/1000); if(s<60) return 'just now'; if(s<3600) return Math.floor(s/60)+'m'; if(s<86400){const h=Math.floor(s/3600);const m=Math.floor((s%3600)/60);return m?`${h}h ${m}m`:`${h}h`;} const d=Math.floor(s/86400);return `${d}d`; }
+
+/* ============================================================
+   ICONS
+   ============================================================ */
+function pickIcon(name){
+  if(!name) return '🌿';
+  const n = String(name).toLowerCase();
+  if(n.includes('tomato')) return '🍅';
+  if(n.includes('maize')||n.includes('corn')) return '🌽';
+  if(n.includes('cow')||n.includes('cattle')||n.includes('beef')||n.includes('dairy')) return '🐄';
+  if(n.includes('onion')) return '🧅';
+  if(n.includes('wheat')||n.includes('sorghum')||n.includes('millet')) return '🌾';
+  if(n.includes('rice')) return '🍚';
+  if(n.includes('pea')||n.includes('bean')||n.includes('soy')) return '🫛';
+  if(n.includes('groundnut')||n.includes('peanut')) return '🥜';
+  if(n.includes('carrot')) return '🥕';
+  if(n.includes('cabbage')||n.includes('kale')||n.includes('rape')||n.includes('spinach')||n.includes('lettuce')||n.includes('amaranth')) return '🥬';
+  if(n.includes('potato')) return '🥔';
+  if(n.includes('chilli')||n.includes('chili')) return '🌶️';
+  if(n.includes('pepper')) return '🫑';
+  if(n.includes('eggplant')||n.includes('aubergine')) return '🍆';
+  if(n.includes('okra')) return '🥒';
+  if(n.includes('mushroom')) return '🍄';
+  if(n.includes('banana')||n.includes('plantain')) return '🍌';
+  if(n.includes('mango')) return '🥭';
+  if(n.includes('avocado')) return '🥑';
+  if(n.includes('orange')||n.includes('citrus')||n.includes('lemon')||n.includes('lime')) return '🍊';
+  if(n.includes('papaya')||n.includes('pawpaw')) return '🍈';
+  if(n.includes('goat')) return '🐐';
+  if(n.includes('sheep')) return '🐑';
+  if(n.includes('pig')) return '🐖';
+  if(n.includes('rabbit')) return '🐇';
+  if(n.includes('broiler')||n.includes('chicken')||n.includes('poultry')||n.includes('layer')||n.includes('hen')) return '🐔';
+  if(n.includes('duck')) return '🦆';
+  if(n.includes('turkey')) return '🦃';
+  if(n.includes('fish')||n.includes('tilapia')||n.includes('catfish')||n.includes('fisher')) return '🐟';
+  return '🌿';
+}
+const GRADS = ['linear-gradient(145deg,#d1fae5,#10b981)','linear-gradient(145deg,#fef3c7,#f59e0b)','linear-gradient(145deg,#fee2e2,#dc2626)','linear-gradient(145deg,#dbeafe,#2563eb)','linear-gradient(145deg,#fce7f3,#db2777)','linear-gradient(145deg,#ede9fe,#7c3aed)','linear-gradient(145deg,#ffedd5,#ea580c)','linear-gradient(145deg,#ccfbf1,#0d9488)'];
+function gradFor(str){ let h=0; for(let i=0;i<(str||'').length;i++) h=(h*31+str.charCodeAt(i))>>>0; return GRADS[h%GRADS.length]; }
+
+/* ============================================================
+   CITY / REGION LOGIC
+   ============================================================ */
+const CITY_REGIONS = {
+  'Lusaka Province': ['Lusaka','Kafue','Chilanga','Chongwe','Mumbwa'],
+  'Copperbelt': ['Kitwe','Ndola','Chingola','Mufulira','Luanshya','Kalulushi','Chililabombwe','Masaiti'],
+  'Southern Province': ['Livingstone','Choma','Mazabuka','Monze','Kalomo','Namwala'],
+  'Central Province': ['Kabwe','Kapiri Mposhi','Mkushi','Serenje','Chibombo'],
+  'Eastern Province': ['Chipata','Petauke','Katete','Lundazi','Nyimba','Chadiza'],
+  'Northern Province': ['Kasama','Mbala','Mpika','Nakonde','Mporokoso','Luwingu'],
+  'Western Province': ['Mongu','Kaoma','Senanga','Sesheke','Kalabo'],
+  'North-Western Province': ['Solwezi','Mwinilunga','Kasempa','Zambezi'],
+  'Luapula Province': ['Mansa','Samfya','Kawambwa','Nchelenge','Mwense']
+};
+
+function normalizeCity(city){ return String(city || '').trim(); }
+function regionOf(city){
+  const c = normalizeCity(city);
+  for(const [region, list] of Object.entries(CITY_REGIONS)) if(list.includes(c)) return region;
+  return null;
+}
+function nearbyCities(city){
+  const region = regionOf(city);
+  if(!region) return [];
+  return CITY_REGIONS[region].filter(c => c !== normalizeCity(city));
+}
+function cityOfListing(l){ return normalizeCity(l.city || ''); }
+function cityOfBatch(b){ return normalizeCity(b.town || b.ownerCity || ''); }
+
+/* ============================================================
+   WEATHER (same as farmer)
+   ============================================================ */
+async function loadWeatherByCoords(lat, lng){
+  try{
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,is_day&timezone=auto`;
+    const r = await fetch(url); const j = await r.json();
+    return { temp: Math.round(j.current.temperature_2m), hum: j.current.relative_humidity_2m, wind: Math.round(j.current.wind_speed_10m), code: j.current.weather_code, isDay: j.current.is_day === 1 };
+  }catch(e){ return null; }
+}
+function weatherIconFor(code, isDay){
+  if(code===0) return isDay ? '☀️' : '🌙';
+  if(code===1) return isDay ? '🌤️' : '🌙';
+  if(code===2) return isDay ? '⛅' : '☁️';
+  if(code===3) return '☁️';
+  if(code<=48) return '🌫️';
+  if(code<=55) return '🌦️';
+  if(code<=65) return '🌧️';
+  return '⛈️';
+}
+function weatherDescFor(code){
+  if(code===0) return 'Clear sky';
+  if(code===1) return 'Mainly clear';
+  if(code===2) return 'Partly cloudy';
+  if(code===3) return 'Overcast';
+  if(code<=48) return 'Foggy';
+  if(code<=55) return 'Drizzle';
+  if(code<=65) return 'Rain';
+  return 'Thunderstorm';
+}
+async function reverseGeocodeCity(lat, lng){
+  try{
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&zoom=12&accept-language=en`;
+    const r = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    if(!r.ok) return null;
+    const j = await r.json(); const a = j.address || {};
+    return { city: a.city || a.town || a.village || a.municipality || a.county || '' };
+  }catch(e){ return null; }
+}
+async function detectUserCityAndWeather(){
+  if(!navigator.geolocation){
+    S.weather = await loadWeatherByCoords(-15.4167, 28.2833);
+    S.weatherCity = S.userLocation;
+    return;
+  }
+  return new Promise(resolve => {
+    navigator.geolocation.getCurrentPosition(async pos => {
+      const lat = pos.coords.latitude, lng = pos.coords.longitude;
+      S.userCoords = { lat, lng };
+      const place = await reverseGeocodeCity(lat, lng);
+      if(place && place.city){ S.weatherCity = place.city; S.userLocation = place.city; }
+      S.weather = await loadWeatherByCoords(lat, lng);
+      route();
+      resolve();
+    }, async () => {
+      S.weather = await loadWeatherByCoords(-15.4167, 28.2833);
+      S.weatherCity = S.userLocation;
+      route();
+      resolve();
+    }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 300000 });
+  });
+}
+
+/* ============================================================
+   ROUTER
+   ============================================================ */
+let activeScreenEl = null;
+function buildScreen(id){
+  const wrap = document.querySelector('.screen-wrap');
+  let el = document.getElementById('screen-' + id);
+  if(!el){ el = document.createElement('div'); el.className = 'screen'; el.id = 'screen-' + id; wrap.appendChild(el); }
+  return el;
+}
+function showScreen(id, data={}, push=true){
+  S.screenData = data || {};
+  const target = buildScreen(id);
+  if(activeScreenEl && activeScreenEl !== target) activeScreenEl.classList.remove('active');
+  void target.offsetWidth;
+  target.classList.add('active');
+  activeScreenEl = target;
+  S.screen = id;
+  route();
+  if(push){ try{ history.pushState({ screen: id, data }, '', '#' + id); }catch(e){} }
+  const sc = target.querySelector('.scroll');
+  if(sc) sc.scrollTop = 0;
+  if(id === 'market' || id === 'planted') startCountdownTicker();
+}
+window.addEventListener('popstate', e => {
+  if($modal.classList.contains('open')){ if($modalCard.dataset.noDismiss !== '1') closeModal(); return; }
+  const st = e.state || {};
+  const id = st.screen || 'home';
+  if(!document.getElementById('screen-' + id)){ showScreen('home', {}, false); return; }
+  showScreen(id, st.data || {}, false);
+});
+
+function bottomNavHTML(){
+  const map = { home: 'home', market: 'market', planted: 'planted', analysis: 'analysis', profile: 'profile' };
+  const currentKey = map[S.screen] || S.screen;
+  return `
+  <nav class="bnav">
+    <button class="bn ${currentKey==='home'?'active':''}" onclick="goHome()">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span class="bn-lb">Home</span>
+    </button>
+    <button class="bn ${currentKey==='market'?'active':''}" onclick="goMarket()">
+      <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+      <span class="bn-lb">Market</span>
+    </button>
+    <button class="bn ${currentKey==='planted'?'active':''}" onclick="goPlanted()">
+      <svg viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg>
+      <span class="bn-lb">Planted</span>
+    </button>
+    <button class="bn ${currentKey==='analysis'?'active':''}" onclick="goAnalysis()">
+      <svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5V9.2zM10.6 5h2.8v14h-2.8V5zm5.6 8H19v6h-2.8v-6z"/></svg>
+      <span class="bn-lb">Analysis</span>
+    </button>
+    <button class="bn ${currentKey==='profile'?'active':''}" onclick="goProfile()">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <span class="bn-lb">Profile</span>
+    </button>
+  </nav>`;
+}
+window.goHome = () => showScreen('home');
+window.goMarket = () => showScreen('market');
+window.goPlanted = () => showScreen('planted');
+window.goAnalysis = () => showScreen('analysis');
+window.goProfile = () => showScreen('profile');
+window.goTips = () => showScreen('tips');
+window.goResources = () => showScreen('resources');
+window.goBack = () => { try{ history.back(); }catch(e){ showScreen('home'); } };
+window.navTo = (id, data) => showScreen(id, data);
+
+/* ============================================================
+   ROUTE DISPATCH
+   ============================================================ */
+function route(){
+  const id = S.screen;
+  const el = document.getElementById('screen-' + id);
+  if(!el) return;
+  switch(id){
+    case 'home': el.innerHTML = renderHome(); break;
+    case 'market': el.innerHTML = renderMarket(); break;
+    case 'planted': el.innerHTML = renderPlanted(); break;
+    case 'analysis': el.innerHTML = renderAnalysis(); break;
+    case 'tips': el.innerHTML = renderTips(); break;
+    case 'resources': el.innerHTML = renderResources(); break;
+    case 'profile': el.innerHTML = renderProfile(); break;
+    default: el.innerHTML = renderHome();
+  }
+}
+
+/* ============================================================
+   LISTINGS & BATCHES HELPERS
+   ============================================================ */
+function isLiveListing(l){
+  return l && l.status !== 'removed' && l.availabilityStatus !== 'removed';
+}
+function isAvailable(l){ return isLiveListing(l) && l.availabilityStatus === 'available'; }
+function isPending(l){ return isLiveListing(l) && l.availabilityStatus === 'pending'; }
+
+function listingsInScope(){
+  const myCity = normalizeCity(S.weatherCity || S.userLocation);
+  const nearby = nearbyCities(myCity);
+  const scope = S.cityScope;
+  return S.listings.filter(l => {
+    if(!isLiveListing(l)) return false;
+    const c = cityOfListing(l);
+    if(scope === 'all') return true;
+    if(scope === 'my') return c === myCity;
+    if(scope === 'nearby') return nearby.includes(c);
+    return true;
+  });
+}
+function batchesInScope(){
+  const myCity = normalizeCity(S.weatherCity || S.userLocation);
+  const nearby = nearbyCities(myCity);
+  const scope = S.cityScope;
+  return S.batches.filter(b => {
+    if(b.stage === 'harvested') return false;
+    const c = cityOfBatch(b);
+    if(scope === 'all') return true;
+    if(scope === 'my') return c === myCity;
+    if(scope === 'nearby') return nearby.includes(c);
+    return true;
+  });
+}
+function phoneForBatch(b){
+  const u = S.usersById[b.ownerId];
+  return u && (u.phone || u.phoneNumber) ? (u.phone || u.phoneNumber) : null;
+}
+
+/* ============================================================
+   ANALYSIS COMPUTATIONS
+   ============================================================ */
+function computeSupplyInsights(){
+  const now = Date.now();
+  const HORIZON = 45 * 86400000;
+  const active = S.batches.filter(b => b.stage !== 'harvested');
+
+  const incomingByCrop = {};
+  const availableByCrop = {};
+  const pipelineBatches = [];
+
+  active.forEach(b => {
+    const name = b.cropName || 'Other';
+    if(b.harvestStart && b.harvestStart <= now + HORIZON){
+      incomingByCrop[name] = (incomingByCrop[name] || 0) + (b.estimatedBoxes || 0);
+      pipelineBatches.push(b);
+    }
+  });
+
+  S.listings.forEach(l => {
+    if(!isAvailable(l)) return;
+    const name = l.productName || l.title || 'Other';
+    availableByCrop[name] = (availableByCrop[name] || 0) + (l.quantity || 0);
+  });
+
+  const allCrops = new Set([...Object.keys(incomingByCrop), ...Object.keys(availableByCrop)]);
+  const rows = [...allCrops].map(name => {
+    const incoming = incomingByCrop[name] || 0;
+    const available = availableByCrop[name] || 0;
+    const total = incoming + available;
+    let status = 'stable';
+    if(available > 0 && incoming > available * 2) status = 'oversupply';
+    else if(incoming > 0 && available === 0) status = 'coming';
+    else if(available > 0 && incoming < available * 0.5) status = 'tight';
+    return { name, incoming, available, total, status };
+  }).sort((a,b) => (b.incoming + b.available) - (a.incoming + a.available));
+
+  return { rows, pipelineBatches, incomingByCrop, availableByCrop };
+}
+
+function buildBuyTips(ins){
+  const tips = [];
+  const rows = ins.rows;
+
+  // Buy-now: tight supply + listings present
+  rows.filter(r => r.status === 'tight' && r.available > 0).slice(0,3).forEach(r => {
+    tips.push({
+      kind: 'buy',
+      title: `Buy ${r.name} now`,
+      desc: `Only ${r.available.toLocaleString()} boxes on market and little coming soon. Prices may rise — lock in supply.`
+    });
+  });
+
+  // Wait: oversupply
+  rows.filter(r => r.status === 'oversupply').slice(0,3).forEach(r => {
+    tips.push({
+      kind: 'wait',
+      title: `Wait on ${r.name}`,
+      desc: `${r.incoming.toLocaleString()} boxes expected in the next 45 days vs. ${r.available.toLocaleString()} available. Expect cheaper prices — don't over-buy today.`
+    });
+  });
+
+  // Avoid: very high oversupply
+  const worst = rows.filter(r => r.status === 'oversupply').sort((a,b) => b.incoming - a.incoming)[0];
+  if(worst && worst.incoming > 0){
+    tips.push({
+      kind: 'avoid',
+      title: `Avoid big ${worst.name} buys`,
+      desc: `Massive incoming supply (${worst.incoming.toLocaleString()} boxes). Only buy what you can sell in the next week.`
+    });
+  }
+
+  // Coming soon notice
+  rows.filter(r => r.status === 'coming').slice(0,2).forEach(r => {
+    tips.push({
+      kind: 'wait',
+      title: `${r.name} is coming`,
+      desc: `${r.incoming.toLocaleString()} boxes arriving — you can wait for farmers to reach the market rather than pre-buy now.`
+    });
+  });
+
+  if(!tips.length){
+    tips.push({ kind: 'buy', title: 'Market is balanced', desc: 'Supply and demand look even right now. Buy to meet your daily sales and hold cash for deals that come up.' });
+  }
+  return tips;
+}
+
+/* ============================================================
+   HOME
+   ============================================================ */
+function renderHome(){
+  const p = S.profile || {};
+  const fullName = ((p.firstName||'') + ' ' + (p.lastName||'')).trim() || p.displayName || 'Marketeer';
+  const initial = initials(fullName);
+  const city = normalizeCity(S.weatherCity || S.userLocation);
+  const w = S.weather;
+
+  const available = S.listings.filter(isAvailable).length;
+  const pending = S.listings.filter(isPending).length;
+  const activeBatches = S.batches.filter(b => b.stage !== 'harvested').length;
+
+  const myCityAvailable = S.listings.filter(l => isAvailable(l) && cityOfListing(l) === city);
+  const topCity = myCityAvailable.slice(0, 3);
+
+  const ins = computeSupplyInsights();
+  const topBuys = ins.rows.filter(r => r.status === 'tight' || r.status === 'coming').slice(0,2);
+
+  const weatherBlock = w ? `
+    <div class="hero-card">
+      <div class="hc-head">
+        <div class="hc-profile">
+          <div class="hc-avatar">${p.profileUrl ? `<img src="${esc(p.profileUrl)}" alt="">` : initial}</div>
+          <div>
+            <div class="hc-greet">Good ${new Date().getHours()<12?'morning':new Date().getHours()<17?'afternoon':'evening'},</div>
+            <div class="hc-name"><span>${esc(fullName)}</span> 👋</div>
+            <div class="hc-loc">
+              <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              ${esc(city)} · ${weatherIconFor(w.code, w.isDay)} ${w.temp}°C
+            </div>
+          </div>
+        </div>
+        <div class="hc-icon">${weatherIconFor(w.code, w.isDay)}</div>
+      </div>
+      <div class="hc-stats">
+        <div class="hc-stat"><div class="hs-n">${available}</div><div class="hs-l">Available</div></div>
+        <div class="hc-stat"><div class="hs-n">${pending}</div><div class="hs-l">Pending</div></div>
+        <div class="hc-stat"><div class="hs-n">${activeBatches}</div><div class="hs-l">Planting</div></div>
+      </div>
+    </div>
+  ` : `
+    <div class="hero-card">
+      <div class="hc-head">
+        <div class="hc-profile">
+          <div class="hc-avatar">${initial}</div>
+          <div>
+            <div class="hc-greet">Good ${new Date().getHours()<12?'morning':new Date().getHours()<17?'afternoon':'evening'},</div>
+            <div class="hc-name"><span>${esc(fullName)}</span> 👋</div>
+            <div class="hc-loc">📍 Detecting city…</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const cityListingsHTML = topCity.length ? topCity.map(l => renderMarketCard(l, true)).join('') : `
+    <div class="empty" style="padding:24px">
+      <div class="e-ic">🛒</div>
+      <h3>Nothing in ${esc(city)} yet</h3>
+      <p>Check nearby markets — farmers may have produce ready close to you.</p>
+    </div>
+  `;
+
+  const buyTipsHTML = topBuys.length ? topBuys.map(r => `
+    <div class="tip-card ${r.status === 'tight' ? 'buy' : 'wait'}">
+      <div class="tip-label">${r.status === 'tight' ? '💡 Buy now' : '⏳ Coming soon'}</div>
+      <div class="tip-title">${pickIcon(r.name)} ${esc(r.name)}</div>
+      <div class="tip-desc">${r.status === 'tight'
+        ? `${r.available.toLocaleString()} boxes available, little coming. Good price window.`
+        : `${r.incoming.toLocaleString()} boxes arriving soon. You can wait for more supply.`}</div>
+    </div>
+  `).join('') : '';
+
+  return `
+  <div class="scroll">
+    <div class="topbar" style="padding-bottom:4px">
+      <div style="flex:1"></div>
+      <button class="tb-btn" onclick="showScreen('tips')" title="Buy tips">
+        <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 00-4 12.74V17a1 1 0 001 1h6a1 1 0 001-1v-2.26A7 7 0 0012 2zm-3 18a1 1 0 001 1h4a1 1 0 001-1v-1H9v1z"/></svg>
+      </button>
+    </div>
+
+    ${weatherBlock}
+
+    <div class="qa-row">
+      <button class="qa" onclick="goMarket()"><div class="qa-ic c1">🛒</div><div class="qa-lb">Market</div></button>
+      <button class="qa" onclick="goPlanted()"><div class="qa-ic c2">🌱</div><div class="qa-lb">Planted</div></button>
+      <button class="qa" onclick="goAnalysis()"><div class="qa-ic c3">📊</div><div class="qa-lb">Analysis</div></button>
+      <button class="qa" onclick="goTips()"><div class="qa-ic c4">💡</div><div class="qa-lb">Buy Tips</div></button>
+    </div>
+
+    <div class="sec-h">
+      <h3>Available in ${esc(city)}</h3>
+      <button onclick="goMarket()">See all ›</button>
+    </div>
+    ${cityListingsHTML}
+
+    ${buyTipsHTML ? `<div class="sec-h"><h3>Opportunities now</h3><button onclick="goTips()">Tips ›</button></div>${buyTipsHTML}` : ''}
+
+    <div class="sec-h"><h3>More</h3></div>
+    <div class="menu-list" style="padding-top:0">
+      <div class="menu-item" onclick="goResources()">
+        <div class="mi-ic">🇿🇲</div>
+        <div class="mi-tx"><div class="mi-tt">Zambian Resources</div><div class="mi-sb">Ministry, ZARI, FRA, SCCI & more</div></div>
+        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+      <div class="menu-item" onclick="goAnalysis()">
+        <div class="mi-ic">📈</div>
+        <div class="mi-tx"><div class="mi-tt">Market Analysis</div><div class="mi-sb">Supply pipeline by crop</div></div>
+        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   MARKET SCREEN
+   ============================================================ */
+function renderMarket(){
+  const scope = S.cityScope;
+  const city = normalizeCity(S.weatherCity || S.userLocation);
+  const tab = S.marketTab;
+
+  const scoped = listingsInScope();
+  const filtered = tab === 'available' ? scoped.filter(isAvailable)
+                  : tab === 'pending' ? scoped.filter(isPending)
+                  : scoped;
+
+  const counts = {
+    available: scoped.filter(isAvailable).length,
+    pending: scoped.filter(isPending).length,
+    all: scoped.length
+  };
+
+  setTimeout(() => { startCountdownTicker(); }, 50);
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered"><div class="tb-title">Market</div></div>
+
+    <div class="market-tabs">
+      <button class="market-tab ${tab==='available'?'active':''}" onclick="setMarketTab('available')">✅ Available (${counts.available})</button>
+      <button class="market-tab ${tab==='pending'?'active':''}" onclick="setMarketTab('pending')">⏳ Pending (${counts.pending})</button>
+      <button class="market-tab ${tab==='all'?'active':''}" onclick="setMarketTab('all')">📋 All (${counts.all})</button>
+    </div>
+
+    <div class="city-chips">
+      <button class="city-chip ${scope==='my'?'active':''}" onclick="setCityScope('my')">📍 ${esc(city)}</button>
+      <button class="city-chip ${scope==='nearby'?'active':''}" onclick="setCityScope('nearby')">🗺️ Nearby</button>
+      <button class="city-chip ${scope==='all'?'active':''}" onclick="setCityScope('all')">🇿🇲 All Zambia</button>
+    </div>
+
+    ${filtered.length ? filtered.map(l => renderMarketCard(l, false)).join('') : `
+      <div class="empty">
+        <div class="e-ic">🛒</div>
+        <h3>No ${tab === 'all' ? '' : tab} listings here</h3>
+        <p>${tab === 'pending' ? 'No pending listings right now — check Available.' : 'Try Nearby or All Zambia to see more markets.'}</p>
+      </div>
+    `}
+
+    <div style="height:8px"></div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+function renderMarketCard(l, compact){
+  const avail = isAvailable(l);
+  const pend = isPending(l);
+  const meta = [
+    l.quantity ? `${l.quantity} ${l.unit || 'box'}` : '',
+    l.marketName || '',
+    l.city || ''
+  ].filter(Boolean).join(' · ');
+
+  const priceText = l.priceMode === 'total'
+    ? fmtZMK(l.priceAmount) + ' total'
+    : fmtZMK(l.priceAmount) + ' / box';
+
+  const badge = avail
+    ? `<span class="mc-badge available">✅ Available</span>`
+    : pend
+      ? `<span class="mc-badge pending">⏳ Pending</span>`
+      : `<span class="mc-badge soon">Info</span>`;
+
+  const callBtn = avail && l.sellerPhone
+    ? `<button class="call-btn" onclick="event.stopPropagation();callFarmer('${esc(l.sellerPhone)}','${esc(l.sellerName||'Farmer')}')" aria-label="Call farmer">
+         <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+       </button>`
+    : '';
+
+  const contactLine = avail && l.sellerPhone
+    ? `<div class="mc-contact">📞 ${esc(l.sellerName || 'Farmer')} · ${esc(l.sellerPhone)}</div>`
+    : pend
+      ? `<div class="mc-countdown" data-countdown="${l.availableAt || 0}">⏱ ${timeUntil(l.availableAt || 0)}</div>`
+      : '';
+
+  return `
+  <div class="market-card" onclick="viewListing('${esc(l.id)}')">
+    <div class="mc-thumb">${pickIcon(l.productName || l.title)}</div>
+    <div class="mc-body">
+      <div class="mc-title">${esc(l.productName || l.title || 'Produce')}</div>
+      <div class="mc-meta">${esc(meta)}</div>
+      <div class="mc-price"><strong>${esc(priceText)}</strong></div>
+      ${contactLine}
+    </div>
+    <div class="mc-side">
+      ${callBtn}
+      ${badge}
+      <div class="mc-time">${timeAgo(l.createdAt)}</div>
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   PLANTED SCREEN
+   ============================================================ */
+function renderPlanted(){
+  const scope = S.cityScope;
+  const city = normalizeCity(S.weatherCity || S.userLocation);
+  const batches = batchesInScope();
+
+  const grouped = {};
+  batches.forEach(b => {
+    const name = b.cropName || 'Other';
+    if(!grouped[name]) grouped[name] = [];
+    grouped[name].push(b);
+  });
+  const cropNames = Object.keys(grouped).sort((a,b) => grouped[b].length - grouped[a].length);
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered"><div class="tb-title">What's Planted</div></div>
+
+    <div class="notice-banner">
+      <div class="nb-ic">🌱</div>
+      <div class="nb-tx">These are crops farmers are growing right now. Call them early to lock in supply before harvest.</div>
+    </div>
+
+    <div class="city-chips">
+      <button class="city-chip ${scope==='my'?'active':''}" onclick="setCityScope('my')">📍 ${esc(city)}</button>
+      <button class="city-chip ${scope==='nearby'?'active':''}" onclick="setCityScope('nearby')">🗺️ Nearby</button>
+      <button class="city-chip ${scope==='all'?'active':''}" onclick="setCityScope('all')">🇿🇲 All Zambia</button>
+    </div>
+
+    ${cropNames.length ? cropNames.map(name => `
+      <div class="sec-h"><h3>${pickIcon(name)} ${esc(name)} · ${grouped[name].length}</h3></div>
+      ${grouped[name].sort((a,b) => (a.harvestStart||0)-(b.harvestStart||0)).map(b => renderPlantCard(b)).join('')}
+    `).join('') : `
+      <div class="empty">
+        <div class="e-ic">🌱</div>
+        <h3>Nothing planted here yet</h3>
+        <p>Try "Nearby" or "All Zambia" to see what other farmers are growing.</p>
+      </div>
+    `}
+
+    <div style="height:8px"></div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+function renderPlantCard(b){
+  const phone = phoneForBatch(b);
+  const farmer = b.ownerName || 'Farmer';
+  const city = b.town || b.ownerCity || '';
+  const est = b.estimatedBoxes || 0;
+  const harvest = b.harvestStart ? fmtDate(b.harvestStart) : '—';
+  const grad = gradFor(b.cropName || '');
+  const callBtn = phone
+    ? `<button class="call-btn" onclick="callFarmer('${esc(phone)}','${esc(farmer)}')" aria-label="Call farmer">
+         <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+       </button>`
+    : '';
+  return `
+  <div class="plant-card">
+    <div class="pc-ic" style="background:${grad}">${pickIcon(b.cropName)}</div>
+    <div class="pc-body">
+      <div class="pc-title">${esc(b.cropName)}${b.varietyName ? ' · ' + esc(b.varietyName) : ''}</div>
+      <div class="pc-meta">${est ? `${est.toLocaleString()} boxes expected` : 'Boxes TBD'} · 🌾 ${esc(harvest)}</div>
+      <div class="pc-farmer">🧑‍🌾 ${esc(farmer)} · 📍 ${esc(city)}</div>
+    </div>
+    ${callBtn}
+  </div>`;
+}
+
+/* ============================================================
+   ANALYSIS SCREEN
+   ============================================================ */
+function renderAnalysis(){
+  const ins = computeSupplyInsights();
+  const rows = ins.rows;
+  const totalAvailable = rows.reduce((s,r) => s + r.available, 0);
+  const totalIncoming = rows.reduce((s,r) => s + r.incoming, 0);
+  const topCrop = rows[0];
+  const oversupplyCrops = rows.filter(r => r.status === 'oversupply');
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered"><div class="tb-title">Market Analysis</div></div>
+
+    <div class="analysis-hero">
+      <h2>📊 What's coming to market</h2>
+      <p>Live supply pipeline — see what farmers are growing and what's already available to buy.</p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="as-card highlight">
+        <div class="as-ic">✅</div>
+        <div class="as-lb">Available now</div>
+        <div class="as-v">${totalAvailable.toLocaleString()}</div>
+        <div class="as-sub">boxes on market</div>
+      </div>
+      <div class="as-card">
+        <div class="as-ic">🌱</div>
+        <div class="as-lb">Incoming (45d)</div>
+        <div class="as-v">${totalIncoming.toLocaleString()}</div>
+        <div class="as-sub">boxes expected</div>
+      </div>
+      <div class="as-card ${oversupplyCrops.length ? 'warn' : ''}">
+        <div class="as-ic">${oversupplyCrops.length ? '⚠️' : '✓'}</div>
+        <div class="as-lb">Oversupply risk</div>
+        <div class="as-v">${oversupplyCrops.length}</div>
+        <div class="as-sub">crops to watch</div>
+      </div>
+      <div class="as-card">
+        <div class="as-ic">🥇</div>
+        <div class="as-lb">Biggest crop</div>
+        <div class="as-v" style="font-size:15px">${topCrop ? esc(topCrop.name) : '—'}</div>
+        <div class="as-sub">${topCrop ? (topCrop.available + topCrop.incoming).toLocaleString() + ' boxes' : '—'}</div>
+      </div>
+    </div>
+
+    <div class="sec-h"><h3>Supply by crop</h3></div>
+    ${rows.length ? rows.map(r => {
+      const total = r.available + r.incoming;
+      const maxVal = Math.max(...rows.map(x => x.available + x.incoming), 1);
+      const topCls = r.status === 'oversupply' ? 'warn' : '';
+      const topTxt = r.status === 'oversupply' ? '⚠️ Oversupply' : r.status === 'tight' ? '🔥 Tight' : r.status === 'coming' ? '⏳ Coming' : '✓ Stable';
+      return `
+        <div class="analysis-crop-row">
+          <div class="acr-head">
+            <div class="acr-name">${pickIcon(r.name)} ${esc(r.name)}</div>
+            <span class="acr-top ${topCls}">${topTxt}</span>
+          </div>
+          <div class="acr-bars">
+            <div class="acr-bar-row">
+              <span class="acr-bar-lb">Available</span>
+              <div class="acr-bar-track"><div class="acr-bar-fill exp" style="width:${Math.min(100, r.available/maxVal*100)}%"></div></div>
+              <span class="acr-bar-val">${r.available.toLocaleString()}</span>
+            </div>
+            <div class="acr-bar-row">
+              <span class="acr-bar-lb">Incoming</span>
+              <div class="acr-bar-track"><div class="acr-bar-fill act" style="width:${Math.min(100, r.incoming/maxVal*100)}%"></div></div>
+              <span class="acr-bar-val">${r.incoming.toLocaleString()}</span>
+            </div>
+          </div>
+        </div>`;
+    }).join('') : `<div class="empty" style="padding:24px"><p>No data yet — as farmers plant and post, this fills up.</p></div>`}
+
+    ${oversupplyCrops.length ? `
+    <div class="sec-h"><h3>Price-risk alerts</h3></div>
+    ${oversupplyCrops.slice(0,3).map(r => `
+      <div class="tip-card avoid">
+        <div class="tip-label">🚨 Oversupply warning</div>
+        <div class="tip-title">${pickIcon(r.name)} ${esc(r.name)}</div>
+        <div class="tip-desc">${r.incoming.toLocaleString()} boxes coming vs ${r.available.toLocaleString()} available. Expect falling prices — buy only what you can sell quickly.</div>
+      </div>
+    `).join('')}
+    ` : ''}
+
+    <div class="sec-h"><h3>Your buy tips</h3></div>
+    <button class="btn btn-p" style="margin:0 18px" onclick="goTips()">💡 See what to buy</button>
+
+    <div style="height:14px"></div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   TIPS SCREEN
+   ============================================================ */
+function renderTips(){
+  const ins = computeSupplyInsights();
+  const tips = buildBuyTips(ins);
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Buy Tips</div>
+    </div>
+
+    <div class="analysis-hero">
+      <h2>💡 What to buy, what to avoid</h2>
+      <p>Based on live supply from farmers in the app. These update automatically.</p>
+    </div>
+
+    ${tips.map(t => `
+      <div class="tip-card ${t.kind}">
+        <div class="tip-label">${t.kind==='buy'?'✅ Buy now':t.kind==='wait'?'⏳ Wait':'🚫 Avoid'}</div>
+        <div class="tip-title">${esc(t.title)}</div>
+        <div class="tip-desc">${esc(t.desc)}</div>
+      </div>
+    `).join('')}
+
+    <div class="sec-h"><h3>Golden rules for marketeers</h3></div>
+    <div class="menu-list" style="padding-top:0">
+      <div class="menu-item">
+        <div class="mi-ic">⏰</div>
+        <div class="mi-tx"><div class="mi-tt">Buy fresh, sell fast</div><div class="mi-sb">Fresh produce loses value daily — buy what you can sell within 2–3 days.</div></div>
+      </div>
+      <div class="menu-item">
+        <div class="mi-ic">📞</div>
+        <div class="mi-tx"><div class="mi-tt">Call farmers early</div><div class="mi-sb">Lock in prices before harvest. Planting info shows what's coming.</div></div>
+      </div>
+      <div class="menu-item">
+        <div class="mi-ic">📊</div>
+        <div class="mi-tx"><div class="mi-tt">Watch oversupply crops</div><div class="mi-sb">When many farmers plant the same crop, prices fall. Buy small and often.</div></div>
+      </div>
+      <div class="menu-item">
+        <div class="mi-ic">🤝</div>
+        <div class="mi-tx"><div class="mi-tt">Build farmer relationships</div><div class="mi-sb">Reliable farmers = reliable supply. Save their numbers.</div></div>
+      </div>
+    </div>
+
+    <div style="height:8px"></div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   RESOURCES
+   ============================================================ */
+const ZM_RESOURCES = [
+  { name: 'Ministry of Agriculture', url: 'https://www.agriculture.gov.zm/', desc: 'Market bulletins, FISP, policy', icon: '🏛️' },
+  { name: 'FRA', url: 'https://fra.org.zm/', desc: 'Crop marketing & floor prices', icon: '🌾' },
+  { name: 'ZARI', url: 'https://www.zari.gov.zm/', desc: 'Crop research, pest diagnostics', icon: '🔬' },
+  { name: 'SCCI', url: 'https://www.scci.gov.zm/', desc: 'Certified seed register', icon: '🌱' },
+  { name: 'Met Department', url: 'https://www.met.gov.zm/', desc: 'Weather & rainfall forecasts', icon: '⛅' },
+  { name: 'ZamStats', url: 'https://www.zamstats.gov.zm/', desc: 'Crop production statistics', icon: '📊' },
+  { name: 'CEEC', url: 'https://www.ceec.org.zm/', desc: 'Agri-business funding', icon: '💼' },
+  { name: 'ZAMACE', url: 'https://www.zamace.co.zm/', desc: 'Commodity exchange & prices', icon: '📈' },
+  { name: 'Zambia Development Agency', url: 'https://www.zda.org.zm/', desc: 'Invest & trade support', icon: '🤝' },
+  { name: 'ZACCI', url: 'https://www.zacci.org.zm/', desc: 'Chamber of commerce', icon: '🏢' }
+];
+
+function renderResources(){
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Zambian Resources</div>
+    </div>
+
+    <div class="notice-banner">
+      <div class="nb-ic">🇿🇲</div>
+      <div class="nb-tx">Official Zambian agriculture sites — prices, policy, funding, weather.</div>
+    </div>
+
+    ${ZM_RESOURCES.map(r => `
+      <a href="${esc(r.url)}" target="_blank" rel="noopener" class="res-item">
+        <div class="res-ic">${r.icon}</div>
+        <div class="res-body">
+          <div class="res-title">${esc(r.name)}</div>
+          <div class="res-desc">${esc(r.desc)}</div>
+        </div>
+        <div class="res-arrow">›</div>
+      </a>
+    `).join('')}
+
+    <div style="height:8px"></div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   PROFILE
+   ============================================================ */
+function renderProfile(){
+  const p = S.profile || {};
+  const fullName = ((p.firstName||'') + ' ' + (p.lastName||'')).trim() || p.displayName || 'Marketeer';
+  const initial = initials(fullName);
+  const city = normalizeCity(S.weatherCity || S.userLocation);
+  return `
+  <div class="scroll">
+    <div class="topbar bordered" style="background:transparent;border-bottom:none">
+      <div class="tb-title" style="opacity:0">Profile</div>
+    </div>
+    <div class="prof-hero">
+      <div class="p-av">${p.profileUrl ? `<img src="${esc(p.profileUrl)}" alt="">` : initial}</div>
+      <h2>${esc(fullName)}</h2>
+      <div class="p-ver">🛒 Marketeer · Verified</div>
+      <div class="p-loc">📍 ${esc(city)}</div>
+      <div class="prof-stats">
+        <div><div class="ps-n">${S.listings.filter(isAvailable).length}</div><div class="ps-l">Available</div></div>
+        <div><div class="ps-n">${S.batches.filter(b=>b.stage!=='harvested').length}</div><div class="ps-l">Planting</div></div>
+        <div><div class="ps-n">${nearbyCities(city).length}</div><div class="ps-l">Nearby cities</div></div>
+      </div>
+    </div>
+    <div class="menu-list">
+      <div class="menu-item" onclick="goMarket()"><div class="mi-ic">🛒</div><div class="mi-tx"><div class="mi-tt">Market</div><div class="mi-sb">Buy from farmers</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="goPlanted()"><div class="mi-ic">🌱</div><div class="mi-tx"><div class="mi-tt">What's Planted</div><div class="mi-sb">Upcoming supply</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="goAnalysis()"><div class="mi-ic">📊</div><div class="mi-tx"><div class="mi-tt">Market Analysis</div><div class="mi-sb">Supply & price risk</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="goTips()"><div class="mi-ic">💡</div><div class="mi-tx"><div class="mi-tt">Buy Tips</div><div class="mi-sb">What to buy and what to avoid</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="goResources()"><div class="mi-ic">🇿🇲</div><div class="mi-tx"><div class="mi-tt">Zambian Resources</div><div class="mi-sb">Ministry, FRA, ZARI & more</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="doLogout()"><div class="mi-ic" style="background:var(--danger-soft)">🚪</div><div class="mi-tx"><div class="mi-tt" style="color:var(--danger)">Sign Out</div></div></div>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+window.setMarketTab = (t) => { S.marketTab = t; route(); };
+window.setCityScope = (s) => { S.cityScope = s; route(); };
+
+window.callFarmer = (phone, name) => {
+  if(!phone){ toast('No phone number on file'); return; }
+  const clean = String(phone).replace(/[^\d+]/g, '');
+  modal(`
+    <h3>📞 Call ${esc(name || 'Farmer')}</h3>
+    <p style="font-size:20px;font-weight:900;color:var(--td);margin:6px 0 4px">${esc(phone)}</p>
+    <p style="font-size:12px">Tap Call Now to open your dialer.</p>
+    <div class="mc-actions">
+      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+      <a class="btn btn-p" href="tel:${esc(clean)}" onclick="setTimeout(closeModal,300)">📞 Call Now</a>
+    </div>
+  `);
+};
+
+window.viewListing = (id) => {
+  const l = S.listings.find(x => x.id === id);
+  if(!l) return;
+  const avail = isAvailable(l);
+  const pend = isPending(l);
+  const priceText = l.priceMode === 'total' ? fmtZMK(l.priceAmount) + ' (total)' : fmtZMK(l.priceAmount) + ' / box';
+  const statusLine = avail
+    ? `<span style="color:#16a34a;background:#d1fae5;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800">✅ Available now</span>`
+    : pend
+      ? `<span style="color:#92400e;background:#fef3c7;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800">⏳ Pending · ${timeUntil(l.availableAt||0)}</span>`
+      : '';
+  const callBlock = avail && l.sellerPhone ? `
+    <div style="background:var(--ok-soft);border:1px solid rgba(22,163,74,.2);padding:12px 14px;border-radius:14px;margin-bottom:12px;text-align:left">
+      <div style="font-size:10.5px;color:#065f46;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Contact Farmer</div>
+      <div style="font-size:14px;font-weight:900;color:#065f46">${esc(l.sellerName||'Farmer')}</div>
+      <div style="font-size:13px;font-weight:800;color:#065f46;margin-top:3px">📞 ${esc(l.sellerPhone)}</div>
+      <div style="font-size:11px;color:#065f46;font-weight:600;margin-top:3px">📍 ${esc(l.marketName||'')} · ${esc(l.city||'')}</div>
+    </div>` : '';
+  const actionButtons = avail && l.sellerPhone ? `
+    <div class="mc-actions">
+      <button class="btn btn-s" onclick="closeModal()">Close</button>
+      <a class="btn btn-p" href="tel:${esc(String(l.sellerPhone).replace(/[^\d+]/g,''))}" onclick="setTimeout(closeModal,300)">📞 Call</a>
+    </div>` : `
+    <div class="mc-actions"><button class="btn btn-s" onclick="closeModal()">Close</button></div>`;
+
+  modal(`
+    <h3>${pickIcon(l.productName||l.title)} ${esc(l.productName||l.title||'Listing')}</h3>
+    <p style="margin-bottom:6px">${esc(l.sellerName||'')} · ${esc(l.city||'')}</p>
+    <div style="margin-bottom:12px">${statusLine}</div>
+    ${callBlock}
+    <div style="text-align:left;background:var(--sf2);border:1px solid var(--bd);border-radius:14px;overflow:hidden;margin-bottom:14px">
+      <div class="info-row" style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Quantity</span><span style="font-weight:800">${esc((l.quantity||'—')+' '+(l.unit||'box'))}</span></div>
+      <div class="info-row" style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Price</span><span style="font-weight:800">${esc(priceText)}</span></div>
+      <div class="info-row" style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Market</span><span style="font-weight:800">${esc(l.marketName||'—')}</span></div>
+      <div class="info-row" style="display:flex;justify-content:space-between;padding:11px 14px;font-size:12.5px"><span style="color:var(--tl);font-weight:700">Posted</span><span style="font-weight:800">${timeAgo(l.createdAt)}</span></div>
+    </div>
+    ${actionButtons}
+  `);
+};
+
+window.doLogout = () => {
+  modal(`
+    <h3>Sign out?</h3>
+    <p>You'll need to log in again.</p>
+    <div class="mc-actions">
+      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-p" style="background:linear-gradient(180deg,#ef4444,#991b1b)" onclick="confirmLogout()">Sign Out</button>
+    </div>
+  `);
+};
+window.confirmLogout = async () => {
+  try{ await signOut(auth); }catch(e){}
+  window.location.href = 'index.html';
+};
+
+/* ============================================================
+   COUNTDOWN TICKER
+   ============================================================ */
+function startCountdownTicker(){
+  clearInterval(S.countdownTimer);
+  S.countdownTimer = setInterval(() => {
+    document.querySelectorAll('[data-countdown]').forEach(el => {
+      const t = parseInt(el.dataset.countdown, 10);
+      if(!t || isNaN(t)) return;
+      if(Date.now() >= t){
+        el.textContent = '⏰ Ready — refresh';
+        el.style.background = 'linear-gradient(135deg,#f97316,#ea580c)';
+        el.style.color = '#fff';
+      } else {
+        el.textContent = '⏱ ' + timeUntil(t);
+      }
+    });
+  }, 1000);
+}
+
+/* ============================================================
+   DATA LISTENERS
+   ============================================================ */
+async function loadAllUsers(){
+  try{
+    const snap = await get(ref(db, 'users'));
+    const data = snap.val() || {};
+    S.usersById = data;
+  }catch(e){ console.warn('users', e); }
+}
+
+function startListingsListener(){
+  if(S.listingsUnsub) S.listingsUnsub();
+  S.listingsUnsub = onValue(ref(db, 'marketListings'), snap => {
+    const data = snap.val() || {};
+    const arr = Object.entries(data).map(([id, v]) => ({ id, ...v })).filter(l => l);
+    arr.sort((a, b) => (b.createdAt||0) - (a.createdAt||0));
+    S.listings = arr;
+    if(['home','market','planted','analysis','tips'].includes(S.screen)) route();
+  });
+}
+
+function startBatchesListener(){
+  if(S.batchesUnsub) S.batchesUnsub();
+  S.batchesUnsub = onValue(ref(db, 'batches'), snap => {
+    const data = snap.val() || {};
+    const arr = Object.entries(data).map(([id, v]) => ({ id, ...v })).filter(b => b);
+    arr.sort((a, b) => (b.createdAt||0) - (a.createdAt||0));
+    S.batches = arr;
+    if(['home','market','planted','analysis','tips'].includes(S.screen)) route();
+  });
+}
+
+function startNotifListener(uid){
+  if(S.notifUnsub) S.notifUnsub();
+  S.notifUnsub = onValue(ref(db, `users/${uid}/notifications`), snap => {
+    const data = snap.val() || {};
+    const arr = Object.values(data);
+    S.notifCount = arr.filter(n => !n.read).length;
+  });
+}
+
+/* ============================================================
+   BOOTSTRAP
+   ============================================================ */
+async function startApp(){
+  const splash = document.getElementById('splash');
+  requestAnimationFrame(() => splash.classList.add('show'));
+
+  onAuthStateChanged(auth, async user => {
+    await new Promise(r => setTimeout(r, 2200));
+    if(!user){ window.location.href = 'index.html'; return; }
+
+    S.user = user;
+
+    try{
+      const p = await get(ref(db, 'users/' + user.uid));
+      if(p.exists()) S.profile = p.val();
+    }catch(e){ S.profile = {}; }
+
+    if(S.profile?.location) S.userLocation = S.profile.location;
+    if(S.profile?.city) S.weatherCity = S.profile.city;
+
+    await loadAllUsers();
+    startListingsListener();
+    startBatchesListener();
+    startNotifListener(user.uid);
+
+    const app = document.getElementById('app');
+    app.innerHTML = `<div class="screen-wrap"></div>`;
+    const wrap = app.querySelector('.screen-wrap');
+    const home = document.createElement('div');
+    home.className = 'screen';
+    home.id = 'screen-home';
+    wrap.appendChild(home);
+    activeScreenEl = home;
+    S.screen = 'home';
+    home.classList.add('active');
+    route();
+    try{ history.replaceState({ screen: 'home' }, '', '#home'); }catch(e){}
+
+    await detectUserCityAndWeather();
+  });
+}
+
+startApp();
+
+setTimeout(() => {
+  const splash = document.getElementById('splash');
+  if(splash && splash.parentNode){
+    setTimeout(() => {
+      splash.classList.remove('show');
+      setTimeout(() => { if(splash.parentNode) splash.parentNode.removeChild(splash); }, 1000);
+    }, 300);
+  }
+}, 2400);
+
+window.addEventListener('unhandledrejection', e => console.warn('Unhandled:', e.reason));
+</script>
+
+</body>
+</html>
