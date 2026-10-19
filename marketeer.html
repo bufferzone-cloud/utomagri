@@ -82,7 +82,6 @@ a{color:inherit;text-decoration:none}
 .tb-btn{width:38px;height:38px;border-radius:50%;background:var(--sf2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;position:relative;transition:all .2s var(--e)}
 .tb-btn:active{transform:scale(.92);background:var(--p-l)}
 .tb-btn svg{width:18px;height:18px;fill:var(--td)}
-.tb-btn .dot{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--danger);border:1.5px solid #fff}
 
 .hero-card{margin:0 18px 14px;position:relative;overflow:hidden;background:linear-gradient(135deg,#0f7a34 0%,#0b5f28 60%,#084d20 100%);border-radius:var(--r-2xl);padding:20px;color:#fff;box-shadow:var(--sh-brand-lg)}
 .hero-card::before{content:'';position:absolute;top:-30px;right:-20px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,255,255,.22) 0%,transparent 70%);border-radius:50%;pointer-events:none}
@@ -118,16 +117,29 @@ a{color:inherit;text-decoration:none}
 .sec-h button{font-size:12px;font-weight:700;color:var(--p);display:inline-flex;align-items:center;gap:4px;padding:6px 10px;border-radius:var(--r-p);transition:background .2s var(--e)}
 .sec-h button:active{background:var(--p-l)}
 
-.market-tabs{display:flex;gap:6px;padding:8px 18px 12px;overflow-x:auto;scrollbar-width:none}
-.market-tabs::-webkit-scrollbar{display:none}
-.market-tab{flex-shrink:0;padding:9px 16px;border-radius:var(--r-p);background:#fff;border:1.5px solid var(--bd);font-size:12px;font-weight:800;color:var(--tb);transition:all .2s var(--e)}
-.market-tab.active{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 4px 12px -4px var(--p-glow)}
+/* ===== Horizontal scroll ===== */
+.h-scroll{display:flex;gap:10px;overflow-x:auto;padding:0 18px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.h-scroll::-webkit-scrollbar{display:none}
+.h-card-item{margin:0!important;flex-shrink:0;width:260px;scroll-snap-align:start}
 
-.city-chips{display:flex;gap:6px;padding:4px 18px 14px;overflow-x:auto;scrollbar-width:none}
-.city-chips::-webkit-scrollbar{display:none}
-.city-chip{flex-shrink:0;padding:8px 14px;border-radius:var(--r-p);background:#fff;border:1.5px solid var(--bd);font-size:12px;font-weight:800;color:var(--tb);transition:all .2s var(--e);white-space:nowrap}
-.city-chip.active{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 4px 12px -4px var(--p-glow)}
+/* ===== Dropdowns ===== */
+.dd-row{display:flex;gap:8px;padding:12px 18px 8px}
+.dd-wrap{position:relative;flex:1;min-width:0}
+.dd-trigger{width:100%;padding:11px 12px;border-radius:14px;background:#fff;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12px;font-weight:800;color:var(--td);transition:all .2s var(--e);text-align:left}
+.dd-trigger:active{transform:scale(.98);background:var(--p-l);border-color:var(--p)}
+.dd-trigger .dd-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+.dd-arrow{font-size:9px;color:var(--tm);transition:transform .2s var(--e);flex-shrink:0}
+.dd-trigger.open .dd-arrow{transform:rotate(180deg)}
+.dd-menu{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border:1.5px solid var(--bd);border-radius:14px;box-shadow:0 16px 40px -8px rgba(15,23,42,.2);max-height:300px;overflow-y:auto;z-index:50;opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .22s var(--e);scrollbar-width:thin}
+.dd-menu.open{opacity:1;visibility:visible;transform:translateY(0)}
+.dd-item{padding:12px 14px;font-size:12.5px;font-weight:700;color:var(--td);cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .15s var(--e);border-bottom:1px solid var(--bd)}
+.dd-item:last-child{border-bottom:none}
+.dd-item:active{background:var(--p-l)}
+.dd-item.selected{background:var(--p-l);color:var(--p-d);font-weight:800}
+.dd-item .dd-check{margin-left:auto;color:var(--p);font-weight:800;display:none}
+.dd-item.selected .dd-check{display:inline}
 
+/* ===== Market cards ===== */
 .market-card{margin:0 18px 10px;padding:14px;background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);box-shadow:var(--sh-sm);display:flex;gap:12px;align-items:flex-start;transition:all .2s var(--e);position:relative}
 .market-card:active{transform:scale(.985);box-shadow:var(--sh-md)}
 .mc-thumb{width:60px;height:60px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--sf2);box-shadow:0 3px 10px rgba(0,0,0,.06)}
@@ -136,20 +148,19 @@ a{color:inherit;text-decoration:none}
 .mc-meta{font-size:11px;color:var(--tl);font-weight:600;margin-top:3px;line-height:1.4}
 .mc-price{display:flex;align-items:baseline;gap:5px;margin-top:6px}
 .mc-price strong{font-size:16px;font-weight:900;letter-spacing:-.02em;color:var(--p-d)}
-.mc-price small{font-size:10.5px;font-weight:700;color:var(--tl);text-transform:uppercase;letter-spacing:.03em}
 .mc-contact{font-size:10.5px;font-weight:700;color:#065f46;margin-top:4px;display:flex;align-items:center;gap:4px}
 .mc-countdown{font-size:11px;font-weight:900;color:#9a3412;background:#fef3c7;padding:3px 8px;border-radius:var(--r-p);margin-top:4px;display:inline-block;font-variant-numeric:tabular-nums}
 .mc-side{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
-.mc-badge{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:var(--r-p)}
+.mc-badge{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:var(--r-p);white-space:nowrap}
 .mc-badge.available{background:var(--ok-soft);color:#065f46}
 .mc-badge.pending{background:#fef3c7;color:#9a3412}
-.mc-badge.soon{background:var(--info-soft);color:#1e40af}
 .mc-time{font-size:10px;color:var(--tm);font-weight:700;white-space:nowrap}
 
-.call-btn{width:44px;height:44px;border-radius:50%;background:linear-gradient(145deg,#12903e,var(--p-d));color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 6px 16px -4px var(--p-glow);transition:all .2s var(--e);flex-shrink:0}
+.call-btn{width:44px;height:44px;border-radius:50%;background:linear-gradient(145deg,#12903e,var(--p-d));color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px -4px var(--p-glow);transition:all .2s var(--e);flex-shrink:0}
 .call-btn:active{transform:scale(.9)}
 .call-btn svg{width:20px;height:20px;fill:#fff}
 
+/* ===== Plant cards ===== */
 .plant-card{margin:0 18px 10px;padding:14px;background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);box-shadow:var(--sh-sm);display:flex;gap:12px;align-items:center;transition:all .2s var(--e)}
 .plant-card:active{transform:scale(.985);box-shadow:var(--sh-md)}
 .pc-ic{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,.06)}
@@ -158,6 +169,84 @@ a{color:inherit;text-decoration:none}
 .pc-meta{font-size:11px;color:var(--tl);font-weight:600;margin-top:3px;line-height:1.4}
 .pc-farmer{font-size:10.5px;font-weight:800;color:var(--p);margin-top:4px;display:flex;align-items:center;gap:4px}
 
+/* ===== Opportunity cards (horizontal) ===== */
+.opp-card{flex-shrink:0;width:230px;padding:16px;border-radius:20px;scroll-snap-align:start;box-shadow:var(--sh-sm);display:flex;flex-direction:column}
+.opp-card.tight{background:linear-gradient(135deg,#d1fae5 0%,#a7f3d0 100%);border:1.5px solid rgba(22,163,74,.22)}
+.opp-card.coming{background:linear-gradient(135deg,#dbeafe 0%,#bfdbfe 100%);border:1.5px solid rgba(37,99,235,.22)}
+.opp-card.oversupply{background:linear-gradient(135deg,#fee2e2 0%,#fecaca 100%);border:1.5px solid rgba(220,38,38,.22)}
+.opp-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.opp-card.tight .opp-label{color:#065f46}
+.opp-card.coming .opp-label{color:#1e40af}
+.opp-card.oversupply .opp-label{color:#991b1b}
+.opp-title{font-size:16px;font-weight:900;letter-spacing:-.02em;line-height:1.2;display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.opp-title .opp-emoji{font-size:22px}
+.opp-card.tight .opp-title{color:#064e3b}
+.opp-card.coming .opp-title{color:#1e3a8a}
+.opp-card.oversupply .opp-title{color:#7f1d1d}
+.opp-desc{font-size:11.5px;font-weight:600;line-height:1.5;margin-top:auto}
+.opp-card.tight .opp-desc{color:#047857}
+.opp-card.coming .opp-desc{color:#3730a3}
+.opp-card.oversupply .opp-desc{color:#991b1b}
+.opp-num{font-size:22px;font-weight:900;letter-spacing:-.03em;margin:6px 0 2px}
+.opp-card.tight .opp-num{color:#065f46}
+.opp-card.coming .opp-num{color:#1e40af}
+.opp-card.oversupply .opp-num{color:#991b1b}
+.opp-unit{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;opacity:.8}
+
+/* ===== Circular CTA ===== */
+.circle-cta-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 0 22px}
+.circle-btn{width:76px;height:76px;border-radius:50%;background:linear-gradient(180deg,#12903e,var(--p-d));color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:30px;line-height:1;box-shadow:0 16px 40px -10px var(--p-glow),inset 0 -3px 8px rgba(0,0,0,.15);transition:all .25s var(--e);border:3px solid rgba(255,255,255,.45);position:relative}
+.circle-btn::before{content:'';position:absolute;inset:-8px;border-radius:50%;border:2px solid var(--p);opacity:.25;animation:pulseRing 2.2s ease-out infinite}
+@keyframes pulseRing{0%{transform:scale(.92);opacity:.35}100%{transform:scale(1.22);opacity:0}}
+.circle-btn:active{transform:scale(.9)}
+.circle-btn-lbl{font-size:11.5px;font-weight:900;color:var(--p-d);text-transform:uppercase;letter-spacing:.06em}
+
+/* ===== Analysis ===== */
+.analysis-hero{margin:0 18px 14px;padding:20px;border-radius:var(--r-xl);background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#fff;box-shadow:var(--sh-xl);position:relative;overflow:hidden}
+.analysis-hero::before{content:'';position:absolute;top:-40px;right:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(134,239,172,.18) 0%,transparent 70%);border-radius:50%}
+.analysis-hero h2{font-size:19px;font-weight:900;letter-spacing:-.02em;position:relative;z-index:1}
+.analysis-hero p{font-size:12px;font-weight:600;opacity:.85;margin-top:4px;position:relative;z-index:1;line-height:1.5}
+
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 18px 14px}
+.as-card{padding:16px;border-radius:var(--r-lg);background:#fff;border:1px solid var(--bd);box-shadow:var(--sh-sm);position:relative;overflow:hidden}
+.as-card.highlight{background:linear-gradient(135deg,#e6f5eb,#d1fae5);border-color:rgba(15,122,52,.25)}
+.as-card.warn{background:linear-gradient(135deg,#fef3c7,#fde68a);border-color:rgba(180,83,9,.22)}
+.as-card.danger{background:linear-gradient(135deg,#fee2e2,#fecaca);border-color:rgba(220,38,38,.22)}
+.as-ic{font-size:18px;margin-bottom:6px}
+.as-lb{font-size:10px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.as-v{font-size:22px;font-weight:900;color:var(--td);letter-spacing:-.03em;line-height:1}
+.as-card.highlight .as-v{color:var(--p-d)}
+.as-card.warn .as-v{color:#92400e}
+.as-card.danger .as-v{color:#991b1b}
+.as-sub{font-size:10.5px;color:var(--tl);font-weight:600;margin-top:4px}
+.as-card.highlight .as-sub{color:#047857}
+.as-card.warn .as-sub{color:#92400e}
+.as-card.danger .as-sub{color:#991b1b}
+
+.analysis-crop-row{padding:14px;border-radius:var(--r);background:var(--sf2);border:1px solid var(--bd);margin:0 18px 8px}
+.acr-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.acr-name{font-size:13.5px;font-weight:900;color:var(--td);display:flex;align-items:center;gap:6px}
+.acr-top{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:var(--r-p);background:#fef3c7;color:#9a3412}
+.acr-top.warn{background:#fee2e2;color:#991b1b}
+.acr-top.tight{background:#d1fae5;color:#065f46}
+.acr-top.coming{background:#dbeafe;color:#1e40af}
+.acr-bars{display:flex;flex-direction:column;gap:6px}
+.acr-bar-row{display:flex;align-items:center;gap:8px;font-size:10.5px;font-weight:700;color:var(--tl)}
+.acr-bar-lb{width:64px;flex-shrink:0;text-transform:uppercase;letter-spacing:.03em}
+.acr-bar-track{flex:1;height:8px;border-radius:4px;background:var(--bd);overflow:hidden}
+.acr-bar-fill{height:100%;border-radius:4px;transition:width .6s var(--e)}
+.acr-bar-fill.exp{background:linear-gradient(90deg,#86efac,#16a34a)}
+.acr-bar-fill.act{background:linear-gradient(90deg,#93c5fd,#2563eb)}
+.acr-bar-val{width:64px;text-align:right;font-weight:800;color:var(--td);flex-shrink:0}
+
+.market-density-row{margin:0 18px 8px;padding:12px 14px;background:#fff;border:1px solid var(--bd);border-radius:var(--r);display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:var(--sh-xs)}
+.mdr-left{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.mdr-ico{width:34px;height:34px;border-radius:10px;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.mdr-title{font-size:13px;font-weight:800;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mdr-sub{font-size:10.5px;color:var(--tl);font-weight:600;margin-top:2px}
+.mdr-count{font-size:16px;font-weight:900;color:var(--p-d);flex-shrink:0}
+
+/* ===== Tips / Menu / Res / Profile ===== */
 .tip-card{margin:0 18px 10px;padding:16px;border-radius:var(--r-xl);position:relative;overflow:hidden;box-shadow:var(--sh-sm)}
 .tip-card.buy{background:linear-gradient(135deg,#d1fae5 0%,#a7f3d0 100%);border:1.5px solid rgba(22,163,74,.22)}
 .tip-card.wait{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:1.5px solid rgba(180,83,9,.22)}
@@ -174,38 +263,6 @@ a{color:inherit;text-decoration:none}
 .tip-card.buy .tip-desc{color:#047857}
 .tip-card.wait .tip-desc{color:#92400e}
 .tip-card.avoid .tip-desc{color:#991b1b}
-
-.analysis-hero{margin:0 18px 14px;padding:20px;border-radius:var(--r-xl);background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#fff;box-shadow:var(--sh-xl);position:relative;overflow:hidden}
-.analysis-hero::before{content:'';position:absolute;top:-40px;right:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(134,239,172,.18) 0%,transparent 70%);border-radius:50%}
-.analysis-hero h2{font-size:19px;font-weight:900;letter-spacing:-.02em;position:relative;z-index:1}
-.analysis-hero p{font-size:12px;font-weight:600;opacity:.85;margin-top:4px;position:relative;z-index:1;line-height:1.5}
-
-.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 18px 14px}
-.as-card{padding:16px;border-radius:var(--r-lg);background:#fff;border:1px solid var(--bd);box-shadow:var(--sh-sm);position:relative;overflow:hidden}
-.as-card.highlight{background:linear-gradient(135deg,#e6f5eb,#d1fae5);border-color:rgba(15,122,52,.25)}
-.as-card.warn{background:linear-gradient(135deg,#fef3c7,#fde68a);border-color:rgba(180,83,9,.22)}
-.as-ic{font-size:18px;margin-bottom:6px}
-.as-lb{font-size:10px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
-.as-v{font-size:22px;font-weight:900;color:var(--td);letter-spacing:-.03em;line-height:1}
-.as-card.highlight .as-v{color:var(--p-d)}
-.as-card.warn .as-v{color:#92400e}
-.as-sub{font-size:10.5px;color:var(--tl);font-weight:600;margin-top:4px}
-.as-card.highlight .as-sub{color:#047857}
-.as-card.warn .as-sub{color:#92400e}
-
-.analysis-crop-row{padding:14px;border-radius:var(--r);background:var(--sf2);border:1px solid var(--bd);margin:0 18px 8px}
-.acr-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
-.acr-name{font-size:13.5px;font-weight:900;color:var(--td);display:flex;align-items:center;gap:6px}
-.acr-top{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:var(--r-p);background:#fef3c7;color:#9a3412}
-.acr-top.warn{background:#fee2e2;color:#991b1b}
-.acr-bars{display:flex;flex-direction:column;gap:6px}
-.acr-bar-row{display:flex;align-items:center;gap:8px;font-size:10.5px;font-weight:700;color:var(--tl)}
-.acr-bar-lb{width:64px;flex-shrink:0;text-transform:uppercase;letter-spacing:.03em}
-.acr-bar-track{flex:1;height:8px;border-radius:4px;background:var(--bd);overflow:hidden}
-.acr-bar-fill{height:100%;border-radius:4px;transition:width .6s var(--e)}
-.acr-bar-fill.exp{background:linear-gradient(90deg,#86efac,#16a34a)}
-.acr-bar-fill.act{background:linear-gradient(90deg,#93c5fd,#2563eb)}
-.acr-bar-val{width:64px;text-align:right;font-weight:800;color:var(--td);flex-shrink:0}
 
 .res-item{display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border:1px solid var(--bd);border-radius:var(--r-lg);margin:0 18px 8px;box-shadow:var(--sh-xs);transition:all .2s var(--e)}
 .res-item:active{transform:scale(.98);background:var(--p-l);border-color:var(--p)}
@@ -330,9 +387,10 @@ const S = {
   userCoords: null,
   screen: 'home',
   screenData: {},
-  marketTab: 'available',   // available | pending | all
-  cityScope: 'my',          // my | nearby | all
-  plantedCity: null,
+  marketCategory: 'available',   // available | pending | all
+  marketFilter: '__all-city',    // '__all-city' | marketName | '__nearby' | '__all'
+  plantedCategory: 'all',        // 'all' | cropName
+  plantedFilter: '__all-city',   // same as marketFilter
   countdownTimer: null,
   listingsUnsub: null,
   batchesUnsub: null,
@@ -340,9 +398,6 @@ const S = {
   notifCount: 0
 };
 
-/* ============================================================
-   DOM
-   ============================================================ */
 const $modal = document.getElementById('modal');
 const $modalCard = document.getElementById('modalCard');
 const $toast = document.getElementById('toast');
@@ -361,7 +416,6 @@ function fmtZMK(n){ if(n==null||isNaN(n)) return '—'; return 'ZMK ' + Number(n
 function fmtDate(ts){ if(!ts) return '—'; const d = typeof ts==='number'? new Date(ts): new Date(ts); return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); }
 function pad2(n){ return String(n).padStart(2,'0'); }
 function timeUntil(ts){ const diff = ts - Date.now(); if(diff<=0) return 'Ready'; const h=Math.floor(diff/3600000); const m=Math.floor((diff%3600000)/60000); const s=Math.floor((diff%60000)/1000); return `${pad2(h)}:${pad2(m)}:${pad2(s)}`; }
-function fmtDuration(ms){ if(!ms||ms<0) return 'just now'; const s=Math.floor(ms/1000); if(s<60) return 'just now'; if(s<3600) return Math.floor(s/60)+'m'; if(s<86400){const h=Math.floor(s/3600);const m=Math.floor((s%3600)/60);return m?`${h}h ${m}m`:`${h}h`;} const d=Math.floor(s/86400);return `${d}d`; }
 
 /* ============================================================
    ICONS
@@ -404,7 +458,7 @@ const GRADS = ['linear-gradient(145deg,#d1fae5,#10b981)','linear-gradient(145deg
 function gradFor(str){ let h=0; for(let i=0;i<(str||'').length;i++) h=(h*31+str.charCodeAt(i))>>>0; return GRADS[h%GRADS.length]; }
 
 /* ============================================================
-   CITY / REGION LOGIC
+   CITY + MARKETS
    ============================================================ */
 const CITY_REGIONS = {
   'Lusaka Province': ['Lusaka','Kafue','Chilanga','Chongwe','Mumbwa'],
@@ -418,6 +472,26 @@ const CITY_REGIONS = {
   'Luapula Province': ['Mansa','Samfya','Kawambwa','Nchelenge','Mwense']
 };
 
+const CITY_MARKETS = {
+  Lusaka: ['Soweto Market','City Market','Mtendere Market','Chilenje Market','Matero Market','Kabwata Market','Northmead Market','Chelston Market','Kalingalinga Market'],
+  Kitwe: ['Chisokone Market','Buchi Market','Chamboli Market','Wusakile Market','Nkana East Market'],
+  Ndola: ['Masala Market','Chifubu Market','Kansenshi Market','Twapia Market','Dola Hill Market'],
+  Kabwe: ['Kabwe Main Market','Kasanda Market','Bwacha Market','Makululu Market'],
+  Chipata: ['Chipata Main Market','Kapata Market','Mchini Market','Mtendere Market'],
+  Livingstone: ['Mukuni Market','Maramba Market','Town Centre Market'],
+  Chingola: ['Chingola Main Market','Kabundi Market','Nchanga Market'],
+  Mufulira: ['Mufulira Main Market','Kankoyo Market','Butondo Market'],
+  Luanshya: ['Luanshya Main Market','Roan Market','Mpatamatu Market'],
+  Kasama: ['Kasama Main Market','Chiba Market','New Town Market'],
+  Mongu: ['Mongu Main Market','Sefula Market','Lealui Market'],
+  Solwezi: ['Solwezi Main Market','Kansanshi Market','St Francis Market'],
+  Mansa: ['Mansa Main Market','Chembe Market','Senama Market'],
+  Choma: ['Choma Main Market','Mbabala Market','Batoka Market'],
+  Mazabuka: ['Mazabuka Main Market','Nakambala Market','Magoye Market'],
+  Kafue: ['Kafue Main Market','Nangongwe Market','Chilanga Market'],
+  default: ['Main Market','Town Centre Market','Local Farmers Market']
+};
+
 function normalizeCity(city){ return String(city || '').trim(); }
 function regionOf(city){
   const c = normalizeCity(city);
@@ -429,11 +503,15 @@ function nearbyCities(city){
   if(!region) return [];
   return CITY_REGIONS[region].filter(c => c !== normalizeCity(city));
 }
+function marketsForCity(city){
+  const c = normalizeCity(city);
+  return CITY_MARKETS[c] || CITY_MARKETS.default;
+}
 function cityOfListing(l){ return normalizeCity(l.city || ''); }
 function cityOfBatch(b){ return normalizeCity(b.town || b.ownerCity || ''); }
 
 /* ============================================================
-   WEATHER (same as farmer)
+   WEATHER
    ============================================================ */
 async function loadWeatherByCoords(lat, lng){
   try{
@@ -451,16 +529,6 @@ function weatherIconFor(code, isDay){
   if(code<=55) return '🌦️';
   if(code<=65) return '🌧️';
   return '⛈️';
-}
-function weatherDescFor(code){
-  if(code===0) return 'Clear sky';
-  if(code===1) return 'Mainly clear';
-  if(code===2) return 'Partly cloudy';
-  if(code===3) return 'Overcast';
-  if(code<=48) return 'Foggy';
-  if(code<=55) return 'Drizzle';
-  if(code<=65) return 'Rain';
-  return 'Thunderstorm';
 }
 async function reverseGeocodeCity(lat, lng){
   try{
@@ -565,7 +633,7 @@ window.goBack = () => { try{ history.back(); }catch(e){ showScreen('home'); } };
 window.navTo = (id, data) => showScreen(id, data);
 
 /* ============================================================
-   ROUTE DISPATCH
+   ROUTE
    ============================================================ */
 function route(){
   const id = S.screen;
@@ -584,47 +652,53 @@ function route(){
 }
 
 /* ============================================================
-   LISTINGS & BATCHES HELPERS
+   LISTING / BATCH HELPERS
    ============================================================ */
-function isLiveListing(l){
-  return l && l.status !== 'removed' && l.availabilityStatus !== 'removed';
-}
+function isLiveListing(l){ return l && l.status !== 'removed' && l.availabilityStatus !== 'removed'; }
 function isAvailable(l){ return isLiveListing(l) && l.availabilityStatus === 'available'; }
 function isPending(l){ return isLiveListing(l) && l.availabilityStatus === 'pending'; }
 
-function listingsInScope(){
-  const myCity = normalizeCity(S.weatherCity || S.userLocation);
-  const nearby = nearbyCities(myCity);
-  const scope = S.cityScope;
+function filterListings(){
+  const city = normalizeCity(S.weatherCity || S.userLocation);
+  const nearby = nearbyCities(city);
+  const cat = S.marketCategory;
+  const filter = S.marketFilter;
   return S.listings.filter(l => {
     if(!isLiveListing(l)) return false;
-    const c = cityOfListing(l);
-    if(scope === 'all') return true;
-    if(scope === 'my') return c === myCity;
-    if(scope === 'nearby') return nearby.includes(c);
-    return true;
+    if(cat === 'available' && !isAvailable(l)) return false;
+    if(cat === 'pending' && !isPending(l)) return false;
+    const lCity = cityOfListing(l);
+    if(filter === '__all-city') return lCity === city;
+    if(filter === '__nearby') return nearby.includes(lCity);
+    if(filter === '__all') return true;
+    return l.marketName === filter;
   });
 }
-function batchesInScope(){
-  const myCity = normalizeCity(S.weatherCity || S.userLocation);
-  const nearby = nearbyCities(myCity);
-  const scope = S.cityScope;
+
+function filterBatches(){
+  const city = normalizeCity(S.weatherCity || S.userLocation);
+  const nearby = nearbyCities(city);
+  const cat = S.plantedCategory;
+  const filter = S.plantedFilter;
   return S.batches.filter(b => {
     if(b.stage === 'harvested') return false;
-    const c = cityOfBatch(b);
-    if(scope === 'all') return true;
-    if(scope === 'my') return c === myCity;
-    if(scope === 'nearby') return nearby.includes(c);
-    return true;
+    if(cat !== 'all' && b.cropName !== cat) return false;
+    const bCity = cityOfBatch(b);
+    if(filter === '__all-city') return bCity === city;
+    if(filter === '__nearby') return nearby.includes(bCity);
+    if(filter === '__all') return true;
+    // Specific market picked → filter by market's city (= detected city, since markets list is from city)
+    return bCity === city;
   });
 }
+
 function phoneForBatch(b){
   const u = S.usersById[b.ownerId];
   return u && (u.phone || u.phoneNumber) ? (u.phone || u.phoneNumber) : null;
 }
 
 /* ============================================================
-   ANALYSIS COMPUTATIONS
+   ANALYSIS COMPUTE
    ============================================================ */
 function computeSupplyInsights(){
   const now = Date.now();
@@ -633,13 +707,11 @@ function computeSupplyInsights(){
 
   const incomingByCrop = {};
   const availableByCrop = {};
-  const pipelineBatches = [];
 
   active.forEach(b => {
-    const name = b.cropName || 'Other';
     if(b.harvestStart && b.harvestStart <= now + HORIZON){
+      const name = b.cropName || 'Other';
       incomingByCrop[name] = (incomingByCrop[name] || 0) + (b.estimatedBoxes || 0);
-      pipelineBatches.push(b);
     }
   });
 
@@ -658,58 +730,106 @@ function computeSupplyInsights(){
     if(available > 0 && incoming > available * 2) status = 'oversupply';
     else if(incoming > 0 && available === 0) status = 'coming';
     else if(available > 0 && incoming < available * 0.5) status = 'tight';
+    else if(incoming > 0 && available === 0) status = 'coming';
     return { name, incoming, available, total, status };
   }).sort((a,b) => (b.incoming + b.available) - (a.incoming + a.available));
 
-  return { rows, pipelineBatches, incomingByCrop, availableByCrop };
+  // Extra metrics
+  const farmerSet = new Set();
+  const marketSet = new Set();
+  S.listings.forEach(l => {
+    if(isLiveListing(l)){
+      farmerSet.add(l.seller_id);
+      if(l.marketName) marketSet.add(l.marketName);
+    }
+  });
+  S.batches.forEach(b => { if(b.stage !== 'harvested') farmerSet.add(b.ownerId); });
+
+  // Market density
+  const marketCounts = {};
+  S.listings.forEach(l => {
+    if(isLiveListing(l) && l.marketName){
+      marketCounts[l.marketName] = (marketCounts[l.marketName] || 0) + 1;
+    }
+  });
+  const busyMarkets = Object.entries(marketCounts).sort((a,b) => b[1]-a[1]).slice(0,5);
+
+  return { rows, incomingByCrop, availableByCrop, farmerCount: farmerSet.size, marketCount: marketSet.size, busyMarkets };
 }
 
-function buildBuyTips(ins){
-  const tips = [];
-  const rows = ins.rows;
-
-  // Buy-now: tight supply + listings present
-  rows.filter(r => r.status === 'tight' && r.available > 0).slice(0,3).forEach(r => {
-    tips.push({
-      kind: 'buy',
-      title: `Buy ${r.name} now`,
-      desc: `Only ${r.available.toLocaleString()} boxes on market and little coming soon. Prices may rise — lock in supply.`
-    });
-  });
-
-  // Wait: oversupply
-  rows.filter(r => r.status === 'oversupply').slice(0,3).forEach(r => {
-    tips.push({
-      kind: 'wait',
-      title: `Wait on ${r.name}`,
-      desc: `${r.incoming.toLocaleString()} boxes expected in the next 45 days vs. ${r.available.toLocaleString()} available. Expect cheaper prices — don't over-buy today.`
-    });
-  });
-
-  // Avoid: very high oversupply
-  const worst = rows.filter(r => r.status === 'oversupply').sort((a,b) => b.incoming - a.incoming)[0];
-  if(worst && worst.incoming > 0){
-    tips.push({
-      kind: 'avoid',
-      title: `Avoid big ${worst.name} buys`,
-      desc: `Massive incoming supply (${worst.incoming.toLocaleString()} boxes). Only buy what you can sell in the next week.`
-    });
-  }
-
-  // Coming soon notice
-  rows.filter(r => r.status === 'coming').slice(0,2).forEach(r => {
-    tips.push({
-      kind: 'wait',
-      title: `${r.name} is coming`,
-      desc: `${r.incoming.toLocaleString()} boxes arriving — you can wait for farmers to reach the market rather than pre-buy now.`
-    });
-  });
-
-  if(!tips.length){
-    tips.push({ kind: 'buy', title: 'Market is balanced', desc: 'Supply and demand look even right now. Buy to meet your daily sales and hold cash for deals that come up.' });
-  }
-  return tips;
+/* ============================================================
+   DROPDOWN HELPERS
+   ============================================================ */
+function getMarketDropdownOptions(){
+  const city = normalizeCity(S.weatherCity || S.userLocation);
+  const markets = marketsForCity(city);
+  return [
+    { value: '__all-city', label: `📍 All markets in ${city}` },
+    ...markets.map(m => ({ value: m, label: `🏪 ${m}` })),
+    { value: '__nearby', label: `🗺️ Nearby cities` },
+    { value: '__all', label: `🇿🇲 All Zambia` }
+  ];
 }
+
+function getMarketCategoryOptions(){
+  return [
+    { value: 'available', label: '✅ Available' },
+    { value: 'pending', label: '⏳ Pending' },
+    { value: 'all', label: '📋 All' }
+  ];
+}
+
+function getPlantedCropOptions(){
+  const crops = [...new Set(S.batches.filter(b => b.stage !== 'harvested').map(b => b.cropName).filter(Boolean))].sort();
+  return [
+    { value: 'all', label: `🌱 All crops` },
+    ...crops.map(c => ({ value: c, label: `${pickIcon(c)} ${c}` }))
+  ];
+}
+
+function selectedLabel(options, value, fallback){
+  const found = options.find(o => o.value === value);
+  return found ? found.label : fallback;
+}
+
+function renderDropdown(id, options, currentValue, onPick){
+  return `
+  <div class="dd-wrap">
+    <button class="dd-trigger" data-dd="${id}" onclick="event.stopPropagation();toggleDd('${id}')">
+      <span class="dd-label">${esc(selectedLabel(options, currentValue, options[0].label))}</span>
+      <span class="dd-arrow">▼</span>
+    </button>
+    <div class="dd-menu" id="${id}">
+      ${options.map(o => `
+        <div class="dd-item ${o.value === currentValue ? 'selected' : ''}" onclick="event.stopPropagation();${onPick}('${esc(String(o.value)).replace(/'/g,"\\'")}');closeAllDds()">
+          <span>${esc(o.label)}</span>
+          <span class="dd-check">✓</span>
+        </div>
+      `).join('')}
+    </div>
+  </div>`;
+}
+
+window.toggleDd = (id) => {
+  document.querySelectorAll('.dd-menu').forEach(m => { if(m.id !== id) m.classList.remove('open'); });
+  document.querySelectorAll('.dd-trigger').forEach(t => { if(t.dataset.dd !== id) t.classList.remove('open'); });
+  const menu = document.getElementById(id);
+  if(menu) menu.classList.toggle('open');
+  const trigger = document.querySelector(`.dd-trigger[data-dd="${id}"]`);
+  if(trigger) trigger.classList.toggle('open', menu && menu.classList.contains('open'));
+};
+window.closeAllDds = () => {
+  document.querySelectorAll('.dd-menu').forEach(m => m.classList.remove('open'));
+  document.querySelectorAll('.dd-trigger').forEach(t => t.classList.remove('open'));
+};
+document.addEventListener('click', e => {
+  if(!e.target.closest('.dd-wrap')) closeAllDds();
+});
+
+window.setMarketCategory = (v) => { S.marketCategory = v; route(); };
+window.setMarketFilter = (v) => { S.marketFilter = v; route(); };
+window.setPlantedCategory = (v) => { S.plantedCategory = v; route(); };
+window.setPlantedFilter = (v) => { S.plantedFilter = v; route(); };
 
 /* ============================================================
    HOME
@@ -726,10 +846,10 @@ function renderHome(){
   const activeBatches = S.batches.filter(b => b.stage !== 'harvested').length;
 
   const myCityAvailable = S.listings.filter(l => isAvailable(l) && cityOfListing(l) === city);
-  const topCity = myCityAvailable.slice(0, 3);
+  const topCity = myCityAvailable.slice(0, 6);
 
   const ins = computeSupplyInsights();
-  const topBuys = ins.rows.filter(r => r.status === 'tight' || r.status === 'coming').slice(0,2);
+  const opportunities = ins.rows.filter(r => r.status === 'tight' || r.status === 'oversupply' || r.status === 'coming').slice(0, 6);
 
   const weatherBlock = w ? `
     <div class="hero-card">
@@ -768,29 +888,23 @@ function renderHome(){
     </div>
   `;
 
-  const cityListingsHTML = topCity.length ? topCity.map(l => renderMarketCard(l, true)).join('') : `
-    <div class="empty" style="padding:24px">
-      <div class="e-ic">🛒</div>
-      <h3>Nothing in ${esc(city)} yet</h3>
-      <p>Check nearby markets — farmers may have produce ready close to you.</p>
-    </div>
-  `;
+  const cityListingsHTML = topCity.length
+    ? `<div class="h-scroll">${topCity.map(l => renderMarketCard(l, 'h-card-item')).join('')}</div>`
+    : `<div class="empty" style="padding:24px">
+        <div class="e-ic">🛒</div>
+        <h3>Nothing in ${esc(city)} yet</h3>
+        <p>Check nearby markets — farmers may have produce ready close to you.</p>
+      </div>`;
 
-  const buyTipsHTML = topBuys.length ? topBuys.map(r => `
-    <div class="tip-card ${r.status === 'tight' ? 'buy' : 'wait'}">
-      <div class="tip-label">${r.status === 'tight' ? '💡 Buy now' : '⏳ Coming soon'}</div>
-      <div class="tip-title">${pickIcon(r.name)} ${esc(r.name)}</div>
-      <div class="tip-desc">${r.status === 'tight'
-        ? `${r.available.toLocaleString()} boxes available, little coming. Good price window.`
-        : `${r.incoming.toLocaleString()} boxes arriving soon. You can wait for more supply.`}</div>
-    </div>
-  `).join('') : '';
+  const oppHTML = opportunities.length
+    ? `<div class="h-scroll">${opportunities.map(r => renderOppCard(r, r.status === 'oversupply' ? 'oversupply' : r.status === 'tight' ? 'tight' : 'coming')).join('')}</div>`
+    : '';
 
   return `
   <div class="scroll">
     <div class="topbar" style="padding-bottom:4px">
       <div style="flex:1"></div>
-      <button class="tb-btn" onclick="showScreen('tips')" title="Buy tips">
+      <button class="tb-btn" onclick="goTips()" title="Buy tips">
         <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 00-4 12.74V17a1 1 0 001 1h6a1 1 0 001-1v-2.26A7 7 0 0012 2zm-3 18a1 1 0 001 1h4a1 1 0 001-1v-1H9v1z"/></svg>
       </button>
     </div>
@@ -810,13 +924,16 @@ function renderHome(){
     </div>
     ${cityListingsHTML}
 
-    ${buyTipsHTML ? `<div class="sec-h"><h3>Opportunities now</h3><button onclick="goTips()">Tips ›</button></div>${buyTipsHTML}` : ''}
+    ${oppHTML ? `
+      <div class="sec-h"><h3>🔥 Opportunities now</h3><button onclick="goAnalysis()">Analyse ›</button></div>
+      ${oppHTML}
+    ` : ''}
 
     <div class="sec-h"><h3>More</h3></div>
     <div class="menu-list" style="padding-top:0">
       <div class="menu-item" onclick="goResources()">
         <div class="mi-ic">🇿🇲</div>
-        <div class="mi-tx"><div class="mi-tt">Zambian Resources</div><div class="mi-sb">Ministry, ZARI, FRA, SCCI & more</div></div>
+        <div class="mi-tx"><div class="mi-tt">Zambian Resources</div><div class="mi-sb">Ministry, FARI, FRA, SCCI & more</div></div>
         <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
       </div>
       <div class="menu-item" onclick="goAnalysis()">
@@ -830,56 +947,10 @@ function renderHome(){
 }
 
 /* ============================================================
-   MARKET SCREEN
+   MARKET CARD
    ============================================================ */
-function renderMarket(){
-  const scope = S.cityScope;
-  const city = normalizeCity(S.weatherCity || S.userLocation);
-  const tab = S.marketTab;
-
-  const scoped = listingsInScope();
-  const filtered = tab === 'available' ? scoped.filter(isAvailable)
-                  : tab === 'pending' ? scoped.filter(isPending)
-                  : scoped;
-
-  const counts = {
-    available: scoped.filter(isAvailable).length,
-    pending: scoped.filter(isPending).length,
-    all: scoped.length
-  };
-
-  setTimeout(() => { startCountdownTicker(); }, 50);
-
-  return `
-  <div class="scroll">
-    <div class="topbar bordered"><div class="tb-title">Market</div></div>
-
-    <div class="market-tabs">
-      <button class="market-tab ${tab==='available'?'active':''}" onclick="setMarketTab('available')">✅ Available (${counts.available})</button>
-      <button class="market-tab ${tab==='pending'?'active':''}" onclick="setMarketTab('pending')">⏳ Pending (${counts.pending})</button>
-      <button class="market-tab ${tab==='all'?'active':''}" onclick="setMarketTab('all')">📋 All (${counts.all})</button>
-    </div>
-
-    <div class="city-chips">
-      <button class="city-chip ${scope==='my'?'active':''}" onclick="setCityScope('my')">📍 ${esc(city)}</button>
-      <button class="city-chip ${scope==='nearby'?'active':''}" onclick="setCityScope('nearby')">🗺️ Nearby</button>
-      <button class="city-chip ${scope==='all'?'active':''}" onclick="setCityScope('all')">🇿🇲 All Zambia</button>
-    </div>
-
-    ${filtered.length ? filtered.map(l => renderMarketCard(l, false)).join('') : `
-      <div class="empty">
-        <div class="e-ic">🛒</div>
-        <h3>No ${tab === 'all' ? '' : tab} listings here</h3>
-        <p>${tab === 'pending' ? 'No pending listings right now — check Available.' : 'Try Nearby or All Zambia to see more markets.'}</p>
-      </div>
-    `}
-
-    <div style="height:8px"></div>
-  </div>
-  ${bottomNavHTML()}`;
-}
-
-function renderMarketCard(l, compact){
+function renderMarketCard(l, extraClass){
+  const extra = extraClass || '';
   const avail = isAvailable(l);
   const pend = isPending(l);
   const meta = [
@@ -896,7 +967,7 @@ function renderMarketCard(l, compact){
     ? `<span class="mc-badge available">✅ Available</span>`
     : pend
       ? `<span class="mc-badge pending">⏳ Pending</span>`
-      : `<span class="mc-badge soon">Info</span>`;
+      : `<span class="mc-badge pending">Info</span>`;
 
   const callBtn = avail && l.sellerPhone
     ? `<button class="call-btn" onclick="event.stopPropagation();callFarmer('${esc(l.sellerPhone)}','${esc(l.sellerName||'Farmer')}')" aria-label="Call farmer">
@@ -911,7 +982,7 @@ function renderMarketCard(l, compact){
       : '';
 
   return `
-  <div class="market-card" onclick="viewListing('${esc(l.id)}')">
+  <div class="market-card ${extra}" onclick="viewListing('${esc(l.id)}')">
     <div class="mc-thumb">${pickIcon(l.productName || l.title)}</div>
     <div class="mc-body">
       <div class="mc-title">${esc(l.productName || l.title || 'Produce')}</div>
@@ -928,12 +999,84 @@ function renderMarketCard(l, compact){
 }
 
 /* ============================================================
+   OPPORTUNITY CARD
+   ============================================================ */
+function renderOppCard(row, kind){
+  const cls = kind === 'tight' ? 'tight' : kind === 'oversupply' ? 'oversupply' : 'coming';
+  const label = kind === 'tight' ? '🔥 Buy now'
+              : kind === 'oversupply' ? '🚨 Oversupply'
+              : '⏳ Coming soon';
+  const num = kind === 'tight' ? row.available
+            : kind === 'oversupply' ? row.incoming
+            : row.incoming;
+  const unit = kind === 'tight' ? 'boxes available' : 'boxes incoming';
+  const desc = kind === 'tight'
+    ? `Little incoming. Lock in a good price now.`
+    : kind === 'oversupply'
+      ? `Prices may fall — buy only what you can sell.`
+      : `Arriving in the next 45 days. Call farmers early.`;
+
+  return `
+  <div class="opp-card ${cls}">
+    <div class="opp-label">${label}</div>
+    <div class="opp-title"><span class="opp-emoji">${pickIcon(row.name)}</span>${esc(row.name)}</div>
+    <div class="opp-num">${num.toLocaleString()}</div>
+    <div class="opp-unit">${unit}</div>
+    <div class="opp-desc">${desc}</div>
+  </div>`;
+}
+
+/* ============================================================
+   MARKET SCREEN
+   ============================================================ */
+function renderMarket(){
+  const city = normalizeCity(S.weatherCity || S.userLocation);
+  const cat = S.marketCategory;
+  const filter = S.marketFilter;
+  const filtered = filterListings();
+
+  const catOptions = getMarketCategoryOptions();
+  const marketOptions = getMarketDropdownOptions();
+
+  setTimeout(() => { startCountdownTicker(); }, 50);
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered"><div class="tb-title">Market</div></div>
+
+    <div class="dd-row">
+      ${renderDropdown('dd-cat-market', catOptions, cat, 'setMarketCategory')}
+      ${renderDropdown('dd-market', marketOptions, filter, 'setMarketFilter')}
+    </div>
+
+    <div style="padding:4px 18px 10px;font-size:11px;color:var(--tl);font-weight:700">
+      Showing ${filtered.length} listing${filtered.length===1?'':'s'} · ${esc(selectedLabel(marketOptions, filter, 'All markets').replace(/^[^\s]+\s/,''))}
+    </div>
+
+    ${filtered.length
+      ? filtered.map(l => renderMarketCard(l)).join('')
+      : `<div class="empty">
+          <div class="e-ic">🛒</div>
+          <h3>No ${cat === 'all' ? '' : cat} listings here</h3>
+          <p>Try changing the category or market filter above.</p>
+        </div>`}
+
+    <div style="height:8px"></div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
    PLANTED SCREEN
    ============================================================ */
 function renderPlanted(){
-  const scope = S.cityScope;
   const city = normalizeCity(S.weatherCity || S.userLocation);
-  const batches = batchesInScope();
+  const cat = S.plantedCategory;
+  const filter = S.plantedFilter;
+  const batches = filterBatches();
+
+  const catOptions = getPlantedCropOptions();
+  const marketOptions = getMarketDropdownOptions();
 
   const grouped = {};
   batches.forEach(b => {
@@ -947,15 +1090,18 @@ function renderPlanted(){
   <div class="scroll">
     <div class="topbar bordered"><div class="tb-title">What's Planted</div></div>
 
-    <div class="notice-banner">
-      <div class="nb-ic">🌱</div>
-      <div class="nb-tx">These are crops farmers are growing right now. Call them early to lock in supply before harvest.</div>
+    <div class="dd-row">
+      ${renderDropdown('dd-cat-planted', catOptions, cat, 'setPlantedCategory')}
+      ${renderDropdown('dd-planted-market', marketOptions, filter, 'setPlantedFilter')}
     </div>
 
-    <div class="city-chips">
-      <button class="city-chip ${scope==='my'?'active':''}" onclick="setCityScope('my')">📍 ${esc(city)}</button>
-      <button class="city-chip ${scope==='nearby'?'active':''}" onclick="setCityScope('nearby')">🗺️ Nearby</button>
-      <button class="city-chip ${scope==='all'?'active':''}" onclick="setCityScope('all')">🇿🇲 All Zambia</button>
+    <div class="notice-banner" style="margin-top:4px">
+      <div class="nb-ic">🌱</div>
+      <div class="nb-tx">Farmers are growing this right now. Call them early to lock in supply.</div>
+    </div>
+
+    <div style="padding:0 18px 8px;font-size:11px;color:var(--tl);font-weight:700">
+      ${batches.length} active planting${batches.length===1?'':'s'} across ${cropNames.length} crop${cropNames.length===1?'':'s'}
     </div>
 
     ${cropNames.length ? cropNames.map(name => `
@@ -965,7 +1111,7 @@ function renderPlanted(){
       <div class="empty">
         <div class="e-ic">🌱</div>
         <h3>Nothing planted here yet</h3>
-        <p>Try "Nearby" or "All Zambia" to see what other farmers are growing.</p>
+        <p>Try a different crop or market filter above.</p>
       </div>
     `}
 
@@ -999,23 +1145,27 @@ function renderPlantCard(b){
 }
 
 /* ============================================================
-   ANALYSIS SCREEN
+   ANALYSIS SCREEN — full, with horizontal opportunity cards + circular CTA
    ============================================================ */
 function renderAnalysis(){
   const ins = computeSupplyInsights();
   const rows = ins.rows;
   const totalAvailable = rows.reduce((s,r) => s + r.available, 0);
   const totalIncoming = rows.reduce((s,r) => s + r.incoming, 0);
-  const topCrop = rows[0];
   const oversupplyCrops = rows.filter(r => r.status === 'oversupply');
+  const tightCrops = rows.filter(r => r.status === 'tight');
+  const topCrop = rows[0];
+  const opportunities = rows.filter(r => r.status === 'tight' || r.status === 'oversupply' || r.status === 'coming').slice(0, 8);
+
+  const maxVal = Math.max(...rows.map(r => r.available + r.incoming), 1);
 
   return `
   <div class="scroll">
     <div class="topbar bordered"><div class="tb-title">Market Analysis</div></div>
 
     <div class="analysis-hero">
-      <h2>📊 What's coming to market</h2>
-      <p>Live supply pipeline — see what farmers are growing and what's already available to buy.</p>
+      <h2>📊 Full market analysis</h2>
+      <p>Live supply, pipeline, opportunities and risks — the whole market at a glance.</p>
     </div>
 
     <div class="stat-grid">
@@ -1031,26 +1181,47 @@ function renderAnalysis(){
         <div class="as-v">${totalIncoming.toLocaleString()}</div>
         <div class="as-sub">boxes expected</div>
       </div>
-      <div class="as-card ${oversupplyCrops.length ? 'warn' : ''}">
-        <div class="as-ic">${oversupplyCrops.length ? '⚠️' : '✓'}</div>
-        <div class="as-lb">Oversupply risk</div>
-        <div class="as-v">${oversupplyCrops.length}</div>
-        <div class="as-sub">crops to watch</div>
+      <div class="as-card">
+        <div class="as-ic">🧑‍🌾</div>
+        <div class="as-lb">Farmers</div>
+        <div class="as-v">${ins.farmerCount}</div>
+        <div class="as-sub">active in app</div>
       </div>
       <div class="as-card">
-        <div class="as-ic">🥇</div>
-        <div class="as-lb">Biggest crop</div>
-        <div class="as-v" style="font-size:15px">${topCrop ? esc(topCrop.name) : '—'}</div>
-        <div class="as-sub">${topCrop ? (topCrop.available + topCrop.incoming).toLocaleString() + ' boxes' : '—'}</div>
+        <div class="as-ic">🏪</div>
+        <div class="as-lb">Markets</div>
+        <div class="as-v">${ins.marketCount}</div>
+        <div class="as-sub">with listings</div>
       </div>
     </div>
 
-    <div class="sec-h"><h3>Supply by crop</h3></div>
+    <div class="sec-h"><h3>🔥 Top opportunities</h3></div>
+    ${opportunities.length
+      ? `<div class="h-scroll">${opportunities.map(r => renderOppCard(r, r.status === 'oversupply' ? 'oversupply' : r.status === 'tight' ? 'tight' : 'coming')).join('')}</div>`
+      : `<div class="empty" style="padding:20px"><p>No opportunities yet — market is balanced.</p></div>`}
+
+    <div class="circle-cta-wrap">
+      <button class="circle-btn" onclick="goTips()">💡</button>
+      <div class="circle-btn-lbl">See what to buy</div>
+    </div>
+
+    ${oversupplyCrops.length ? `
+      <div class="sec-h"><h3>⚠️ Oversupply risks</h3></div>
+      <div class="h-scroll">${oversupplyCrops.map(r => renderOppCard(r, 'oversupply')).join('')}</div>
+    ` : ''}
+
+    ${tightCrops.length ? `
+      <div class="sec-h"><h3>🔥 Buy-now crops</h3></div>
+      <div class="h-scroll">${tightCrops.map(r => renderOppCard(r, 'tight')).join('')}</div>
+    ` : ''}
+
+    <div class="sec-h"><h3>📊 Supply by crop</h3></div>
     ${rows.length ? rows.map(r => {
-      const total = r.available + r.incoming;
-      const maxVal = Math.max(...rows.map(x => x.available + x.incoming), 1);
-      const topCls = r.status === 'oversupply' ? 'warn' : '';
-      const topTxt = r.status === 'oversupply' ? '⚠️ Oversupply' : r.status === 'tight' ? '🔥 Tight' : r.status === 'coming' ? '⏳ Coming' : '✓ Stable';
+      const topCls = r.status === 'oversupply' ? 'warn' : r.status === 'tight' ? 'tight' : r.status === 'coming' ? 'coming' : '';
+      const topTxt = r.status === 'oversupply' ? '⚠️ Oversupply'
+                   : r.status === 'tight' ? '🔥 Tight'
+                   : r.status === 'coming' ? '⏳ Coming'
+                   : '✓ Stable';
       return `
         <div class="analysis-crop-row">
           <div class="acr-head">
@@ -1072,19 +1243,28 @@ function renderAnalysis(){
         </div>`;
     }).join('') : `<div class="empty" style="padding:24px"><p>No data yet — as farmers plant and post, this fills up.</p></div>`}
 
-    ${oversupplyCrops.length ? `
-    <div class="sec-h"><h3>Price-risk alerts</h3></div>
-    ${oversupplyCrops.slice(0,3).map(r => `
-      <div class="tip-card avoid">
-        <div class="tip-label">🚨 Oversupply warning</div>
-        <div class="tip-title">${pickIcon(r.name)} ${esc(r.name)}</div>
-        <div class="tip-desc">${r.incoming.toLocaleString()} boxes coming vs ${r.available.toLocaleString()} available. Expect falling prices — buy only what you can sell quickly.</div>
-      </div>
-    `).join('')}
+    ${ins.busyMarkets.length ? `
+      <div class="sec-h"><h3>🏪 Busiest markets</h3></div>
+      ${ins.busyMarkets.map(([name, count], i) => `
+        <div class="market-density-row">
+          <div class="mdr-left">
+            <div class="mdr-ico">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'🏪'}</div>
+            <div>
+              <div class="mdr-title">${esc(name)}</div>
+              <div class="mdr-sub">${count} listing${count===1?'':'s'}</div>
+            </div>
+          </div>
+          <div class="mdr-count">${count}</div>
+        </div>
+      `).join('')}
     ` : ''}
 
-    <div class="sec-h"><h3>Your buy tips</h3></div>
-    <button class="btn btn-p" style="margin:0 18px" onclick="goTips()">💡 See what to buy</button>
+    ${topCrop ? `
+      <div class="notice-banner" style="margin-top:14px">
+        <div class="nb-ic">🥇</div>
+        <div class="nb-tx"><strong>Biggest crop:</strong> ${esc(topCrop.name)} with ${(topCrop.available + topCrop.incoming).toLocaleString()} boxes total across supply.</div>
+      </div>
+    ` : ''}
 
     <div style="height:14px"></div>
   </div>
@@ -1094,6 +1274,49 @@ function renderAnalysis(){
 /* ============================================================
    TIPS SCREEN
    ============================================================ */
+function buildBuyTips(ins){
+  const tips = [];
+  const rows = ins.rows;
+
+  rows.filter(r => r.status === 'tight' && r.available > 0).slice(0,3).forEach(r => {
+    tips.push({
+      kind: 'buy',
+      title: `Buy ${r.name} now`,
+      desc: `Only ${r.available.toLocaleString()} boxes on market and little coming soon. Prices may rise — lock in supply.`
+    });
+  });
+
+  rows.filter(r => r.status === 'oversupply').slice(0,3).forEach(r => {
+    tips.push({
+      kind: 'wait',
+      title: `Wait on ${r.name}`,
+      desc: `${r.incoming.toLocaleString()} boxes expected in next 45 days vs ${r.available.toLocaleString()} available. Don't over-buy today.`
+    });
+  });
+
+  const worst = rows.filter(r => r.status === 'oversupply').sort((a,b) => b.incoming - a.incoming)[0];
+  if(worst && worst.incoming > 0){
+    tips.push({
+      kind: 'avoid',
+      title: `Avoid big ${worst.name} buys`,
+      desc: `Massive incoming supply (${worst.incoming.toLocaleString()} boxes). Only buy what you can sell in the next week.`
+    });
+  }
+
+  rows.filter(r => r.status === 'coming').slice(0,2).forEach(r => {
+    tips.push({
+      kind: 'wait',
+      title: `${r.name} is coming`,
+      desc: `${r.incoming.toLocaleString()} boxes arriving — you can wait for farmers to reach the market rather than pre-buy now.`
+    });
+  });
+
+  if(!tips.length){
+    tips.push({ kind: 'buy', title: 'Market is balanced', desc: 'Supply and demand look even right now. Buy to meet your daily sales and hold cash for good deals.' });
+  }
+  return tips;
+}
+
 function renderTips(){
   const ins = computeSupplyInsights();
   const tips = buildBuyTips(ins);
@@ -1128,7 +1351,7 @@ function renderTips(){
       </div>
       <div class="menu-item">
         <div class="mi-ic">📞</div>
-        <div class="mi-tx"><div class="mi-tt">Call farmers early</div><div class="mi-sb">Lock in prices before harvest. Planting info shows what's coming.</div></div>
+        <div class="mi-tx"><div class="mi-tt">Call farmers early</div><div class="mi-sb">Lock in prices before harvest. The Planted tab shows what's coming.</div></div>
       </div>
       <div class="menu-item">
         <div class="mi-ic">📊</div>
@@ -1213,14 +1436,14 @@ function renderProfile(){
       <div class="prof-stats">
         <div><div class="ps-n">${S.listings.filter(isAvailable).length}</div><div class="ps-l">Available</div></div>
         <div><div class="ps-n">${S.batches.filter(b=>b.stage!=='harvested').length}</div><div class="ps-l">Planting</div></div>
-        <div><div class="ps-n">${nearbyCities(city).length}</div><div class="ps-l">Nearby cities</div></div>
+        <div><div class="ps-n">${nearbyCities(city).length}</div><div class="ps-l">Nearby</div></div>
       </div>
     </div>
     <div class="menu-list">
       <div class="menu-item" onclick="goMarket()"><div class="mi-ic">🛒</div><div class="mi-tx"><div class="mi-tt">Market</div><div class="mi-sb">Buy from farmers</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="goPlanted()"><div class="mi-ic">🌱</div><div class="mi-tx"><div class="mi-tt">What's Planted</div><div class="mi-sb">Upcoming supply</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="goAnalysis()"><div class="mi-ic">📊</div><div class="mi-tx"><div class="mi-tt">Market Analysis</div><div class="mi-sb">Supply & price risk</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
-      <div class="menu-item" onclick="goTips()"><div class="mi-ic">💡</div><div class="mi-tx"><div class="mi-tt">Buy Tips</div><div class="mi-sb">What to buy and what to avoid</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="goTips()"><div class="mi-ic">💡</div><div class="mi-tx"><div class="mi-tt">Buy Tips</div><div class="mi-sb">What to buy and avoid</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="goResources()"><div class="mi-ic">🇿🇲</div><div class="mi-tx"><div class="mi-tt">Zambian Resources</div><div class="mi-sb">Ministry, FRA, ZARI & more</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="doLogout()"><div class="mi-ic" style="background:var(--danger-soft)">🚪</div><div class="mi-tx"><div class="mi-tt" style="color:var(--danger)">Sign Out</div></div></div>
     </div>
@@ -1231,9 +1454,6 @@ function renderProfile(){
 /* ============================================================
    ACTIONS
    ============================================================ */
-window.setMarketTab = (t) => { S.marketTab = t; route(); };
-window.setCityScope = (s) => { S.cityScope = s; route(); };
-
 window.callFarmer = (phone, name) => {
   if(!phone){ toast('No phone number on file'); return; }
   const clean = String(phone).replace(/[^\d+]/g, '');
@@ -1279,10 +1499,10 @@ window.viewListing = (id) => {
     <div style="margin-bottom:12px">${statusLine}</div>
     ${callBlock}
     <div style="text-align:left;background:var(--sf2);border:1px solid var(--bd);border-radius:14px;overflow:hidden;margin-bottom:14px">
-      <div class="info-row" style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Quantity</span><span style="font-weight:800">${esc((l.quantity||'—')+' '+(l.unit||'box'))}</span></div>
-      <div class="info-row" style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Price</span><span style="font-weight:800">${esc(priceText)}</span></div>
-      <div class="info-row" style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Market</span><span style="font-weight:800">${esc(l.marketName||'—')}</span></div>
-      <div class="info-row" style="display:flex;justify-content:space-between;padding:11px 14px;font-size:12.5px"><span style="color:var(--tl);font-weight:700">Posted</span><span style="font-weight:800">${timeAgo(l.createdAt)}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Quantity</span><span style="font-weight:800">${esc((l.quantity||'—')+' '+(l.unit||'box'))}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Price</span><span style="font-weight:800">${esc(priceText)}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Market</span><span style="font-weight:800">${esc(l.marketName||'—')}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:11px 14px;font-size:12.5px"><span style="color:var(--tl);font-weight:700">Posted</span><span style="font-weight:800">${timeAgo(l.createdAt)}</span></div>
     </div>
     ${actionButtons}
   `);
@@ -1329,8 +1549,7 @@ function startCountdownTicker(){
 async function loadAllUsers(){
   try{
     const snap = await get(ref(db, 'users'));
-    const data = snap.val() || {};
-    S.usersById = data;
+    S.usersById = snap.val() || {};
   }catch(e){ console.warn('users', e); }
 }
 
@@ -1360,8 +1579,7 @@ function startNotifListener(uid){
   if(S.notifUnsub) S.notifUnsub();
   S.notifUnsub = onValue(ref(db, `users/${uid}/notifications`), snap => {
     const data = snap.val() || {};
-    const arr = Object.values(data);
-    S.notifCount = arr.filter(n => !n.read).length;
+    S.notifCount = Object.values(data).filter(n => !n.read).length;
   });
 }
 
