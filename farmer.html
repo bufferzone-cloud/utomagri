@@ -3928,11 +3928,57 @@ a{
   color:#1e40af;
 }
 
+.mc-badge.pending{
+  background:#fef3c7;
+  color:#9a3412;
+}
+
+.mc-badge.available{
+  background:var(--ok-soft);
+  color:#065f46;
+}
+
+.mc-badge.confirm{
+  background:linear-gradient(135deg,#f97316,#ea580c);
+  color:#fff;
+  animation:confirmPulse 1.4s infinite;
+}
+
+@keyframes confirmPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(234,88,12,.5)}
+  50%{box-shadow:0 0 0 6px rgba(234,88,12,0)}
+}
+
 .mc-time{
   font-size:10px;
   color:var(--tm);
   font-weight:700;
   white-space:nowrap;
+}
+
+.mc-countdown{
+  font-size:11px;
+  font-weight:900;
+  color:#9a3412;
+  font-variant-numeric:tabular-nums;
+  margin-top:4px;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  background:#fef3c7;
+  padding:3px 8px;
+  border-radius:var(--r-p);
+  display:inline-block;
+}
+
+.mc-contact{
+  font-size:10.5px;
+  font-weight:700;
+  color:#065f46;
+  margin-top:3px;
+  display:flex;
+  align-items:center;
+  gap:4px;
 }
 
 /* ============================================================
@@ -4422,6 +4468,198 @@ a{
   text-align:center;
   line-height:1.5;
 }
+
+/* ============================================================
+   NEW · AGRO DEALERS
+   ============================================================ */
+.agro-hero{
+  margin:0 18px 14px;
+  padding:20px;
+  border-radius:var(--r-xl);
+  background:linear-gradient(135deg,#7c3aed 0%,#5b21b6 100%);
+  color:#fff;
+  box-shadow:0 20px 50px -10px rgba(124,58,237,.4);
+  position:relative;
+  overflow:hidden;
+}
+
+.agro-hero::before{
+  content:'';
+  position:absolute;
+  top:-40px;
+  right:-30px;
+  width:160px;
+  height:160px;
+  background:radial-gradient(circle,rgba(255,255,255,.15) 0%,transparent 70%);
+  border-radius:50%;
+}
+
+.agro-hero h2{
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:-.02em;
+  position:relative;
+  z-index:1;
+}
+
+.agro-hero p{
+  font-size:12.5px;
+  font-weight:600;
+  opacity:.9;
+  margin-top:4px;
+  position:relative;
+  z-index:1;
+  line-height:1.5;
+}
+
+.agro-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  padding:0 18px 18px;
+}
+
+.agro-card{
+  background:#fff;
+  border:1px solid var(--bd);
+  border-radius:var(--r-lg);
+  padding:12px;
+  box-shadow:var(--sh-xs);
+  cursor:pointer;
+  transition:all .2s var(--e);
+  display:flex;
+  flex-direction:column;
+}
+
+.agro-card:active{
+  transform:scale(.97);
+  box-shadow:var(--sh-md);
+}
+
+.agro-img{
+  width:100%;
+  height:90px;
+  background:var(--sf2);
+  border-radius:var(--r);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:42px;
+  overflow:hidden;
+  margin-bottom:8px;
+}
+
+.agro-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.agro-name{
+  font-size:12.5px;
+  font-weight:900;
+  color:var(--td);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.agro-price{
+  font-size:14px;
+  font-weight:900;
+  color:var(--p-d);
+  margin-top:4px;
+  letter-spacing:-.01em;
+}
+
+.agro-price small{
+  font-size:10px;
+  font-weight:700;
+  color:var(--tl);
+  letter-spacing:.03em;
+  margin-left:3px;
+}
+
+.agro-cat{
+  font-size:9.5px;
+  font-weight:800;
+  color:var(--tl);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin-top:6px;
+  padding:2px 6px;
+  background:var(--sf2);
+  border-radius:var(--r-p);
+  align-self:flex-start;
+}
+
+/* ============================================================
+   NEW · NOTICE / BANNER
+   ============================================================ */
+.notice-banner{
+  margin:0 18px 12px;
+  padding:12px 14px;
+  border-radius:var(--r-lg);
+  background:#fef3c7;
+  border:1px solid rgba(180,83,9,.22);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.notice-banner .nb-ic{
+  font-size:20px;
+  flex-shrink:0;
+}
+
+.notice-banner .nb-tx{
+  flex:1;
+  font-size:11.5px;
+  color:#92400e;
+  font-weight:700;
+  line-height:1.4;
+}
+
+/* ============================================================
+   NEW · PRICE MODE TOGGLE
+   ============================================================ */
+.price-mode-toggle{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-bottom:8px;
+}
+
+.price-mode-btn{
+  padding:11px 8px;
+  border-radius:var(--r);
+  background:var(--sf);
+  border:1.5px solid var(--bd);
+  font-size:12px;
+  font-weight:800;
+  color:var(--tb);
+  transition:all .2s var(--e);
+}
+
+.price-mode-btn.active{
+  background:var(--p);
+  color:#fff;
+  border-color:var(--p);
+  box-shadow:0 4px 12px -4px var(--p-glow);
+}
+
+/* ============================================================
+   NEW · CONFIRM MODAL VARIANT
+   ============================================================ */
+.modal-card .mc-actions{
+  display:flex;
+  gap:8px;
+  margin-top:14px;
+}
+
+.modal-card .mc-actions .btn{
+  flex:1;
+}
 </style>
 </head>
 <body>
@@ -4569,7 +4807,15 @@ const S = {
   marketTab: 'all',
   farmersCity: null,
   analysisYear: null,
-  analysisCity: 'all'
+  analysisCity: 'all',
+  // NEW
+  priceMode: 'per_box',
+  agroProducts: [],
+  agroProductsUnsub: null,
+  agroTab: 'all',
+  countdownTimer: null,
+  pendingCheckTimer: null,
+  promptedListings: {}
 };
 
 /* ============================================================
@@ -4663,6 +4909,31 @@ function nowMs() {
   return Date.now();
 }
 
+function pad2(n) { return String(n).padStart(2, '0'); }
+
+function toDatetimeLocal(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+}
+
+function fmtDateTime(ts) {
+  if (!ts) return '—';
+  const d = new Date(ts);
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()} · ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+}
+
+function timeUntil(ts) {
+  const diff = ts - Date.now();
+  if (diff <= 0) return 'Ready';
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
+}
+
 /* ============================================================
    ICON PICKER
    ============================================================ */
@@ -4709,7 +4980,7 @@ function pickIcon(name) {
   if (n.includes('catfish')) return '🐟';
   if (n.includes('seed')) return '🌱';
   if (n.includes('fertiliz')) return '💧';
-  if (n.includes('pesticide') || n.includes('herbicide')) return '🧴';
+  if (n.includes('pesticide') || n.includes('herbicide') || n.includes('fungicide')) return '🧴';
   if (n.includes('tool') || n.includes('equipment')) return '🔧';
   if (n.includes('feed')) return '🌾';
   return '🌿';
@@ -4808,9 +5079,6 @@ function estimateBoxes(category, lengthM, widthM, cropName, animalCount) {
   };
 }
 
-/* ============================================================
-   AREA
-   ============================================================ */
 function computeArea(length, width) {
   const L = parseFloat(length) || 0;
   const W = parseFloat(width) || 0;
@@ -5029,6 +5297,7 @@ function showScreen(id, data = {}, pushHistory = true) {
   updateCartFloat();
   startLiveClock();
   if (id === 'weather-detail') startWeatherClock();
+  if (id === 'marketplace') startCountdownTicker();
 }
 
 window.addEventListener('popstate', e => {
@@ -5055,9 +5324,9 @@ function updateNav(id) {
   };
   let key = id;
   if (['plant-loader', 'plant-step-1', 'plant-step-3', 'plant-step-4', 'plant-confirm', 'plant-success', 'batch-detail', 'harvest-record', 'post-harvest-goods'].includes(id)) key = 'farm';
-  if (['marketplace', 'product-detail', 'post-ready-goods', 'buy-supplies', 'supplier-cart', 'supplier-checkout'].includes(id)) key = 'market';
+  if (['marketplace', 'product-detail', 'post-ready-goods', 'buy-supplies', 'supplier-cart', 'supplier-checkout', 'edit-listing'].includes(id)) key = 'market';
   if (['delivery-history', 'request-delivery'].includes(id)) key = 'delivery';
-  if (['profile', 'weather', 'analysis', 'government', 'follow-ups', 'my-posts', 'explore', 'catalogue-detail', 'market-analysis', 'weather-detail', 'farm-analysis', 'farmers-by-city'].includes(id)) key = 'profile';
+  if (['profile', 'weather', 'analysis', 'government', 'follow-ups', 'my-posts', 'explore', 'catalogue-detail', 'market-analysis', 'weather-detail', 'farm-analysis', 'farmers-by-city', 'agro-dealers'].includes(id)) key = 'profile';
   nav.querySelectorAll('.bn').forEach(b => {
     b.classList.toggle('active', map[key] === b.dataset.nav);
   });
@@ -5266,7 +5535,6 @@ function startAllBatchesListener() {
     const arr = Object.entries(data).map(([id, v]) => ({ id, ...v }));
     arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
     S.allFarmersBatches = arr;
-    // refresh my batches on the fly
     if (S.user) {
       S.myBatches = arr.filter(b => b.ownerId === S.user.uid);
     }
@@ -5274,9 +5542,6 @@ function startAllBatchesListener() {
   });
 }
 
-/* ============================================================
-   NEW · LIVE MARKETPLACE LISTENER
-   ============================================================ */
 function startMarketplaceListener() {
   if (S.marketplaceUnsub) S.marketplaceUnsub();
   S.marketplaceUnsub = onValue(ref(db, 'marketListings'), (snap) => {
@@ -5288,6 +5553,20 @@ function startMarketplaceListener() {
     S.marketplace = arr;
     if (S.user) S.myListings = arr.filter(l => l.seller_id === S.user.uid);
     if (S.screen === 'marketplace') route();
+  });
+}
+
+/* ============================================================
+   NEW · AGRO PRODUCTS LISTENER
+   ============================================================ */
+function startAgroProductsListener() {
+  if (S.agroProductsUnsub) S.agroProductsUnsub();
+  S.agroProductsUnsub = onValue(ref(db, 'agroProducts'), (snap) => {
+    const data = snap.val() || {};
+    const arr = Object.entries(data).map(([id, v]) => ({ id, ...v }));
+    arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    S.agroProducts = arr;
+    if (S.screen === 'agro-dealers') route();
   });
 }
 
@@ -5314,7 +5593,9 @@ function route() {
       break;
     case 'harvest-record': el.innerHTML = renderHarvestRecord(S.screenData.id); break;
     case 'post-harvest-goods': el.innerHTML = renderPostHarvestGoods(S.screenData.id); break;
+    case 'edit-listing': el.innerHTML = renderEditListing(S.screenData.id); break;
     case 'marketplace': el.innerHTML = renderMarketplace(); break;
+    case 'agro-dealers': el.innerHTML = renderAgroDealers(); break;
     case 'delivery': el.innerHTML = renderDelivery(); break;
     case 'profile': el.innerHTML = renderProfile(); break;
     case 'weather-detail': el.innerHTML = renderWeatherDetail(); break;
@@ -5469,6 +5750,15 @@ function renderHome() {
           <div class="sc-sub">Record boxes</div>
         </div>
       </div>
+    </div>
+
+    <div class="list-row" onclick="navTo('agro-dealers')">
+      <div class="lr-ic purple">🏪</div>
+      <div class="lr-tx">
+        <div class="lr-tt">Agro Dealers</div>
+        <div class="lr-sb">Pesticides, tools, seeds & more</div>
+      </div>
+      <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
     </div>
 
     <div class="list-row" onclick="navTo('farmers-by-city')">
@@ -5692,7 +5982,7 @@ function renderPlantLoader() {
 }
 
 /* ============================================================
-   STEP 1: CROP PICKER (ALL CATEGORIES)
+   STEP 1: CROP PICKER
    ============================================================ */
 function renderPlantStep1() {
   const allCrops = S.catalogue;
@@ -6057,7 +6347,6 @@ function renderPlantConfirm() {
   const area = computeArea(w.length, w.width);
   const est = estimateBoxes(crop ? crop.category : 'Crop', w.length, w.width, crop ? crop.name : '', w.animalCount);
 
-  // Regular grid for crops / livestock
   const cols = 6;
   const rows = 7;
   const cells = [];
@@ -6067,7 +6356,6 @@ function renderPlantConfirm() {
     }
   }
 
-  // Swimming fishes for fisheries
   const pondHTML = `
     <div class="farm-grid-wrap">
       <div class="farm-grid-title">🐟 Pond preview (3 swimming fishes)</div>
@@ -6290,7 +6578,6 @@ function renderBatchDetail(id, tab) {
   const pct = Math.min(100, Math.round(daysIn / totalDays * 100));
   const stageIdx = STAGE_ORDER.indexOf(b.stage || 'planted');
 
-  // Manual stage selector
   const stageChips = STAGE_ORDER.map((s, i) => {
     const isCurrent = s === (b.stage || 'planted');
     const isDone = i < stageIdx;
@@ -6321,7 +6608,6 @@ function renderBatchDetail(id, tab) {
         <button onclick="copyBatchNumber('${esc(b.batchNumber)}')" style="width:40px;height:40px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">📋</button>
       </div>
 
-      <!-- MANUAL STAGE SELECTOR -->
       <div class="d-section">
         <h3>Update Stage</h3>
         <div style="font-size:12px;color:var(--tl);font-weight:600;margin-bottom:8px">
@@ -6332,7 +6618,6 @@ function renderBatchDetail(id, tab) {
         </div>
       </div>
 
-      <!-- FARM SETUP -->
       <div class="d-section">
         <h3>Farm Setup</h3>
         <div class="info-card" onclick="showSoilInfo()">
@@ -6367,7 +6652,6 @@ function renderBatchDetail(id, tab) {
         <input type="hidden" id="bs-space" value="${esc(b.spacingSystem || '')}">
       </div>
 
-      <!-- SUMMARY -->
       <div class="d-section">
         <h3>Field Summary</h3>
         <div class="info-table">
@@ -6379,7 +6663,6 @@ function renderBatchDetail(id, tab) {
         </div>
       </div>
 
-      <!-- PROGRESS -->
       <div class="d-section">
         <h3>Progress</h3>
         <div style="background:var(--p-ll);border:1px solid rgba(15,122,52,.14);border-radius:var(--r-lg);padding:16px;margin-bottom:10px">
@@ -6416,10 +6699,13 @@ function renderBatchDetail(id, tab) {
             </div>
           </div>
         ` : ''}
-        <button class="harvest-post-btn" onclick="showScreen('post-harvest-goods',{id:'${esc(b.id)}'})">
-          <span class="hp-ico">💰</span>
-          <span class="hp-tx"><span class="hp-tt">Post to Market</span><span class="hp-sb">Sell your harvested goods</span></span>
-          <span class="hp-arrow">›</span>
+        <button class="harvest-post-btn" onclick="showScreen('post-harvest-goods',{id:'${esc(b.id)}'})" style="display:flex;align-items:center;gap:12px;width:100%;padding:16px;background:linear-gradient(135deg,#ea580c,#9a3412);color:#fff;border-radius:var(--r-lg);margin-bottom:10px;box-shadow:0 10px 24px -8px rgba(234,88,12,.4)">
+          <span style="font-size:26px">💰</span>
+          <span style="flex:1;text-align:left">
+            <span style="display:block;font-size:14px;font-weight:900">Post to Market</span>
+            <span style="display:block;font-size:11px;font-weight:600;opacity:.9;margin-top:2px">Sell your harvested goods</span>
+          </span>
+          <span style="font-size:22px">›</span>
         </button>
       ` : ''}
 
@@ -6435,37 +6721,24 @@ function renderBatchDetail(id, tab) {
 
 function wireBatchDetail(id) {}
 
-/* ============================================================
-   NEW · SET STAGE MANUALLY
-   ============================================================ */
 window.setBatchStage = async (id, stage) => {
   const b = S.myBatches.find(x => x.id === id);
   if (!b) return;
-
-  // Guard: cannot jump to 'harvested' without a recorded harvest
   if (stage === 'harvested' && !b.actualBoxes) {
     toast('Please record your harvest first');
     showScreen('harvest-record', { id });
     return;
   }
-
   try {
     const updates = { stage, updatedAt: nowMs() };
     if (stage === 'harvested') updates.status = 'harvested';
     else updates.status = 'active';
-
     await update(ref(db, 'batches/' + id), updates);
     b.stage = stage;
     b.status = updates.status;
-
-    if (stage === 'harvesting') {
-      toast('Marked Ready to Harvest 🌾');
-    } else if (stage === 'harvested') {
-      toast('Harvested ✓');
-    } else {
-      toast('Stage updated ✓');
-    }
-
+    if (stage === 'harvesting') toast('Marked Ready to Harvest 🌾');
+    else if (stage === 'harvested') toast('Harvested ✓');
+    else toast('Stage updated ✓');
     route();
   } catch (e) {
     toast('Failed: ' + (e.message || e));
@@ -6493,7 +6766,8 @@ window.showSoilInfo = () => {
 };
 
 window.selectSoil = (name) => {
-  document.getElementById('bs-soil').value = name;
+  const el = document.getElementById('bs-soil');
+  if (el) el.value = name;
   closeVarietySheet();
   toast('Soil: ' + name);
   route();
@@ -6520,7 +6794,8 @@ window.showIrrigationInfo = () => {
 };
 
 window.selectIrrigation = (name) => {
-  document.getElementById('bs-irr').value = name;
+  const el = document.getElementById('bs-irr');
+  if (el) el.value = name;
   closeVarietySheet();
   toast('Irrigation: ' + name);
   route();
@@ -6528,6 +6803,7 @@ window.selectIrrigation = (name) => {
 
 window.showSpacingInfo = () => {
   const b = S.myBatches.find(x => x.id === S.screenData.id);
+  if (!b) return;
   const spacing = S.cropSpacing[b.cropId] || [];
   $varietySheetContent.innerHTML = `
     <div class="sheet-handle"></div>
@@ -6549,7 +6825,8 @@ window.showSpacingInfo = () => {
 };
 
 window.selectSpacing = (name) => {
-  document.getElementById('bs-space').value = name;
+  const el = document.getElementById('bs-space');
+  if (el) el.value = name;
   closeVarietySheet();
   toast('Spacing: ' + name);
   route();
@@ -6624,7 +6901,7 @@ window.deleteBatch = async (id) => {
 };
 
 /* ============================================================
-   HARVEST RECORD — ACTUAL BOXES
+   HARVEST RECORD
    ============================================================ */
 function renderHarvestRecord(id) {
   const b = S.myBatches.find(x => x.id === id);
@@ -6701,7 +6978,7 @@ window.submitHarvestBoxes = async (id) => {
 };
 
 /* ============================================================
-   POST TO MARKET — ONLY HARVESTED
+   NEW · POST HARVEST TO MARKET (full rewrite)
    ============================================================ */
 function renderPostHarvestGoods(batchId) {
   const b = S.myBatches.find(x => x.id === batchId);
@@ -6710,6 +6987,13 @@ function renderPostHarvestGoods(batchId) {
   }
   const city = S.weatherCity || S.userLocation;
   const markets = marketsForCity(city);
+  const p = S.profile || {};
+  const fullName = ((p.firstName || '') + ' ' + (p.lastName || '')).trim() || p.displayName || 'Farmer';
+  const phone = p.phone || p.phoneNumber || p.contact || '';
+  S.priceMode = 'per_box';
+
+  const defaultAvail = Date.now() + 60 * 60 * 1000;
+
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -6718,99 +7002,441 @@ function renderPostHarvestGoods(batchId) {
       </button>
       <div class="tb-title">Post to Market</div>
     </div>
+
     <div style="padding:14px 18px 0">
       <div style="display:flex;align-items:center;gap:12px;padding:14px;background:linear-gradient(135deg,#ffedd5,#fed7aa);border-radius:var(--r);margin-bottom:14px;border:1px solid rgba(234,88,12,.18)">
         <div style="width:52px;height:52px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:26px">${pickIcon(b.cropName)}</div>
         <div style="flex:1;min-width:0">
           <div style="font-size:15px;font-weight:900;color:#9a3412">${esc(b.cropName)}</div>
-          <div style="font-size:11.5px;color:#c2410c;font-weight:700;margin-top:2px">${b.actualBoxes || 0} boxes harvested</div>
+          <div style="font-size:11.5px;color:#c2410c;font-weight:700;margin-top:2px">${b.actualBoxes || 0} boxes harvested · ${esc(b.varietyName)}</div>
         </div>
       </div>
+
+      <div class="notice-banner">
+        <div class="nb-ic">⏱</div>
+        <div class="nb-tx">Your post will be marked <strong>Availability Pending</strong> with a live countdown. When the timer ends you'll confirm availability — only then buyers can see your name & phone.</div>
+      </div>
     </div>
+
     <form class="frm" onsubmit="submitMarketPost(event,'${esc(b.id)}')">
       <div class="fld">
-        <label>Title</label>
-        <input id="ph-title" class="inp" value="Fresh ${esc(b.cropName)} – ${b.actualBoxes} boxes" required>
+        <label>Your Name</label>
+        <input id="ph-name" class="inp" value="${esc(fullName)}" readonly style="background:var(--sf2)">
       </div>
-      <div class="fld" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div><label>Boxes</label><input id="ph-qty" class="inp" type="number" value="${b.actualBoxes || 0}" required></div>
-        <div><label>Price per box (ZMK)</label><input id="ph-price" class="inp" type="number" step="0.01" required></div>
-      </div>
+
       <div class="fld">
-        <label>Market (detected in ${esc(city)})</label>
-        <select id="ph-market" class="inp" required>
+        <label>Phone Number</label>
+        <input id="ph-phone" class="inp" type="tel" value="${esc(phone)}" placeholder="e.g. 0977 123 456" required>
+      </div>
+
+      <div class="fld">
+        <label>Number of Boxes</label>
+        <input id="ph-qty" class="inp" type="number" min="1" step="1" value="${b.actualBoxes || 1}" required>
+      </div>
+
+      <div class="fld">
+        <label>Market (in ${esc(city)})</label>
+        <select id="ph-market" class="inp" onchange="onMarketChange(this.value)" required>
           <option value="">Select market…</option>
           ${markets.map(m => `<option value="${esc(m)}">${esc(m)}</option>`).join('')}
+          <option value="__other">Other (type manually)</option>
         </select>
       </div>
+
+      <div class="fld" id="ph-custom-market-wrap" style="display:none">
+        <label>Enter Market Name</label>
+        <input id="ph-custom-market" class="inp" placeholder="e.g. Local Market">
+      </div>
+
       <div class="fld">
-        <label>Availability</label>
-        <select id="ph-avail" class="inp" required onchange="toggleAvailabilityDate(this.value)">
-          <option value="now">Available now</option>
-          <option value="date">Choose a date</option>
-        </select>
+        <label>Pricing</label>
+        <div class="price-mode-toggle">
+          <button type="button" id="ph-mode-perbox" class="price-mode-btn active" onclick="setPriceMode('per_box')">💰 Per Box</button>
+          <button type="button" id="ph-mode-total" class="price-mode-btn" onclick="setPriceMode('total')">📦 All Boxes</button>
+        </div>
+        <input id="ph-price" class="inp" type="number" min="0" step="0.01" placeholder="Price in ZMK" required>
       </div>
-      <div class="fld" id="ph-date-wrap" style="display:none">
-        <label>Date at market</label>
-        <input id="ph-date" class="inp" type="date">
-      </div>
+
       <div class="fld">
-        <label>Description</label>
-        <textarea id="ph-desc" class="inp" rows="3">Freshly harvested ${esc(b.cropName)} (${esc(b.varietyName)}). ${b.actualBoxes} boxes available.</textarea>
+        <label>Available On Market From</label>
+        <input id="ph-avail-at" class="inp" type="datetime-local" value="${toDatetimeLocal(defaultAvail)}" required>
       </div>
+
+      <div class="fld">
+        <label>Description (optional)</label>
+        <textarea id="ph-desc" class="inp" rows="2">Fresh ${esc(b.cropName)} (${esc(b.varietyName)}). ${b.actualBoxes || 0} boxes available.</textarea>
+      </div>
+
       <button type="submit" class="btn btn-p" id="ph-submit">💰 Post to Market</button>
     </form>
   </div>
   ${bottomNavHTML()}`;
 }
 
-window.toggleAvailabilityDate = (v) => {
-  const wrap = document.getElementById('ph-date-wrap');
-  if (wrap) wrap.style.display = v === 'date' ? 'block' : 'none';
+window.onMarketChange = (v) => {
+  const wrap = document.getElementById('ph-custom-market-wrap');
+  if (wrap) wrap.style.display = v === '__other' ? 'block' : 'none';
+};
+
+window.setPriceMode = (mode) => {
+  S.priceMode = mode;
+  const a = document.getElementById('ph-mode-perbox');
+  const b = document.getElementById('ph-mode-total');
+  if (a) a.className = 'price-mode-btn' + (mode === 'per_box' ? ' active' : '');
+  if (b) b.className = 'price-mode-btn' + (mode === 'total' ? ' active' : '');
 };
 
 window.submitMarketPost = async (ev, batchId) => {
   ev.preventDefault();
   const b = S.myBatches.find(x => x.id === batchId);
   if (!b) return;
+
   const btn = document.getElementById('ph-submit');
   btn.disabled = true;
-  const avail = document.getElementById('ph-avail').value;
+  btn.textContent = 'Posting…';
+
   try {
-    const newRef = push(ref(db, 'marketListings'));
+    const name = document.getElementById('ph-name').value.trim();
+    const phone = document.getElementById('ph-phone').value.trim();
+    const qty = parseInt(document.getElementById('ph-qty').value) || 0;
+    const marketSelect = document.getElementById('ph-market').value;
+    const customMarket = (document.getElementById('ph-custom-market')?.value || '').trim();
+    const marketName = marketSelect === '__other' ? customMarket : marketSelect;
+    const priceAmount = parseFloat(document.getElementById('ph-price').value) || 0;
+    const availAtStr = document.getElementById('ph-avail-at').value;
+    const desc = document.getElementById('ph-desc').value.trim();
+
+    if (!name) { toast('Name required'); btn.disabled = false; btn.textContent = '💰 Post to Market'; return; }
+    if (!phone) { toast('Phone required'); btn.disabled = false; btn.textContent = '💰 Post to Market'; return; }
+    if (!qty || qty < 1) { toast('Boxes required'); btn.disabled = false; btn.textContent = '💰 Post to Market'; return; }
+    if (!marketName) { toast('Market required'); btn.disabled = false; btn.textContent = '💰 Post to Market'; return; }
+    if (!priceAmount || priceAmount <= 0) { toast('Price required'); btn.disabled = false; btn.textContent = '💰 Post to Market'; return; }
+    if (!availAtStr) { toast('Availability time required'); btn.disabled = false; btn.textContent = '💰 Post to Market'; return; }
+
+    const availAt = new Date(availAtStr).getTime();
+    if (!availAt || isNaN(availAt)) { toast('Invalid date/time'); btn.disabled = false; btn.textContent = '💰 Post to Market'; return; }
+    if (availAt <= Date.now() - 60000) { toast('Please set a future time'); btn.disabled = false; btn.textContent = '💰 Post to Market'; return; }
+
+    const priceMode = S.priceMode || 'per_box';
+    const totalPrice = priceMode === 'total' ? priceAmount : priceAmount * qty;
+    const pricePerBox = priceMode === 'total' ? (qty ? priceAmount / qty : 0) : priceAmount;
+    const city = S.weatherCity || S.userLocation;
+
     const data = {
       seller_id: S.user.uid,
-      sellerName: (S.profile.firstName || '') + ' ' + (S.profile.lastName || ''),
-      sellerPhoto: S.profile.profileUrl || '',
+      sellerName: name,
+      sellerPhone: phone,
+      sellerPhoto: S.profile?.profileUrl || '',
       catalog_item_id: b.cropId,
-      title: document.getElementById('ph-title').value.trim(),
+      title: `Fresh ${b.cropName} – ${qty} boxes`,
       productName: b.cropName,
-      quantity: document.getElementById('ph-qty').value,
+      quantity: qty,
       unit: 'box',
-      priceAmount: Number(document.getElementById('ph-price').value),
+      priceMode,
+      priceAmount,
+      pricePerBox,
+      totalPrice,
       currency: 'ZMW',
-      city: S.weatherCity || S.userLocation,
-      marketName: document.getElementById('ph-market').value,
-      availability: avail,
-      availabilityDate: avail === 'date' ? document.getElementById('ph-date').value : '',
-      description: document.getElementById('ph-desc').value.trim(),
+      city,
+      marketName,
+      availabilityStatus: 'pending',
+      availableAt: availAt,
+      description: desc,
       photoUrls: [],
-      status: 'available',
+      status: 'pending',
       fromBatchId: batchId,
       fromBatchNumber: b.batchNumber,
       createdAt: nowMs()
     };
+
+    const newRef = push(ref(db, 'marketListings'));
     await set(newRef, data);
-    toast('Posted to market ✓');
-    setTimeout(() => navTo('marketplace'), 500);
+    toast('Posted! Countdown started ⏱');
+    setTimeout(() => {
+      navTo('marketplace');
+    }, 600);
   } catch (e) {
     toast('Failed: ' + (e.message || e));
     btn.disabled = false;
+    btn.textContent = '💰 Post to Market';
   }
 };
 
 /* ============================================================
-   MARKETPLACE — ALL LISTINGS + MINE + HARVESTED GOODS
+   NEW · EDIT OWN PENDING LISTING
+   ============================================================ */
+window.editOwnListing = (id) => {
+  closeModal();
+  showScreen('edit-listing', { id });
+};
+
+function renderEditListing(id) {
+  const l = S.marketplace.find(x => x.id === id);
+  if (!l) return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="navTo('marketplace')">←</button><div class="tb-title">Not found</div></div></div>`;
+  if (l.seller_id !== S.user?.uid || l.availabilityStatus !== 'pending') {
+    return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="navTo('marketplace')">←</button><div class="tb-title">Cannot Edit</div></div><div class="empty"><h3>This post is locked</h3><p>Only pending posts can be edited.</p></div></div>`;
+  }
+
+  const city = l.city || S.weatherCity || S.userLocation;
+  const markets = marketsForCity(city);
+  const hasCustomMarket = l.marketName && !markets.includes(l.marketName);
+  S.priceMode = l.priceMode || 'per_box';
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="navTo('marketplace')">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Edit Post</div>
+    </div>
+
+    <form class="frm" style="padding-top:14px" onsubmit="saveEditedListing(event,'${esc(l.id)}')">
+      <div class="fld">
+        <label>Phone Number</label>
+        <input id="el-phone" class="inp" type="tel" value="${esc(l.sellerPhone || '')}" required>
+      </div>
+
+      <div class="fld">
+        <label>Number of Boxes</label>
+        <input id="el-qty" class="inp" type="number" min="1" step="1" value="${l.quantity || 1}" required>
+      </div>
+
+      <div class="fld">
+        <label>Market</label>
+        <select id="el-market" class="inp" onchange="onEditMarketChange(this.value)" required>
+          <option value="">Select market…</option>
+          ${markets.map(m => `<option value="${esc(m)}" ${m === l.marketName ? 'selected' : ''}>${esc(m)}</option>`).join('')}
+          <option value="__other" ${hasCustomMarket ? 'selected' : ''}>Other (type manually)</option>
+        </select>
+      </div>
+
+      <div class="fld" id="el-custom-market-wrap" style="display:${hasCustomMarket ? 'block' : 'none'}">
+        <label>Enter Market Name</label>
+        <input id="el-custom-market" class="inp" value="${hasCustomMarket ? esc(l.marketName) : ''}">
+      </div>
+
+      <div class="fld">
+        <label>Pricing</label>
+        <div class="price-mode-toggle">
+          <button type="button" id="el-mode-perbox" class="price-mode-btn ${S.priceMode === 'per_box' ? 'active' : ''}" onclick="setEditPriceMode('per_box')">💰 Per Box</button>
+          <button type="button" id="el-mode-total" class="price-mode-btn ${S.priceMode === 'total' ? 'active' : ''}" onclick="setEditPriceMode('total')">📦 All Boxes</button>
+        </div>
+        <input id="el-price" class="inp" type="number" min="0" step="0.01" value="${l.priceAmount || 0}" required>
+      </div>
+
+      <div class="fld">
+        <label>Available On Market From</label>
+        <input id="el-avail-at" class="inp" type="datetime-local" value="${toDatetimeLocal(l.availableAt || Date.now() + 3600000)}" required>
+      </div>
+
+      <div class="fld">
+        <label>Description (optional)</label>
+        <textarea id="el-desc" class="inp" rows="2">${esc(l.description || '')}</textarea>
+      </div>
+
+      <button type="submit" class="btn btn-p" id="el-submit">💾 Save Changes</button>
+    </form>
+  </div>`;
+}
+
+window.onEditMarketChange = (v) => {
+  const wrap = document.getElementById('el-custom-market-wrap');
+  if (wrap) wrap.style.display = v === '__other' ? 'block' : 'none';
+};
+
+window.setEditPriceMode = (mode) => {
+  S.priceMode = mode;
+  const a = document.getElementById('el-mode-perbox');
+  const b = document.getElementById('el-mode-total');
+  if (a) a.className = 'price-mode-btn' + (mode === 'per_box' ? ' active' : '');
+  if (b) b.className = 'price-mode-btn' + (mode === 'total' ? ' active' : '');
+};
+
+window.saveEditedListing = async (ev, id) => {
+  ev.preventDefault();
+  const l = S.marketplace.find(x => x.id === id);
+  if (!l || l.seller_id !== S.user?.uid || l.availabilityStatus !== 'pending') {
+    toast('Cannot edit'); return;
+  }
+
+  const btn = document.getElementById('el-submit');
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+
+  try {
+    const phone = document.getElementById('el-phone').value.trim();
+    const qty = parseInt(document.getElementById('el-qty').value) || 0;
+    const marketSelect = document.getElementById('el-market').value;
+    const customMarket = (document.getElementById('el-custom-market')?.value || '').trim();
+    const marketName = marketSelect === '__other' ? customMarket : marketSelect;
+    const priceAmount = parseFloat(document.getElementById('el-price').value) || 0;
+    const availAtStr = document.getElementById('el-avail-at').value;
+    const desc = document.getElementById('el-desc').value.trim();
+
+    if (!phone) { toast('Phone required'); btn.disabled = false; btn.textContent = '💾 Save Changes'; return; }
+    if (!qty || qty < 1) { toast('Boxes required'); btn.disabled = false; btn.textContent = '💾 Save Changes'; return; }
+    if (!marketName) { toast('Market required'); btn.disabled = false; btn.textContent = '💾 Save Changes'; return; }
+    if (!priceAmount || priceAmount <= 0) { toast('Price required'); btn.disabled = false; btn.textContent = '💾 Save Changes'; return; }
+    if (!availAtStr) { toast('Availability time required'); btn.disabled = false; btn.textContent = '💾 Save Changes'; return; }
+
+    const availAt = new Date(availAtStr).getTime();
+    if (!availAt || isNaN(availAt)) { toast('Invalid date/time'); btn.disabled = false; btn.textContent = '💾 Save Changes'; return; }
+
+    const priceMode = S.priceMode || 'per_box';
+    const totalPrice = priceMode === 'total' ? priceAmount : priceAmount * qty;
+    const pricePerBox = priceMode === 'total' ? (qty ? priceAmount / qty : 0) : priceAmount;
+
+    await update(ref(db, 'marketListings/' + id), {
+      sellerPhone: phone,
+      quantity: qty,
+      marketName,
+      priceMode,
+      priceAmount,
+      pricePerBox,
+      totalPrice,
+      availableAt: availAt,
+      description: desc,
+      updatedAt: nowMs()
+    });
+
+    toast('Post updated ✓');
+    // Allow re-prompt if the new time has already passed
+    S.promptedListings[id] = false;
+    setTimeout(() => navTo('marketplace'), 500);
+  } catch (e) {
+    toast('Failed: ' + (e.message || e));
+    btn.disabled = false;
+    btn.textContent = '💾 Save Changes';
+  }
+};
+
+/* ============================================================
+   NEW · DELETE OWN LISTING
+   ============================================================ */
+window.deleteOwnListing = (id) => {
+  closeModal();
+  modal(`<h3>Delete this post?</h3><p>Your listing will be removed from the market. This cannot be undone.</p>
+    <div class="mc-actions">
+      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmDeleteListing('${esc(id)}')">Delete</button>
+    </div>`);
+};
+
+window.confirmDeleteListing = async (id) => {
+  try {
+    await update(ref(db, 'marketListings/' + id), {
+      status: 'removed',
+      availabilityStatus: 'removed',
+      removedAt: nowMs()
+    });
+    closeModal();
+    toast('Post deleted');
+    setTimeout(() => navTo('marketplace'), 300);
+  } catch (e) {
+    toast('Failed: ' + (e.message || e));
+  }
+};
+
+/* ============================================================
+   NEW · CONFIRM AVAILABILITY
+   ============================================================ */
+function showAvailabilityConfirmModal(listing) {
+  modal(`
+    <h3>⏰ Availability Time Up!</h3>
+    <p>Is <strong>${esc(listing.title || listing.productName)}</strong> still available on the market?</p>
+    <div style="font-size:12px;color:var(--tl);margin:10px 0;font-weight:600">
+      ${esc(listing.quantity)} boxes at ${esc(listing.marketName)}
+    </div>
+    <div class="mc-actions">
+      <button class="btn btn-s" onclick="removeListingConfirm('${esc(listing.id)}')">No, Remove</button>
+      <button class="btn btn-p" onclick="confirmListingAvailable('${esc(listing.id)}',true)">Yes, Available ✓</button>
+    </div>
+  `);
+}
+
+window.confirmListingAvailable = async (id, closeAfter) => {
+  try {
+    await update(ref(db, 'marketListings/' + id), {
+      availabilityStatus: 'available',
+      status: 'available',
+      confirmedAt: nowMs()
+    });
+    toast('✅ Now Available');
+    if (closeAfter) closeModal();
+    setTimeout(() => {
+      if (S.screen === 'marketplace') route();
+    }, 200);
+  } catch (e) {
+    toast('Failed: ' + (e.message || e));
+  }
+};
+
+window.removeListingConfirm = async (id) => {
+  try {
+    await update(ref(db, 'marketListings/' + id), {
+      availabilityStatus: 'removed',
+      status: 'removed',
+      removedAt: nowMs()
+    });
+    toast('Removed from market');
+    closeModal();
+    setTimeout(() => {
+      if (S.screen === 'marketplace') route();
+    }, 200);
+  } catch (e) {
+    toast('Failed: ' + (e.message || e));
+  }
+};
+
+/* ============================================================
+   NEW · COUNTDOWN TICKER
+   ============================================================ */
+function startCountdownTicker() {
+  clearInterval(S.countdownTimer);
+  S.countdownTimer = setInterval(() => {
+    document.querySelectorAll('[data-countdown]').forEach(el => {
+      const t = parseInt(el.dataset.countdown, 10);
+      if (!t || isNaN(t)) return;
+      if (Date.now() >= t) {
+        el.textContent = '⏰ Ready — confirm';
+        el.style.background = 'linear-gradient(135deg,#f97316,#ea580c)';
+        el.style.color = '#fff';
+      } else {
+        el.textContent = '⏱ ' + timeUntil(t);
+      }
+    });
+  }, 1000);
+}
+
+function checkPendingConfirmations() {
+  if (!S.user) return;
+  if (!S.marketplace || !S.marketplace.length) return;
+  if ($modal.classList.contains('open')) return;
+  if ($varietySheetOverlay.classList.contains('open')) return;
+  const id = S.screen || '';
+  if (id.includes('post') || id.includes('edit') || id.includes('plant')) return;
+
+  const due = S.marketplace.find(l =>
+    l.seller_id === S.user.uid &&
+    l.availabilityStatus === 'pending' &&
+    l.availableAt &&
+    Date.now() >= l.availableAt &&
+    !S.promptedListings[l.id]
+  );
+  if (due) {
+    S.promptedListings[due.id] = true;
+    showAvailabilityConfirmModal(due);
+  }
+}
+
+function startPendingCheckTimer() {
+  clearInterval(S.pendingCheckTimer);
+  S.pendingCheckTimer = setInterval(checkPendingConfirmations, 5000);
+}
+
+/* ============================================================
+   MARKETPLACE
    ============================================================ */
 window.setMarketTab = (tab) => { S.marketTab = tab; route(); };
 
@@ -6818,18 +7444,21 @@ function renderMarketplace() {
   const harvested = S.myBatches.filter(b => b.stage === 'harvested');
   const tab = S.marketTab || 'all';
   const allListings = S.marketplace || [];
-  const myListings = S.myListings || [];
 
-  const filterListings = (arr) => tab === 'all' ? arr : arr.filter(l => l.seller_id === S.user?.uid);
-  const shown = filterListings(allListings);
+  const shown = tab === 'all'
+    ? allListings
+    : allListings.filter(l => l.seller_id === S.user?.uid);
 
   const listingCards = shown.map(l => renderMarketCard(l)).join('');
+
+  // Start ticker after render
+  setTimeout(startCountdownTicker, 50);
+  setTimeout(checkPendingConfirmations, 800);
 
   return `
   <div class="scroll">
     <div class="topbar bordered"><div class="tb-title">Marketplace</div></div>
 
-    <!-- Quick post harvested -->
     ${harvested.length ? `
     <div style="padding:10px 18px 4px">
       <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">Quick post your harvest</div>
@@ -6846,7 +7475,6 @@ function renderMarketplace() {
     </div>
     ` : ''}
 
-    <!-- Tabs -->
     <div class="market-tabs">
       <button class="market-tab ${tab === 'all' ? 'active' : ''}" onclick="setMarketTab('all')">🛒 All listings</button>
       <button class="market-tab ${tab === 'mine' ? 'active' : ''}" onclick="setMarketTab('mine')">👤 My listings</button>
@@ -6867,11 +7495,44 @@ function renderMarketplace() {
 
 function renderMarketCard(l) {
   const isMine = l.seller_id === S.user?.uid;
-  const avail = l.availability === 'now' ? 'now' : 'later';
-  const price = l.priceAmount ? fmtZMK(l.priceAmount) : 'Price on request';
+  const availStatus = l.availabilityStatus || (l.availability === 'now' ? 'available' : 'pending');
   const qty = l.quantity ? `${l.quantity} ${l.unit || 'box'}` : '';
   const meta = [qty, l.marketName, l.city].filter(Boolean).join(' · ');
-  const badge = isMine ? `<span class="mc-badge mine">Mine</span>` : `<span class="mc-badge ${avail}">${l.availability === 'now' ? 'Available now' : 'Later'}</span>`;
+
+  let priceDisplay = '';
+  let priceLabel = '';
+  if (l.priceMode === 'total') {
+    priceDisplay = fmtZMK(l.priceAmount);
+    priceLabel = 'total';
+  } else {
+    priceDisplay = fmtZMK(l.priceAmount);
+    priceLabel = '/ box';
+  }
+
+  const due = availStatus === 'pending' && l.availableAt && Date.now() >= l.availableAt;
+
+  let badgeHTML = '';
+  let countdownHTML = '';
+  let contactHTML = '';
+
+  if (availStatus === 'pending') {
+    if (due) {
+      badgeHTML = `<span class="mc-badge confirm">⏰ Confirm now</span>`;
+      countdownHTML = `<div class="mc-countdown" style="background:linear-gradient(135deg,#f97316,#ea580c);color:#fff">⏰ Ready — confirm</div>`;
+    } else {
+      badgeHTML = `<span class="mc-badge pending">⏳ Pending</span>`;
+      countdownHTML = `<div class="mc-countdown" data-countdown="${l.availableAt}">⏱ ${timeUntil(l.availableAt)}</div>`;
+    }
+  } else if (availStatus === 'available') {
+    badgeHTML = `<span class="mc-badge available">✅ Available</span>`;
+    if (l.sellerPhone) {
+      contactHTML = `<div class="mc-contact">📞 ${esc(l.sellerPhone)}</div>`;
+    }
+  }
+
+  if (isMine) {
+    badgeHTML = `<span class="mc-badge mine">Mine</span> ${badgeHTML}`;
+  }
 
   return `
   <div class="market-card" onclick="viewMarketListing('${esc(l.id)}')">
@@ -6880,41 +7541,182 @@ function renderMarketCard(l) {
       <div class="mc-title">${esc(l.title || l.productName || 'Produce')}</div>
       <div class="mc-meta">${esc(meta)}</div>
       <div class="mc-price">
-        <strong>${esc(price)}</strong>
-        <small>/ box</small>
+        <strong>${esc(priceDisplay)}</strong>
+        <small>${priceLabel}</small>
       </div>
+      ${countdownHTML}
+      ${contactHTML}
     </div>
     <div class="mc-side">
-      ${badge}
+      ${badgeHTML}
       <div class="mc-time">${timeAgo(l.createdAt)}</div>
     </div>
   </div>`;
 }
 
+/* ============================================================
+   NEW · LISTING DETAIL MODAL (view / edit / delete / confirm)
+   ============================================================ */
 window.viewMarketListing = (id) => {
-  const l = (S.marketplace || []).find(x => x.id === id);
+  const l = S.marketplace.find(x => x.id === id);
   if (!l) return;
+
   const isMine = l.seller_id === S.user?.uid;
+  const availStatus = l.availabilityStatus || 'pending';
+  const isPending = availStatus === 'pending';
+  const isAvailable = availStatus === 'available';
+  const due = isPending && l.availableAt && Date.now() >= l.availableAt;
+
+  const priceDisplay = l.priceMode === 'total'
+    ? fmtZMK(l.priceAmount) + ' (total)'
+    : fmtZMK(l.priceAmount) + ' / box';
+
+  let statusText = '';
+  if (isPending) {
+    if (due) statusText = '⏰ Ready — confirm availability';
+    else statusText = `⏳ Availability pending · ${timeUntil(l.availableAt || 0)}`;
+  } else if (isAvailable) {
+    statusText = '✅ Available on market';
+  }
+
+  let actions = '';
+  if (isMine && isPending) {
+    actions = `
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+        <button class="btn btn-s" style="flex:1;min-width:100px" onclick="closeModal()">Close</button>
+        <button class="btn btn-danger" style="flex:1;min-width:100px" onclick="deleteOwnListing('${esc(l.id)}')">Delete</button>
+        <button class="btn btn-p" style="flex:1;min-width:100px" onclick="editOwnListing('${esc(l.id)}')">Edit</button>
+      </div>
+      ${due ? `<button class="btn btn-p" style="margin-top:8px;background:linear-gradient(135deg,#f97316,#ea580c)" onclick="confirmListingAvailable('${esc(l.id)}',true)">✅ Confirm Available</button>` : ''}
+    `;
+  } else if (isMine && isAvailable) {
+    actions = `
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn btn-s" style="flex:1" onclick="closeModal()">Close</button>
+      </div>
+      <div style="font-size:11px;color:var(--tl);margin-top:10px;font-weight:600;text-align:center">
+        🔒 Post is live and locked. Contact admin to remove.
+      </div>
+    `;
+  } else if (isMine) {
+    actions = `<button class="btn btn-s" style="margin-top:8px" onclick="closeModal()">Close</button>`;
+  } else {
+    actions = `
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn btn-s" style="flex:1" onclick="closeModal()">Close</button>
+        <button class="btn btn-p" style="flex:1" onclick="contactSeller('${esc(l.seller_id)}')">Contact Seller</button>
+      </div>
+    `;
+  }
+
+  const contactBlock = isAvailable && l.sellerPhone ? `
+    <div style="background:var(--ok-soft);border:1px solid rgba(22,163,74,.2);padding:12px 14px;border-radius:var(--r-lg);margin-bottom:12px;text-align:left">
+      <div style="font-size:10.5px;color:#065f46;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Contact</div>
+      <div style="font-size:14px;font-weight:900;color:#065f46">${esc(l.sellerName || 'Seller')}</div>
+      <div style="font-size:13px;font-weight:800;color:#065f46;margin-top:3px">📞 ${esc(l.sellerPhone)}</div>
+      <div style="font-size:11px;color:#065f46;font-weight:600;margin-top:3px">📍 ${esc(l.marketName || '')} · ${esc(l.city || '')}</div>
+    </div>
+  ` : '';
+
   modal(`
     <h3 style="margin-bottom:4px">${esc(l.title || l.productName || 'Listing')}</h3>
-    <p style="margin-bottom:12px">${esc(l.sellerName || '')} · ${esc(l.city || '')}</p>
+    <p style="margin-bottom:10px">${esc(l.sellerName || '')} · ${esc(l.city || '')}</p>
+    <div style="font-size:11.5px;color:${due ? '#ea580c' : (isAvailable ? '#16a34a' : '#92400e')};font-weight:800;margin-bottom:12px;padding:8px 12px;background:${due ? '#ffedd5' : (isAvailable ? '#d1fae5' : '#fef3c7')};border-radius:var(--r-p);display:inline-block">
+      ${statusText}
+    </div>
+    ${contactBlock}
     <div class="info-table" style="text-align:left;margin-bottom:14px">
       <div class="info-row"><span class="ir-k">Quantity</span><span class="ir-v">${esc((l.quantity || '—') + ' ' + (l.unit || 'box'))}</span></div>
-      <div class="info-row"><span class="ir-k">Price</span><span class="ir-v">${fmtZMK(l.priceAmount)}</span></div>
+      <div class="info-row"><span class="ir-k">Price</span><span class="ir-v">${esc(priceDisplay)}</span></div>
       <div class="info-row"><span class="ir-k">Market</span><span class="ir-v">${esc(l.marketName || '—')}</span></div>
-      <div class="info-row"><span class="ir-k">Availability</span><span class="ir-v">${esc(l.availability === 'now' ? 'Available now' : (l.availabilityDate || 'On date'))}</span></div>
+      ${l.availableAt ? `<div class="info-row"><span class="ir-k">Available from</span><span class="ir-v">${esc(fmtDateTime(l.availableAt))}</span></div>` : ''}
       ${l.description ? `<div class="info-row"><span class="ir-k">Notes</span><span class="ir-v">${esc(l.description)}</span></div>` : ''}
     </div>
-    <div style="display:flex;gap:8px">
-      <button class="btn btn-s" onclick="closeModal()">Close</button>
-      ${!isMine ? `<button class="btn btn-p" onclick="contactSeller('${esc(l.seller_id)}')">Contact Seller</button>` : `<button class="btn btn-p" onclick="closeModal()">You own this</button>`}
-    </div>
+    ${actions}
   `);
 };
 
 window.contactSeller = (sellerId) => {
   toast('Seller contact: ' + (sellerId || '').slice(0, 6) + '…');
   closeModal();
+};
+
+/* ============================================================
+   NEW · AGRO DEALERS
+   ============================================================ */
+window.setAgroTab = (tab) => { S.agroTab = tab; route(); };
+
+function renderAgroDealers() {
+  const products = S.agroProducts || [];
+  const categories = [...new Set(products.map(p => p.category || 'Other').filter(Boolean))].sort();
+  const tab = S.agroTab || 'all';
+  const filtered = tab === 'all' ? products : products.filter(p => (p.category || 'Other') === tab);
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Agro Dealers</div>
+    </div>
+
+    <div class="agro-hero">
+      <h2>🏪 Agro Dealers</h2>
+      <p>Pesticides, tools, seeds, fertilizers and more — from dealers near you.</p>
+    </div>
+
+    ${categories.length ? `
+    <div class="market-tabs">
+      <button class="market-tab ${tab === 'all' ? 'active' : ''}" onclick="setAgroTab('all')">All</button>
+      ${categories.map(c => `<button class="market-tab ${tab === c ? 'active' : ''}" onclick="setAgroTab('${esc(c)}')">${esc(c)}</button>`).join('')}
+    </div>
+    ` : ''}
+
+    ${filtered.length ? `
+      <div class="agro-grid">
+        ${filtered.map(p => `
+          <div class="agro-card" onclick="viewAgroProduct('${esc(p.id)}')">
+            <div class="agro-img">${p.photoUrl ? `<img src="${esc(p.photoUrl)}" alt="">` : pickIcon(p.name || p.category)}</div>
+            <div class="agro-name">${esc(p.name || 'Product')}</div>
+            <div class="agro-price">${p.price ? fmtZMK(p.price) : 'Negotiable'}${p.unit ? `<small>/ ${esc(p.unit)}</small>` : ''}</div>
+            ${p.category ? `<span class="agro-cat">${esc(p.category)}</span>` : ''}
+          </div>
+        `).join('')}
+      </div>
+    ` : `
+      <div class="empty" style="padding-top:40px">
+        <div class="e-ic">🏪</div>
+        <h3>No products yet</h3>
+        <p>Agro dealers haven't listed any products yet. Check back soon.</p>
+      </div>
+    `}
+
+    <div style="height:8px"></div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+window.viewAgroProduct = (id) => {
+  const p = (S.agroProducts || []).find(x => x.id === id);
+  if (!p) return;
+  const priceText = p.price ? fmtZMK(p.price) + (p.unit ? ' / ' + p.unit : '') : 'Negotiable';
+  const stockText = p.stock != null ? `${p.stock} ${p.unit || 'units'} in stock` : 'Stock unknown';
+
+  modal(`
+    <h3>${esc(p.name || 'Product')}</h3>
+    <p>${esc(p.category || 'Other')}${p.sellerName ? ' · ' + esc(p.sellerName) : ''}</p>
+    ${p.photoUrl ? `<img src="${esc(p.photoUrl)}" style="width:100%;max-height:180px;object-fit:cover;border-radius:14px;margin-bottom:12px">` : ''}
+    <div class="info-table" style="text-align:left;margin-bottom:14px">
+      <div class="info-row"><span class="ir-k">Price</span><span class="ir-v">${esc(priceText)}</span></div>
+      <div class="info-row"><span class="ir-k">Stock</span><span class="ir-v">${esc(stockText)}</span></div>
+      ${p.sellerName ? `<div class="info-row"><span class="ir-k">Dealer</span><span class="ir-v">${esc(p.sellerName)}</span></div>` : ''}
+      ${p.sellerPhone ? `<div class="info-row"><span class="ir-k">Phone</span><span class="ir-v">${esc(p.sellerPhone)}</span></div>` : ''}
+      ${p.city ? `<div class="info-row"><span class="ir-k">Location</span><span class="ir-v">${esc(p.city)}</span></div>` : ''}
+      ${p.description ? `<div class="info-row"><span class="ir-k">Notes</span><span class="ir-v">${esc(p.description)}</span></div>` : ''}
+    </div>
+    <button class="btn btn-p" onclick="closeModal()">Close</button>
+  `);
 };
 
 /* ============================================================
@@ -6960,6 +7762,7 @@ function renderProfile() {
     </div>
     <div class="menu-list">
       <div class="menu-item" onclick="goFarm()"><div class="mi-ic">🌱</div><div class="mi-tx"><div class="mi-tt">My Farm</div><div class="mi-sb">${S.myBatches.length} batches</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="navTo('agro-dealers')"><div class="mi-ic">🏪</div><div class="mi-tx"><div class="mi-tt">Agro Dealers</div><div class="mi-sb">Pesticides, tools, seeds & more</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="navTo('weather-detail')"><div class="mi-ic">☁️</div><div class="mi-tx"><div class="mi-tt">Weather</div><div class="mi-sb">${esc(S.weatherCity || S.userLocation)}</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="navTo('farmers-by-city')"><div class="mi-ic">🧑‍🌾</div><div class="mi-tx"><div class="mi-tt">Farmers by City</div><div class="mi-sb">What other farmers are planting</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="navTo('market-analysis')"><div class="mi-ic">📊</div><div class="mi-tx"><div class="mi-tt">Market Analysis</div><div class="mi-sb">Current pipeline across Zambia</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
@@ -6985,10 +7788,8 @@ window.confirmLogout = async () => {
 };
 
 /* ============================================================
-   WEATHER DETAIL — LIVE TIME + SUN / MOON ARC
+   WEATHER DETAIL
    ============================================================ */
-function pad2(n) { return String(n).padStart(2, '0'); }
-
 function computeCelestialPosition(now) {
   const hour = now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600;
   const isDay = hour >= 6 && hour < 18;
@@ -7078,7 +7879,6 @@ function renderWeatherDetail() {
       <div class="tb-title">Weather Report</div>
     </div>
 
-    <!-- LIVE TIME / DATE BAR -->
     <div class="weather-live-bar">
       <div class="wlb-icon">${pos.isDay ? '☀️' : '🌙'}</div>
       <div class="wlb-info">
@@ -7097,7 +7897,6 @@ function renderWeatherDetail() {
       </div>
     </div>
 
-    <!-- SUN / MOON ARC -->
     <div class="weather-celestial-wrap">
       <div class="weather-celestial-title">🌗 Celestial Position · ${pos.isDay ? 'Sun' : 'Moon'}</div>
       <svg class="sun-arc-svg ${pos.isDay ? '' : 'night'}" viewBox="0 0 300 150">
@@ -7129,7 +7928,6 @@ function renderWeatherDetail() {
         <text x="150" y="138" text-anchor="middle" font-size="9" fill="${pos.isDay ? '#fbbf24' : '#cbd5e1'}" font-weight="700">${pos.isDay ? '12 PM' : '12 AM'}</text>
         <text x="250" y="138" text-anchor="middle" font-size="9" fill="${pos.isDay ? '#fbbf24' : '#cbd5e1'}" font-weight="700">${pos.isDay ? '6 PM' : '6 AM'}</text>
 
-        <!-- Sun group -->
         <g id="celestial-sun" style="display:${pos.isDay ? 'inline' : 'none'}">
           <circle id="weather-celestial-glow" cx="${pos.x}" cy="${pos.y}" r="26" fill="url(#sunGlow)" class="moon-glow" />
           <circle id="weather-celestial-body" cx="${pos.x}" cy="${pos.y}" r="12" fill="#fbbf24" stroke="#f59e0b" stroke-width="2">
@@ -7137,7 +7935,6 @@ function renderWeatherDetail() {
           </circle>
         </g>
 
-        <!-- Moon group -->
         <g id="celestial-moon" style="display:${pos.isDay ? 'none' : 'inline'}">
           <circle cx="${pos.x}" cy="${pos.y}" r="28" fill="url(#moonGlowGrad)" class="moon-glow" />
           <circle cx="${pos.x}" cy="${pos.y}" r="12" fill="#e5e7eb" stroke="#94a3b8" stroke-width="1.5" />
@@ -7153,7 +7950,6 @@ function renderWeatherDetail() {
       <div class="celestial-note" id="weather-celestial-note">Calculating sky position…</div>
     </div>
 
-    <!-- WINDMILL -->
     <div class="windmill-wrap">
       <div class="windmill">
         <div class="windmill-tower"></div>
@@ -7169,7 +7965,6 @@ function renderWeatherDetail() {
       </div>
     </div>
 
-    <!-- HUMIDITY -->
     <div class="humidity-card">
       <div class="humidity-title">💧 Humidity</div>
       <div class="humidity-val">${w.hum}%</div>
@@ -7177,7 +7972,6 @@ function renderWeatherDetail() {
       <div class="humidity-sub">${w.hum > 80 ? 'Very humid — watch for fungal disease' : w.hum > 60 ? 'Moderate humidity' : 'Dry air — good for harvest'}</div>
     </div>
 
-    <!-- 7-DAY -->
     ${w.daily && w.daily.length ? `
     <div class="ma-section" style="margin:0 18px 14px">
       <h3>7-Day Forecast</h3>
@@ -7196,7 +7990,7 @@ function renderWeatherDetail() {
 }
 
 /* ============================================================
-   MARKET ANALYSIS (existing)
+   MARKET ANALYSIS
    ============================================================ */
 function renderMarketAnalysis() {
   const all = S.allFarmersBatches || [];
@@ -7209,7 +8003,6 @@ function renderMarketAnalysis() {
   });
   const sorted = Object.entries(byCrop).sort((a, b) => b[1] - a[1]);
   const totalBoxes = sorted.reduce((s, [, v]) => s + v, 0);
-
   const topCrop = sorted[0];
 
   return `
@@ -7277,7 +8070,7 @@ function renderMarketAnalysis() {
 }
 
 /* ============================================================
-   NEW · FARMERS BY CITY
+   FARMERS BY CITY
    ============================================================ */
 window.setFarmersCity = (city) => { S.farmersCity = city; route(); };
 
@@ -7292,7 +8085,6 @@ function renderFarmersByCity() {
 
   const filtered = all.filter(b => b.town === selected);
 
-  // group by crop
   const byCrop = {};
   filtered.forEach(b => {
     if (!byCrop[b.cropName]) byCrop[b.cropName] = { expected: 0, count: 0, harvested: 0, active: 0 };
@@ -7397,7 +8189,7 @@ function renderFarmersByCity() {
 }
 
 /* ============================================================
-   NEW · FARM ANALYSIS (yearly + city)
+   FARM ANALYSIS
    ============================================================ */
 window.setAnalysisYear = (y) => { S.analysisYear = parseInt(y); route(); };
 window.setAnalysisCity = (c) => { S.analysisCity = c; route(); };
@@ -7425,7 +8217,6 @@ function renderFarmAnalysis() {
   const deltaPct = totalExpected ? Math.round((totalActual - totalExpected) / totalExpected * 100) : 0;
   const efficiency = totalExpected ? Math.round(totalActual / totalExpected * 100) : 0;
 
-  // by crop
   const byCrop = {};
   filtered.forEach(b => {
     if (!byCrop[b.cropName]) byCrop[b.cropName] = { expected: 0, actual: 0, count: 0, harvested: 0 };
@@ -7438,7 +8229,6 @@ function renderFarmAnalysis() {
   const sortedCrops = Object.entries(byCrop).sort((a, b) => b[1].expected - a[1].expected);
   const topCrop = sortedCrops[0];
 
-  // top farmers
   const byFarmer = {};
   filtered.forEach(b => {
     if (!byFarmer[b.ownerId]) byFarmer[b.ownerId] = { name: b.ownerName || 'Farmer', count: 0, expected: 0, actual: 0, city: b.town || '' };
@@ -7462,7 +8252,6 @@ function renderFarmAnalysis() {
       <p>Historical production across Zambia. Compare what was planted, expected and produced.</p>
     </div>
 
-    <!-- Filters -->
     <div class="analysis-filters">
       <div class="af-box">
         <label>Year</label>
@@ -7481,7 +8270,6 @@ function renderFarmAnalysis() {
       </div>
     </div>
 
-    <!-- Stats grid -->
     <div class="analysis-stat-grid">
       <div class="as-card">
         <div class="as-ic">🌱</div>
@@ -7521,7 +8309,6 @@ function renderFarmAnalysis() {
       </div>
     </div>
 
-    <!-- Per crop -->
     <div class="ma-section">
       <h3>Production by Crop</h3>
       ${sortedCrops.length ? sortedCrops.map(([name, data], idx) => {
@@ -7639,6 +8426,7 @@ async function startApp() {
     startNotificationsListener();
     startAllBatchesListener();
     startMarketplaceListener();
+    startAgroProductsListener();
 
     const app = document.getElementById('app');
     app.innerHTML = `<div class="screen-wrap"></div>`;
@@ -7654,6 +8442,10 @@ async function startApp() {
     try { history.replaceState({ screen: 'home' }, '', '#home'); } catch (e) {}
 
     await detectUserCityAndWeather();
+
+    // Start global tickers
+    startPendingCheckTimer();
+    startCountdownTicker();
 
     clearInterval(S.weatherRefreshTimer);
     S.weatherRefreshTimer = setInterval(async () => {
