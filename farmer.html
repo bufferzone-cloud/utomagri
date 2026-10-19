@@ -9,8 +9,6 @@
 
 <!-- ============================================================
      EXTERNAL LIBRARIES
-     - Leaflet: maps for delivery and ongoing tracking
-     - Cloudinary: image uploads for activities, listings, NRC
      ============================================================ -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -3609,6 +3607,821 @@ a{
     padding-bottom:calc(var(--nav-h) + 24px);
   }
 }
+
+/* ============================================================
+   NEW · POND & SWIMMING FISH (fisheries)
+   ============================================================ */
+.pond-wrap{
+  margin:0 18px 14px;
+  border-radius:var(--r-xl);
+  overflow:hidden;
+  position:relative;
+  aspect-ratio:16/10;
+  max-height:280px;
+  background:linear-gradient(180deg,#7dd3fc 0%,#38bdf8 45%,#0284c7 100%);
+  border:2px solid rgba(2,132,199,.35);
+  box-shadow:inset 0 8px 24px rgba(0,0,0,.12),0 8px 24px -8px rgba(2,132,199,.35);
+}
+
+.pond-wrap::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:20%;
+  background:linear-gradient(180deg,rgba(255,255,255,.28),transparent);
+  pointer-events:none;
+}
+
+.pond-lily{
+  position:absolute;
+  font-size:24px;
+  opacity:.92;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.15));
+}
+
+.pond-lily.l1{top:12%;left:8%}
+.pond-lily.l2{top:20%;right:12%}
+.pond-lily.l3{bottom:14%;left:22%}
+
+.pond-fish{
+  position:absolute;
+  font-size:44px;
+  line-height:1;
+  filter:drop-shadow(0 4px 6px rgba(0,0,0,.25));
+  animation-name:fishSwim,fishBob;
+  animation-timing-function:linear,ease-in-out;
+  animation-iteration-count:infinite,infinite;
+  will-change:left,transform;
+}
+
+.pond-fish.f1{
+  top:28%;
+  animation-duration:11s,2.4s;
+  animation-delay:0s,0s;
+}
+
+.pond-fish.f2{
+  top:52%;
+  font-size:38px;
+  animation-duration:14s,3.1s;
+  animation-delay:-4s,-1.2s;
+}
+
+.pond-fish.f3{
+  top:74%;
+  font-size:50px;
+  animation-duration:9s,2s;
+  animation-delay:-6s,-.5s;
+}
+
+@keyframes fishSwim{
+  0%{ left:-15%; }
+  50%{ left:105%; }
+  50.01%{ left:105%; transform:scaleX(-1); }
+  99.99%{ left:-15%; transform:scaleX(-1); }
+  100%{ left:-15%; transform:scaleX(1); }
+}
+
+@keyframes fishBob{
+  0%,100%{ margin-top:-4px; }
+  50%{ margin-top:6px; }
+}
+
+.pond-bubble{
+  position:absolute;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:rgba(255,255,255,.65);
+  border:1px solid rgba(255,255,255,.9);
+  animation:bubbleUp 5s linear infinite;
+  opacity:0;
+}
+
+.pond-bubble.b1{left:18%;animation-delay:0s}
+.pond-bubble.b2{left:48%;animation-delay:1.6s;width:6px;height:6px}
+.pond-bubble.b3{left:72%;animation-delay:3.1s;width:10px;height:10px}
+.pond-bubble.b4{left:88%;animation-delay:2.2s}
+
+@keyframes bubbleUp{
+  0%{bottom:0;opacity:0;transform:translateY(0)}
+  10%{opacity:.9}
+  90%{opacity:.6}
+  100%{bottom:100%;opacity:0;transform:translateY(-10px)}
+}
+
+.pond-label{
+  position:absolute;
+  bottom:10px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:11px;
+  font-weight:900;
+  color:#fff;
+  background:rgba(2,132,199,.55);
+  padding:5px 12px;
+  border-radius:var(--r-p);
+  letter-spacing:.03em;
+  text-shadow:0 1px 3px rgba(0,0,0,.3);
+  backdrop-filter:blur(4px);
+  white-space:nowrap;
+}
+
+/* ============================================================
+   NEW · MANUAL STAGE CHIPS
+   ============================================================ */
+.stage-selector{
+  display:flex;
+  gap:6px;
+  padding:10px 0 4px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+
+.stage-selector::-webkit-scrollbar{display:none}
+
+.stage-chip{
+  flex-shrink:0;
+  padding:8px 12px;
+  border-radius:var(--r-p);
+  background:#fff;
+  border:1.5px solid var(--bd);
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+  color:var(--tl);
+  display:flex;
+  align-items:center;
+  gap:5px;
+  transition:all .2s var(--e);
+}
+
+.stage-chip:active{transform:scale(.96)}
+
+.stage-chip.done{
+  background:var(--p-ll);
+  color:var(--p-d);
+  border-color:rgba(15,122,52,.4);
+}
+
+.stage-chip.current{
+  background:linear-gradient(180deg,#12903e,var(--p));
+  color:#fff;
+  border-color:var(--p);
+  box-shadow:0 6px 14px -4px var(--p-glow);
+}
+
+.stage-chip.current.ready{
+  background:linear-gradient(180deg,#f97316,#ea580c);
+  border-color:#ea580c;
+  box-shadow:0 6px 14px -4px rgba(234,88,12,.5);
+}
+
+.stage-chip.locked{
+  opacity:.45;
+  pointer-events:none;
+}
+
+.stage-chip .sch-i{font-size:13px}
+
+/* ============================================================
+   NEW · MARKET LISTING CARDS
+   ============================================================ */
+.market-tabs{
+  display:flex;
+  gap:6px;
+  padding:8px 18px 12px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+
+.market-tabs::-webkit-scrollbar{display:none}
+
+.market-tab{
+  flex-shrink:0;
+  padding:9px 16px;
+  border-radius:var(--r-p);
+  background:#fff;
+  border:1.5px solid var(--bd);
+  font-size:12px;
+  font-weight:800;
+  color:var(--tb);
+  transition:all .2s var(--e);
+}
+
+.market-tab.active{
+  background:var(--p);
+  color:#fff;
+  border-color:var(--p);
+  box-shadow:0 4px 12px -4px var(--p-glow);
+}
+
+.market-card{
+  margin:0 18px 10px;
+  padding:14px;
+  background:#fff;
+  border:1px solid var(--bd);
+  border-radius:var(--r-xl);
+  box-shadow:var(--sh-sm);
+  display:flex;
+  gap:12px;
+  cursor:pointer;
+  transition:all .2s var(--e);
+}
+
+.market-card:active{
+  transform:scale(.985);
+  box-shadow:var(--sh-md);
+}
+
+.mc-thumb{
+  width:64px;
+  height:64px;
+  border-radius:16px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  background:var(--sf2);
+  box-shadow:0 3px 10px rgba(0,0,0,.06);
+}
+
+.mc-body{
+  flex:1;
+  min-width:0;
+}
+
+.mc-title{
+  font-size:14px;
+  font-weight:900;
+  color:var(--td);
+  letter-spacing:-.01em;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.mc-meta{
+  font-size:11px;
+  color:var(--tl);
+  font-weight:600;
+  margin-top:3px;
+  line-height:1.4;
+}
+
+.mc-price{
+  display:flex;
+  align-items:baseline;
+  gap:5px;
+  margin-top:6px;
+}
+
+.mc-price strong{
+  font-size:16px;
+  font-weight:900;
+  letter-spacing:-.02em;
+  color:var(--p-d);
+}
+
+.mc-price small{
+  font-size:10.5px;
+  font-weight:700;
+  color:var(--tl);
+  text-transform:uppercase;
+  letter-spacing:.03em;
+}
+
+.mc-side{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  justify-content:space-between;
+  flex-shrink:0;
+  gap:6px;
+}
+
+.mc-badge{
+  font-size:9.5px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  padding:3px 8px;
+  border-radius:var(--r-p);
+}
+
+.mc-badge.mine{
+  background:#fef3c7;
+  color:#9a3412;
+}
+
+.mc-badge.now{
+  background:var(--ok-soft);
+  color:#065f46;
+}
+
+.mc-badge.later{
+  background:var(--info-soft);
+  color:#1e40af;
+}
+
+.mc-time{
+  font-size:10px;
+  color:var(--tm);
+  font-weight:700;
+  white-space:nowrap;
+}
+
+/* ============================================================
+   NEW · CITY CHIPS / FARMERS-BY-CITY
+   ============================================================ */
+.city-chips{
+  display:flex;
+  gap:6px;
+  padding:6px 18px 14px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+
+.city-chips::-webkit-scrollbar{display:none}
+
+.city-chip{
+  flex-shrink:0;
+  padding:8px 14px;
+  border-radius:var(--r-p);
+  background:#fff;
+  border:1.5px solid var(--bd);
+  font-size:12px;
+  font-weight:800;
+  color:var(--tb);
+  transition:all .2s var(--e);
+  white-space:nowrap;
+}
+
+.city-chip.active{
+  background:var(--p);
+  color:#fff;
+  border-color:var(--p);
+  box-shadow:0 4px 12px -4px var(--p-glow);
+}
+
+.farmer-plant-card{
+  margin:0 18px 10px;
+  padding:14px;
+  background:#fff;
+  border:1px solid var(--bd);
+  border-radius:var(--r-lg);
+  box-shadow:var(--sh-xs);
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
+.fpc-ic{
+  width:50px;
+  height:50px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  flex-shrink:0;
+}
+
+.fpc-body{
+  flex:1;
+  min-width:0;
+}
+
+.fpc-title{
+  font-size:13.5px;
+  font-weight:900;
+  color:var(--td);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.fpc-meta{
+  font-size:11px;
+  color:var(--tl);
+  font-weight:600;
+  margin-top:3px;
+  line-height:1.4;
+}
+
+.fpc-boxes{
+  text-align:right;
+  flex-shrink:0;
+}
+
+.fpc-boxes strong{
+  display:block;
+  font-size:16px;
+  font-weight:900;
+  color:var(--p-d);
+  letter-spacing:-.02em;
+}
+
+.fpc-boxes small{
+  display:block;
+  font-size:9.5px;
+  color:var(--tl);
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  margin-top:2px;
+}
+
+/* ============================================================
+   NEW · FARM ANALYSIS FILTERS
+   ============================================================ */
+.analysis-filters{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:8px 18px 14px;
+}
+
+.af-box{
+  position:relative;
+  background:#fff;
+  border:1.5px solid var(--bd);
+  border-radius:var(--r-lg);
+  padding:12px 14px;
+  cursor:pointer;
+  box-shadow:var(--sh-xs);
+  transition:all .2s var(--e);
+}
+
+.af-box:active{
+  border-color:var(--p);
+  background:var(--p-ll);
+}
+
+.af-box label{
+  display:block;
+  font-size:10px;
+  font-weight:800;
+  color:var(--tl);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin-bottom:3px;
+}
+
+.af-box .af-value{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:6px;
+  font-size:14px;
+  font-weight:900;
+  color:var(--td);
+}
+
+.af-box .af-value .st-arrow{
+  font-size:10px;
+  color:var(--tm);
+}
+
+.af-box select{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  cursor:pointer;
+}
+
+.analysis-hero{
+  margin:0 18px 14px;
+  padding:20px;
+  border-radius:var(--r-xl);
+  background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);
+  color:#fff;
+  box-shadow:var(--sh-xl);
+  position:relative;
+  overflow:hidden;
+}
+
+.analysis-hero::before{
+  content:'';
+  position:absolute;
+  top:-40px;
+  right:-30px;
+  width:160px;
+  height:160px;
+  background:radial-gradient(circle,rgba(134,239,172,.18) 0%,transparent 70%);
+  border-radius:50%;
+}
+
+.analysis-hero h2{
+  font-size:19px;
+  font-weight:900;
+  letter-spacing:-.02em;
+  position:relative;
+  z-index:1;
+}
+
+.analysis-hero p{
+  font-size:12px;
+  font-weight:600;
+  opacity:.8;
+  margin-top:4px;
+  position:relative;
+  z-index:1;
+  line-height:1.5;
+}
+
+.analysis-stat-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  padding:0 18px 14px;
+}
+
+.as-card{
+  padding:16px;
+  border-radius:var(--r-lg);
+  background:#fff;
+  border:1px solid var(--bd);
+  box-shadow:var(--sh-sm);
+  position:relative;
+  overflow:hidden;
+}
+
+.as-card.highlight{
+  background:linear-gradient(135deg,#e6f5eb,#d1fae5);
+  border-color:rgba(15,122,52,.25);
+}
+
+.as-card .as-ic{
+  font-size:18px;
+  margin-bottom:6px;
+}
+
+.as-card .as-lb{
+  font-size:10px;
+  font-weight:800;
+  color:var(--tl);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin-bottom:6px;
+}
+
+.as-card .as-v{
+  font-size:22px;
+  font-weight:900;
+  color:var(--td);
+  letter-spacing:-.03em;
+  line-height:1;
+}
+
+.as-card.highlight .as-v{
+  color:var(--p-d);
+}
+
+.as-card .as-sub{
+  font-size:10.5px;
+  color:var(--tl);
+  font-weight:600;
+  margin-top:4px;
+}
+
+.as-card .as-delta{
+  font-size:10.5px;
+  font-weight:800;
+  margin-top:4px;
+}
+
+.as-card .as-delta.up{color:#16a34a}
+.as-card .as-delta.down{color:#dc2626}
+
+.analysis-crop-row{
+  padding:12px;
+  border-radius:var(--r);
+  background:var(--sf2);
+  border:1px solid var(--bd);
+  margin-bottom:8px;
+}
+
+.acr-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:8px;
+}
+
+.acr-name{
+  font-size:13px;
+  font-weight:900;
+  color:var(--td);
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.acr-top{
+  font-size:9.5px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  padding:3px 8px;
+  border-radius:var(--r-p);
+  background:#fef3c7;
+  color:#9a3412;
+}
+
+.acr-bars{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.acr-bar-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:10.5px;
+  font-weight:700;
+  color:var(--tl);
+}
+
+.acr-bar-lb{
+  width:60px;
+  flex-shrink:0;
+  text-transform:uppercase;
+  letter-spacing:.03em;
+}
+
+.acr-bar-track{
+  flex:1;
+  height:8px;
+  border-radius:4px;
+  background:var(--bd);
+  overflow:hidden;
+}
+
+.acr-bar-fill{
+  height:100%;
+  border-radius:4px;
+  transition:width .6s var(--e);
+}
+
+.acr-bar-fill.exp{
+  background:linear-gradient(90deg,#86efac,#16a34a);
+}
+
+.acr-bar-fill.act{
+  background:linear-gradient(90deg,#fdba74,#ea580c);
+}
+
+.acr-bar-val{
+  width:70px;
+  text-align:right;
+  font-weight:800;
+  color:var(--td);
+  flex-shrink:0;
+}
+
+/* ============================================================
+   NEW · WEATHER LIVE CLOCK & MOON
+   ============================================================ */
+.weather-live-bar{
+  margin:0 18px 14px;
+  padding:16px 18px;
+  border-radius:var(--r-xl);
+  background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
+  color:#fff;
+  box-shadow:var(--sh-lg);
+  display:flex;
+  align-items:center;
+  gap:14px;
+  position:relative;
+  overflow:hidden;
+}
+
+.weather-live-bar::before{
+  content:'';
+  position:absolute;
+  top:-30px;
+  right:-30px;
+  width:120px;
+  height:120px;
+  background:radial-gradient(circle,rgba(251,191,36,.15) 0%,transparent 70%);
+  border-radius:50%;
+}
+
+.wlb-icon{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:rgba(255,255,255,.12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  flex-shrink:0;
+  z-index:1;
+}
+
+.wlb-info{
+  flex:1;
+  z-index:1;
+}
+
+.wlb-time{
+  font-size:26px;
+  font-weight:900;
+  letter-spacing:-.03em;
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+
+.wlb-date{
+  font-size:11.5px;
+  font-weight:700;
+  opacity:.85;
+  margin-top:6px;
+  letter-spacing:.02em;
+}
+
+.wlb-badge{
+  font-size:9.5px;
+  font-weight:800;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  padding:3px 9px;
+  border-radius:var(--r-p);
+  background:rgba(251,191,36,.22);
+  color:#fbbf24;
+  margin-top:6px;
+  display:inline-block;
+}
+
+.wlb-badge.night{
+  background:rgba(147,197,253,.2);
+  color:#bfdbfe;
+}
+
+.weather-celestial-wrap{
+  margin:0 18px 14px;
+  padding:20px;
+  border-radius:var(--r-xl);
+  background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
+  border:1.5px solid rgba(148,163,184,.2);
+  box-shadow:var(--sh-lg);
+  position:relative;
+  overflow:hidden;
+}
+
+.weather-celestial-title{
+  font-size:11px;
+  font-weight:800;
+  color:#cbd5e1;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.sun-arc-svg.night{
+  filter:drop-shadow(0 0 12px rgba(147,197,253,.5));
+}
+
+.moon-glow{
+  animation:moonPulse 4s ease-in-out infinite;
+}
+
+@keyframes moonPulse{
+  0%,100%{opacity:.5}
+  50%{opacity:.9}
+}
+
+.celestial-time-labels{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+  font-size:10.5px;
+  font-weight:800;
+  color:#cbd5e1;
+  letter-spacing:.02em;
+}
+
+.celestial-note{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px dashed rgba(148,163,184,.25);
+  font-size:11.5px;
+  color:#cbd5e1;
+  font-weight:600;
+  text-align:center;
+  line-height:1.5;
+}
 </style>
 </head>
 <body>
@@ -3737,7 +4550,8 @@ const S = {
     varietyName: null,
     length: null,
     width: null,
-    town: null
+    town: null,
+    animalCount: 0
   },
   varieties: {},
   cropSpacing: {},
@@ -3746,9 +4560,16 @@ const S = {
   irrigationTypes: [],
   detailedStages: {},
   liveClockTimer: null,
+  weatherClockTimer: null,
   weatherRefreshTimer: null,
   supplierProductsUnsub: null,
-  allBatchesUnsub: null
+  allBatchesUnsub: null,
+  marketplaceUnsub: null,
+  farmTab: 'plant',
+  marketTab: 'all',
+  farmersCity: null,
+  analysisYear: null,
+  analysisCity: 'all'
 };
 
 /* ============================================================
@@ -4128,7 +4949,7 @@ async function detectUserCityAndWeather(force) {
 }
 
 /* ============================================================
-   LIVE CLOCK
+   LIVE CLOCK (home hero)
    ============================================================ */
 function startLiveClock() {
   const tick = () => {
@@ -4207,6 +5028,7 @@ function showScreen(id, data = {}, pushHistory = true) {
   if (sc) sc.scrollTop = 0;
   updateCartFloat();
   startLiveClock();
+  if (id === 'weather-detail') startWeatherClock();
 }
 
 window.addEventListener('popstate', e => {
@@ -4235,7 +5057,7 @@ function updateNav(id) {
   if (['plant-loader', 'plant-step-1', 'plant-step-3', 'plant-step-4', 'plant-confirm', 'plant-success', 'batch-detail', 'harvest-record', 'post-harvest-goods'].includes(id)) key = 'farm';
   if (['marketplace', 'product-detail', 'post-ready-goods', 'buy-supplies', 'supplier-cart', 'supplier-checkout'].includes(id)) key = 'market';
   if (['delivery-history', 'request-delivery'].includes(id)) key = 'delivery';
-  if (['profile', 'weather', 'analysis', 'government', 'follow-ups', 'my-posts', 'explore', 'catalogue-detail', 'market-analysis', 'weather-detail'].includes(id)) key = 'profile';
+  if (['profile', 'weather', 'analysis', 'government', 'follow-ups', 'my-posts', 'explore', 'catalogue-detail', 'market-analysis', 'weather-detail', 'farm-analysis', 'farmers-by-city'].includes(id)) key = 'profile';
   nav.querySelectorAll('.bn').forEach(b => {
     b.classList.toggle('active', map[key] === b.dataset.nav);
   });
@@ -4444,7 +5266,28 @@ function startAllBatchesListener() {
     const arr = Object.entries(data).map(([id, v]) => ({ id, ...v }));
     arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
     S.allFarmersBatches = arr;
-    if (S.screen === 'market-analysis') route();
+    // refresh my batches on the fly
+    if (S.user) {
+      S.myBatches = arr.filter(b => b.ownerId === S.user.uid);
+    }
+    if (['market-analysis', 'farm-analysis', 'farmers-by-city'].includes(S.screen)) route();
+  });
+}
+
+/* ============================================================
+   NEW · LIVE MARKETPLACE LISTENER
+   ============================================================ */
+function startMarketplaceListener() {
+  if (S.marketplaceUnsub) S.marketplaceUnsub();
+  S.marketplaceUnsub = onValue(ref(db, 'marketListings'), (snap) => {
+    const data = snap.val() || {};
+    const arr = Object.entries(data)
+      .map(([id, v]) => ({ id, ...v }))
+      .filter(l => l && l.status !== 'removed');
+    arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    S.marketplace = arr;
+    if (S.user) S.myListings = arr.filter(l => l.seller_id === S.user.uid);
+    if (S.screen === 'marketplace') route();
   });
 }
 
@@ -4476,6 +5319,8 @@ function route() {
     case 'profile': el.innerHTML = renderProfile(); break;
     case 'weather-detail': el.innerHTML = renderWeatherDetail(); break;
     case 'market-analysis': el.innerHTML = renderMarketAnalysis(); break;
+    case 'farm-analysis': el.innerHTML = renderFarmAnalysis(); break;
+    case 'farmers-by-city': el.innerHTML = renderFarmersByCity(); break;
     case 'government': el.innerHTML = renderGovernment(); break;
     default: el.innerHTML = renderHome();
   }
@@ -4626,11 +5471,29 @@ function renderHome() {
       </div>
     </div>
 
+    <div class="list-row" onclick="navTo('farmers-by-city')">
+      <div class="lr-ic green">🧑‍🌾</div>
+      <div class="lr-tx">
+        <div class="lr-tt">Farmers by City</div>
+        <div class="lr-sb">See what other farmers are planting</div>
+      </div>
+      <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+    </div>
+
     <div class="list-row" onclick="navTo('market-analysis')">
       <div class="lr-ic purple">📊</div>
       <div class="lr-tx">
         <div class="lr-tt">Market Analysis</div>
-        <div class="lr-sb">See what all farmers are planting</div>
+        <div class="lr-sb">Current pipeline across Zambia</div>
+      </div>
+      <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+    </div>
+
+    <div class="list-row" onclick="navTo('farm-analysis')">
+      <div class="lr-ic amber">📈</div>
+      <div class="lr-tx">
+        <div class="lr-tt">Farm Analysis</div>
+        <div class="lr-sb">Yearly expected vs produced by city</div>
       </div>
       <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
     </div>
@@ -4745,7 +5608,7 @@ function renderFarmHarvest() {
       <div class="empty">
         <div class="e-ic">🌾</div>
         <h3>Nothing ready to harvest</h3>
-        <p>Batches appear here when they reach the harvesting stage.</p>
+        <p>Set a batch to <strong>Ready to Harvest</strong> in Manage to see it here.</p>
       </div>`}
     ${done.length ? `
       <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin:22px 0 10px">Harvested</div>
@@ -4796,7 +5659,7 @@ window.openBatch = (id, mode) => showScreen('batch-detail', { id, tab: mode || '
    PLANT FLOW — 3 SECOND LOADER
    ============================================================ */
 window.startPlantFlow = () => {
-  S.plantWizard = { step: 1, cropId: null, varietyName: null, length: null, width: null, town: null };
+  S.plantWizard = { step: 1, cropId: null, varietyName: null, length: null, width: null, town: null, animalCount: 0 };
   showScreen('plant-loader');
   let dots = 0;
   const loaderInterval = setInterval(() => {
@@ -4937,12 +5800,13 @@ window.selectVariety = (name) => {
 };
 
 /* ============================================================
-   STEP 3: FIELD SIZE / COUNT
+   STEP 3: FIELD SIZE / COUNT / POND SIZE
    ============================================================ */
 function renderPlantStep3() {
   const w = S.plantWizard;
   const crop = S.catalogue.find(c => c.id === w.cropId);
   const isLivestock = crop && (crop.category.includes('Livestock') || crop.category.includes('Poultry'));
+  const isFisheries = crop && crop.category.includes('Fisheries');
   const area = computeArea(w.length, w.width);
   const est = (w.length > 0 && w.width > 0) ? estimateBoxes(crop ? crop.category : 'Crop', w.length, w.width, crop ? crop.name : '', w.animalCount) : null;
 
@@ -4971,6 +5835,53 @@ function renderPlantStep3() {
       <div class="btn-row" style="padding-top:16px">
         <button class="btn btn-s" onclick="showScreen('plant-step-1')">← Back</button>
         <button class="btn btn-p" onclick="goPlantStep4()">Continue →</button>
+      </div>
+    </div>`;
+  }
+
+  if (isFisheries) {
+    return `
+    <div class="scroll">
+      <div class="topbar bordered">
+        <button class="tb-back" onclick="showScreen('plant-step-1')">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        </button>
+        <div class="tb-title">Pond Size</div>
+      </div>
+      ${renderStepsIndicator(3)}
+      <div class="step-label">Step 3 of 4</div>
+      <div class="step-title">How big is your pond?</div>
+      <div class="step-sub">Enter pond length and width in metres. We'll estimate fish yield.</div>
+      <div class="area-grid">
+        <div class="area-box">
+          <label>Pond Length</label>
+          <input type="number" id="plant-length" min="0" step="0.5" placeholder="0"
+                 value="${w.length || ''}"
+                 oninput="updateArea('length', this.value)">
+          <div class="ab-unit">metres (m)</div>
+        </div>
+        <div class="area-box">
+          <label>Pond Width</label>
+          <input type="number" id="plant-width" min="0" step="0.5" placeholder="0"
+                 value="${w.width || ''}"
+                 oninput="updateArea('width', this.value)">
+          <div class="ab-unit">metres (m)</div>
+        </div>
+      </div>
+      ${est ? `
+      <div class="box-estimate-card">
+        <div class="bec-label">🐟 Estimated Fish Yield</div>
+        <div class="bec-value">${est.boxes.toLocaleString()}</div>
+        <div class="bec-unit">${est.unit}</div>
+        <div class="bec-range">
+          Range: <strong>${est.lowBoxes.toLocaleString()}</strong> to <strong>${est.highBoxes.toLocaleString()}</strong> ${est.unit}.
+          <br>Based on ${area.m2.toFixed(0)} m² pond.
+        </div>
+      </div>
+      ` : ''}
+      <div class="btn-row" style="padding-top:16px">
+        <button class="btn btn-s" onclick="showScreen('plant-step-1')">← Back</button>
+        <button class="btn btn-p" id="plant-step3-next" onclick="goPlantStep4()" ${!(w.length > 0 && w.width > 0) ? 'disabled' : ''}>Continue →</button>
       </div>
     </div>`;
   }
@@ -5136,15 +6047,17 @@ window.goPlantConfirm = () => {
 };
 
 /* ============================================================
-   CONFIRMATION WITH GRID + BOXES
+   CONFIRMATION WITH GRID / POND
    ============================================================ */
 function renderPlantConfirm() {
   const w = S.plantWizard;
   const crop = S.catalogue.find(c => c.id === w.cropId);
   const isLivestock = crop && (crop.category.includes('Livestock') || crop.category.includes('Poultry'));
+  const isFisheries = crop && crop.category.includes('Fisheries');
   const area = computeArea(w.length, w.width);
   const est = estimateBoxes(crop ? crop.category : 'Crop', w.length, w.width, crop ? crop.name : '', w.animalCount);
 
+  // Regular grid for crops / livestock
   const cols = 6;
   const rows = 7;
   const cells = [];
@@ -5153,6 +6066,35 @@ function renderPlantConfirm() {
       cells.push(`<div class="farm-grid-cell">${crop ? pickIcon(crop.name) : '🌱'}</div>`);
     }
   }
+
+  // Swimming fishes for fisheries
+  const pondHTML = `
+    <div class="farm-grid-wrap">
+      <div class="farm-grid-title">🐟 Pond preview (3 swimming fishes)</div>
+      <div class="pond-wrap">
+        <div class="pond-lily l1">🌿</div>
+        <div class="pond-lily l2">🪷</div>
+        <div class="pond-lily l3">🌿</div>
+        <div class="pond-bubble b1"></div>
+        <div class="pond-bubble b2"></div>
+        <div class="pond-bubble b3"></div>
+        <div class="pond-bubble b4"></div>
+        <div class="pond-fish f1">🐟</div>
+        <div class="pond-fish f2">🐟</div>
+        <div class="pond-fish f3">🐟</div>
+        <div class="pond-label">🐟 ${w.length}m × ${w.width}m · ${area.m2.toFixed(0)} m²</div>
+      </div>
+    </div>
+  `;
+
+  const gridHTML = `
+    <div class="farm-grid-wrap">
+      <div class="farm-grid-title">🌱 Farm layout (6 × 7 grid)</div>
+      <div class="farm-grid" style="grid-template-columns:repeat(${cols},1fr);grid-template-rows:repeat(${rows},1fr)">
+        ${cells.join('')}
+      </div>
+    </div>
+  `;
 
   return `
   <div class="scroll">
@@ -5172,19 +6114,14 @@ function renderPlantConfirm() {
       <div class="batch-result" style="background:linear-gradient(135deg,#e6f5eb,#d1fae5)">
         <div class="br-row"><span>Variety</span><span>${esc(w.varietyName || '—')}</span></div>
         <div class="br-row"><span>Town</span><span>${esc(w.town || '—')}</span></div>
-        ${isLivestock ? `<div class="br-row"><span>Animals</span><span>${w.animalCount || 0}</span></div>` : `<div class="br-row"><span>Field</span><span>${w.length}m × ${w.width}m</span></div>`}
-        ${!isLivestock ? `<div class="br-row"><span>Area</span><span>${area.m2.toFixed(0)} m²</span></div>` : ''}
+        ${isLivestock ? `<div class="br-row"><span>Animals</span><span>${w.animalCount || 0}</span></div>` : `<div class="br-row"><span>${isFisheries ? 'Pond' : 'Field'}</span><span>${w.length}m × ${w.width}m</span></div>`}
+        ${!isLivestock ? `<div class="br-row"><span>${isFisheries ? 'Pond area' : 'Area'}</span><span>${area.m2.toFixed(0)} m²</span></div>` : ''}
       </div>
 
-      <div class="farm-grid-wrap">
-        <div class="farm-grid-title">🌱 Farm layout (6 × 7 grid)</div>
-        <div class="farm-grid" style="grid-template-columns:repeat(${cols},1fr);grid-template-rows:repeat(${rows},1fr)">
-          ${cells.join('')}
-        </div>
-      </div>
+      ${isFisheries ? pondHTML : gridHTML}
 
       <div class="box-estimate-card">
-        <div class="bec-label">📦 Estimated Harvest</div>
+        <div class="bec-label">${isFisheries ? '🐟 Estimated Fish Yield' : '📦 Estimated Harvest'}</div>
         <div class="bec-value">${est.boxes.toLocaleString()}</div>
         <div class="bec-unit">${est.unit}</div>
         <div class="bec-range">
@@ -5321,6 +6258,24 @@ function renderStepsIndicator(active, total = 4) {
 /* ============================================================
    BATCH DETAIL
    ============================================================ */
+const STAGE_ORDER = ['planted', 'growing', 'flowering', 'fruiting', 'harvesting', 'harvested'];
+const STAGE_LABELS = {
+  planted: 'Planted',
+  growing: 'Growing',
+  flowering: 'Flowering',
+  fruiting: 'Fruiting',
+  harvesting: 'Ready to Harvest',
+  harvested: 'Harvested'
+};
+const STAGE_ICONS = {
+  planted: '🌱',
+  growing: '🌿',
+  flowering: '🌸',
+  fruiting: '🍅',
+  harvesting: '🌾',
+  harvested: '✅'
+};
+
 function renderBatchDetail(id, tab) {
   const b = S.myBatches.find(x => x.id === id);
   if (!b) return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goFarm()">←</button></div></div>`;
@@ -5333,9 +6288,17 @@ function renderBatchDetail(id, tab) {
   const daysIn = b.plantedDate ? Math.floor((Date.now() - b.plantedDate) / 86400000) : 0;
   const totalDays = b.totalDays || 120;
   const pct = Math.min(100, Math.round(daysIn / totalDays * 100));
-  const stageKeys = ['planted', 'growing', 'flowering', 'fruiting', 'harvesting', 'harvested'];
-  const stageIdx = stageKeys.indexOf(b.stage || 'planted');
-  const stageLabels = { planted: 'Planted', growing: 'Growing', flowering: 'Flowering', fruiting: 'Fruiting', harvesting: 'Harvesting', harvested: 'Harvested' };
+  const stageIdx = STAGE_ORDER.indexOf(b.stage || 'planted');
+
+  // Manual stage selector
+  const stageChips = STAGE_ORDER.map((s, i) => {
+    const isCurrent = s === (b.stage || 'planted');
+    const isDone = i < stageIdx;
+    const cls = `stage-chip ${isDone ? 'done' : ''} ${isCurrent ? 'current' : ''} ${s === 'harvesting' && isCurrent ? 'ready' : ''}`;
+    return `<button class="${cls}" onclick="setBatchStage('${esc(b.id)}','${s}')">
+      <span class="sch-i">${STAGE_ICONS[s]}</span>${esc(STAGE_LABELS[s])}
+    </button>`;
+  }).join('');
 
   return `
   <div class="scroll">
@@ -5353,9 +6316,20 @@ function renderBatchDetail(id, tab) {
       <div class="batch-num-box">
         <div style="flex:1;min-width:0">
           <div class="bn-lb">Batch Number</div>
-          <div class="bn-v">${esc(b.batchNumber)} <span class="bn-est">📦 ${b.estimatedBoxes ? b.estimatedBoxes.toLocaleString() : '—'} boxes</span></div>
+          <div class="bn-v">${esc(b.batchNumber)} <span class="bn-est">📦 ${b.estimatedBoxes ? b.estimatedBoxes.toLocaleString() : '—'} est.</span></div>
         </div>
         <button onclick="copyBatchNumber('${esc(b.batchNumber)}')" style="width:40px;height:40px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">📋</button>
+      </div>
+
+      <!-- MANUAL STAGE SELECTOR -->
+      <div class="d-section">
+        <h3>Update Stage</h3>
+        <div style="font-size:12px;color:var(--tl);font-weight:600;margin-bottom:8px">
+          Tap the stage that matches your farm today.
+        </div>
+        <div class="stage-selector">
+          ${stageChips}
+        </div>
       </div>
 
       <!-- FARM SETUP -->
@@ -5397,7 +6371,7 @@ function renderBatchDetail(id, tab) {
       <div class="d-section">
         <h3>Field Summary</h3>
         <div class="info-table">
-          ${b.lengthM ? `<div class="info-row"><span class="ir-k">Field</span><span class="ir-v">${b.lengthM}m × ${b.widthM}m</span></div>` : ''}
+          ${b.lengthM ? `<div class="info-row"><span class="ir-k">${b.category && b.category.includes('Fisheries') ? 'Pond' : 'Field'}</span><span class="ir-v">${b.lengthM}m × ${b.widthM}m</span></div>` : ''}
           ${b.areaM2 ? `<div class="info-row"><span class="ir-k">Area</span><span class="ir-v">${b.areaM2.toFixed(0)} m²</span></div>` : ''}
           ${b.animalCount ? `<div class="info-row"><span class="ir-k">Animals</span><span class="ir-v">${b.animalCount}</span></div>` : ''}
           <div class="info-row"><span class="ir-k">Est. boxes</span><span class="ir-v">${b.estimatedBoxes ? b.estimatedBoxes.toLocaleString() : '—'}</span></div>
@@ -5415,22 +6389,39 @@ function renderBatchDetail(id, tab) {
           </div>
           <div style="height:10px;border-radius:5px;background:rgba(15,122,52,.14);overflow:hidden"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,var(--p),var(--acc))"></div></div>
         </div>
-        ${stageKeys.map((s, i) => {
+        ${STAGE_ORDER.map((s, i) => {
           const done = i <= stageIdx;
           const active = i === stageIdx;
-          return `<div class="timeline-stage ${done ? 'done' : ''} ${active ? 'active' : ''}"><div class="ts-dot">${done ? '✓' : (i + 1)}</div><div><div class="ts-lb">${stageLabels[s]}</div></div></div>`;
+          return `<div class="timeline-stage ${done ? 'done' : ''} ${active ? 'active' : ''}"><div class="ts-dot">${done ? '✓' : (i + 1)}</div><div><div class="ts-lb">${STAGE_LABELS[s]}</div></div></div>`;
         }).join('')}
       </div>
 
-      ${b.stage !== 'harvested' ? `
+      ${b.stage === 'harvesting' ? `
         <button class="btn btn-p" onclick="showScreen('harvest-record',{id:'${esc(b.id)}'})" style="margin-bottom:10px">🌾 Record Harvest</button>
-      ` : `
+      ` : ''}
+
+      ${b.stage === 'harvested' ? `
+        ${b.actualBoxes ? `
+          <div class="d-section">
+            <h3>Harvest Comparison</h3>
+            <div class="compare-card" style="margin:0">
+              <div class="compare-bar-row">
+                <div class="cbr-top"><span>Expected</span><span>${(b.estimatedBoxes || 0).toLocaleString()} boxes</span></div>
+                <div class="compare-bar-track"><div class="compare-bar-fill expected" style="width:100%"></div></div>
+              </div>
+              <div class="compare-bar-row" style="margin-bottom:0">
+                <div class="cbr-top"><span>Actual</span><span>${b.actualBoxes.toLocaleString()} boxes</span></div>
+                <div class="compare-bar-track"><div class="compare-bar-fill actual" style="width:${Math.min(100, Math.round(b.actualBoxes / (b.estimatedBoxes || b.actualBoxes) * 100))}%"></div></div>
+              </div>
+            </div>
+          </div>
+        ` : ''}
         <button class="harvest-post-btn" onclick="showScreen('post-harvest-goods',{id:'${esc(b.id)}'})">
           <span class="hp-ico">💰</span>
-          <span class="hp-tx"><span class="hp-tt">Post to Market</span><span class="hp-sb">Sell your harvested boxes</span></span>
+          <span class="hp-tx"><span class="hp-tt">Post to Market</span><span class="hp-sb">Sell your harvested goods</span></span>
           <span class="hp-arrow">›</span>
         </button>
-      `}
+      ` : ''}
 
       <button class="btn btn-danger" onclick="confirmDeleteBatch('${esc(b.id)}')" style="margin-top:10px">🗑 Delete Batch</button>
 
@@ -5443,6 +6434,43 @@ function renderBatchDetail(id, tab) {
 }
 
 function wireBatchDetail(id) {}
+
+/* ============================================================
+   NEW · SET STAGE MANUALLY
+   ============================================================ */
+window.setBatchStage = async (id, stage) => {
+  const b = S.myBatches.find(x => x.id === id);
+  if (!b) return;
+
+  // Guard: cannot jump to 'harvested' without a recorded harvest
+  if (stage === 'harvested' && !b.actualBoxes) {
+    toast('Please record your harvest first');
+    showScreen('harvest-record', { id });
+    return;
+  }
+
+  try {
+    const updates = { stage, updatedAt: nowMs() };
+    if (stage === 'harvested') updates.status = 'harvested';
+    else updates.status = 'active';
+
+    await update(ref(db, 'batches/' + id), updates);
+    b.stage = stage;
+    b.status = updates.status;
+
+    if (stage === 'harvesting') {
+      toast('Marked Ready to Harvest 🌾');
+    } else if (stage === 'harvested') {
+      toast('Harvested ✓');
+    } else {
+      toast('Stage updated ✓');
+    }
+
+    route();
+  } catch (e) {
+    toast('Failed: ' + (e.message || e));
+  }
+};
 
 window.showSoilInfo = () => {
   $varietySheetContent.innerHTML = `
@@ -5626,7 +6654,7 @@ function renderHarvestRecord(id) {
       <div class="harvest-input-row">
         <div class="harvest-input-box">
           <label>Actual Boxes</label>
-          <input type="number" id="hv-boxes" min="0" step="1" placeholder="0">
+          <input type="number" id="hv-boxes" min="0" step="1" placeholder="0" value="${b.actualBoxes || ''}">
           <div class="hib-unit">boxes (20 kg)</div>
         </div>
         <div class="harvest-input-box">
@@ -5717,7 +6745,7 @@ function renderPostHarvestGoods(batchId) {
       </div>
       <div class="fld">
         <label>Availability</label>
-        <select id="ph-avail" class="inp" required>
+        <select id="ph-avail" class="inp" required onchange="toggleAvailabilityDate(this.value)">
           <option value="now">Available now</option>
           <option value="date">Choose a date</option>
         </select>
@@ -5735,6 +6763,11 @@ function renderPostHarvestGoods(batchId) {
   </div>
   ${bottomNavHTML()}`;
 }
+
+window.toggleAvailabilityDate = (v) => {
+  const wrap = document.getElementById('ph-date-wrap');
+  if (wrap) wrap.style.display = v === 'date' ? 'block' : 'none';
+};
 
 window.submitMarketPost = async (ev, batchId) => {
   ev.preventDefault();
@@ -5768,7 +6801,6 @@ window.submitMarketPost = async (ev, batchId) => {
       createdAt: nowMs()
     };
     await set(newRef, data);
-    S.myListings.unshift({ id: newRef.key, ...data });
     toast('Posted to market ✓');
     setTimeout(() => navTo('marketplace'), 500);
   } catch (e) {
@@ -5778,17 +6810,31 @@ window.submitMarketPost = async (ev, batchId) => {
 };
 
 /* ============================================================
-   MARKETPLACE
+   MARKETPLACE — ALL LISTINGS + MINE + HARVESTED GOODS
    ============================================================ */
+window.setMarketTab = (tab) => { S.marketTab = tab; route(); };
+
 function renderMarketplace() {
   const harvested = S.myBatches.filter(b => b.stage === 'harvested');
+  const tab = S.marketTab || 'all';
+  const allListings = S.marketplace || [];
+  const myListings = S.myListings || [];
+
+  const filterListings = (arr) => tab === 'all' ? arr : arr.filter(l => l.seller_id === S.user?.uid);
+  const shown = filterListings(allListings);
+
+  const listingCards = shown.map(l => renderMarketCard(l)).join('');
+
   return `
   <div class="scroll">
     <div class="topbar bordered"><div class="tb-title">Marketplace</div></div>
-    <div style="padding:14px 18px">
-      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;margin-bottom:10px">Your harvested goods</div>
-      ${harvested.length ? harvested.map(b => `
-        <div class="list-row" onclick="showScreen('post-harvest-goods',{id:'${esc(b.id)}'})">
+
+    <!-- Quick post harvested -->
+    ${harvested.length ? `
+    <div style="padding:10px 18px 4px">
+      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">Quick post your harvest</div>
+      ${harvested.slice(0, 3).map(b => `
+        <div class="list-row" onclick="showScreen('post-harvest-goods',{id:'${esc(b.id)}'})" style="margin:0 0 8px">
           <div class="lr-ic orange">${pickIcon(b.cropName)}</div>
           <div class="lr-tx">
             <div class="lr-tt">${esc(b.cropName)}</div>
@@ -5796,11 +6842,80 @@ function renderMarketplace() {
           </div>
           <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
         </div>
-      `).join('') : `<div class="empty"><div class="e-ic">🛒</div><h3>No harvested batches yet</h3><p>Harvest a batch to post it here.</p></div>`}
+      `).join('')}
     </div>
+    ` : ''}
+
+    <!-- Tabs -->
+    <div class="market-tabs">
+      <button class="market-tab ${tab === 'all' ? 'active' : ''}" onclick="setMarketTab('all')">🛒 All listings</button>
+      <button class="market-tab ${tab === 'mine' ? 'active' : ''}" onclick="setMarketTab('mine')">👤 My listings</button>
+    </div>
+
+    ${shown.length ? listingCards : `
+      <div class="empty">
+        <div class="e-ic">🛒</div>
+        <h3>No listings yet</h3>
+        <p>${tab === 'mine' ? 'Harvest a batch and post it to the market.' : 'Be the first to post produce to the market.'}</p>
+      </div>
+    `}
+
+    <div style="height:8px"></div>
   </div>
   ${bottomNavHTML()}`;
 }
+
+function renderMarketCard(l) {
+  const isMine = l.seller_id === S.user?.uid;
+  const avail = l.availability === 'now' ? 'now' : 'later';
+  const price = l.priceAmount ? fmtZMK(l.priceAmount) : 'Price on request';
+  const qty = l.quantity ? `${l.quantity} ${l.unit || 'box'}` : '';
+  const meta = [qty, l.marketName, l.city].filter(Boolean).join(' · ');
+  const badge = isMine ? `<span class="mc-badge mine">Mine</span>` : `<span class="mc-badge ${avail}">${l.availability === 'now' ? 'Available now' : 'Later'}</span>`;
+
+  return `
+  <div class="market-card" onclick="viewMarketListing('${esc(l.id)}')">
+    <div class="mc-thumb">${pickIcon(l.productName || l.title)}</div>
+    <div class="mc-body">
+      <div class="mc-title">${esc(l.title || l.productName || 'Produce')}</div>
+      <div class="mc-meta">${esc(meta)}</div>
+      <div class="mc-price">
+        <strong>${esc(price)}</strong>
+        <small>/ box</small>
+      </div>
+    </div>
+    <div class="mc-side">
+      ${badge}
+      <div class="mc-time">${timeAgo(l.createdAt)}</div>
+    </div>
+  </div>`;
+}
+
+window.viewMarketListing = (id) => {
+  const l = (S.marketplace || []).find(x => x.id === id);
+  if (!l) return;
+  const isMine = l.seller_id === S.user?.uid;
+  modal(`
+    <h3 style="margin-bottom:4px">${esc(l.title || l.productName || 'Listing')}</h3>
+    <p style="margin-bottom:12px">${esc(l.sellerName || '')} · ${esc(l.city || '')}</p>
+    <div class="info-table" style="text-align:left;margin-bottom:14px">
+      <div class="info-row"><span class="ir-k">Quantity</span><span class="ir-v">${esc((l.quantity || '—') + ' ' + (l.unit || 'box'))}</span></div>
+      <div class="info-row"><span class="ir-k">Price</span><span class="ir-v">${fmtZMK(l.priceAmount)}</span></div>
+      <div class="info-row"><span class="ir-k">Market</span><span class="ir-v">${esc(l.marketName || '—')}</span></div>
+      <div class="info-row"><span class="ir-k">Availability</span><span class="ir-v">${esc(l.availability === 'now' ? 'Available now' : (l.availabilityDate || 'On date'))}</span></div>
+      ${l.description ? `<div class="info-row"><span class="ir-k">Notes</span><span class="ir-v">${esc(l.description)}</span></div>` : ''}
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-s" onclick="closeModal()">Close</button>
+      ${!isMine ? `<button class="btn btn-p" onclick="contactSeller('${esc(l.seller_id)}')">Contact Seller</button>` : `<button class="btn btn-p" onclick="closeModal()">You own this</button>`}
+    </div>
+  `);
+};
+
+window.contactSeller = (sellerId) => {
+  toast('Seller contact: ' + (sellerId || '').slice(0, 6) + '…');
+  closeModal();
+};
 
 /* ============================================================
    DELIVERY
@@ -5846,7 +6961,9 @@ function renderProfile() {
     <div class="menu-list">
       <div class="menu-item" onclick="goFarm()"><div class="mi-ic">🌱</div><div class="mi-tx"><div class="mi-tt">My Farm</div><div class="mi-sb">${S.myBatches.length} batches</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="navTo('weather-detail')"><div class="mi-ic">☁️</div><div class="mi-tx"><div class="mi-tt">Weather</div><div class="mi-sb">${esc(S.weatherCity || S.userLocation)}</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
-      <div class="menu-item" onclick="navTo('market-analysis')"><div class="mi-ic">📊</div><div class="mi-tx"><div class="mi-tt">Market Analysis</div><div class="mi-sb">What all farmers are planting</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="navTo('farmers-by-city')"><div class="mi-ic">🧑‍🌾</div><div class="mi-tx"><div class="mi-tt">Farmers by City</div><div class="mi-sb">What other farmers are planting</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="navTo('market-analysis')"><div class="mi-ic">📊</div><div class="mi-tx"><div class="mi-tt">Market Analysis</div><div class="mi-sb">Current pipeline across Zambia</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="navTo('farm-analysis')"><div class="mi-ic">📈</div><div class="mi-tx"><div class="mi-tt">Farm Analysis</div><div class="mi-sb">Yearly expected vs produced</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="navTo('government')"><div class="mi-ic">🇿🇲</div><div class="mi-tx"><div class="mi-tt">Government</div><div class="mi-sb">Ministry, ZARI, AMIC</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="doLogout()"><div class="mi-ic" style="background:var(--danger-soft)">🚪</div><div class="mi-tx"><div class="mi-tt" style="color:var(--danger)">Sign Out</div></div></div>
     </div>
@@ -5868,24 +6985,89 @@ window.confirmLogout = async () => {
 };
 
 /* ============================================================
-   WEATHER DETAIL — SUN ARC + WINDMILL
+   WEATHER DETAIL — LIVE TIME + SUN / MOON ARC
    ============================================================ */
+function pad2(n) { return String(n).padStart(2, '0'); }
+
+function computeCelestialPosition(now) {
+  const hour = now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600;
+  const isDay = hour >= 6 && hour < 18;
+  let progress;
+  if (isDay) {
+    progress = (hour - 6) / 12;
+  } else {
+    const nightHour = hour >= 18 ? hour - 18 : hour + 6;
+    progress = nightHour / 12;
+  }
+  progress = Math.max(0, Math.min(1, progress));
+  const angle = Math.PI * (1 - progress);
+  const cx = 150;
+  const cy = 120;
+  const r = 100;
+  const x = cx - r * Math.cos(angle);
+  const y = cy - r * Math.sin(angle);
+  return { x, y, isDay, hour, progress };
+}
+
+function startWeatherClock() {
+  clearInterval(S.weatherClockTimer);
+  const tick = () => {
+    const now = new Date();
+    const timeEl = document.getElementById('weather-live-time');
+    const dateEl = document.getElementById('weather-live-date');
+    const badgeEl = document.getElementById('weather-live-badge');
+    const celestialEl = document.getElementById('weather-celestial-body');
+    const glowEl = document.getElementById('weather-celestial-glow');
+    const sunGroup = document.getElementById('celestial-sun');
+    const moonGroup = document.getElementById('celestial-moon');
+    const noteEl = document.getElementById('weather-celestial-note');
+
+    const hh = pad2(now.getHours());
+    const mm = pad2(now.getMinutes());
+    const ss = pad2(now.getSeconds());
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    if (timeEl) timeEl.textContent = `${hh}:${mm}:${ss}`;
+    if (dateEl) dateEl.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+    const pos = computeCelestialPosition(now);
+
+    if (badgeEl) {
+      badgeEl.textContent = pos.isDay ? '☀️ Day' : '🌙 Night';
+      badgeEl.classList.toggle('night', !pos.isDay);
+    }
+
+    if (celestialEl && glowEl) {
+      celestialEl.setAttribute('cx', pos.x.toFixed(1));
+      celestialEl.setAttribute('cy', pos.y.toFixed(1));
+      glowEl.setAttribute('cx', pos.x.toFixed(1));
+      glowEl.setAttribute('cy', pos.y.toFixed(1));
+    }
+
+    if (sunGroup && moonGroup) {
+      sunGroup.style.display = pos.isDay ? 'inline' : 'none';
+      moonGroup.style.display = pos.isDay ? 'none' : 'inline';
+    }
+
+    if (noteEl) {
+      if (pos.isDay) {
+        noteEl.textContent = `Sun is ${Math.round(pos.progress * 100)}% across the sky. Sunrise 6:00 · Sunset 18:00.`;
+      } else {
+        noteEl.textContent = `Moon is ${Math.round(pos.progress * 100)}% across the night sky. Night runs 18:00 → 6:00.`;
+      }
+    }
+  };
+  tick();
+  S.weatherClockTimer = setInterval(tick, 1000);
+}
+
 function renderWeatherDetail() {
   const w = S.weather;
   if (!w) return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button></div><div class="empty"><h3>Loading…</h3></div></div>`;
 
-  // Sun arc
   const now = new Date();
-  const hour = now.getHours() + now.getMinutes() / 60;
-  const sunrise = 6;
-  const sunset = 18;
-  const dayProgress = Math.max(0, Math.min(1, (hour - sunrise) / (sunset - sunrise)));
-  const angle = Math.PI * (1 - dayProgress);
-  const cx = 150;
-  const cy = 120;
-  const r = 100;
-  const sunX = cx - r * Math.cos(angle);
-  const sunY = cy - r * Math.sin(angle);
+  const pos = computeCelestialPosition(now);
 
   return `
   <div class="scroll">
@@ -5894,6 +7076,16 @@ function renderWeatherDetail() {
         <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
       </button>
       <div class="tb-title">Weather Report</div>
+    </div>
+
+    <!-- LIVE TIME / DATE BAR -->
+    <div class="weather-live-bar">
+      <div class="wlb-icon">${pos.isDay ? '☀️' : '🌙'}</div>
+      <div class="wlb-info">
+        <div class="wlb-time" id="weather-live-time">--:--:--</div>
+        <div class="wlb-date" id="weather-live-date">Loading date…</div>
+        <span class="wlb-badge ${pos.isDay ? '' : 'night'}" id="weather-live-badge">${pos.isDay ? '☀️ Day' : '🌙 Night'}</span>
+      </div>
     </div>
 
     <div style="padding:14px 18px">
@@ -5905,36 +7097,60 @@ function renderWeatherDetail() {
       </div>
     </div>
 
-    <!-- SUN ARC -->
-    <div class="sun-arc-wrap">
-      <div class="sun-arc-title">☀️ Sun Position</div>
-      <svg class="sun-arc-svg" viewBox="0 0 300 140">
+    <!-- SUN / MOON ARC -->
+    <div class="weather-celestial-wrap">
+      <div class="weather-celestial-title">🌗 Celestial Position · ${pos.isDay ? 'Sun' : 'Moon'}</div>
+      <svg class="sun-arc-svg ${pos.isDay ? '' : 'night'}" viewBox="0 0 300 150">
         <defs>
-          <linearGradient id="arcGrad" x1="0" y1="0" x2="1" y2="0">
+          <linearGradient id="arcGradDay" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%" stop-color="#fbbf24" />
             <stop offset="50%" stop-color="#f59e0b" />
             <stop offset="100%" stop-color="#fbbf24" />
           </linearGradient>
+          <linearGradient id="arcGradNight" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#64748b" />
+            <stop offset="50%" stop-color="#94a3b8" />
+            <stop offset="100%" stop-color="#64748b" />
+          </linearGradient>
+          <radialGradient id="sunGlow">
+            <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="#fbbf24" stop-opacity="0" />
+          </radialGradient>
+          <radialGradient id="moonGlowGrad">
+            <stop offset="0%" stop-color="#bfdbfe" stop-opacity="0.85" />
+            <stop offset="100%" stop-color="#bfdbfe" stop-opacity="0" />
+          </radialGradient>
         </defs>
-        <path d="M 50 120 A 100 100 0 0 1 250 120" fill="none" stroke="url(#arcGrad)" stroke-width="3" stroke-dasharray="6,4" />
-        <line x1="50" y1="120" x2="250" y2="120" stroke="#e2e8f0" stroke-width="1" />
-        <circle cx="50" cy="120" r="4" fill="#f59e0b" />
-        <circle cx="250" cy="120" r="4" fill="#f59e0b" />
-        <text x="50" y="136" text-anchor="middle" font-size="9" fill="#9a3412" font-weight="700">6 AM</text>
-        <text x="150" y="136" text-anchor="middle" font-size="9" fill="#9a3412" font-weight="700">12 PM</text>
-        <text x="250" y="136" text-anchor="middle" font-size="9" fill="#9a3412" font-weight="700">6 PM</text>
-        <circle cx="${sunX}" cy="${sunY}" r="12" fill="#fbbf24" stroke="#f59e0b" stroke-width="2">
-          <animate attributeName="r" values="12;14;12" dur="2s" repeatCount="indefinite" />
-        </circle>
-        <circle cx="${sunX}" cy="${sunY}" r="20" fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.5">
-          <animate attributeName="r" values="12;24" dur="2s" repeatCount="indefinite" />
-          <animate attributeName="opacity" values="0.5;0" dur="2s" repeatCount="indefinite" />
-        </circle>
+        <path d="M 50 120 A 100 100 0 0 1 250 120" fill="none" stroke="url(#${pos.isDay ? 'arcGradDay' : 'arcGradNight'})" stroke-width="3" stroke-dasharray="6,4" />
+        <line x1="50" y1="120" x2="250" y2="120" stroke="rgba(148,163,184,.4)" stroke-width="1" />
+        <circle cx="50" cy="120" r="4" fill="${pos.isDay ? '#f59e0b' : '#94a3b8'}" />
+        <circle cx="250" cy="120" r="4" fill="${pos.isDay ? '#f59e0b' : '#94a3b8'}" />
+        <text x="50" y="138" text-anchor="middle" font-size="9" fill="${pos.isDay ? '#fbbf24' : '#cbd5e1'}" font-weight="700">${pos.isDay ? '6 AM' : '6 PM'}</text>
+        <text x="150" y="138" text-anchor="middle" font-size="9" fill="${pos.isDay ? '#fbbf24' : '#cbd5e1'}" font-weight="700">${pos.isDay ? '12 PM' : '12 AM'}</text>
+        <text x="250" y="138" text-anchor="middle" font-size="9" fill="${pos.isDay ? '#fbbf24' : '#cbd5e1'}" font-weight="700">${pos.isDay ? '6 PM' : '6 AM'}</text>
+
+        <!-- Sun group -->
+        <g id="celestial-sun" style="display:${pos.isDay ? 'inline' : 'none'}">
+          <circle id="weather-celestial-glow" cx="${pos.x}" cy="${pos.y}" r="26" fill="url(#sunGlow)" class="moon-glow" />
+          <circle id="weather-celestial-body" cx="${pos.x}" cy="${pos.y}" r="12" fill="#fbbf24" stroke="#f59e0b" stroke-width="2">
+            <animate attributeName="r" values="12;14;12" dur="2.4s" repeatCount="indefinite" />
+          </circle>
+        </g>
+
+        <!-- Moon group -->
+        <g id="celestial-moon" style="display:${pos.isDay ? 'none' : 'inline'}">
+          <circle cx="${pos.x}" cy="${pos.y}" r="28" fill="url(#moonGlowGrad)" class="moon-glow" />
+          <circle cx="${pos.x}" cy="${pos.y}" r="12" fill="#e5e7eb" stroke="#94a3b8" stroke-width="1.5" />
+          <circle cx="${pos.x - 4}" cy="${pos.y - 2}" r="2" fill="#94a3b8" opacity=".6" />
+          <circle cx="${pos.x + 3}" cy="${pos.y + 3}" r="1.5" fill="#94a3b8" opacity=".6" />
+          <circle cx="${pos.x + 4}" cy="${pos.y - 4}" r="1.2" fill="#94a3b8" opacity=".55" />
+        </g>
       </svg>
-      <div class="sun-arc-info">
-        <span>🌅 Sunrise: 6:00 AM</span>
-        <span>🌇 Sunset: 6:00 PM</span>
+      <div class="celestial-time-labels">
+        <span>🌅 06:00</span>
+        <span>🌇 18:00</span>
       </div>
+      <div class="celestial-note" id="weather-celestial-note">Calculating sky position…</div>
     </div>
 
     <!-- WINDMILL -->
@@ -5980,7 +7196,7 @@ function renderWeatherDetail() {
 }
 
 /* ============================================================
-   MARKET ANALYSIS
+   MARKET ANALYSIS (existing)
    ============================================================ */
 function renderMarketAnalysis() {
   const all = S.allFarmersBatches || [];
@@ -6061,6 +7277,305 @@ function renderMarketAnalysis() {
 }
 
 /* ============================================================
+   NEW · FARMERS BY CITY
+   ============================================================ */
+window.setFarmersCity = (city) => { S.farmersCity = city; route(); };
+
+function renderFarmersByCity() {
+  const all = (S.allFarmersBatches || []).filter(b => b.town);
+  const cityMap = {};
+  all.forEach(b => { cityMap[b.town] = (cityMap[b.town] || 0) + 1; });
+  const cities = Object.keys(cityMap).sort((a, b) => cityMap[b] - cityMap[a]);
+
+  const selected = S.farmersCity || S.weatherCity || (cities[0] || 'Lusaka');
+  if (!S.farmersCity) S.farmersCity = selected;
+
+  const filtered = all.filter(b => b.town === selected);
+
+  // group by crop
+  const byCrop = {};
+  filtered.forEach(b => {
+    if (!byCrop[b.cropName]) byCrop[b.cropName] = { expected: 0, count: 0, harvested: 0, active: 0 };
+    byCrop[b.cropName].count++;
+    byCrop[b.cropName].expected += b.estimatedBoxes || 0;
+    if (b.stage === 'harvested') byCrop[b.cropName].harvested++;
+    else byCrop[b.cropName].active++;
+  });
+  const cropList = Object.entries(byCrop).sort((a, b) => b[1].expected - a[1].expected);
+
+  const totalExpected = filtered.reduce((s, b) => s + (b.estimatedBoxes || 0), 0);
+  const totalFarmers = new Set(filtered.map(b => b.ownerId)).size;
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Farmers by City</div>
+    </div>
+
+    <div class="analysis-hero">
+      <h2>🧑‍🌾 Farmers by City</h2>
+      <p>See what other AgriCare farmers are planting and raising in each town.</p>
+    </div>
+
+    <div class="city-chips">
+      ${cities.length ? cities.map(c => `
+        <button class="city-chip ${c === selected ? 'active' : ''}" onclick="setFarmersCity('${esc(c)}')">
+          📍 ${esc(c)} <span style="opacity:.7;font-weight:700">·${cityMap[c]}</span>
+        </button>
+      `).join('') : `<div style="color:var(--tl);font-weight:700;font-size:12px;padding:6px 12px">No farmers recorded yet.</div>`}
+    </div>
+
+    <div class="analysis-stat-grid">
+      <div class="as-card highlight">
+        <div class="as-ic">🧑‍🌾</div>
+        <div class="as-lb">Farmers here</div>
+        <div class="as-v">${totalFarmers}</div>
+        <div class="as-sub">in ${esc(selected)}</div>
+      </div>
+      <div class="as-card">
+        <div class="as-ic">🌱</div>
+        <div class="as-lb">Batches</div>
+        <div class="as-v">${filtered.length}</div>
+        <div class="as-sub">planted here</div>
+      </div>
+      <div class="as-card">
+        <div class="as-ic">📦</div>
+        <div class="as-lb">Expected boxes</div>
+        <div class="as-v">${totalExpected.toLocaleString()}</div>
+        <div class="as-sub">coming to market</div>
+      </div>
+      <div class="as-card">
+        <div class="as-ic">🥇</div>
+        <div class="as-lb">Top crop</div>
+        <div class="as-v" style="font-size:16px">${cropList.length ? esc(cropList[0][0]) : '—'}</div>
+        <div class="as-sub">${cropList.length ? cropList[0][1].expected.toLocaleString() + ' boxes' : '—'}</div>
+      </div>
+    </div>
+
+    <div class="ma-section">
+      <h3>By Crop in ${esc(selected)}</h3>
+      ${cropList.length ? cropList.map(([name, data], idx) => {
+        const pct = totalExpected ? Math.round(data.expected / totalExpected * 100) : 0;
+        return `
+          <div class="analysis-crop-row">
+            <div class="acr-head">
+              <div class="acr-name">${pickIcon(name)} ${esc(name)}</div>
+              ${idx === 0 ? `<span class="acr-top">🥇 Top</span>` : `<span style="font-size:11px;color:var(--tl);font-weight:700">${pct}%</span>`}
+            </div>
+            <div class="acr-bars">
+              <div class="acr-bar-row">
+                <span class="acr-bar-lb">Batches</span>
+                <div class="acr-bar-track"><div class="acr-bar-fill exp" style="width:${Math.min(100, data.count / Math.max(1, filtered.length) * 100)}%"></div></div>
+                <span class="acr-bar-val">${data.count}</span>
+              </div>
+              <div class="acr-bar-row">
+                <span class="acr-bar-lb">Boxes</span>
+                <div class="acr-bar-track"><div class="acr-bar-fill act" style="width:${Math.min(100, data.expected / Math.max(1, totalExpected) * 100)}%"></div></div>
+                <span class="acr-bar-val">${data.expected.toLocaleString()}</span>
+              </div>
+            </div>
+          </div>`;
+      }).join('') : `<div class="empty" style="padding:20px"><p>No crops planted here yet.</p></div>`}
+    </div>
+
+    <div class="ma-section">
+      <h3>Recent batches</h3>
+      ${filtered.slice(0, 10).map(b => `
+        <div class="info-row">
+          <span class="ir-k">${pickIcon(b.cropName)} ${esc(b.cropName)} <span style="color:var(--tl);font-weight:600"> · ${esc(b.varietyName || '')}</span></span>
+          <span class="ir-v">${fmtDate(b.plantedDate)}</span>
+        </div>
+      `).join('')}
+    </div>
+
+    <div style="height:8px"></div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   NEW · FARM ANALYSIS (yearly + city)
+   ============================================================ */
+window.setAnalysisYear = (y) => { S.analysisYear = parseInt(y); route(); };
+window.setAnalysisCity = (c) => { S.analysisCity = c; route(); };
+
+function renderFarmAnalysis() {
+  const all = (S.allFarmersBatches || []).filter(b => b.plantedDate);
+
+  const years = [...new Set(all.map(b => new Date(b.plantedDate).getFullYear()))].sort((a, b) => b - a);
+  const cities = [...new Set(all.map(b => b.town).filter(Boolean))].sort();
+
+  const selYear = S.analysisYear || (years[0] || new Date().getFullYear());
+  const selCity = S.analysisCity || 'all';
+
+  const filtered = all.filter(b => {
+    const y = new Date(b.plantedDate).getFullYear();
+    if (y !== selYear) return false;
+    if (selCity !== 'all' && b.town !== selCity) return false;
+    return true;
+  });
+
+  const totalBatches = filtered.length;
+  const harvestedBatches = filtered.filter(b => b.stage === 'harvested');
+  const totalExpected = filtered.reduce((s, b) => s + (b.estimatedBoxes || 0), 0);
+  const totalActual = filtered.reduce((s, b) => s + (b.actualBoxes || 0), 0);
+  const deltaPct = totalExpected ? Math.round((totalActual - totalExpected) / totalExpected * 100) : 0;
+  const efficiency = totalExpected ? Math.round(totalActual / totalExpected * 100) : 0;
+
+  // by crop
+  const byCrop = {};
+  filtered.forEach(b => {
+    if (!byCrop[b.cropName]) byCrop[b.cropName] = { expected: 0, actual: 0, count: 0, harvested: 0 };
+    byCrop[b.cropName].count++;
+    byCrop[b.cropName].expected += b.estimatedBoxes || 0;
+    byCrop[b.cropName].actual += b.actualBoxes || 0;
+    if (b.stage === 'harvested') byCrop[b.cropName].harvested++;
+  });
+
+  const sortedCrops = Object.entries(byCrop).sort((a, b) => b[1].expected - a[1].expected);
+  const topCrop = sortedCrops[0];
+
+  // top farmers
+  const byFarmer = {};
+  filtered.forEach(b => {
+    if (!byFarmer[b.ownerId]) byFarmer[b.ownerId] = { name: b.ownerName || 'Farmer', count: 0, expected: 0, actual: 0, city: b.town || '' };
+    byFarmer[b.ownerId].count++;
+    byFarmer[b.ownerId].expected += b.estimatedBoxes || 0;
+    byFarmer[b.ownerId].actual += b.actualBoxes || 0;
+  });
+  const topFarmers = Object.values(byFarmer).sort((a, b) => b.actual - a.actual || b.expected - a.expected).slice(0, 5);
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Farm Analysis</div>
+    </div>
+
+    <div class="analysis-hero">
+      <h2>📈 Farm Analysis · ${selYear}</h2>
+      <p>Historical production across Zambia. Compare what was planted, expected and produced.</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="analysis-filters">
+      <div class="af-box">
+        <label>Year</label>
+        <div class="af-value"><span>📅 ${selYear}</span><span class="st-arrow">▼</span></div>
+        <select onchange="setAnalysisYear(this.value)">
+          ${years.length ? years.map(y => `<option value="${y}" ${y === selYear ? 'selected' : ''}>${y}</option>`).join('') : `<option>${selYear}</option>`}
+        </select>
+      </div>
+      <div class="af-box">
+        <label>City</label>
+        <div class="af-value"><span>📍 ${selCity === 'all' ? 'All cities' : esc(selCity)}</span><span class="st-arrow">▼</span></div>
+        <select onchange="setAnalysisCity(this.value)">
+          <option value="all" ${selCity === 'all' ? 'selected' : ''}>All cities</option>
+          ${cities.map(c => `<option value="${esc(c)}" ${c === selCity ? 'selected' : ''}>${esc(c)}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+
+    <!-- Stats grid -->
+    <div class="analysis-stat-grid">
+      <div class="as-card">
+        <div class="as-ic">🌱</div>
+        <div class="as-lb">Batches</div>
+        <div class="as-v">${totalBatches}</div>
+        <div class="as-sub">${harvestedBatches.length} harvested</div>
+      </div>
+      <div class="as-card">
+        <div class="as-ic">📦</div>
+        <div class="as-lb">Expected</div>
+        <div class="as-v">${totalExpected.toLocaleString()}</div>
+        <div class="as-sub">boxes planned</div>
+      </div>
+      <div class="as-card highlight">
+        <div class="as-ic">✅</div>
+        <div class="as-lb">Produced</div>
+        <div class="as-v">${totalActual.toLocaleString()}</div>
+        <div class="as-sub">actual boxes</div>
+      </div>
+      <div class="as-card">
+        <div class="as-ic">${deltaPct >= 0 ? '📈' : '📉'}</div>
+        <div class="as-lb">Efficiency</div>
+        <div class="as-v">${efficiency}%</div>
+        <div class="as-sub as-delta ${deltaPct >= 0 ? 'up' : 'down'}">${deltaPct >= 0 ? '+' : ''}${deltaPct}% vs expected</div>
+      </div>
+      <div class="as-card">
+        <div class="as-ic">🥇</div>
+        <div class="as-lb">Top crop</div>
+        <div class="as-v" style="font-size:16px">${topCrop ? esc(topCrop[0]) : '—'}</div>
+        <div class="as-sub">${topCrop ? topCrop[1].expected.toLocaleString() + ' boxes' : '—'}</div>
+      </div>
+      <div class="as-card">
+        <div class="as-ic">🧑‍🌾</div>
+        <div class="as-lb">Farmers</div>
+        <div class="as-v">${Object.keys(byFarmer).length}</div>
+        <div class="as-sub">contributed</div>
+      </div>
+    </div>
+
+    <!-- Per crop -->
+    <div class="ma-section">
+      <h3>Production by Crop</h3>
+      ${sortedCrops.length ? sortedCrops.map(([name, data], idx) => {
+        const maxVal = Math.max(data.expected, data.actual, 1);
+        const isTop = idx === 0;
+        return `
+          <div class="analysis-crop-row">
+            <div class="acr-head">
+              <div class="acr-name">${pickIcon(name)} ${esc(name)}</div>
+              ${isTop ? `<span class="acr-top">🥇 Top</span>` : `<span style="font-size:11px;color:var(--tl);font-weight:700">${data.count} batches</span>`}
+            </div>
+            <div class="acr-bars">
+              <div class="acr-bar-row">
+                <span class="acr-bar-lb">Expected</span>
+                <div class="acr-bar-track"><div class="acr-bar-fill exp" style="width:${Math.min(100, data.expected / maxVal * 100)}%"></div></div>
+                <span class="acr-bar-val">${data.expected.toLocaleString()}</span>
+              </div>
+              <div class="acr-bar-row">
+                <span class="acr-bar-lb">Actual</span>
+                <div class="acr-bar-track"><div class="acr-bar-fill act" style="width:${Math.min(100, data.actual / maxVal * 100)}%"></div></div>
+                <span class="acr-bar-val">${data.actual.toLocaleString()}</span>
+              </div>
+            </div>
+          </div>`;
+      }).join('') : `<div class="empty" style="padding:20px"><p>No batches recorded for this filter.</p></div>`}
+    </div>
+
+    ${topFarmers.length ? `
+    <div class="ma-section">
+      <h3>Top Producing Farmers</h3>
+      ${topFarmers.map((f, i) => `
+        <div class="info-row">
+          <span class="ir-k">${i + 1}. ${esc(f.name)} <span style="color:var(--tl);font-weight:600"> · ${esc(f.city)}</span></span>
+          <span class="ir-v">${f.actual.toLocaleString()} boxes</span>
+        </div>
+      `).join('')}
+    </div>
+    ` : ''}
+
+    ${sortedCrops.length && sortedCrops[0][1].expected / Math.max(1, totalExpected) > 0.5 ? `
+    <div class="ma-section">
+      <div class="ma-warning">
+        ⚠️ <strong>Historical saturation:</strong> Over 50% of ${selYear} output was <strong>${esc(sortedCrops[0][0])}</strong>.
+        Diversify the next cycle to reduce price risk.
+      </div>
+    </div>
+    ` : ''}
+
+    <div style="height:8px"></div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
    GOVERNMENT
    ============================================================ */
 const GOV_SITES = [
@@ -6123,6 +7638,7 @@ async function startApp() {
     S.marketplace = await loadMarketplace();
     startNotificationsListener();
     startAllBatchesListener();
+    startMarketplaceListener();
 
     const app = document.getElementById('app');
     app.innerHTML = `<div class="screen-wrap"></div>`;
@@ -6143,7 +7659,7 @@ async function startApp() {
     S.weatherRefreshTimer = setInterval(async () => {
       if (S.userCoords) {
         S.weather = await loadWeatherByCoords(S.userCoords.lat, S.userCoords.lng);
-        if (S.screen === 'home') route();
+        if (S.screen === 'home' || S.screen === 'weather-detail') route();
       }
     }, 30 * 60 * 1000);
   });
