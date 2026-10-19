@@ -4660,6 +4660,10 @@ a{
 .modal-card .mc-actions .btn{
   flex:1;
 }
+
+.modal-card.no-dismiss{
+  /* visual marker only; dismissal blocked via JS */
+}
 </style>
 </head>
 <body>
@@ -4808,14 +4812,16 @@ const S = {
   farmersCity: null,
   analysisYear: null,
   analysisCity: 'all',
-  // NEW
   priceMode: 'per_box',
   agroProducts: [],
   agroProductsUnsub: null,
   agroTab: 'all',
   countdownTimer: null,
   pendingCheckTimer: null,
-  promptedListings: {}
+  promptedListings: {},
+  prompted24h: {},          // NEW: tracks listings already prompted for 24h check
+  // per-crop memory for spacing selection
+  lastSpacingByCrop: {}
 };
 
 /* ============================================================
@@ -4845,17 +4851,22 @@ function toast(msg, ms = 2400) {
   $toast._t = setTimeout(() => $toast.classList.remove('show'), ms);
 }
 
-function modal(html) {
+function modal(html, noDismiss = false) {
   $modalCard.innerHTML = html;
+  $modalCard.classList.toggle('no-dismiss', !!noDismiss);
   $modal.classList.add('open');
 }
 
 function closeModal() {
   $modal.classList.remove('open');
+  $modalCard.classList.remove('no-dismiss');
 }
 
 $modal.addEventListener('click', e => {
-  if (e.target === $modal) closeModal();
+  if (e.target === $modal) {
+    if ($modalCard.classList.contains('no-dismiss')) return;
+    closeModal();
+  }
 });
 
 function showLoader(text = 'Preparing…', sub = 'Please wait') {
@@ -4892,6 +4903,22 @@ function timeAgo(ts) {
   if (s < 86400) return Math.floor(s / 3600) + 'h ago';
   if (s < 604800) return Math.floor(s / 86400) + 'd ago';
   return new Date(ts).toLocaleDateString();
+}
+
+/* NEW: compact duration for "time on market" displays */
+function fmtDuration(ms) {
+  if (!ms || ms < 0) return 'just now';
+  const s = Math.floor(ms / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s / 60) + 'm';
+  if (s < 86400) {
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    return m ? `${h}h ${m}m` : `${h}h`;
+  }
+  const d = Math.floor(s / 86400);
+  const h = Math.floor((s % 86400) / 3600);
+  return h ? `${d}d ${h}h` : `${d}d`;
 }
 
 function fmtZMK(n) {
@@ -4932,6 +4959,28 @@ function timeUntil(ts) {
   const m = Math.floor((diff % 3600000) / 60000);
   const s = Math.floor((diff % 60000) / 1000);
   return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
+}
+
+/* NEW: toggle a details-content dropdown */
+window.toggleDetails = (btn, contentId) => {
+  const content = document.getElementById(contentId);
+  if (!content) return;
+  btn.classList.toggle('open');
+  content.classList.toggle('open');
+};
+
+/* NEW: find active listing for a batch */
+function getActiveListingForBatch(batchId) {
+  return (S.marketplace || []).find(l =>
+    l.fromBatchId === batchId &&
+    l.status !== 'removed' &&
+    l.availabilityStatus !== 'removed'
+  );
+}
+
+/* NEW: all listings for a batch (including removed) */
+function getAllListingsForBatch(batchId) {
+  return (S.marketplace || []).filter(l => l.fromBatchId === batchId);
 }
 
 /* ============================================================
@@ -5297,11 +5346,14 @@ function showScreen(id, data = {}, pushHistory = true) {
   updateCartFloat();
   startLiveClock();
   if (id === 'weather-detail') startWeatherClock();
-  if (id === 'marketplace') startCountdownTicker();
+  if (id === 'marketplace' || id === 'my-posts') startCountdownTicker();
 }
 
 window.addEventListener('popstate', e => {
-  if ($modal.classList.contains('open')) { closeModal(); return; }
+  if ($modal.classList.contains('open')) {
+    if (!$modalCard.classList.contains('no-dismiss')) closeModal();
+    return;
+  }
   if ($varietySheetOverlay.classList.contains('open')) { closeVarietySheet(); return; }
   const st = e.state || {};
   const id = st.screen || 'home';
@@ -5364,7 +5416,7 @@ function bottomNavHTML() {
 }
 
 window.navTo = (id, data) => showScreen(id, data);
-window.showScreen  = showScreen;   // ← add this
+window.showScreen  = showScreen;
 window.goHome = () => navTo('home');
 window.goFarm = () => navTo('farm');
 window.goMarket = () => navTo('marketplace');
@@ -5522,7 +5574,8 @@ async function loadMarketplace() {
     const l = await get(ref(db, 'marketListings'));
     if (l.exists()) {
       Object.entries(l.val()).forEach(([k, v]) => {
-        if (v && v.status !== 'removed') out.push({ id: k, ...v });
+        // keep all listings (including removed) so history works
+        if (v) out.push({ id: k, ...v });
       });
     }
   } catch (e) {}
@@ -5549,16 +5602,24 @@ function startMarketplaceListener() {
     const data = snap.val() || {};
     const arr = Object.entries(data)
       .map(([id, v]) => ({ id, ...v }))
-      .filter(l => l && l.status !== 'removed');
+      // keep all including removed — filtering happens per view
+      .filter(l => !!l);
     arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
     S.marketplace = arr;
-    if (S.user) S.myListings = arr.filter(l => l.seller_id === S.user.uid);
-    if (S.screen === 'marketplace') route();
+    if (S.user) {
+      // myListings = only currently active posts (for profile stat)
+      S.myListings = arr.filter(l =>
+        l.seller_id === S.user.uid &&
+        l.status !== 'removed' &&
+        l.availabilityStatus !== 'removed'
+      );
+    }
+    if (S.screen === 'marketplace' || S.screen === 'my-posts') route();
   });
 }
 
 /* ============================================================
-   NEW · AGRO PRODUCTS LISTENER
+   AGRO PRODUCTS LISTENER
    ============================================================ */
 function startAgroProductsListener() {
   if (S.agroProductsUnsub) S.agroProductsUnsub();
@@ -5596,6 +5657,7 @@ function route() {
     case 'post-harvest-goods': el.innerHTML = renderPostHarvestGoods(S.screenData.id); break;
     case 'edit-listing': el.innerHTML = renderEditListing(S.screenData.id); break;
     case 'marketplace': el.innerHTML = renderMarketplace(); break;
+    case 'my-posts': el.innerHTML = renderMyPosts(); break;
     case 'agro-dealers': el.innerHTML = renderAgroDealers(); break;
     case 'delivery': el.innerHTML = renderDelivery(); break;
     case 'profile': el.innerHTML = renderProfile(); break;
@@ -6579,6 +6641,14 @@ function renderBatchDetail(id, tab) {
   const pct = Math.min(100, Math.round(daysIn / totalDays * 100));
   const stageIdx = STAGE_ORDER.indexOf(b.stage || 'planted');
 
+  // Category checks
+  const isFisheries = crop && crop.category.includes('Fisheries');
+  const isLivestock = crop && (crop.category.includes('Livestock') || crop.category.includes('Poultry'));
+  const isCrop = crop && !isFisheries && !isLivestock;
+
+  // Active listing check (once posted → hide post button)
+  const activeListing = getActiveListingForBatch(b.id);
+
   const stageChips = STAGE_ORDER.map((s, i) => {
     const isCurrent = s === (b.stage || 'planted');
     const isDone = i < stageIdx;
@@ -6587,6 +6657,57 @@ function renderBatchDetail(id, tab) {
       <span class="sch-i">${STAGE_ICONS[s]}</span>${esc(STAGE_LABELS[s])}
     </button>`;
   }).join('');
+
+  /* ----- market status block for posted batches ----- */
+  let marketStatusHTML = '';
+  if (activeListing) {
+    const onMarketMs = Date.now() - (activeListing.createdAt || 0);
+    const statusLabel = activeListing.availabilityStatus === 'available'
+      ? '✅ Live on market'
+      : '⏳ Pending confirmation';
+    marketStatusHTML = `
+    <div class="d-section">
+      <h3>Market Status</h3>
+      <div style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1px solid rgba(22,163,74,.25);border-radius:var(--r-lg);padding:16px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <div style="width:48px;height:48px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:24px">🛒</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14px;font-weight:900;color:#065f46">Posted to Market</div>
+            <div style="font-size:11px;font-weight:700;color:#047857;margin-top:2px">${esc(activeListing.marketName || '')} · ${statusLabel}</div>
+          </div>
+        </div>
+        <div class="info-table" style="box-shadow:none;border-color:rgba(6,95,70,.15)">
+          <div class="info-row" style="border-color:rgba(6,95,70,.1)">
+            <span class="ir-k" style="color:#047857">On market for</span>
+            <span class="ir-v" style="color:#065f46">${fmtDuration(onMarketMs)}</span>
+          </div>
+          <div class="info-row" style="border-color:rgba(6,95,70,.1)">
+            <span class="ir-k" style="color:#047857">Posted at</span>
+            <span class="ir-v" style="color:#065f46">${fmtDateTime(activeListing.createdAt)}</span>
+          </div>
+          <div class="info-row" style="border:none">
+            <span class="ir-k" style="color:#047857">Price</span>
+            <span class="ir-v" style="color:#065f46">${fmtZMK(activeListing.priceAmount)} ${activeListing.priceMode === 'total' ? 'total' : '/ box'}</span>
+          </div>
+        </div>
+        <button class="btn btn-s" style="margin-top:12px;background:#fff;border-color:rgba(6,95,70,.3);color:#065f46;font-weight:800" onclick="viewMarketListing('${esc(activeListing.id)}')">View Listing →</button>
+      </div>
+    </div>`;
+  }
+
+  /* ----- post to market button (only if harvested AND no active listing) ----- */
+  let postBtnHTML = '';
+  if (b.stage === 'harvested' && !activeListing) {
+    postBtnHTML = `
+      <button class="harvest-post-btn" onclick="showScreen('post-harvest-goods',{id:'${esc(b.id)}'})" style="display:flex;align-items:center;gap:12px;width:100%;padding:16px;background:linear-gradient(135deg,#ea580c,#9a3412);color:#fff;border-radius:var(--r-lg);margin-bottom:10px;box-shadow:0 10px 24px -8px rgba(234,88,12,.4)">
+        <span style="font-size:26px">💰</span>
+        <span style="flex:1;text-align:left">
+          <span style="display:block;font-size:14px;font-weight:900">Post to Market</span>
+          <span style="display:block;font-size:11px;font-weight:600;opacity:.9;margin-top:2px">Sell your harvested goods</span>
+        </span>
+        <span style="font-size:22px">›</span>
+      </button>`;
+  }
 
   return `
   <div class="scroll">
@@ -6609,18 +6730,11 @@ function renderBatchDetail(id, tab) {
         <button onclick="copyBatchNumber('${esc(b.batchNumber)}')" style="width:40px;height:40px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">📋</button>
       </div>
 
-      <div class="d-section">
-        <h3>Update Stage</h3>
-        <div style="font-size:12px;color:var(--tl);font-weight:600;margin-bottom:8px">
-          Tap the stage that matches your farm today.
-        </div>
-        <div class="stage-selector">
-          ${stageChips}
-        </div>
-      </div>
-
+      <!-- ===================== FARM SETUP ===================== -->
       <div class="d-section">
         <h3>Farm Setup</h3>
+
+        ${!isFisheries ? `
         <div class="info-card" onclick="showSoilInfo()">
           <div class="ic-ico">🪨</div>
           <div class="ic-tx">
@@ -6629,6 +6743,8 @@ function renderBatchDetail(id, tab) {
           </div>
           <div class="ic-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
         </div>
+        ` : ''}
+
         <div class="info-card" onclick="showIrrigationInfo()">
           <div class="ic-ico">💦</div>
           <div class="ic-tx">
@@ -6637,26 +6753,63 @@ function renderBatchDetail(id, tab) {
           </div>
           <div class="ic-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
         </div>
-        ${spacing.length ? `
+
+        ${isCrop ? `
         <div class="info-card" onclick="showSpacingInfo()">
           <div class="ic-ico">📏</div>
           <div class="ic-tx">
             <div class="ic-title">Crop Spacing</div>
-            <div class="ic-sub">${b.spacingSystem ? esc(b.spacingSystem) : 'Tap to choose'}</div>
+            <div class="ic-sub">${b.spacingSystem ? esc(b.spacingSystem) : 'Tap to set spacing'}</div>
           </div>
           <div class="ic-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
         </div>
         ` : ''}
+
+        <!-- Progress dropdown -->
+        <button class="details-toggle" onclick="toggleDetails(this,'progress-dropdown')">
+          <span>📊 Progress & Timeline</span>
+          <span class="dt-chev">▾</span>
+        </button>
+        <div class="details-content" id="progress-dropdown">
+          <div style="background:var(--p-ll);border:1px solid rgba(15,122,52,.14);border-radius:var(--r-lg);padding:16px;margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+              <div><div style="font-size:11px;font-weight:800;color:var(--p)">DAY</div><div style="font-size:24px;font-weight:900;color:var(--p-d)">${daysIn} <span style="font-size:14px;color:var(--tl)">of ~${totalDays}</span></div></div>
+              <div style="text-align:right"><div style="font-size:11px;font-weight:800;color:var(--p)">PROGRESS</div><div style="font-size:24px;font-weight:900;color:var(--p-d)">${pct}%</div></div>
+            </div>
+            <div style="height:10px;border-radius:5px;background:rgba(15,122,52,.14);overflow:hidden"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,var(--p),var(--acc))"></div></div>
+          </div>
+          ${STAGE_ORDER.map((s, i) => {
+            const done = i <= stageIdx;
+            const active = i === stageIdx;
+            return `<div class="timeline-stage ${done ? 'done' : ''} ${active ? 'active' : ''}"><div class="ts-dot">${done ? '✓' : (i + 1)}</div><div><div class="ts-lb">${STAGE_LABELS[s]}</div></div></div>`;
+          }).join('')}
+        </div>
+
+        <!-- Harvest Stages dropdown -->
+        <button class="details-toggle" onclick="toggleDetails(this,'stages-dropdown')">
+          <span>🌿 Harvest Stages</span>
+          <span class="dt-chev">▾</span>
+        </button>
+        <div class="details-content" id="stages-dropdown">
+          <div style="font-size:12px;color:var(--tl);font-weight:600;margin-bottom:8px;padding:4px 2px">
+            Tap the stage that matches your farm today.
+          </div>
+          <div class="stage-selector">
+            ${stageChips}
+          </div>
+        </div>
+
         <button class="btn btn-p" onclick="saveBatchSetup('${esc(b.id)}')" style="margin-top:4px">Save Farm Setup</button>
         <input type="hidden" id="bs-soil" value="${esc(b.soilType || '')}">
         <input type="hidden" id="bs-irr" value="${esc(b.irrigationType || '')}">
         <input type="hidden" id="bs-space" value="${esc(b.spacingSystem || '')}">
       </div>
 
+      <!-- ===================== FIELD SUMMARY ===================== -->
       <div class="d-section">
         <h3>Field Summary</h3>
         <div class="info-table">
-          ${b.lengthM ? `<div class="info-row"><span class="ir-k">${b.category && b.category.includes('Fisheries') ? 'Pond' : 'Field'}</span><span class="ir-v">${b.lengthM}m × ${b.widthM}m</span></div>` : ''}
+          ${b.lengthM ? `<div class="info-row"><span class="ir-k">${isFisheries ? 'Pond' : 'Field'}</span><span class="ir-v">${b.lengthM}m × ${b.widthM}m</span></div>` : ''}
           ${b.areaM2 ? `<div class="info-row"><span class="ir-k">Area</span><span class="ir-v">${b.areaM2.toFixed(0)} m²</span></div>` : ''}
           ${b.animalCount ? `<div class="info-row"><span class="ir-k">Animals</span><span class="ir-v">${b.animalCount}</span></div>` : ''}
           <div class="info-row"><span class="ir-k">Est. boxes</span><span class="ir-v">${b.estimatedBoxes ? b.estimatedBoxes.toLocaleString() : '—'}</span></div>
@@ -6664,55 +6817,37 @@ function renderBatchDetail(id, tab) {
         </div>
       </div>
 
-      <div class="d-section">
-        <h3>Progress</h3>
-        <div style="background:var(--p-ll);border:1px solid rgba(15,122,52,.14);border-radius:var(--r-lg);padding:16px;margin-bottom:10px">
-          <div style="display:flex;justify-content:space-between;margin-bottom:10px">
-            <div><div style="font-size:11px;font-weight:800;color:var(--p)">DAY</div><div style="font-size:24px;font-weight:900;color:var(--p-d)">${daysIn} <span style="font-size:14px;color:var(--tl)">of ~${totalDays}</span></div></div>
-            <div style="text-align:right"><div style="font-size:11px;font-weight:800;color:var(--p)">PROGRESS</div><div style="font-size:24px;font-weight:900;color:var(--p-d)">${pct}%</div></div>
-          </div>
-          <div style="height:10px;border-radius:5px;background:rgba(15,122,52,.14);overflow:hidden"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,var(--p),var(--acc))"></div></div>
-        </div>
-        ${STAGE_ORDER.map((s, i) => {
-          const done = i <= stageIdx;
-          const active = i === stageIdx;
-          return `<div class="timeline-stage ${done ? 'done' : ''} ${active ? 'active' : ''}"><div class="ts-dot">${done ? '✓' : (i + 1)}</div><div><div class="ts-lb">${STAGE_LABELS[s]}</div></div></div>`;
-        }).join('')}
-      </div>
+      <!-- ===================== MARKET STATUS (if posted) ===================== -->
+      ${marketStatusHTML}
 
+      <!-- ===================== RECORD HARVEST ===================== -->
       ${b.stage === 'harvesting' ? `
         <button class="btn btn-p" onclick="showScreen('harvest-record',{id:'${esc(b.id)}'})" style="margin-bottom:10px">🌾 Record Harvest</button>
       ` : ''}
 
-      ${b.stage === 'harvested' ? `
-        ${b.actualBoxes ? `
-          <div class="d-section">
-            <h3>Harvest Comparison</h3>
-            <div class="compare-card" style="margin:0">
-              <div class="compare-bar-row">
-                <div class="cbr-top"><span>Expected</span><span>${(b.estimatedBoxes || 0).toLocaleString()} boxes</span></div>
-                <div class="compare-bar-track"><div class="compare-bar-fill expected" style="width:100%"></div></div>
-              </div>
-              <div class="compare-bar-row" style="margin-bottom:0">
-                <div class="cbr-top"><span>Actual</span><span>${b.actualBoxes.toLocaleString()} boxes</span></div>
-                <div class="compare-bar-track"><div class="compare-bar-fill actual" style="width:${Math.min(100, Math.round(b.actualBoxes / (b.estimatedBoxes || b.actualBoxes) * 100))}%"></div></div>
-              </div>
+      <!-- ===================== HARVEST COMPARISON ===================== -->
+      ${b.stage === 'harvested' && b.actualBoxes ? `
+        <div class="d-section">
+          <h3>Harvest Comparison</h3>
+          <div class="compare-card" style="margin:0">
+            <div class="compare-bar-row">
+              <div class="cbr-top"><span>Expected</span><span>${(b.estimatedBoxes || 0).toLocaleString()} boxes</span></div>
+              <div class="compare-bar-track"><div class="compare-bar-fill expected" style="width:100%"></div></div>
+            </div>
+            <div class="compare-bar-row" style="margin-bottom:0">
+              <div class="cbr-top"><span>Actual</span><span>${b.actualBoxes.toLocaleString()} boxes</span></div>
+              <div class="compare-bar-track"><div class="compare-bar-fill actual" style="width:${Math.min(100, Math.round(b.actualBoxes / (b.estimatedBoxes || b.actualBoxes) * 100))}%"></div></div>
             </div>
           </div>
-        ` : ''}
-        <button class="harvest-post-btn" onclick="showScreen('post-harvest-goods',{id:'${esc(b.id)}'})" style="display:flex;align-items:center;gap:12px;width:100%;padding:16px;background:linear-gradient(135deg,#ea580c,#9a3412);color:#fff;border-radius:var(--r-lg);margin-bottom:10px;box-shadow:0 10px 24px -8px rgba(234,88,12,.4)">
-          <span style="font-size:26px">💰</span>
-          <span style="flex:1;text-align:left">
-            <span style="display:block;font-size:14px;font-weight:900">Post to Market</span>
-            <span style="display:block;font-size:11px;font-weight:600;opacity:.9;margin-top:2px">Sell your harvested goods</span>
-          </span>
-          <span style="font-size:22px">›</span>
-        </button>
+        </div>
       ` : ''}
+
+      <!-- ===================== POST TO MARKET (only if not yet posted) ===================== -->
+      ${postBtnHTML}
 
       <button class="btn btn-danger" onclick="confirmDeleteBatch('${esc(b.id)}')" style="margin-top:10px">🗑 Delete Batch</button>
 
-      ${spacing.length ? renderSpacingBlock(spacing) : ''}
+      ${spacing.length && isCrop ? renderSpacingBlock(spacing) : ''}
       ${Object.keys(fert).length ? renderFertilizerBlock(fert) : ''}
       ${stages.length ? renderStagesBlock(stages) : ''}
     </div>
@@ -6746,6 +6881,7 @@ window.setBatchStage = async (id, stage) => {
   }
 };
 
+/* ---- soil / irrigation / spacing sheet handlers ---- */
 window.showSoilInfo = () => {
   $varietySheetContent.innerHTML = `
     <div class="sheet-handle"></div>
@@ -6767,6 +6903,8 @@ window.showSoilInfo = () => {
 };
 
 window.selectSoil = (name) => {
+  const b = S.myBatches.find(x => x.id === S.screenData.id);
+  if (b) b.soilType = name;
   const el = document.getElementById('bs-soil');
   if (el) el.value = name;
   closeVarietySheet();
@@ -6795,6 +6933,8 @@ window.showIrrigationInfo = () => {
 };
 
 window.selectIrrigation = (name) => {
+  const b = S.myBatches.find(x => x.id === S.screenData.id);
+  if (b) b.irrigationType = name;
   const el = document.getElementById('bs-irr');
   if (el) el.value = name;
   closeVarietySheet();
@@ -6806,19 +6946,32 @@ window.showSpacingInfo = () => {
   const b = S.myBatches.find(x => x.id === S.screenData.id);
   if (!b) return;
   const spacing = S.cropSpacing[b.cropId] || [];
+  // per-crop memory: if the user has picked a spacing for this crop before,
+  // highlight it — different crops keep separate memories.
+  const remembered = S.lastSpacingByCrop[b.cropId] || b.spacingSystem || null;
+
   $varietySheetContent.innerHTML = `
     <div class="sheet-handle"></div>
-    <div class="sheet-head"><h3>Crop Spacing</h3><p>Choose spacing system</p></div>
+    <div class="sheet-head">
+      <h3>Crop Spacing</h3>
+      <p>Spacing for ${esc(b.cropName)} — different crops have different options.</p>
+    </div>
     <div class="sheet-list">
-      ${spacing.map(s => `
-        <button class="sheet-item" onclick="selectSpacing('${esc(s.system)}')">
+      ${spacing.length ? spacing.map(s => `
+        <button class="sheet-item" style="${remembered === s.system ? 'border-color:var(--p);background:var(--p-ll)' : ''}" onclick="selectSpacing('${esc(s.system)}')">
           <div class="si-ico">📏</div>
           <div class="si-info">
-            <strong>${esc(s.system || 'Standard')}</strong>
+            <strong>${esc(s.system || 'Standard')} ${remembered === s.system ? '✓' : ''}</strong>
             <span>${esc(s.spacing || '')} · ${esc(s.plantPopulation || '')}</span>
           </div>
         </button>
-      `).join('')}
+      `).join('') : `
+        <div class="empty" style="padding:20px 8px">
+          <div class="e-ic">📏</div>
+          <h3>No spacing data yet</h3>
+          <p>Spacing options will appear once the crop's spacing guide is seeded.</p>
+        </div>
+      `}
     </div>
     <button class="sheet-cancel" onclick="closeVarietySheet()">Close</button>
   `;
@@ -6826,6 +6979,12 @@ window.showSpacingInfo = () => {
 };
 
 window.selectSpacing = (name) => {
+  const b = S.myBatches.find(x => x.id === S.screenData.id);
+  if (b) {
+    b.spacingSystem = name;
+    // remember per crop so future batches of the same crop can suggest it
+    S.lastSpacingByCrop[b.cropId] = name;
+  }
   const el = document.getElementById('bs-space');
   if (el) el.value = name;
   closeVarietySheet();
@@ -6979,13 +7138,26 @@ window.submitHarvestBoxes = async (id) => {
 };
 
 /* ============================================================
-   NEW · POST HARVEST TO MARKET (full rewrite)
+   POST HARVEST TO MARKET
    ============================================================ */
 function renderPostHarvestGoods(batchId) {
   const b = S.myBatches.find(x => x.id === batchId);
   if (!b || b.stage !== 'harvested') {
     return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button><div class="tb-title">Not harvested</div></div><div class="empty"><h3>Only harvested batches can be posted</h3></div></div>`;
   }
+
+  // If already posted, don't allow posting again
+  const activeListing = getActiveListingForBatch(batchId);
+  if (activeListing) {
+    return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button><div class="tb-title">Already Posted</div></div>
+      <div class="empty">
+        <div class="e-ic">🛒</div>
+        <h3>This batch is already on the market</h3>
+        <p>You can view the listing from the batch details.</p>
+        <button class="btn btn-p" style="max-width:220px;margin:14px auto 0" onclick="showScreen('batch-detail',{id:'${esc(batchId)}',tab:'manage'})">View Batch</button>
+      </div></div>`;
+  }
+
   const city = S.weatherCity || S.userLocation;
   const markets = marketsForCity(city);
   const p = S.profile || {};
@@ -7092,6 +7264,12 @@ window.submitMarketPost = async (ev, batchId) => {
   const b = S.myBatches.find(x => x.id === batchId);
   if (!b) return;
 
+  // double-check no active listing
+  if (getActiveListingForBatch(batchId)) {
+    toast('This batch is already on the market');
+    return;
+  }
+
   const btn = document.getElementById('ph-submit');
   btn.disabled = true;
   btn.textContent = 'Posting…';
@@ -7164,7 +7342,7 @@ window.submitMarketPost = async (ev, batchId) => {
 };
 
 /* ============================================================
-   NEW · EDIT OWN PENDING LISTING
+   EDIT OWN PENDING LISTING
    ============================================================ */
 window.editOwnListing = (id) => {
   closeModal();
@@ -7302,7 +7480,6 @@ window.saveEditedListing = async (ev, id) => {
     });
 
     toast('Post updated ✓');
-    // Allow re-prompt if the new time has already passed
     S.promptedListings[id] = false;
     setTimeout(() => navTo('marketplace'), 500);
   } catch (e) {
@@ -7313,11 +7490,11 @@ window.saveEditedListing = async (ev, id) => {
 };
 
 /* ============================================================
-   NEW · DELETE OWN LISTING
+   DELETE OWN LISTING
    ============================================================ */
 window.deleteOwnListing = (id) => {
   closeModal();
-  modal(`<h3>Delete this post?</h3><p>Your listing will be removed from the market. This cannot be undone.</p>
+  modal(`<h3>Delete this post?</h3><p>Your listing will be removed from the market and moved to history. This cannot be undone.</p>
     <div class="mc-actions">
       <button class="btn btn-s" onclick="closeModal()">Cancel</button>
       <button class="btn btn-danger" onclick="confirmDeleteListing('${esc(id)}')">Delete</button>
@@ -7332,7 +7509,7 @@ window.confirmDeleteListing = async (id) => {
       removedAt: nowMs()
     });
     closeModal();
-    toast('Post deleted');
+    toast('Post moved to history');
     setTimeout(() => navTo('marketplace'), 300);
   } catch (e) {
     toast('Failed: ' + (e.message || e));
@@ -7340,7 +7517,7 @@ window.confirmDeleteListing = async (id) => {
 };
 
 /* ============================================================
-   NEW · CONFIRM AVAILABILITY
+   CONFIRM AVAILABILITY (initial — when countdown ends)
    ============================================================ */
 function showAvailabilityConfirmModal(listing) {
   modal(`
@@ -7353,20 +7530,22 @@ function showAvailabilityConfirmModal(listing) {
       <button class="btn btn-s" onclick="removeListingConfirm('${esc(listing.id)}')">No, Remove</button>
       <button class="btn btn-p" onclick="confirmListingAvailable('${esc(listing.id)}',true)">Yes, Available ✓</button>
     </div>
-  `);
+  `, true); // no-dismiss
 }
 
 window.confirmListingAvailable = async (id, closeAfter) => {
   try {
+    const now = nowMs();
     await update(ref(db, 'marketListings/' + id), {
       availabilityStatus: 'available',
       status: 'available',
-      confirmedAt: nowMs()
+      confirmedAt: now,
+      lastConfirmedAt: now
     });
     toast('✅ Now Available');
     if (closeAfter) closeModal();
     setTimeout(() => {
-      if (S.screen === 'marketplace') route();
+      if (S.screen === 'marketplace' || S.screen === 'my-posts') route();
     }, 200);
   } catch (e) {
     toast('Failed: ' + (e.message || e));
@@ -7380,10 +7559,10 @@ window.removeListingConfirm = async (id) => {
       status: 'removed',
       removedAt: nowMs()
     });
-    toast('Removed from market');
+    toast('Removed — moved to history');
     closeModal();
     setTimeout(() => {
-      if (S.screen === 'marketplace') route();
+      if (S.screen === 'marketplace' || S.screen === 'my-posts') route();
     }, 200);
   } catch (e) {
     toast('Failed: ' + (e.message || e));
@@ -7391,7 +7570,62 @@ window.removeListingConfirm = async (id) => {
 };
 
 /* ============================================================
-   NEW · COUNTDOWN TICKER
+   24-HOUR RE-CONFIRMATION
+   ============================================================ */
+function show24hConfirmModal(listing) {
+  const onMarketMs = Date.now() - (listing.createdAt || 0);
+  modal(`
+    <h3>⏰ Still on the Market?</h3>
+    <p>Your listing <strong>${esc(listing.title || listing.productName)}</strong> has been on the market for <strong>${fmtDuration(onMarketMs)}</strong>.</p>
+    <div style="font-size:12px;color:var(--tl);margin:10px 0;font-weight:600">
+      ${esc(listing.quantity)} boxes at ${esc(listing.marketName)} · ${fmtZMK(listing.priceAmount)} ${listing.priceMode === 'total' ? 'total' : '/ box'}
+    </div>
+    <div class="mc-actions">
+      <button class="btn btn-s" onclick="removeListingFromMarket('${esc(listing.id)}')">🗑 Remove</button>
+      <button class="btn btn-p" onclick="keepListingAvailable('${esc(listing.id)}')">✅ Yes, Still Available</button>
+    </div>
+  `, true); // no-dismiss
+}
+
+window.keepListingAvailable = async (id) => {
+  try {
+    await update(ref(db, 'marketListings/' + id), {
+      lastConfirmedAt: nowMs(),
+      confirmedAt: nowMs(),
+      availabilityStatus: 'available',
+      status: 'available'
+    });
+    delete S.prompted24h[id];
+    closeModal();
+    toast('✅ Still available — we\'ll check again in 24h');
+    setTimeout(() => {
+      if (S.screen === 'marketplace' || S.screen === 'my-posts') route();
+    }, 200);
+  } catch (e) {
+    toast('Failed: ' + (e.message || e));
+  }
+};
+
+window.removeListingFromMarket = async (id) => {
+  try {
+    await update(ref(db, 'marketListings/' + id), {
+      availabilityStatus: 'removed',
+      status: 'removed',
+      removedAt: nowMs()
+    });
+    delete S.prompted24h[id];
+    closeModal();
+    toast('Moved to history');
+    setTimeout(() => {
+      if (S.screen === 'marketplace' || S.screen === 'my-posts') route();
+    }, 200);
+  } catch (e) {
+    toast('Failed: ' + (e.message || e));
+  }
+};
+
+/* ============================================================
+   COUNTDOWN TICKER
    ============================================================ */
 function startCountdownTicker() {
   clearInterval(S.countdownTimer);
@@ -7410,7 +7644,8 @@ function startCountdownTicker() {
   }, 1000);
 }
 
-function checkPendingConfirmations() {
+/* ---- combined confirmation checks ---- */
+function runConfirmationChecks() {
   if (!S.user) return;
   if (!S.marketplace || !S.marketplace.length) return;
   if ($modal.classList.contains('open')) return;
@@ -7418,22 +7653,40 @@ function checkPendingConfirmations() {
   const id = S.screen || '';
   if (id.includes('post') || id.includes('edit') || id.includes('plant')) return;
 
-  const due = S.marketplace.find(l =>
+  /* 1) pending listings whose availableAt has passed */
+  const pendingDue = S.marketplace.find(l =>
     l.seller_id === S.user.uid &&
     l.availabilityStatus === 'pending' &&
     l.availableAt &&
     Date.now() >= l.availableAt &&
     !S.promptedListings[l.id]
   );
-  if (due) {
-    S.promptedListings[due.id] = true;
-    showAvailabilityConfirmModal(due);
+  if (pendingDue) {
+    S.promptedListings[pendingDue.id] = true;
+    showAvailabilityConfirmModal(pendingDue);
+    return;
+  }
+
+  /* 2) available listings that have been up for 24h+ */
+  const TWENTY_FOUR_H = 24 * 60 * 60 * 1000;
+  const now = Date.now();
+  const availDue = S.marketplace.find(l => {
+    if (l.seller_id !== S.user.uid) return false;
+    if (l.availabilityStatus !== 'available') return false;
+    if (S.prompted24h[l.id]) return false;
+    const lastConf = l.lastConfirmedAt || l.confirmedAt || l.availableAt || l.createdAt;
+    if (!lastConf) return false;
+    return now - lastConf >= TWENTY_FOUR_H;
+  });
+  if (availDue) {
+    S.prompted24h[availDue.id] = true;
+    show24hConfirmModal(availDue);
   }
 }
 
 function startPendingCheckTimer() {
   clearInterval(S.pendingCheckTimer);
-  S.pendingCheckTimer = setInterval(checkPendingConfirmations, 5000);
+  S.pendingCheckTimer = setInterval(runConfirmationChecks, 5000);
 }
 
 /* ============================================================
@@ -7442,9 +7695,18 @@ function startPendingCheckTimer() {
 window.setMarketTab = (tab) => { S.marketTab = tab; route(); };
 
 function renderMarketplace() {
-  const harvested = S.myBatches.filter(b => b.stage === 'harvested');
+  // only harvested batches WITHOUT an active listing qualify for "quick post"
+  const harvested = S.myBatches.filter(b => {
+    if (b.stage !== 'harvested') return false;
+    return !getActiveListingForBatch(b.id);
+  });
+
   const tab = S.marketTab || 'all';
-  const allListings = S.marketplace || [];
+
+  // only currently active listings appear in marketplace tabs
+  const allListings = (S.marketplace || []).filter(l =>
+    l.status !== 'removed' && l.availabilityStatus !== 'removed'
+  );
 
   const shown = tab === 'all'
     ? allListings
@@ -7452,9 +7714,8 @@ function renderMarketplace() {
 
   const listingCards = shown.map(l => renderMarketCard(l)).join('');
 
-  // Start ticker after render
   setTimeout(startCountdownTicker, 50);
-  setTimeout(checkPendingConfirmations, 800);
+  setTimeout(runConfirmationChecks, 800);
 
   return `
   <div class="scroll">
@@ -7556,7 +7817,93 @@ function renderMarketCard(l) {
 }
 
 /* ============================================================
-   NEW · LISTING DETAIL MODAL (view / edit / delete / confirm)
+   MY POSTS & HISTORY
+   ============================================================ */
+function renderMyPosts() {
+  const mine = (S.marketplace || []).filter(l => l.seller_id === S.user?.uid);
+  const active = mine.filter(l => l.status !== 'removed' && l.availabilityStatus !== 'removed');
+  const history = mine.filter(l => l.status === 'removed' || l.availabilityStatus === 'removed');
+  history.sort((a, b) => (b.removedAt || 0) - (a.removedAt || 0));
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">My Posts</div>
+    </div>
+
+    <div style="padding:14px 18px 6px">
+      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
+        🛒 Active on Market (${active.length})
+      </div>
+    </div>
+    ${active.length ? active.map(l => renderMyPostCard(l, false)).join('') : `
+      <div class="empty" style="padding:20px 24px">
+        <div class="e-ic">🛒</div>
+        <h3>No active posts</h3>
+        <p>Post your harvest from the Market tab.</p>
+      </div>
+    `}
+
+    <div style="padding:20px 18px 6px">
+      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
+        📜 History (${history.length})
+      </div>
+    </div>
+    ${history.length ? history.map(l => renderMyPostCard(l, true)).join('') : `
+      <div class="empty" style="padding:20px 24px">
+        <div class="e-ic">📜</div>
+        <h3>History empty</h3>
+        <p>Removed posts will appear here.</p>
+      </div>
+    `}
+
+    <div style="height:8px"></div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+function renderMyPostCard(l, isHistory) {
+  const posted = l.createdAt ? `Posted ${timeAgo(l.createdAt)}` : '';
+  const removed = l.removedAt ? `Removed ${timeAgo(l.removedAt)}` : '';
+  const meta = [l.quantity + ' ' + (l.unit || 'box'), l.marketName, l.city].filter(Boolean).join(' · ');
+
+  let badgeHTML = '';
+  if (isHistory) {
+    badgeHTML = `<span class="mc-badge" style="background:#f1f5f9;color:#475569">📜 History</span>`;
+  } else if (l.availabilityStatus === 'available') {
+    badgeHTML = `<span class="mc-badge available">✅ Live</span>`;
+  } else if (l.availabilityStatus === 'pending') {
+    const due = l.availableAt && Date.now() >= l.availableAt;
+    badgeHTML = due
+      ? `<span class="mc-badge confirm">⏰ Confirm</span>`
+      : `<span class="mc-badge pending">⏳ Pending</span>`;
+  } else {
+    badgeHTML = `<span class="mc-badge now">Live</span>`;
+  }
+
+  return `
+  <div class="market-card" onclick="viewMarketListing('${esc(l.id)}')" style="opacity:${isHistory ? '.7' : '1'}">
+    <div class="mc-thumb">${pickIcon(l.productName || l.title)}</div>
+    <div class="mc-body">
+      <div class="mc-title">${esc(l.title || l.productName || 'Produce')}</div>
+      <div class="mc-meta">${esc(meta)}</div>
+      <div class="mc-price">
+        <strong>${fmtZMK(l.priceAmount)}</strong>
+        <small>${l.priceMode === 'total' ? 'total' : '/ box'}</small>
+      </div>
+      <div class="mc-time">${isHistory ? removed : posted}</div>
+    </div>
+    <div class="mc-side">
+      ${badgeHTML}
+    </div>
+  </div>`;
+}
+
+/* ============================================================
+   LISTING DETAIL MODAL (view / edit / delete / confirm)
    ============================================================ */
 window.viewMarketListing = (id) => {
   const l = S.marketplace.find(x => x.id === id);
@@ -7566,6 +7913,7 @@ window.viewMarketListing = (id) => {
   const availStatus = l.availabilityStatus || 'pending';
   const isPending = availStatus === 'pending';
   const isAvailable = availStatus === 'available';
+  const isRemoved = availStatus === 'removed' || l.status === 'removed';
   const due = isPending && l.availableAt && Date.now() >= l.availableAt;
 
   const priceDisplay = l.priceMode === 'total'
@@ -7573,7 +7921,8 @@ window.viewMarketListing = (id) => {
     : fmtZMK(l.priceAmount) + ' / box';
 
   let statusText = '';
-  if (isPending) {
+  if (isRemoved) statusText = '📜 Removed from market';
+  else if (isPending) {
     if (due) statusText = '⏰ Ready — confirm availability';
     else statusText = `⏳ Availability pending · ${timeUntil(l.availableAt || 0)}`;
   } else if (isAvailable) {
@@ -7594,12 +7943,15 @@ window.viewMarketListing = (id) => {
     actions = `
       <div style="display:flex;gap:8px;margin-top:8px">
         <button class="btn btn-s" style="flex:1" onclick="closeModal()">Close</button>
+        <button class="btn btn-danger" style="flex:1" onclick="removeListingFromMarket('${esc(l.id)}')">Remove</button>
       </div>
       <div style="font-size:11px;color:var(--tl);margin-top:10px;font-weight:600;text-align:center">
-        🔒 Post is live and locked. Contact admin to remove.
+        🔄 We'll ask again in 24 hours if this is still on the market.
       </div>
     `;
   } else if (isMine) {
+    actions = `<button class="btn btn-s" style="margin-top:8px" onclick="closeModal()">Close</button>`;
+  } else if (isRemoved) {
     actions = `<button class="btn btn-s" style="margin-top:8px" onclick="closeModal()">Close</button>`;
   } else {
     actions = `
@@ -7610,7 +7962,7 @@ window.viewMarketListing = (id) => {
     `;
   }
 
-  const contactBlock = isAvailable && l.sellerPhone ? `
+  const contactBlock = isAvailable && l.sellerPhone && !isRemoved ? `
     <div style="background:var(--ok-soft);border:1px solid rgba(22,163,74,.2);padding:12px 14px;border-radius:var(--r-lg);margin-bottom:12px;text-align:left">
       <div style="font-size:10.5px;color:#065f46;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Contact</div>
       <div style="font-size:14px;font-weight:900;color:#065f46">${esc(l.sellerName || 'Seller')}</div>
@@ -7619,12 +7971,18 @@ window.viewMarketListing = (id) => {
     </div>
   ` : '';
 
+  const onMarketMs = Date.now() - (l.createdAt || 0);
+  const timeOnMarket = isRemoved
+    ? `Was on market for ${fmtDuration((l.removedAt || Date.now()) - (l.createdAt || 0))}`
+    : `On market for ${fmtDuration(onMarketMs)}`;
+
   modal(`
     <h3 style="margin-bottom:4px">${esc(l.title || l.productName || 'Listing')}</h3>
     <p style="margin-bottom:10px">${esc(l.sellerName || '')} · ${esc(l.city || '')}</p>
-    <div style="font-size:11.5px;color:${due ? '#ea580c' : (isAvailable ? '#16a34a' : '#92400e')};font-weight:800;margin-bottom:12px;padding:8px 12px;background:${due ? '#ffedd5' : (isAvailable ? '#d1fae5' : '#fef3c7')};border-radius:var(--r-p);display:inline-block">
+    <div style="font-size:11.5px;color:${due ? '#ea580c' : (isAvailable ? '#16a34a' : (isRemoved ? '#475569' : '#92400e'))};font-weight:800;margin-bottom:8px;padding:8px 12px;background:${due ? '#ffedd5' : (isAvailable ? '#d1fae5' : (isRemoved ? '#f1f5f9' : '#fef3c7'))};border-radius:var(--r-p);display:inline-block">
       ${statusText}
     </div>
+    <div style="font-size:11px;color:var(--tl);font-weight:700;margin-bottom:12px">⏱ ${timeOnMarket}</div>
     ${contactBlock}
     <div class="info-table" style="text-align:left;margin-bottom:14px">
       <div class="info-row"><span class="ir-k">Quantity</span><span class="ir-v">${esc((l.quantity || '—') + ' ' + (l.unit || 'box'))}</span></div>
@@ -7643,7 +8001,7 @@ window.contactSeller = (sellerId) => {
 };
 
 /* ============================================================
-   NEW · AGRO DEALERS
+   AGRO DEALERS
    ============================================================ */
 window.setAgroTab = (tab) => { S.agroTab = tab; route(); };
 
@@ -7763,6 +8121,7 @@ function renderProfile() {
     </div>
     <div class="menu-list">
       <div class="menu-item" onclick="goFarm()"><div class="mi-ic">🌱</div><div class="mi-tx"><div class="mi-tt">My Farm</div><div class="mi-sb">${S.myBatches.length} batches</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="navTo('my-posts')"><div class="mi-ic">📋</div><div class="mi-tx"><div class="mi-tt">My Posts &amp; History</div><div class="mi-sb">Active and removed listings</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="navTo('agro-dealers')"><div class="mi-ic">🏪</div><div class="mi-tx"><div class="mi-tt">Agro Dealers</div><div class="mi-sb">Pesticides, tools, seeds & more</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="navTo('weather-detail')"><div class="mi-ic">☁️</div><div class="mi-tx"><div class="mi-tt">Weather</div><div class="mi-sb">${esc(S.weatherCity || S.userLocation)}</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="navTo('farmers-by-city')"><div class="mi-ic">🧑‍🌾</div><div class="mi-tx"><div class="mi-tt">Farmers by City</div><div class="mi-sb">What other farmers are planting</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
