@@ -117,10 +117,39 @@ a{color:inherit;text-decoration:none}
 .sec-h button{font-size:12px;font-weight:700;color:var(--p);display:inline-flex;align-items:center;gap:4px;padding:6px 10px;border-radius:var(--r-p);transition:background .2s var(--e)}
 .sec-h button:active{background:var(--p-l)}
 
-/* ===== Horizontal scroll ===== */
 .h-scroll{display:flex;gap:10px;overflow-x:auto;padding:0 18px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .h-scroll::-webkit-scrollbar{display:none}
-.h-card-item{margin:0!important;flex-shrink:0;width:260px;scroll-snap-align:start}
+
+/* ===== COMPACT HOME CARDS ===== */
+.h-card-mini{width:190px;flex-shrink:0;scroll-snap-align:start;background:#fff;border:1px solid var(--bd);border-radius:16px;padding:12px;box-shadow:var(--sh-sm);transition:all .2s var(--e);cursor:pointer}
+.h-card-mini:active{transform:scale(.97);box-shadow:var(--sh-md)}
+.hcm-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.hcm-thumb{width:36px;height:36px;border-radius:11px;background:var(--sf2);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.hcm-info{flex:1;min-width:0}
+.hcm-name{font-size:13px;font-weight:900;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-.01em}
+.hcm-sub{font-size:10px;color:var(--tl);font-weight:600;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hcm-foot{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.hcm-price{font-size:13.5px;font-weight:900;color:var(--p-d);letter-spacing:-.02em}
+.hcm-price small{font-size:9px;font-weight:700;color:var(--tl);margin-left:2px}
+.hcm-badge{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 7px;border-radius:999px;background:var(--ok-soft);color:#065f46;white-space:nowrap}
+.hcm-badge.pending{background:var(--warn-soft);color:#92400e}
+
+/* ===== COMPACT OPPORTUNITY CARDS ===== */
+.opp-card-mini{width:142px;flex-shrink:0;scroll-snap-align:start;padding:14px;border-radius:16px;box-shadow:var(--sh-sm);display:flex;flex-direction:column;gap:2px;cursor:pointer;transition:all .2s var(--e)}
+.opp-card-mini:active{transform:scale(.97)}
+.opp-card-mini.tight{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1.5px solid rgba(22,163,74,.22)}
+.opp-card-mini.coming{background:linear-gradient(135deg,#dbeafe,#bfdbfe);border:1.5px solid rgba(37,99,235,.22)}
+.opp-card-mini.oversupply{background:linear-gradient(135deg,#fee2e2,#fecaca);border:1.5px solid rgba(220,38,38,.22)}
+.opp-mini-emoji{font-size:22px;line-height:1;margin-bottom:4px}
+.opp-mini-name{font-size:12px;font-weight:900;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.opp-mini-num{font-size:20px;font-weight:900;letter-spacing:-.03em;line-height:1.1;margin-top:6px}
+.opp-mini-lb{font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;opacity:.85;margin-top:2px}
+.opp-card-mini.tight .opp-mini-name,.opp-card-mini.tight .opp-mini-num{color:#065f46}
+.opp-card-mini.tight .opp-mini-lb{color:#047857}
+.opp-card-mini.coming .opp-mini-name,.opp-card-mini.coming .opp-mini-num{color:#1e40af}
+.opp-card-mini.coming .opp-mini-lb{color:#3730a3}
+.opp-card-mini.oversupply .opp-mini-name,.opp-card-mini.oversupply .opp-mini-num{color:#991b1b}
+.opp-card-mini.oversupply .opp-mini-lb{color:#b91c1c}
 
 /* ===== Dropdowns ===== */
 .dd-row{display:flex;gap:8px;padding:12px 18px 8px}
@@ -139,7 +168,29 @@ a{color:inherit;text-decoration:none}
 .dd-item .dd-check{margin-left:auto;color:var(--p);font-weight:800;display:none}
 .dd-item.selected .dd-check{display:inline}
 
-/* ===== Market cards ===== */
+/* Busiest markets dropdown (dark) */
+.dd-busiest-wrap{position:relative;margin:0 18px 10px}
+.dd-busiest-trigger{width:100%;padding:14px 16px;border-radius:16px;background:linear-gradient(135deg,#1e293b,#0f172a);color:#fff;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:800;box-shadow:var(--sh-md);transition:all .2s var(--e);border:none}
+.dd-busiest-trigger:active{transform:scale(.98)}
+.dd-busiest-trigger .ddb-ic{font-size:20px;flex-shrink:0}
+.dd-busiest-trigger .ddb-label{flex:1;text-align:left;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dd-busiest-trigger .ddb-count{font-size:10px;font-weight:800;background:rgba(255,255,255,.18);padding:3px 8px;border-radius:999px}
+.dd-busiest-trigger .ddb-arrow{font-size:10px;opacity:.85;transition:transform .2s var(--e)}
+.dd-busiest-trigger.open .ddb-arrow{transform:rotate(180deg)}
+.dd-busiest-menu{background:#fff;border:1.5px solid var(--bd);border-radius:16px;box-shadow:0 16px 40px -8px rgba(15,23,42,.2);max-height:0;overflow:hidden;transition:max-height .35s var(--e),margin-top .25s var(--e);margin-top:0}
+.dd-busiest-menu.open{max-height:600px;margin-top:8px}
+.ddb-item{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--bd)}
+.ddb-item:last-child{border-bottom:none}
+.ddb-rank{width:30px;height:30px;border-radius:10px;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:var(--p-d);flex-shrink:0}
+.ddb-rank.gold{background:linear-gradient(145deg,#fef3c7,#fde68a);color:#92400e}
+.ddb-rank.silver{background:linear-gradient(145deg,#f1f5f9,#e2e8f0);color:#475569}
+.ddb-rank.bronze{background:linear-gradient(145deg,#ffedd5,#fed7aa);color:#9a3412}
+.ddb-body{flex:1;min-width:0}
+.ddb-title{font-size:13px;font-weight:800;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ddb-sub{font-size:10.5px;color:var(--tl);font-weight:600;margin-top:1px}
+.ddb-count{font-size:15px;font-weight:900;color:var(--p-d)}
+
+/* ===== Market / Plant cards ===== */
 .market-card{margin:0 18px 10px;padding:14px;background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);box-shadow:var(--sh-sm);display:flex;gap:12px;align-items:flex-start;transition:all .2s var(--e);position:relative}
 .market-card:active{transform:scale(.985);box-shadow:var(--sh-md)}
 .mc-thumb{width:60px;height:60px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--sf2);box-shadow:0 3px 10px rgba(0,0,0,.06)}
@@ -160,7 +211,6 @@ a{color:inherit;text-decoration:none}
 .call-btn:active{transform:scale(.9)}
 .call-btn svg{width:20px;height:20px;fill:#fff}
 
-/* ===== Plant cards ===== */
 .plant-card{margin:0 18px 10px;padding:14px;background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);box-shadow:var(--sh-sm);display:flex;gap:12px;align-items:center;transition:all .2s var(--e)}
 .plant-card:active{transform:scale(.985);box-shadow:var(--sh-md)}
 .pc-ic{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,.06)}
@@ -169,37 +219,13 @@ a{color:inherit;text-decoration:none}
 .pc-meta{font-size:11px;color:var(--tl);font-weight:600;margin-top:3px;line-height:1.4}
 .pc-farmer{font-size:10.5px;font-weight:800;color:var(--p);margin-top:4px;display:flex;align-items:center;gap:4px}
 
-/* ===== Opportunity cards (horizontal) ===== */
-.opp-card{flex-shrink:0;width:230px;padding:16px;border-radius:20px;scroll-snap-align:start;box-shadow:var(--sh-sm);display:flex;flex-direction:column}
-.opp-card.tight{background:linear-gradient(135deg,#d1fae5 0%,#a7f3d0 100%);border:1.5px solid rgba(22,163,74,.22)}
-.opp-card.coming{background:linear-gradient(135deg,#dbeafe 0%,#bfdbfe 100%);border:1.5px solid rgba(37,99,235,.22)}
-.opp-card.oversupply{background:linear-gradient(135deg,#fee2e2 0%,#fecaca 100%);border:1.5px solid rgba(220,38,38,.22)}
-.opp-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;display:flex;align-items:center;gap:5px}
-.opp-card.tight .opp-label{color:#065f46}
-.opp-card.coming .opp-label{color:#1e40af}
-.opp-card.oversupply .opp-label{color:#991b1b}
-.opp-title{font-size:16px;font-weight:900;letter-spacing:-.02em;line-height:1.2;display:flex;align-items:center;gap:6px;margin-bottom:6px}
-.opp-title .opp-emoji{font-size:22px}
-.opp-card.tight .opp-title{color:#064e3b}
-.opp-card.coming .opp-title{color:#1e3a8a}
-.opp-card.oversupply .opp-title{color:#7f1d1d}
-.opp-desc{font-size:11.5px;font-weight:600;line-height:1.5;margin-top:auto}
-.opp-card.tight .opp-desc{color:#047857}
-.opp-card.coming .opp-desc{color:#3730a3}
-.opp-card.oversupply .opp-desc{color:#991b1b}
-.opp-num{font-size:22px;font-weight:900;letter-spacing:-.03em;margin:6px 0 2px}
-.opp-card.tight .opp-num{color:#065f46}
-.opp-card.coming .opp-num{color:#1e40af}
-.opp-card.oversupply .opp-num{color:#991b1b}
-.opp-unit{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;opacity:.8}
-
 /* ===== Circular CTA ===== */
-.circle-cta-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 0 22px}
-.circle-btn{width:76px;height:76px;border-radius:50%;background:linear-gradient(180deg,#12903e,var(--p-d));color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:30px;line-height:1;box-shadow:0 16px 40px -10px var(--p-glow),inset 0 -3px 8px rgba(0,0,0,.15);transition:all .25s var(--e);border:3px solid rgba(255,255,255,.45);position:relative}
-.circle-btn::before{content:'';position:absolute;inset:-8px;border-radius:50%;border:2px solid var(--p);opacity:.25;animation:pulseRing 2.2s ease-out infinite}
-@keyframes pulseRing{0%{transform:scale(.92);opacity:.35}100%{transform:scale(1.22);opacity:0}}
+.circle-cta-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 0 22px}
+.circle-btn{width:82px;height:82px;border-radius:50%;background:linear-gradient(180deg,#12903e,var(--p-d));color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:34px;line-height:1;box-shadow:0 18px 44px -10px var(--p-glow),inset 0 -3px 8px rgba(0,0,0,.18);transition:all .25s var(--e);border:3px solid rgba(255,255,255,.5);position:relative}
+.circle-btn::before{content:'';position:absolute;inset:-8px;border-radius:50%;border:2px solid var(--p);opacity:.28;animation:pulseRing 2.2s ease-out infinite}
+@keyframes pulseRing{0%{transform:scale(.92);opacity:.4}100%{transform:scale(1.22);opacity:0}}
 .circle-btn:active{transform:scale(.9)}
-.circle-btn-lbl{font-size:11.5px;font-weight:900;color:var(--p-d);text-transform:uppercase;letter-spacing:.06em}
+.circle-btn-lbl{font-size:12px;font-weight:900;color:var(--p-d);text-transform:uppercase;letter-spacing:.06em}
 
 /* ===== Analysis ===== */
 .analysis-hero{margin:0 18px 14px;padding:20px;border-radius:var(--r-xl);background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#fff;box-shadow:var(--sh-xl);position:relative;overflow:hidden}
@@ -212,6 +238,8 @@ a{color:inherit;text-decoration:none}
 .as-card.highlight{background:linear-gradient(135deg,#e6f5eb,#d1fae5);border-color:rgba(15,122,52,.25)}
 .as-card.warn{background:linear-gradient(135deg,#fef3c7,#fde68a);border-color:rgba(180,83,9,.22)}
 .as-card.danger{background:linear-gradient(135deg,#fee2e2,#fecaca);border-color:rgba(220,38,38,.22)}
+.as-card.clickable{cursor:pointer;transition:all .2s var(--e)}
+.as-card.clickable:active{transform:scale(.97)}
 .as-ic{font-size:18px;margin-bottom:6px}
 .as-lb{font-size:10px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
 .as-v{font-size:22px;font-weight:900;color:var(--td);letter-spacing:-.03em;line-height:1}
@@ -222,6 +250,7 @@ a{color:inherit;text-decoration:none}
 .as-card.highlight .as-sub{color:#047857}
 .as-card.warn .as-sub{color:#92400e}
 .as-card.danger .as-sub{color:#991b1b}
+.as-sub.link{color:var(--p);text-decoration:underline}
 
 .analysis-crop-row{padding:14px;border-radius:var(--r);background:var(--sf2);border:1px solid var(--bd);margin:0 18px 8px}
 .acr-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
@@ -239,14 +268,7 @@ a{color:inherit;text-decoration:none}
 .acr-bar-fill.act{background:linear-gradient(90deg,#93c5fd,#2563eb)}
 .acr-bar-val{width:64px;text-align:right;font-weight:800;color:var(--td);flex-shrink:0}
 
-.market-density-row{margin:0 18px 8px;padding:12px 14px;background:#fff;border:1px solid var(--bd);border-radius:var(--r);display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:var(--sh-xs)}
-.mdr-left{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
-.mdr-ico{width:34px;height:34px;border-radius:10px;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.mdr-title{font-size:13px;font-weight:800;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mdr-sub{font-size:10.5px;color:var(--tl);font-weight:600;margin-top:2px}
-.mdr-count{font-size:16px;font-weight:900;color:var(--p-d);flex-shrink:0}
-
-/* ===== Tips / Menu / Res / Profile ===== */
+/* ===== Tips / Res / Menu / Profile ===== */
 .tip-card{margin:0 18px 10px;padding:16px;border-radius:var(--r-xl);position:relative;overflow:hidden;box-shadow:var(--sh-sm)}
 .tip-card.buy{background:linear-gradient(135deg,#d1fae5 0%,#a7f3d0 100%);border:1.5px solid rgba(22,163,74,.22)}
 .tip-card.wait{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:1.5px solid rgba(180,83,9,.22)}
@@ -304,7 +326,7 @@ a{color:inherit;text-decoration:none}
 .bn.active .bn-lb{font-weight:900}
 
 .prof-hero{margin:0 18px 16px;padding:22px;border-radius:var(--r-2xl);background:linear-gradient(135deg,#0f7a34 0%,#0b5f28 100%);color:#fff;text-align:center;position:relative;overflow:hidden;box-shadow:var(--sh-brand-lg)}
-.p-av{width:80px;height:80px;border-radius:50%;margin:0 auto 12px;background:rgba(255,255,255,.2);border:3px solid #fff;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900}
+.p-av{width:80px;height:80px;border-radius:50%;margin:0 auto 12px;background:rgba(255,255,255,.2);border:3px solid #fff;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;background-size:cover;background-position:center}
 .p-av img{width:100%;height:100%;object-fit:cover}
 .prof-hero h2{font-size:19px;font-weight:900;letter-spacing:-.03em;position:relative;z-index:1}
 .p-ver{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;background:rgba(255,255,255,.2);padding:4px 10px;border-radius:var(--r-p);margin-top:6px}
@@ -317,15 +339,24 @@ a{color:inherit;text-decoration:none}
 .menu-list{padding:0 18px 18px}
 .menu-item{display:flex;align-items:center;gap:12px;padding:15px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);margin-bottom:8px;cursor:pointer;transition:all .2s var(--e);box-shadow:var(--sh-xs)}
 .menu-item:active{background:var(--p-l);border-color:var(--p);transform:scale(.985)}
-.mi-ic{width:38px;height:38px;border-radius:50%;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.mi-ic{width:38px;height:38px;border-radius:50%;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;overflow:hidden;font-weight:900}
+.mi-ic img{width:100%;height:100%;object-fit:cover}
 .mi-tx{flex:1;min-width:0}
-.mi-tt{font-size:13.5px;font-weight:800;color:var(--td)}
+.mi-tt{font-size:13.5px;font-weight:800;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mi-sb{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px}
 .mi-ar svg{width:16px;height:16px;fill:var(--tm)}
 
 .notice-banner{margin:0 18px 12px;padding:12px 14px;border-radius:var(--r-lg);background:#fef3c7;border:1px solid rgba(180,83,9,.22);display:flex;align-items:center;gap:10px}
 .notice-banner .nb-ic{font-size:20px;flex-shrink:0}
 .notice-banner .nb-tx{flex:1;font-size:11.5px;color:#92400e;font-weight:700;line-height:1.4}
+
+.stage-pill{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:4px 8px;border-radius:999px;background:var(--p-l);color:var(--p-d);white-space:nowrap;flex-shrink:0}
+.stage-pill.planted{background:#dbeafe;color:#1e40af}
+.stage-pill.growing{background:#d1fae5;color:#065f46}
+.stage-pill.flowering{background:#fef3c7;color:#92400e}
+.stage-pill.fruiting{background:#ede9fe;color:#5b21b6}
+.stage-pill.harvesting{background:#ffedd5;color:#9a3412}
+.stage-pill.harvested{background:#f1f5f9;color:#475569}
 </style>
 </head>
 <body>
@@ -387,10 +418,13 @@ const S = {
   userCoords: null,
   screen: 'home',
   screenData: {},
-  marketCategory: 'available',   // available | pending | all
-  marketFilter: '__all-city',    // '__all-city' | marketName | '__nearby' | '__all'
-  plantedCategory: 'all',        // 'all' | cropName
-  plantedFilter: '__all-city',   // same as marketFilter
+  marketCategory: 'available',
+  marketFilter: '__all-city',
+  plantedCategory: 'all',
+  plantedFilter: '__all-city',
+  analysisYear: 'all',
+  analysisCity: 'all',
+  busiestOpen: false,
   countdownTimer: null,
   listingsUnsub: null,
   batchesUnsub: null,
@@ -456,6 +490,8 @@ function pickIcon(name){
 }
 const GRADS = ['linear-gradient(145deg,#d1fae5,#10b981)','linear-gradient(145deg,#fef3c7,#f59e0b)','linear-gradient(145deg,#fee2e2,#dc2626)','linear-gradient(145deg,#dbeafe,#2563eb)','linear-gradient(145deg,#fce7f3,#db2777)','linear-gradient(145deg,#ede9fe,#7c3aed)','linear-gradient(145deg,#ffedd5,#ea580c)','linear-gradient(145deg,#ccfbf1,#0d9488)'];
 function gradFor(str){ let h=0; for(let i=0;i<(str||'').length;i++) h=(h*31+str.charCodeAt(i))>>>0; return GRADS[h%GRADS.length]; }
+
+const STAGE_LABELS = { planted:'Planted', growing:'Growing', flowering:'Flowering', fruiting:'Fruiting', harvesting:'Ready', harvested:'Harvested' };
 
 /* ============================================================
    CITY + MARKETS
@@ -629,6 +665,7 @@ window.goAnalysis = () => showScreen('analysis');
 window.goProfile = () => showScreen('profile');
 window.goTips = () => showScreen('tips');
 window.goResources = () => showScreen('resources');
+window.goFarmers = () => showScreen('farmers');
 window.goBack = () => { try{ history.back(); }catch(e){ showScreen('home'); } };
 window.navTo = (id, data) => showScreen(id, data);
 
@@ -646,6 +683,8 @@ function route(){
     case 'analysis': el.innerHTML = renderAnalysis(); break;
     case 'tips': el.innerHTML = renderTips(); break;
     case 'resources': el.innerHTML = renderResources(); break;
+    case 'farmers': el.innerHTML = renderFarmers(); break;
+    case 'farmer-detail': el.innerHTML = renderFarmerDetail(S.screenData.id); break;
     case 'profile': el.innerHTML = renderProfile(); break;
     default: el.innerHTML = renderHome();
   }
@@ -674,7 +713,6 @@ function filterListings(){
     return l.marketName === filter;
   });
 }
-
 function filterBatches(){
   const city = normalizeCity(S.weatherCity || S.userLocation);
   const nearby = nearbyCities(city);
@@ -687,23 +725,34 @@ function filterBatches(){
     if(filter === '__all-city') return bCity === city;
     if(filter === '__nearby') return nearby.includes(bCity);
     if(filter === '__all') return true;
-    // Specific market picked → filter by market's city (= detected city, since markets list is from city)
     return bCity === city;
   });
 }
-
 function phoneForBatch(b){
   const u = S.usersById[b.ownerId];
   return u && (u.phone || u.phoneNumber) ? (u.phone || u.phoneNumber) : null;
 }
 
 /* ============================================================
-   ANALYSIS COMPUTE
+   ANALYSIS COMPUTE (with filters)
    ============================================================ */
 function computeSupplyInsights(){
+  const year = S.analysisYear || 'all';
+  const city = S.analysisCity || 'all';
   const now = Date.now();
   const HORIZON = 45 * 86400000;
-  const active = S.batches.filter(b => b.stage !== 'harvested');
+
+  let active = S.batches.filter(b => b.stage !== 'harvested');
+  if(city !== 'all') active = active.filter(b => cityOfBatch(b) === city);
+  if(year !== 'all'){
+    active = active.filter(b => {
+      if(!b.plantedDate) return false;
+      return new Date(b.plantedDate).getFullYear() === year;
+    });
+  }
+
+  let listings = S.listings.filter(l => isAvailable(l));
+  if(city !== 'all') listings = listings.filter(l => cityOfListing(l) === city);
 
   const incomingByCrop = {};
   const availableByCrop = {};
@@ -714,9 +763,7 @@ function computeSupplyInsights(){
       incomingByCrop[name] = (incomingByCrop[name] || 0) + (b.estimatedBoxes || 0);
     }
   });
-
-  S.listings.forEach(l => {
-    if(!isAvailable(l)) return;
+  listings.forEach(l => {
     const name = l.productName || l.title || 'Other';
     availableByCrop[name] = (availableByCrop[name] || 0) + (l.quantity || 0);
   });
@@ -730,47 +777,83 @@ function computeSupplyInsights(){
     if(available > 0 && incoming > available * 2) status = 'oversupply';
     else if(incoming > 0 && available === 0) status = 'coming';
     else if(available > 0 && incoming < available * 0.5) status = 'tight';
-    else if(incoming > 0 && available === 0) status = 'coming';
     return { name, incoming, available, total, status };
   }).sort((a,b) => (b.incoming + b.available) - (a.incoming + a.available));
 
-  // Extra metrics
   const farmerSet = new Set();
   const marketSet = new Set();
-  S.listings.forEach(l => {
-    if(isLiveListing(l)){
-      farmerSet.add(l.seller_id);
-      if(l.marketName) marketSet.add(l.marketName);
-    }
+  listings.forEach(l => {
+    if(l.seller_id) farmerSet.add(l.seller_id);
+    if(l.marketName) marketSet.add(l.marketName);
   });
-  S.batches.forEach(b => { if(b.stage !== 'harvested') farmerSet.add(b.ownerId); });
+  active.forEach(b => { if(b.ownerId) farmerSet.add(b.ownerId); });
 
-  // Market density
   const marketCounts = {};
-  S.listings.forEach(l => {
-    if(isLiveListing(l) && l.marketName){
-      marketCounts[l.marketName] = (marketCounts[l.marketName] || 0) + 1;
-    }
+  listings.forEach(l => {
+    if(l.marketName) marketCounts[l.marketName] = (marketCounts[l.marketName] || 0) + 1;
   });
-  const busyMarkets = Object.entries(marketCounts).sort((a,b) => b[1]-a[1]).slice(0,5);
+  const busyMarkets = Object.entries(marketCounts).sort((a,b) => b[1]-a[1]);
 
-  return { rows, incomingByCrop, availableByCrop, farmerCount: farmerSet.size, marketCount: marketSet.size, busyMarkets };
+  return {
+    rows,
+    incomingByCrop,
+    availableByCrop,
+    farmerCount: farmerSet.size,
+    marketCount: marketSet.size,
+    busyMarkets
+  };
+}
+
+function buildFarmersList(){
+  const farmerMap = {};
+  S.batches.forEach(b => {
+    if(!b.ownerId) return;
+    if(!farmerMap[b.ownerId]){
+      const u = S.usersById[b.ownerId] || {};
+      farmerMap[b.ownerId] = {
+        id: b.ownerId,
+        name: (b.ownerName || '').trim() || ((u.firstName||'')+' '+(u.lastName||'')).trim() || 'Farmer',
+        phone: u.phone || u.phoneNumber || '',
+        city: b.town || b.ownerCity || u.city || '',
+        photo: u.profileUrl || '',
+        planted: 0,
+        listings: 0
+      };
+    }
+    farmerMap[b.ownerId].planted++;
+  });
+  S.listings.forEach(l => {
+    if(!l.seller_id) return;
+    if(!farmerMap[l.seller_id]){
+      const u = S.usersById[l.seller_id] || {};
+      farmerMap[l.seller_id] = {
+        id: l.seller_id,
+        name: l.sellerName || ((u.firstName||'')+' '+(u.lastName||'')).trim() || 'Farmer',
+        phone: l.sellerPhone || u.phone || u.phoneNumber || '',
+        city: l.city || u.city || '',
+        photo: l.sellerPhoto || u.profileUrl || '',
+        planted: 0,
+        listings: 0
+      };
+    }
+    farmerMap[l.seller_id].listings++;
+  });
+  return Object.values(farmerMap).sort((a,b) => (b.planted + b.listings) - (a.planted + a.listings));
 }
 
 /* ============================================================
-   DROPDOWN HELPERS
+   DROPDOWN SYSTEM
    ============================================================ */
 function getMarketDropdownOptions(){
   const city = normalizeCity(S.weatherCity || S.userLocation);
   const markets = marketsForCity(city);
   return [
-    { value: '__all-city', label: `📍 All markets in ${city}` },
+    { value: '__all-city', label: `📍 All ${city} markets` },
     ...markets.map(m => ({ value: m, label: `🏪 ${m}` })),
     { value: '__nearby', label: `🗺️ Nearby cities` },
     { value: '__all', label: `🇿🇲 All Zambia` }
   ];
 }
-
 function getMarketCategoryOptions(){
   return [
     { value: 'available', label: '✅ Available' },
@@ -778,7 +861,6 @@ function getMarketCategoryOptions(){
     { value: 'all', label: '📋 All' }
   ];
 }
-
 function getPlantedCropOptions(){
   const crops = [...new Set(S.batches.filter(b => b.stage !== 'harvested').map(b => b.cropName).filter(Boolean))].sort();
   return [
@@ -786,9 +868,39 @@ function getPlantedCropOptions(){
     ...crops.map(c => ({ value: c, label: `${pickIcon(c)} ${c}` }))
   ];
 }
+function getAnalysisYearOptions(){
+  const years = new Set();
+  S.batches.forEach(b => {
+    if(b.plantedDate){
+      const y = new Date(b.plantedDate).getFullYear();
+      if(y > 2000) years.add(y);
+    }
+  });
+  const sorted = [...years].sort((a,b) => b-a);
+  return [
+    { value: 'all', label: '📅 All years' },
+    ...sorted.map(y => ({ value: y, label: `📅 ${y}` }))
+  ];
+}
+function getAnalysisCityOptions(){
+  const cities = new Set();
+  S.batches.forEach(b => {
+    const c = cityOfBatch(b);
+    if(c) cities.add(c);
+  });
+  S.listings.forEach(l => {
+    const c = cityOfListing(l);
+    if(c) cities.add(c);
+  });
+  const sorted = [...cities].sort();
+  return [
+    { value: 'all', label: '📍 All cities' },
+    ...sorted.map(c => ({ value: c, label: `📍 ${c}` }))
+  ];
+}
 
 function selectedLabel(options, value, fallback){
-  const found = options.find(o => o.value === value);
+  const found = options.find(o => String(o.value) === String(value));
   return found ? found.label : fallback;
 }
 
@@ -801,7 +913,7 @@ function renderDropdown(id, options, currentValue, onPick){
     </button>
     <div class="dd-menu" id="${id}">
       ${options.map(o => `
-        <div class="dd-item ${o.value === currentValue ? 'selected' : ''}" onclick="event.stopPropagation();${onPick}('${esc(String(o.value)).replace(/'/g,"\\'")}');closeAllDds()">
+        <div class="dd-item ${String(o.value) === String(currentValue) ? 'selected' : ''}" onclick="event.stopPropagation();${onPick}('${esc(String(o.value)).replace(/'/g,"\\'")}');closeAllDds()">
           <span>${esc(o.label)}</span>
           <span class="dd-check">✓</span>
         </div>
@@ -823,13 +935,22 @@ window.closeAllDds = () => {
   document.querySelectorAll('.dd-trigger').forEach(t => t.classList.remove('open'));
 };
 document.addEventListener('click', e => {
-  if(!e.target.closest('.dd-wrap')) closeAllDds();
+  if(!e.target.closest('.dd-wrap') && !e.target.closest('.dd-busiest-wrap')) closeAllDds();
 });
 
 window.setMarketCategory = (v) => { S.marketCategory = v; route(); };
 window.setMarketFilter = (v) => { S.marketFilter = v; route(); };
 window.setPlantedCategory = (v) => { S.plantedCategory = v; route(); };
 window.setPlantedFilter = (v) => { S.plantedFilter = v; route(); };
+window.setAnalysisYear = (v) => { S.analysisYear = v === 'all' ? 'all' : parseInt(v); route(); };
+window.setAnalysisCity = (v) => { S.analysisCity = v; route(); };
+window.toggleBusiest = () => {
+  S.busiestOpen = !S.busiestOpen;
+  const menu = document.getElementById('dd-busiest-menu');
+  const trigger = document.getElementById('dd-busiest-trigger');
+  if(menu) menu.classList.toggle('open', S.busiestOpen);
+  if(trigger) trigger.classList.toggle('open', S.busiestOpen);
+};
 
 /* ============================================================
    HOME
@@ -846,10 +967,10 @@ function renderHome(){
   const activeBatches = S.batches.filter(b => b.stage !== 'harvested').length;
 
   const myCityAvailable = S.listings.filter(l => isAvailable(l) && cityOfListing(l) === city);
-  const topCity = myCityAvailable.slice(0, 6);
+  const topCity = myCityAvailable.slice(0, 8);
 
   const ins = computeSupplyInsights();
-  const opportunities = ins.rows.filter(r => r.status === 'tight' || r.status === 'oversupply' || r.status === 'coming').slice(0, 6);
+  const opportunities = ins.rows.filter(r => r.status === 'tight' || r.status === 'oversupply' || r.status === 'coming').slice(0, 8);
 
   const weatherBlock = w ? `
     <div class="hero-card">
@@ -889,7 +1010,7 @@ function renderHome(){
   `;
 
   const cityListingsHTML = topCity.length
-    ? `<div class="h-scroll">${topCity.map(l => renderMarketCard(l, 'h-card-item')).join('')}</div>`
+    ? `<div class="h-scroll">${topCity.map(l => renderMiniMarketCard(l)).join('')}</div>`
     : `<div class="empty" style="padding:24px">
         <div class="e-ic">🛒</div>
         <h3>Nothing in ${esc(city)} yet</h3>
@@ -897,7 +1018,7 @@ function renderHome(){
       </div>`;
 
   const oppHTML = opportunities.length
-    ? `<div class="h-scroll">${opportunities.map(r => renderOppCard(r, r.status === 'oversupply' ? 'oversupply' : r.status === 'tight' ? 'tight' : 'coming')).join('')}</div>`
+    ? `<div class="h-scroll">${opportunities.map(r => renderMiniOppCard(r)).join('')}</div>`
     : '';
 
   return `
@@ -933,7 +1054,7 @@ function renderHome(){
     <div class="menu-list" style="padding-top:0">
       <div class="menu-item" onclick="goResources()">
         <div class="mi-ic">🇿🇲</div>
-        <div class="mi-tx"><div class="mi-tt">Zambian Resources</div><div class="mi-sb">Ministry, FARI, FRA, SCCI & more</div></div>
+        <div class="mi-tx"><div class="mi-tt">Zambian Resources</div><div class="mi-sb">Ministry, FRA, ZARI & more</div></div>
         <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
       </div>
       <div class="menu-item" onclick="goAnalysis()">
@@ -947,10 +1068,82 @@ function renderHome(){
 }
 
 /* ============================================================
-   MARKET CARD
+   COMPACT CARDS
    ============================================================ */
-function renderMarketCard(l, extraClass){
-  const extra = extraClass || '';
+function renderMiniMarketCard(l){
+  const avail = isAvailable(l);
+  const priceText = l.priceMode === 'total' ? fmtZMK(l.priceAmount) + ' total' : fmtZMK(l.priceAmount) + ' / box';
+  const sub = [l.quantity ? `${l.quantity} box${l.quantity===1?'':'es'}` : '', l.marketName || ''].filter(Boolean).join(' · ');
+  return `
+  <div class="h-card-mini" onclick="viewListing('${esc(l.id)}')">
+    <div class="hcm-head">
+      <div class="hcm-thumb">${pickIcon(l.productName || l.title)}</div>
+      <div class="hcm-info">
+        <div class="hcm-name">${esc(l.productName || l.title || 'Produce')}</div>
+        <div class="hcm-sub">${esc(sub || l.city || '')}</div>
+      </div>
+    </div>
+    <div class="hcm-foot">
+      <div class="hcm-price">${esc(priceText.replace('ZMK ',''))}<small>${l.priceMode === 'total' ? '' : 'ZMK'}</small></div>
+      <span class="hcm-badge ${avail?'':'pending'}">${avail ? '✅ Now' : '⏳ Soon'}</span>
+    </div>
+  </div>`;
+}
+
+function renderMiniOppCard(row){
+  const kind = row.status === 'oversupply' ? 'oversupply' : row.status === 'tight' ? 'tight' : 'coming';
+  const num = kind === 'tight' ? row.available : row.incoming;
+  const unit = kind === 'tight' ? 'boxes available' : 'boxes incoming';
+  return `
+  <div class="opp-card-mini ${kind}">
+    <div class="opp-mini-emoji">${pickIcon(row.name)}</div>
+    <div class="opp-mini-name">${esc(row.name)}</div>
+    <div class="opp-mini-num">${num.toLocaleString()}</div>
+    <div class="opp-mini-lb">${unit}</div>
+  </div>`;
+}
+
+/* ============================================================
+   MARKET SCREEN
+   ============================================================ */
+function renderMarket(){
+  const city = normalizeCity(S.weatherCity || S.userLocation);
+  const cat = S.marketCategory;
+  const filter = S.marketFilter;
+  const filtered = filterListings();
+
+  const catOptions = getMarketCategoryOptions();
+  const marketOptions = getMarketDropdownOptions();
+
+  setTimeout(() => { startCountdownTicker(); }, 50);
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered"><div class="tb-title">Market</div></div>
+
+    <div class="dd-row">
+      ${renderDropdown('dd-cat-market', catOptions, cat, 'setMarketCategory')}
+      ${renderDropdown('dd-market', marketOptions, filter, 'setMarketFilter')}
+    </div>
+
+    <div style="padding:4px 18px 10px;font-size:11px;color:var(--tl);font-weight:700">
+      ${filtered.length} listing${filtered.length===1?'':'s'}
+    </div>
+
+    ${filtered.length
+      ? filtered.map(l => renderMarketCard(l)).join('')
+      : `<div class="empty">
+          <div class="e-ic">🛒</div>
+          <h3>No ${cat === 'all' ? '' : cat} listings here</h3>
+          <p>Try changing the filters above.</p>
+        </div>`}
+
+    <div style="height:8px"></div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+function renderMarketCard(l){
   const avail = isAvailable(l);
   const pend = isPending(l);
   const meta = [
@@ -982,7 +1175,7 @@ function renderMarketCard(l, extraClass){
       : '';
 
   return `
-  <div class="market-card ${extra}" onclick="viewListing('${esc(l.id)}')">
+  <div class="market-card" onclick="viewListing('${esc(l.id)}')">
     <div class="mc-thumb">${pickIcon(l.productName || l.title)}</div>
     <div class="mc-body">
       <div class="mc-title">${esc(l.productName || l.title || 'Produce')}</div>
@@ -999,78 +1192,9 @@ function renderMarketCard(l, extraClass){
 }
 
 /* ============================================================
-   OPPORTUNITY CARD
-   ============================================================ */
-function renderOppCard(row, kind){
-  const cls = kind === 'tight' ? 'tight' : kind === 'oversupply' ? 'oversupply' : 'coming';
-  const label = kind === 'tight' ? '🔥 Buy now'
-              : kind === 'oversupply' ? '🚨 Oversupply'
-              : '⏳ Coming soon';
-  const num = kind === 'tight' ? row.available
-            : kind === 'oversupply' ? row.incoming
-            : row.incoming;
-  const unit = kind === 'tight' ? 'boxes available' : 'boxes incoming';
-  const desc = kind === 'tight'
-    ? `Little incoming. Lock in a good price now.`
-    : kind === 'oversupply'
-      ? `Prices may fall — buy only what you can sell.`
-      : `Arriving in the next 45 days. Call farmers early.`;
-
-  return `
-  <div class="opp-card ${cls}">
-    <div class="opp-label">${label}</div>
-    <div class="opp-title"><span class="opp-emoji">${pickIcon(row.name)}</span>${esc(row.name)}</div>
-    <div class="opp-num">${num.toLocaleString()}</div>
-    <div class="opp-unit">${unit}</div>
-    <div class="opp-desc">${desc}</div>
-  </div>`;
-}
-
-/* ============================================================
-   MARKET SCREEN
-   ============================================================ */
-function renderMarket(){
-  const city = normalizeCity(S.weatherCity || S.userLocation);
-  const cat = S.marketCategory;
-  const filter = S.marketFilter;
-  const filtered = filterListings();
-
-  const catOptions = getMarketCategoryOptions();
-  const marketOptions = getMarketDropdownOptions();
-
-  setTimeout(() => { startCountdownTicker(); }, 50);
-
-  return `
-  <div class="scroll">
-    <div class="topbar bordered"><div class="tb-title">Market</div></div>
-
-    <div class="dd-row">
-      ${renderDropdown('dd-cat-market', catOptions, cat, 'setMarketCategory')}
-      ${renderDropdown('dd-market', marketOptions, filter, 'setMarketFilter')}
-    </div>
-
-    <div style="padding:4px 18px 10px;font-size:11px;color:var(--tl);font-weight:700">
-      Showing ${filtered.length} listing${filtered.length===1?'':'s'} · ${esc(selectedLabel(marketOptions, filter, 'All markets').replace(/^[^\s]+\s/,''))}
-    </div>
-
-    ${filtered.length
-      ? filtered.map(l => renderMarketCard(l)).join('')
-      : `<div class="empty">
-          <div class="e-ic">🛒</div>
-          <h3>No ${cat === 'all' ? '' : cat} listings here</h3>
-          <p>Try changing the category or market filter above.</p>
-        </div>`}
-
-    <div style="height:8px"></div>
-  </div>
-  ${bottomNavHTML()}`;
-}
-
-/* ============================================================
    PLANTED SCREEN
    ============================================================ */
 function renderPlanted(){
-  const city = normalizeCity(S.weatherCity || S.userLocation);
   const cat = S.plantedCategory;
   const filter = S.plantedFilter;
   const batches = filterBatches();
@@ -1137,7 +1261,7 @@ function renderPlantCard(b){
     <div class="pc-ic" style="background:${grad}">${pickIcon(b.cropName)}</div>
     <div class="pc-body">
       <div class="pc-title">${esc(b.cropName)}${b.varietyName ? ' · ' + esc(b.varietyName) : ''}</div>
-      <div class="pc-meta">${est ? `${est.toLocaleString()} boxes expected` : 'Boxes TBD'} · 🌾 ${esc(harvest)}</div>
+      <div class="pc-meta">${est ? `${est.toLocaleString()} boxes` : 'Boxes TBD'} · 🌾 ${esc(harvest)}</div>
       <div class="pc-farmer">🧑‍🌾 ${esc(farmer)} · 📍 ${esc(city)}</div>
     </div>
     ${callBtn}
@@ -1145,7 +1269,7 @@ function renderPlantCard(b){
 }
 
 /* ============================================================
-   ANALYSIS SCREEN — full, with horizontal opportunity cards + circular CTA
+   ANALYSIS SCREEN
    ============================================================ */
 function renderAnalysis(){
   const ins = computeSupplyInsights();
@@ -1155,9 +1279,39 @@ function renderAnalysis(){
   const oversupplyCrops = rows.filter(r => r.status === 'oversupply');
   const tightCrops = rows.filter(r => r.status === 'tight');
   const topCrop = rows[0];
-  const opportunities = rows.filter(r => r.status === 'tight' || r.status === 'oversupply' || r.status === 'coming').slice(0, 8);
+  const opportunities = rows.filter(r => r.status === 'tight' || r.status === 'oversupply' || r.status === 'coming').slice(0, 10);
 
   const maxVal = Math.max(...rows.map(r => r.available + r.incoming), 1);
+
+  const yearOptions = getAnalysisYearOptions();
+  const cityOptions = getAnalysisCityOptions();
+
+  // Busiest markets dropdown
+  const busiestHTML = ins.busyMarkets.length ? `
+    <div class="dd-busiest-wrap">
+      <button class="dd-busiest-trigger ${S.busiestOpen ? 'open' : ''}" id="dd-busiest-trigger" onclick="event.stopPropagation();toggleBusiest()">
+        <span class="ddb-ic">🏪</span>
+        <span class="ddb-label">Busiest markets</span>
+        <span class="ddb-count">${ins.busyMarkets.length}</span>
+        <span class="ddb-arrow">▼</span>
+      </button>
+      <div class="dd-busiest-menu ${S.busiestOpen ? 'open' : ''}" id="dd-busiest-menu">
+        ${ins.busyMarkets.slice(0, 15).map(([name, count], i) => {
+          const rankCls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+          const emoji = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
+          return `
+            <div class="ddb-item">
+              <div class="ddb-rank ${rankCls}">${emoji}</div>
+              <div class="ddb-body">
+                <div class="ddb-title">${esc(name)}</div>
+                <div class="ddb-sub">${count} active listing${count===1?'':'s'}</div>
+              </div>
+              <div class="ddb-count">${count}</div>
+            </div>`;
+        }).join('')}
+      </div>
+    </div>
+  ` : '';
 
   return `
   <div class="scroll">
@@ -1165,7 +1319,12 @@ function renderAnalysis(){
 
     <div class="analysis-hero">
       <h2>📊 Full market analysis</h2>
-      <p>Live supply, pipeline, opportunities and risks — the whole market at a glance.</p>
+      <p>Live supply, pipeline, opportunities and risks — filter by year and city.</p>
+    </div>
+
+    <div class="dd-row">
+      ${renderDropdown('dd-analysis-year', yearOptions, S.analysisYear, 'setAnalysisYear')}
+      ${renderDropdown('dd-analysis-city', cityOptions, S.analysisCity, 'setAnalysisCity')}
     </div>
 
     <div class="stat-grid">
@@ -1181,11 +1340,11 @@ function renderAnalysis(){
         <div class="as-v">${totalIncoming.toLocaleString()}</div>
         <div class="as-sub">boxes expected</div>
       </div>
-      <div class="as-card">
+      <div class="as-card clickable highlight" onclick="goFarmers()">
         <div class="as-ic">🧑‍🌾</div>
         <div class="as-lb">Farmers</div>
         <div class="as-v">${ins.farmerCount}</div>
-        <div class="as-sub">active in app</div>
+        <div class="as-sub link">tap to view →</div>
       </div>
       <div class="as-card">
         <div class="as-ic">🏪</div>
@@ -1195,9 +1354,11 @@ function renderAnalysis(){
       </div>
     </div>
 
+    ${busiestHTML}
+
     <div class="sec-h"><h3>🔥 Top opportunities</h3></div>
     ${opportunities.length
-      ? `<div class="h-scroll">${opportunities.map(r => renderOppCard(r, r.status === 'oversupply' ? 'oversupply' : r.status === 'tight' ? 'tight' : 'coming')).join('')}</div>`
+      ? `<div class="h-scroll">${opportunities.map(r => renderMiniOppCard(r)).join('')}</div>`
       : `<div class="empty" style="padding:20px"><p>No opportunities yet — market is balanced.</p></div>`}
 
     <div class="circle-cta-wrap">
@@ -1207,12 +1368,12 @@ function renderAnalysis(){
 
     ${oversupplyCrops.length ? `
       <div class="sec-h"><h3>⚠️ Oversupply risks</h3></div>
-      <div class="h-scroll">${oversupplyCrops.map(r => renderOppCard(r, 'oversupply')).join('')}</div>
+      <div class="h-scroll">${oversupplyCrops.map(r => renderMiniOppCard(r)).join('')}</div>
     ` : ''}
 
     ${tightCrops.length ? `
       <div class="sec-h"><h3>🔥 Buy-now crops</h3></div>
-      <div class="h-scroll">${tightCrops.map(r => renderOppCard(r, 'tight')).join('')}</div>
+      <div class="h-scroll">${tightCrops.map(r => renderMiniOppCard(r)).join('')}</div>
     ` : ''}
 
     <div class="sec-h"><h3>📊 Supply by crop</h3></div>
@@ -1241,28 +1402,12 @@ function renderAnalysis(){
             </div>
           </div>
         </div>`;
-    }).join('') : `<div class="empty" style="padding:24px"><p>No data yet — as farmers plant and post, this fills up.</p></div>`}
-
-    ${ins.busyMarkets.length ? `
-      <div class="sec-h"><h3>🏪 Busiest markets</h3></div>
-      ${ins.busyMarkets.map(([name, count], i) => `
-        <div class="market-density-row">
-          <div class="mdr-left">
-            <div class="mdr-ico">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'🏪'}</div>
-            <div>
-              <div class="mdr-title">${esc(name)}</div>
-              <div class="mdr-sub">${count} listing${count===1?'':'s'}</div>
-            </div>
-          </div>
-          <div class="mdr-count">${count}</div>
-        </div>
-      `).join('')}
-    ` : ''}
+    }).join('') : `<div class="empty" style="padding:24px"><p>No data for this filter yet — try changing year or city.</p></div>`}
 
     ${topCrop ? `
       <div class="notice-banner" style="margin-top:14px">
         <div class="nb-ic">🥇</div>
-        <div class="nb-tx"><strong>Biggest crop:</strong> ${esc(topCrop.name)} with ${(topCrop.available + topCrop.incoming).toLocaleString()} boxes total across supply.</div>
+        <div class="nb-tx"><strong>Biggest crop:</strong> ${esc(topCrop.name)} with ${(topCrop.available + topCrop.incoming).toLocaleString()} boxes total.</div>
       </div>
     ` : ''}
 
@@ -1272,47 +1417,187 @@ function renderAnalysis(){
 }
 
 /* ============================================================
-   TIPS SCREEN
+   FARMERS LIST + DETAIL
+   ============================================================ */
+function renderFarmers(){
+  const farmers = buildFarmersList();
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">Farmers</div>
+    </div>
+
+    <div class="analysis-hero">
+      <h2>🧑‍🌾 Farmers</h2>
+      <p>Everyone in the app — tap a farmer to see their plantings and listings.</p>
+    </div>
+
+    <div style="padding:0 18px 10px;font-size:11.5px;color:var(--tl);font-weight:700">
+      ${farmers.length} farmer${farmers.length===1?'':'s'} registered
+    </div>
+
+    ${farmers.length ? farmers.map(f => renderFarmerRow(f)).join('') : `
+      <div class="empty">
+        <div class="e-ic">🧑‍🌾</div>
+        <h3>No farmers yet</h3>
+        <p>Once farmers plant or list produce they'll appear here.</p>
+      </div>
+    `}
+
+    <div style="height:8px"></div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+function renderFarmerRow(f){
+  const avatarStyle = f.photo
+    ? `background-image:url('${esc(f.photo)}')`
+    : `background:${gradFor(f.name)};color:#fff;font-size:14px`;
+  const avatarContent = f.photo ? '' : initials(f.name);
+  const sub = [
+    f.city ? `📍 ${f.city}` : '',
+    f.planted ? `${f.planted} planted` : '',
+    f.listings ? `${f.listings} listed` : ''
+  ].filter(Boolean).join(' · ');
+
+  return `
+  <div class="menu-item" onclick="navTo('farmer-detail',{id:'${esc(f.id)}'})" style="padding:13px 14px">
+    <div class="mi-ic" style="${avatarStyle}">${avatarContent}</div>
+    <div class="mi-tx">
+      <div class="mi-tt">${esc(f.name)}</div>
+      <div class="mi-sb">${esc(sub || 'No activity yet')}</div>
+    </div>
+    ${f.phone
+      ? `<button class="call-btn" style="width:38px;height:38px" onclick="event.stopPropagation();callFarmer('${esc(f.phone)}','${esc(f.name)}')" aria-label="Call">
+           <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+         </button>`
+      : `<div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>`}
+  </div>`;
+}
+
+function renderFarmerDetail(id){
+  const farmer = buildFarmersList().find(x => x.id === id);
+  if(!farmer){
+    return `<div class="scroll">
+      <div class="topbar bordered">
+        <button class="tb-back" onclick="goBack()">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        </button>
+        <div class="tb-title">Farmer</div>
+      </div>
+      <div class="empty"><div class="e-ic">🧑‍🌾</div><h3>Farmer not found</h3></div>
+    </div>`;
+  }
+
+  const batches = S.batches.filter(b => b.ownerId === id);
+  const listings = S.listings.filter(l => l.seller_id === id && isLiveListing(l));
+  const active = batches.filter(b => b.stage !== 'harvested');
+  const harvested = batches.filter(b => b.stage === 'harvested');
+
+  const avatarStyle = farmer.photo
+    ? `background-image:url('${esc(farmer.photo)}')`
+    : `background:rgba(255,255,255,.2)`;
+  const avatarContent = farmer.photo ? '' : initials(farmer.name);
+
+  const callBtnHTML = farmer.phone ? `
+    <button class="btn btn-p" style="max-width:220px;margin:12px auto 0;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.4);box-shadow:none" onclick="callFarmer('${esc(farmer.phone)}','${esc(farmer.name)}')">
+      📞 ${esc(farmer.phone)}
+    </button>
+  ` : '';
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">${esc(farmer.name)}</div>
+    </div>
+
+    <div class="prof-hero">
+      <div class="p-av" style="${avatarStyle}">${avatarContent}</div>
+      <h2>${esc(farmer.name)}</h2>
+      <div class="p-ver">🧑‍🌾 Farmer</div>
+      <div class="p-loc">📍 ${esc(farmer.city || '—')}</div>
+      ${callBtnHTML}
+      <div class="prof-stats">
+        <div><div class="ps-n">${active.length}</div><div class="ps-l">Planting</div></div>
+        <div><div class="ps-n">${listings.length}</div><div class="ps-l">Listed</div></div>
+        <div><div class="ps-n">${harvested.length}</div><div class="ps-l">Harvested</div></div>
+      </div>
+    </div>
+
+    ${active.length ? `
+      <div class="sec-h"><h3>🌱 Planted · ${active.length}</h3></div>
+      ${active.map(b => `
+        <div class="plant-card">
+          <div class="pc-ic" style="background:${gradFor(b.cropName||'')}">${pickIcon(b.cropName)}</div>
+          <div class="pc-body">
+            <div class="pc-title">${esc(b.cropName)}${b.varietyName ? ' · ' + esc(b.varietyName) : ''}</div>
+            <div class="pc-meta">${b.estimatedBoxes ? `${b.estimatedBoxes.toLocaleString()} boxes` : 'Boxes TBD'} · 🌾 ${b.harvestStart ? fmtDate(b.harvestStart) : '—'}</div>
+          </div>
+          <span class="stage-pill ${b.stage || 'planted'}">${STAGE_LABELS[b.stage || 'planted']}</span>
+        </div>
+      `).join('')}
+    ` : ''}
+
+    ${listings.length ? `
+      <div class="sec-h"><h3>🛒 On Market · ${listings.length}</h3></div>
+      ${listings.map(l => renderMarketCard(l)).join('')}
+    ` : ''}
+
+    ${harvested.length && !active.length && !listings.length ? `
+      <div class="sec-h"><h3>✅ Harvested · ${harvested.length}</h3></div>
+      ${harvested.map(b => `
+        <div class="plant-card">
+          <div class="pc-ic" style="background:${gradFor(b.cropName||'')}">${pickIcon(b.cropName)}</div>
+          <div class="pc-body">
+            <div class="pc-title">${esc(b.cropName)}</div>
+            <div class="pc-meta">${b.actualBoxes ? `${b.actualBoxes.toLocaleString()} boxes harvested` : 'Harvested'}</div>
+          </div>
+          <span class="stage-pill harvested">Harvested</span>
+        </div>
+      `).join('')}
+    ` : ''}
+
+    ${!active.length && !listings.length && !harvested.length ? `
+      <div class="empty">
+        <div class="e-ic">🌱</div>
+        <h3>No activity yet</h3>
+        <p>This farmer hasn't planted or listed anything.</p>
+      </div>
+    ` : ''}
+
+    <div style="height:8px"></div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   TIPS
    ============================================================ */
 function buildBuyTips(ins){
   const tips = [];
   const rows = ins.rows;
 
   rows.filter(r => r.status === 'tight' && r.available > 0).slice(0,3).forEach(r => {
-    tips.push({
-      kind: 'buy',
-      title: `Buy ${r.name} now`,
-      desc: `Only ${r.available.toLocaleString()} boxes on market and little coming soon. Prices may rise — lock in supply.`
-    });
+    tips.push({ kind:'buy', title:`Buy ${r.name} now`, desc:`Only ${r.available.toLocaleString()} boxes on market and little coming soon. Lock in supply.` });
   });
-
   rows.filter(r => r.status === 'oversupply').slice(0,3).forEach(r => {
-    tips.push({
-      kind: 'wait',
-      title: `Wait on ${r.name}`,
-      desc: `${r.incoming.toLocaleString()} boxes expected in next 45 days vs ${r.available.toLocaleString()} available. Don't over-buy today.`
-    });
+    tips.push({ kind:'wait', title:`Wait on ${r.name}`, desc:`${r.incoming.toLocaleString()} boxes expected vs ${r.available.toLocaleString()} available. Don't over-buy today.` });
   });
-
   const worst = rows.filter(r => r.status === 'oversupply').sort((a,b) => b.incoming - a.incoming)[0];
   if(worst && worst.incoming > 0){
-    tips.push({
-      kind: 'avoid',
-      title: `Avoid big ${worst.name} buys`,
-      desc: `Massive incoming supply (${worst.incoming.toLocaleString()} boxes). Only buy what you can sell in the next week.`
-    });
+    tips.push({ kind:'avoid', title:`Avoid big ${worst.name} buys`, desc:`Massive incoming supply (${worst.incoming.toLocaleString()} boxes). Only buy what you can sell in the next week.` });
   }
-
   rows.filter(r => r.status === 'coming').slice(0,2).forEach(r => {
-    tips.push({
-      kind: 'wait',
-      title: `${r.name} is coming`,
-      desc: `${r.incoming.toLocaleString()} boxes arriving — you can wait for farmers to reach the market rather than pre-buy now.`
-    });
+    tips.push({ kind:'wait', title:`${r.name} is coming`, desc:`${r.incoming.toLocaleString()} boxes arriving — you can wait for farmers to reach the market.` });
   });
-
   if(!tips.length){
-    tips.push({ kind: 'buy', title: 'Market is balanced', desc: 'Supply and demand look even right now. Buy to meet your daily sales and hold cash for good deals.' });
+    tips.push({ kind:'buy', title:'Market is balanced', desc:'Supply and demand look even right now. Buy to meet your daily sales and hold cash for good deals.' });
   }
   return tips;
 }
@@ -1320,7 +1605,6 @@ function buildBuyTips(ins){
 function renderTips(){
   const ins = computeSupplyInsights();
   const tips = buildBuyTips(ins);
-
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -1329,12 +1613,10 @@ function renderTips(){
       </button>
       <div class="tb-title">Buy Tips</div>
     </div>
-
     <div class="analysis-hero">
       <h2>💡 What to buy, what to avoid</h2>
       <p>Based on live supply from farmers in the app. These update automatically.</p>
     </div>
-
     ${tips.map(t => `
       <div class="tip-card ${t.kind}">
         <div class="tip-label">${t.kind==='buy'?'✅ Buy now':t.kind==='wait'?'⏳ Wait':'🚫 Avoid'}</div>
@@ -1342,27 +1624,13 @@ function renderTips(){
         <div class="tip-desc">${esc(t.desc)}</div>
       </div>
     `).join('')}
-
     <div class="sec-h"><h3>Golden rules for marketeers</h3></div>
     <div class="menu-list" style="padding-top:0">
-      <div class="menu-item">
-        <div class="mi-ic">⏰</div>
-        <div class="mi-tx"><div class="mi-tt">Buy fresh, sell fast</div><div class="mi-sb">Fresh produce loses value daily — buy what you can sell within 2–3 days.</div></div>
-      </div>
-      <div class="menu-item">
-        <div class="mi-ic">📞</div>
-        <div class="mi-tx"><div class="mi-tt">Call farmers early</div><div class="mi-sb">Lock in prices before harvest. The Planted tab shows what's coming.</div></div>
-      </div>
-      <div class="menu-item">
-        <div class="mi-ic">📊</div>
-        <div class="mi-tx"><div class="mi-tt">Watch oversupply crops</div><div class="mi-sb">When many farmers plant the same crop, prices fall. Buy small and often.</div></div>
-      </div>
-      <div class="menu-item">
-        <div class="mi-ic">🤝</div>
-        <div class="mi-tx"><div class="mi-tt">Build farmer relationships</div><div class="mi-sb">Reliable farmers = reliable supply. Save their numbers.</div></div>
-      </div>
+      <div class="menu-item"><div class="mi-ic">⏰</div><div class="mi-tx"><div class="mi-tt">Buy fresh, sell fast</div><div class="mi-sb">Fresh produce loses value daily — buy what you can sell within 2–3 days.</div></div></div>
+      <div class="menu-item"><div class="mi-ic">📞</div><div class="mi-tx"><div class="mi-tt">Call farmers early</div><div class="mi-sb">Lock in prices before harvest. The Planted tab shows what's coming.</div></div></div>
+      <div class="menu-item"><div class="mi-ic">📊</div><div class="mi-tx"><div class="mi-tt">Watch oversupply crops</div><div class="mi-sb">When many farmers plant the same crop, prices fall. Buy small and often.</div></div></div>
+      <div class="menu-item"><div class="mi-ic">🤝</div><div class="mi-tx"><div class="mi-tt">Build farmer relationships</div><div class="mi-sb">Reliable farmers = reliable supply. Save their numbers.</div></div></div>
     </div>
-
     <div style="height:8px"></div>
   </div>
   ${bottomNavHTML()}`;
@@ -1372,16 +1640,16 @@ function renderTips(){
    RESOURCES
    ============================================================ */
 const ZM_RESOURCES = [
-  { name: 'Ministry of Agriculture', url: 'https://www.agriculture.gov.zm/', desc: 'Market bulletins, FISP, policy', icon: '🏛️' },
-  { name: 'FRA', url: 'https://fra.org.zm/', desc: 'Crop marketing & floor prices', icon: '🌾' },
-  { name: 'ZARI', url: 'https://www.zari.gov.zm/', desc: 'Crop research, pest diagnostics', icon: '🔬' },
-  { name: 'SCCI', url: 'https://www.scci.gov.zm/', desc: 'Certified seed register', icon: '🌱' },
-  { name: 'Met Department', url: 'https://www.met.gov.zm/', desc: 'Weather & rainfall forecasts', icon: '⛅' },
-  { name: 'ZamStats', url: 'https://www.zamstats.gov.zm/', desc: 'Crop production statistics', icon: '📊' },
-  { name: 'CEEC', url: 'https://www.ceec.org.zm/', desc: 'Agri-business funding', icon: '💼' },
-  { name: 'ZAMACE', url: 'https://www.zamace.co.zm/', desc: 'Commodity exchange & prices', icon: '📈' },
-  { name: 'Zambia Development Agency', url: 'https://www.zda.org.zm/', desc: 'Invest & trade support', icon: '🤝' },
-  { name: 'ZACCI', url: 'https://www.zacci.org.zm/', desc: 'Chamber of commerce', icon: '🏢' }
+  { name:'Ministry of Agriculture', url:'https://www.agriculture.gov.zm/', desc:'Market bulletins, FISP, policy', icon:'🏛️' },
+  { name:'FRA', url:'https://fra.org.zm/', desc:'Crop marketing & floor prices', icon:'🌾' },
+  { name:'ZARI', url:'https://www.zari.gov.zm/', desc:'Crop research, pest diagnostics', icon:'🔬' },
+  { name:'SCCI', url:'https://www.scci.gov.zm/', desc:'Certified seed register', icon:'🌱' },
+  { name:'Met Department', url:'https://www.met.gov.zm/', desc:'Weather & rainfall forecasts', icon:'⛅' },
+  { name:'ZamStats', url:'https://www.zamstats.gov.zm/', desc:'Crop production statistics', icon:'📊' },
+  { name:'CEEC', url:'https://www.ceec.org.zm/', desc:'Agri-business funding', icon:'💼' },
+  { name:'ZAMACE', url:'https://www.zamace.co.zm/', desc:'Commodity exchange & prices', icon:'📈' },
+  { name:'Zambia Development Agency', url:'https://www.zda.org.zm/', desc:'Invest & trade support', icon:'🤝' },
+  { name:'ZACCI', url:'https://www.zacci.org.zm/', desc:'Chamber of commerce', icon:'🏢' }
 ];
 
 function renderResources(){
@@ -1393,23 +1661,17 @@ function renderResources(){
       </button>
       <div class="tb-title">Zambian Resources</div>
     </div>
-
     <div class="notice-banner">
       <div class="nb-ic">🇿🇲</div>
       <div class="nb-tx">Official Zambian agriculture sites — prices, policy, funding, weather.</div>
     </div>
-
     ${ZM_RESOURCES.map(r => `
       <a href="${esc(r.url)}" target="_blank" rel="noopener" class="res-item">
         <div class="res-ic">${r.icon}</div>
-        <div class="res-body">
-          <div class="res-title">${esc(r.name)}</div>
-          <div class="res-desc">${esc(r.desc)}</div>
-        </div>
+        <div class="res-body"><div class="res-title">${esc(r.name)}</div><div class="res-desc">${esc(r.desc)}</div></div>
         <div class="res-arrow">›</div>
       </a>
     `).join('')}
-
     <div style="height:8px"></div>
   </div>
   ${bottomNavHTML()}`;
@@ -1443,6 +1705,7 @@ function renderProfile(){
       <div class="menu-item" onclick="goMarket()"><div class="mi-ic">🛒</div><div class="mi-tx"><div class="mi-tt">Market</div><div class="mi-sb">Buy from farmers</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="goPlanted()"><div class="mi-ic">🌱</div><div class="mi-tx"><div class="mi-tt">What's Planted</div><div class="mi-sb">Upcoming supply</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="goAnalysis()"><div class="mi-ic">📊</div><div class="mi-tx"><div class="mi-tt">Market Analysis</div><div class="mi-sb">Supply & price risk</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="goFarmers()"><div class="mi-ic">🧑‍🌾</div><div class="mi-tx"><div class="mi-tt">Farmers</div><div class="mi-sb">All farmers in the app</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="goTips()"><div class="mi-ic">💡</div><div class="mi-tx"><div class="mi-tt">Buy Tips</div><div class="mi-sb">What to buy and avoid</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="goResources()"><div class="mi-ic">🇿🇲</div><div class="mi-tx"><div class="mi-tt">Zambian Resources</div><div class="mi-sb">Ministry, FRA, ZARI & more</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="doLogout()"><div class="mi-ic" style="background:var(--danger-soft)">🚪</div><div class="mi-tx"><div class="mi-tt" style="color:var(--danger)">Sign Out</div></div></div>
@@ -1560,7 +1823,7 @@ function startListingsListener(){
     const arr = Object.entries(data).map(([id, v]) => ({ id, ...v })).filter(l => l);
     arr.sort((a, b) => (b.createdAt||0) - (a.createdAt||0));
     S.listings = arr;
-    if(['home','market','planted','analysis','tips'].includes(S.screen)) route();
+    if(['home','market','planted','analysis','tips','farmers','farmer-detail'].includes(S.screen)) route();
   });
 }
 
@@ -1571,7 +1834,7 @@ function startBatchesListener(){
     const arr = Object.entries(data).map(([id, v]) => ({ id, ...v })).filter(b => b);
     arr.sort((a, b) => (b.createdAt||0) - (a.createdAt||0));
     S.batches = arr;
-    if(['home','market','planted','analysis','tips'].includes(S.screen)) route();
+    if(['home','market','planted','analysis','tips','farmers','farmer-detail'].includes(S.screen)) route();
   });
 }
 
