@@ -7,6 +7,16 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>AgriCare · Farmer</title>
 
+<!-- Theme bootstrap (prevents flash of wrong theme) -->
+<script>
+(function(){
+  try {
+    const t = localStorage.getItem('agricare_theme');
+    if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+  } catch(e){}
+})();
+</script>
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
@@ -23,7 +33,7 @@
 
 <style>
 /* ============================================================
-   DESIGN TOKENS
+   DESIGN TOKENS — LIGHT (default)
    ============================================================ */
 :root{
   --p:#0f7a34;
@@ -74,6 +84,46 @@
   --safe-b:env(safe-area-inset-bottom,0px);
 }
 
+/* ============================================================
+   DARK THEME — sleek black
+   ============================================================ */
+[data-theme="dark"]{
+  --p:#22c55e;
+  --p-h:#16a34a;
+  --p-d:#86efac;
+  --p-l:#064e3b;
+  --p-ll:#022c22;
+  --p-glow:rgba(34,197,94,.32);
+  --acc:#22c55e;
+  --acc-soft:#065f46;
+  --td:#f1f5f9;
+  --tb:#cbd5e1;
+  --tl:#94a3b8;
+  --tm:#64748b;
+  --bd:#1e293b;
+  --bd-s:#334155;
+  --sf:#0f172a;
+  --sf2:#1e293b;
+  --bg:#020617;
+  --danger:#f87171;
+  --danger-soft:#450a0a;
+  --warn:#fbbf24;
+  --warn-soft:#422006;
+  --ok:#34d399;
+  --ok-soft:#064e3b;
+  --info:#60a5fa;
+  --info-soft:#1e3a8a;
+  --sh-xs:0 1px 2px rgba(0,0,0,.5);
+  --sh-sm:0 1px 3px rgba(0,0,0,.6),0 1px 2px rgba(0,0,0,.4);
+  --sh:0 4px 12px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.4);
+  --sh-md:0 8px 24px rgba(0,0,0,.65),0 3px 8px rgba(0,0,0,.5);
+  --sh-lg:0 12px 28px rgba(0,0,0,.7),0 4px 10px rgba(0,0,0,.5);
+  --sh-xl:0 20px 48px rgba(0,0,0,.8),0 6px 16px rgba(0,0,0,.6);
+  --sh-brand:0 10px 30px -8px rgba(34,197,94,.4);
+  --sh-brand-lg:0 20px 50px -10px rgba(34,197,94,.35);
+  --ring:0 0 0 4px rgba(34,197,94,.22);
+}
+
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html{-webkit-text-size-adjust:100%;height:100%;}
 body{
@@ -95,6 +145,7 @@ a{color:inherit;text-decoration:none;}
 }
 @media(min-width:721px){
   body{background:linear-gradient(135deg,#eef7f0 0%,#e0f2e6 50%,#d5ecdc 100%);}
+  [data-theme="dark"] body{background:linear-gradient(135deg,#020617 0%,#0f172a 50%,#020617 100%);}
   .screen-wrap{margin:0 auto;height:100dvh;border-radius:0;}
 }
 .screen{
@@ -147,6 +198,8 @@ a{color:inherit;text-decoration:none;}
 }
 .tb-btn:active{transform:scale(.92);background:var(--p-l);}
 .tb-btn svg{width:18px;height:18px;fill:var(--td);}
+.tb-btn.danger{background:var(--danger-soft);border-color:rgba(220,38,38,.3);}
+.tb-btn.danger svg{fill:var(--danger);}
 .tb-btn .dot{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--danger);border:1.5px solid #fff;}
 .tb-avatar{
   width:44px;height:44px;border-radius:50%;overflow:hidden;
@@ -258,7 +311,7 @@ a{color:inherit;text-decoration:none;}
 .service-card.pink .sc-bg{background:linear-gradient(135deg,#db2777 0%,#9d174d 100%)}
 
 .list-row{
-  margin:0 18px 10px;padding:16px 18px;background:#fff;border:1px solid var(--bd);
+  margin:0 18px 10px;padding:16px 18px;background:var(--sf);border:1px solid var(--bd);
   border-radius:var(--r-xl);display:flex;align-items:center;gap:14px;box-shadow:var(--sh-sm);
   cursor:pointer;transition:all .2s var(--e);
 }
@@ -269,13 +322,19 @@ a{color:inherit;text-decoration:none;}
 .lr-ic.orange{background:linear-gradient(145deg,#ffedd5,#ea580c)}
 .lr-ic.purple{background:linear-gradient(145deg,#ede9fe,#7c3aed)}
 .lr-ic.amber{background:linear-gradient(145deg,#fef3c7,#d97706)}
+.lr-ic.red{background:linear-gradient(145deg,#fee2e2,#dc2626)}
 .lr-tx{flex:1;min-width:0;}
 .lr-tt{font-size:15px;font-weight:900;color:var(--td);letter-spacing:-.02em;}
 .lr-sb{font-size:12px;color:var(--tl);font-weight:600;margin-top:3px;line-height:1.35;}
 .lr-arrow{width:28px;height:28px;flex-shrink:0;color:var(--tm);display:flex;align-items:center;justify-content:center;}
 .lr-arrow svg{width:18px;height:18px;fill:currentColor;}
+.lr-actions{display:flex;gap:6px;flex-shrink:0;}
+.lr-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:1px solid var(--bd);background:var(--sf2);}
+.lr-btn.edit{color:var(--info);border-color:rgba(37,99,235,.3);background:var(--info-soft);}
+.lr-btn.delete{color:var(--danger);border-color:rgba(220,38,38,.3);background:var(--danger-soft);}
+.lr-btn:active{transform:scale(.9);}
 
-.batch-card{background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);overflow:hidden;margin-bottom:12px;box-shadow:var(--sh-sm);transition:transform .2s var(--e);cursor:pointer;}
+.batch-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-xl);overflow:hidden;margin-bottom:12px;box-shadow:var(--sh-sm);transition:transform .2s var(--e);cursor:pointer;}
 .batch-card:active{transform:scale(.99);box-shadow:var(--sh-md);}
 .bc-top{display:flex;align-items:center;gap:12px;padding:16px;}
 .bc-crop-ic{width:56px;height:56px;border-radius:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.08);}
@@ -284,6 +343,7 @@ a{color:inherit;text-decoration:none;}
 .bc-variety{font-size:11.5px;color:var(--tl);font-weight:600;margin-top:2px;}
 .bc-batch-num{font-size:10px;color:var(--p);font-weight:800;letter-spacing:.04em;margin-top:4px;font-family:'SF Mono','Roboto Mono',monospace;}
 .bc-est-boxes{font-size:9.5px;color:#9a3412;font-weight:800;margin-top:3px;background:#fef3c7;padding:2px 7px;border-radius:var(--r-p);display:inline-block;}
+[data-theme="dark"] .bc-est-boxes{background:#422006;color:#fbbf24;}
 .bc-stat{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
 .bc-status{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:4px 10px;border-radius:var(--r-p);}
 .bc-status.planted{background:var(--info-soft);color:#1e40af}
@@ -292,6 +352,11 @@ a{color:inherit;text-decoration:none;}
 .bc-status.fruiting{background:#ede9fe;color:#5b21b6}
 .bc-status.harvesting{background:#ffedd5;color:#9a3412}
 .bc-status.harvested{background:#f1f5f9;color:#475569}
+[data-theme="dark"] .bc-status.planted{color:#93c5fd}
+[data-theme="dark"] .bc-status.flowering{color:#fbbf24}
+[data-theme="dark"] .bc-status.fruiting{color:#c4b5fd}
+[data-theme="dark"] .bc-status.harvesting{color:#fdba74}
+[data-theme="dark"] .bc-status.harvested{background:#1e293b;color:#cbd5e1}
 
 .three-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 18px 14px;}
 .three-tab{padding:14px 8px 12px;border-radius:var(--r-lg);background:var(--sf);border:2px solid var(--bd);display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .25s var(--e);position:relative;}
@@ -299,15 +364,21 @@ a{color:inherit;text-decoration:none;}
 .tt-ic{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;transition:all .25s var(--e);}
 .tt-lb{font-size:11.5px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:var(--td);}
 .three-tab.active.plant{border-color:#0f7a34;background:#e6f5eb;}
+[data-theme="dark"] .three-tab.active.plant{border-color:#22c55e;background:#064e3b;}
 .three-tab.active.plant .tt-ic{background:#0f7a34;color:#fff;box-shadow:0 6px 16px -4px rgba(15,122,52,.45);}
 .three-tab.active.plant .tt-lb{color:#0f7a34;}
+[data-theme="dark"] .three-tab.active.plant .tt-lb{color:#4ade80;}
 .three-tab.active.manage{border-color:#2563eb;background:#dbeafe;}
+[data-theme="dark"] .three-tab.active.manage{border-color:#3b82f6;background:#1e3a8a;}
 .three-tab.active.manage .tt-ic{background:#2563eb;color:#fff;box-shadow:0 6px 16px -4px rgba(37,99,235,.45);}
 .three-tab.active.manage .tt-lb{color:#2563eb;}
+[data-theme="dark"] .three-tab.active.manage .tt-lb{color:#60a5fa;}
 .three-tab.active.harvest{border-color:#ea580c;background:#ffedd5;}
+[data-theme="dark"] .three-tab.active.harvest{border-color:#f97316;background:#422006;}
 .three-tab.active.harvest .tt-ic{background:#ea580c;color:#fff;box-shadow:0 6px 16px -4px rgba(234,88,12,.45);}
 .three-tab.active.harvest .tt-lb{color:#ea580c;}
-.tt-badge{position:absolute;top:6px;right:6px;min-width:20px;height:20px;background:var(--danger);color:#fff;font-size:10px;font-weight:800;border-radius:10px;display:flex;align-items:center;justify-content:center;padding:0 5px;border:2px solid #fff;}
+[data-theme="dark"] .three-tab.active.harvest .tt-lb{color:#fb923c;}
+.tt-badge{position:absolute;top:6px;right:6px;min-width:20px;height:20px;background:var(--danger);color:#fff;font-size:10px;font-weight:800;border-radius:10px;display:flex;align-items:center;justify-content:center;padding:0 5px;border:2px solid var(--sf);}
 
 .steps-indicator{display:flex;align-items:center;gap:6px;padding:14px 18px 6px;}
 .step-dot{flex:1;height:4px;border-radius:2px;background:var(--bd);transition:background .3s var(--e);}
@@ -325,22 +396,23 @@ a{color:inherit;text-decoration:none;}
 
 .crop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 18px 18px;}
 @media(min-width:520px){.crop-grid{grid-template-columns:repeat(4,1fr);}}
-.crop-pick{background:#fff;border:2px solid var(--bd);border-radius:var(--r-lg);padding:14px 6px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .2s var(--e);cursor:pointer;position:relative;}
+.crop-pick{background:var(--sf);border:2px solid var(--bd);border-radius:var(--r-lg);padding:14px 6px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .2s var(--e);cursor:pointer;position:relative;}
 .crop-pick:active{transform:scale(.95);}
 .crop-pick.selected{border-color:var(--p);background:var(--p-l);box-shadow:0 6px 16px -6px var(--p-glow);}
 .cp-ic{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--sf2);box-shadow:0 2px 8px rgba(0,0,0,.06);}
-.crop-pick.selected .cp-ic{background:#fff;}
+.crop-pick.selected .cp-ic{background:var(--sf);}
 .cp-lb{font-size:10.5px;font-weight:800;color:var(--td);text-align:center;line-height:1.15;letter-spacing:-.01em;}
 
 .sheet-overlay{position:fixed;inset:0;z-index:600;background:rgba(15,23,42,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center;}
 .sheet-overlay.open{display:flex;}
-.sheet{background:#fff;border-radius:var(--r-2xl) var(--r-2xl) 0 0;width:100%;max-width:560px;padding:12px 20px calc(var(--safe-b) + 26px);box-shadow:0 -12px 40px rgba(0,0,0,.28);animation:sheetUp .42s cubic-bezier(.32,.72,0,1);max-height:80vh;overflow-y:auto;}
+.sheet{background:var(--sf);border-radius:var(--r-2xl) var(--r-2xl) 0 0;width:100%;max-width:560px;padding:12px 20px calc(var(--safe-b) + 26px);box-shadow:0 -12px 40px rgba(0,0,0,.28);animation:sheetUp .42s cubic-bezier(.32,.72,0,1);max-height:80vh;overflow-y:auto;}
 @keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .sheet-handle{width:42px;height:4px;border-radius:999px;background:rgba(15,23,42,.14);margin:4px auto 18px;}
+[data-theme="dark"] .sheet-handle{background:rgba(255,255,255,.15);}
 .sheet-head h3{font-size:18px;font-weight:900;letter-spacing:-.02em;color:var(--td);margin-bottom:4px;}
 .sheet-head p{font-size:12.5px;color:var(--tl);font-weight:600;margin-bottom:14px;}
 .sheet-list{display:flex;flex-direction:column;gap:9px;}
-.sheet-item{width:100%;display:flex;align-items:center;gap:14px;padding:14px 15px;border-radius:var(--r-lg);background:#fff;border:1.5px solid var(--bd);text-align:left;transition:all .22s var(--e);}
+.sheet-item{width:100%;display:flex;align-items:center;gap:14px;padding:14px 15px;border-radius:var(--r-lg);background:var(--sf);border:1.5px solid var(--bd);text-align:left;transition:all .22s var(--e);}
 .sheet-item:active{transform:scale(.98);background:var(--p-l);border-color:var(--p);}
 .si-ico{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#0f7a34,#0b5f28);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 3px 10px rgba(15,122,52,.3);}
 .si-info{flex:1;min-width:0;}
@@ -351,21 +423,29 @@ a{color:inherit;text-decoration:none;}
 .si-price small{display:block;font-size:9.5px;color:var(--tl);font-weight:700;letter-spacing:.5px;margin-top:2px;text-transform:uppercase;}
 .sheet-cancel{width:100%;padding:14px;border-radius:var(--r-p);background:var(--sf2);font-size:14px;font-weight:700;color:var(--td);margin-top:14px;}
 
-.farm-grid-wrap{margin:0 18px 14px;border-radius:var(--r-xl);overflow:hidden;border:1.5px solid var(--bd);background:#fff;padding:16px;box-shadow:var(--sh-md);}
+.farm-grid-wrap{margin:0 18px 14px;border-radius:var(--r-xl);overflow:hidden;border:1.5px solid var(--bd);background:var(--sf);padding:16px;box-shadow:var(--sh-md);}
 .farm-grid-title{font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
 .farm-grid{display:grid;gap:4px;background:linear-gradient(135deg,#dcfce7,#bbf7d0);padding:10px;border-radius:var(--r-lg);border:1.5px dashed var(--p);width:100%;aspect-ratio:1/1;max-height:340px;box-shadow:inset 0 2px 8px rgba(15,122,52,.1);}
+[data-theme="dark"] .farm-grid{background:linear-gradient(135deg,#022c22,#064e3b);}
 .farm-grid-cell{background:linear-gradient(145deg,#ffffff,#f0fdf4);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#065f46;font-weight:800;box-shadow:0 1px 3px rgba(15,122,52,.15);border:1px solid rgba(15,122,52,.12);}
+[data-theme="dark"] .farm-grid-cell{background:linear-gradient(145deg,#1e293b,#0f172a);color:#86efac;border-color:rgba(34,197,94,.2);}
 
 .box-estimate-card{margin:0 18px 14px;padding:18px;border-radius:var(--r-xl);background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:1.5px solid rgba(234,88,12,.22);box-shadow:0 8px 24px -8px rgba(234,88,12,.3);position:relative;overflow:hidden;}
+[data-theme="dark"] .box-estimate-card{background:linear-gradient(135deg,#422006 0%,#78350f 100%);border-color:rgba(251,191,36,.3);}
 .box-estimate-card::before{content:'';position:absolute;top:-30px;right:-30px;width:140px;height:140px;background:radial-gradient(circle,rgba(255,255,255,.5) 0%,transparent 70%);border-radius:50%;pointer-events:none;}
 .bec-label{font-size:11px;font-weight:800;color:#9a3412;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+[data-theme="dark"] .bec-label{color:#fbbf24;}
 .bec-value{font-size:40px;font-weight:900;letter-spacing:-.04em;color:#7c2d12;line-height:1;}
+[data-theme="dark"] .bec-value{color:#fef3c7;}
 .bec-unit{font-size:14px;font-weight:800;color:#9a3412;margin-top:4px;}
+[data-theme="dark"] .bec-unit{color:#fbbf24;}
 .bec-range{font-size:11.5px;color:#7c2d12;font-weight:600;margin-top:10px;line-height:1.5;padding-top:10px;border-top:1px dashed rgba(234,88,12,.25);}
+[data-theme="dark"] .bec-range{color:#fcd34d;border-top-color:rgba(251,191,36,.3);}
 .bec-range strong{color:#7c2d12;font-weight:800;}
+[data-theme="dark"] .bec-range strong{color:#fef3c7;}
 
 .area-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 18px 14px;}
-.area-box{background:#fff;border:2px solid var(--bd);border-radius:var(--r-lg);padding:18px 12px;text-align:center;box-shadow:var(--sh-sm);}
+.area-box{background:var(--sf);border:2px solid var(--bd);border-radius:var(--r-lg);padding:18px 12px;text-align:center;box-shadow:var(--sh-sm);}
 .area-box label{display:block;font-size:11px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
 .area-box input{width:100%;border:none;background:none;outline:none;text-align:center;font-size:28px;font-weight:900;color:var(--td);letter-spacing:-.03em;}
 .ab-unit{font-size:11px;color:var(--tl);font-weight:700;margin-top:4px;}
@@ -375,7 +455,7 @@ a{color:inherit;text-decoration:none;}
 .st-value{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;}
 .st-arrow{font-size:11px;color:var(--tm);transition:transform .25s var(--e);}
 .select-trigger.open .st-arrow{transform:rotate(180deg);}
-.select-options{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:50;background:#fff;border:1.5px solid var(--bd);border-radius:var(--r-lg);box-shadow:0 16px 40px -8px rgba(15,23,42,.18);max-height:280px;overflow-y:auto;opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .22s var(--e);}
+.select-options{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:50;background:var(--sf);border:1.5px solid var(--bd);border-radius:var(--r-lg);box-shadow:0 16px 40px -8px rgba(15,23,42,.18);max-height:280px;overflow-y:auto;opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .22s var(--e);}
 .select-options.open{opacity:1;visibility:visible;transform:translateY(0);}
 .select-option{padding:13px 16px;font-size:14px;font-weight:600;color:var(--td);cursor:pointer;transition:background .15s var(--e);display:flex;align-items:center;gap:10px;}
 .select-option:active{background:var(--p-l);}
@@ -389,7 +469,7 @@ a{color:inherit;text-decoration:none;}
 .fld label{display:block;font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
 .fld .inp{width:100%;padding:14px 16px;border:1.5px solid var(--bd);border-radius:var(--r-lg);background:var(--sf);font-size:15px;font-weight:500;color:var(--td);outline:none;transition:all .2s var(--e);-webkit-appearance:none;appearance:none;box-shadow:var(--sh-xs);}
 .fld select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px;cursor:pointer;}
-.fld .inp:focus{border-color:var(--p);box-shadow:var(--ring);background:#fbfdfb;}
+.fld .inp:focus{border-color:var(--p);box-shadow:var(--ring);background:var(--sf);}
 .fld textarea.inp{resize:vertical;min-height:82px;line-height:1.5;}
 
 .btn{width:100%;padding:15px 20px;border-radius:var(--r-p);font-size:14.5px;font-weight:800;letter-spacing:-.01em;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .22s var(--e);}
@@ -411,12 +491,15 @@ a{color:inherit;text-decoration:none;}
 .success-burst p{font-size:13.5px;color:var(--tl);line-height:1.55;margin-bottom:14px;}
 
 .batch-result{padding:18px;border-radius:var(--r-xl);margin:0 0 16px;background:linear-gradient(135deg,#e6f5eb 0%,#d1fae5 100%);border:1.5px solid rgba(15,122,52,.18);text-align:left;box-shadow:var(--sh-md);}
+[data-theme="dark"] .batch-result{background:linear-gradient(135deg,#064e3b 0%,#065f46 100%);border-color:rgba(34,197,94,.25);}
 .br-lb{font-size:10.5px;font-weight:800;color:var(--p);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
 .br-num{font-family:'SF Mono','Roboto Mono',monospace;font-size:16px;font-weight:900;color:var(--p-d);letter-spacing:.02em;word-break:break-all;margin-bottom:12px;}
 .br-row{display:flex;justify-content:space-between;padding:7px 0;font-size:12.5px;border-bottom:1px dashed rgba(15,122,52,.18);}
+[data-theme="dark"] .br-row{border-bottom-color:rgba(34,197,94,.2);}
 .br-row:last-child{border-bottom:none;}
 .br-row span:first-child{color:var(--p);font-weight:700;}
-.br-row span:last-child{color:var(--p-d);font-weight:800;text-align:right;}
+.br-row span:last-child{color:var(--td);font-weight:800;text-align:right;}
+[data-theme="dark"] .br-row span:last-child{color:#86efac;}
 
 .details-toggle{width:100%;padding:15px;border-radius:var(--r-lg);background:var(--sf2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:800;color:var(--td);margin-bottom:8px;transition:all .2s var(--e);}
 .details-toggle:active{transform:scale(.98);background:var(--p-l);}
@@ -425,14 +508,14 @@ a{color:inherit;text-decoration:none;}
 .details-content{max-height:0;overflow:hidden;transition:max-height .4s var(--e);}
 .details-content.open{max-height:4000px;}
 
-.knowledge-block{background:#fff;border:1px solid var(--bd);border-radius:var(--r-lg);padding:15px;margin-bottom:10px;box-shadow:var(--sh-xs);}
+.knowledge-block{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);padding:15px;margin-bottom:10px;box-shadow:var(--sh-xs);}
 .knowledge-block h4{font-size:12.5px;font-weight:900;color:var(--td);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
 .knowledge-block p{font-size:12.5px;color:var(--tb);line-height:1.55;font-weight:500;}
 .knowledge-block ul{list-style:none;padding:0;margin-top:6px;}
 .knowledge-block ul li{font-size:12px;color:var(--tb);font-weight:600;padding:5px 0;padding-left:16px;position:relative;line-height:1.45;}
 .knowledge-block ul li::before{content:'●';color:var(--p);font-size:8px;position:absolute;left:2px;top:8px;}
 
-.info-table{background:#fff;border:1px solid var(--bd);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-xs);}
+.info-table{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-xs);}
 .info-row{display:flex;justify-content:space-between;gap:10px;padding:12px 15px;border-bottom:1px solid var(--bd);font-size:12.5px;}
 .info-row:last-child{border-bottom:none;}
 .ir-k{color:var(--tl);font-weight:700;flex-shrink:0;}
@@ -445,9 +528,11 @@ a{color:inherit;text-decoration:none;}
 .d-sc{font-size:13px;color:var(--tl);font-weight:600;margin-bottom:12px;}
 
 .batch-num-box{display:flex;align-items:center;gap:10px;padding:14px 16px;background:linear-gradient(135deg,#e6f5eb 0%,#d1fae5 100%);border:1px solid rgba(15,122,52,.18);border-radius:var(--r-lg);margin-bottom:14px;}
+[data-theme="dark"] .batch-num-box{background:linear-gradient(135deg,#064e3b,#065f46);border-color:rgba(34,197,94,.25);}
 .bn-lb{font-size:10px;font-weight:800;color:var(--p);text-transform:uppercase;letter-spacing:.05em;}
 .bn-v{font-family:'SF Mono','Roboto Mono',monospace;font-size:13px;font-weight:800;color:var(--p-d);letter-spacing:.02em;margin-top:2px;word-break:break-all;}
 .bn-est{font-size:11px;font-weight:800;color:#9a3412;background:#fef3c7;padding:3px 9px;border-radius:var(--r-p);margin-left:8px;display:inline-block;}
+[data-theme="dark"] .bn-est{background:#422006;color:#fbbf24;}
 
 .d-section{margin-bottom:16px;}
 .d-section h3{font-size:12.5px;font-weight:900;color:var(--td);letter-spacing:-.01em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
@@ -462,7 +547,7 @@ a{color:inherit;text-decoration:none;}
 .timeline-stage.done .ts-lb{color:var(--p-d);}
 .ts-dur{font-size:10.5px;color:var(--tl);font-weight:600;margin-top:2px;}
 
-.schedule-row{display:flex;justify-content:space-between;gap:10px;padding:11px 13px;background:#fff;border:1px solid var(--bd);border-radius:var(--r);margin-bottom:6px;}
+.schedule-row{display:flex;justify-content:space-between;gap:10px;padding:11px 13px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:6px;}
 .sr-left{flex:1;min-width:0;}
 .sr-title{font-size:12.5px;font-weight:800;color:var(--td);}
 .sr-sub{font-size:10.5px;color:var(--tl);font-weight:600;margin-top:2px;line-height:1.4;}
@@ -471,14 +556,18 @@ a{color:inherit;text-decoration:none;}
 .sr-time{font-size:10px;color:var(--tl);font-weight:700;margin-top:2px;}
 
 .harvest-box{margin:0 18px 14px;padding:18px;border-radius:var(--r-xl);background:linear-gradient(135deg,#ffedd5 0%,#fed7aa 100%);border:1.5px solid rgba(234,88,12,.18);box-shadow:var(--sh-md);}
+[data-theme="dark"] .harvest-box{background:linear-gradient(135deg,#422006 0%,#78350f 100%);border-color:rgba(251,191,36,.3);}
 .harvest-box h4{font-size:13px;font-weight:900;color:#9a3412;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+[data-theme="dark"] .harvest-box h4{color:#fb923c;}
 .harvest-input-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-.harvest-input-box{background:#fff;border:1.5px solid rgba(234,88,12,.22);border-radius:var(--r-lg);padding:14px;text-align:center;}
+.harvest-input-box{background:var(--sf);border:1.5px solid rgba(234,88,12,.22);border-radius:var(--r-lg);padding:14px;text-align:center;}
 .harvest-input-box label{display:block;font-size:10.5px;font-weight:800;color:#9a3412;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;}
+[data-theme="dark"] .harvest-input-box label{color:#fb923c;}
 .harvest-input-box input{width:100%;border:none;background:none;outline:none;text-align:center;font-size:26px;font-weight:900;color:var(--td);letter-spacing:-.03em;}
 .hib-unit{font-size:10.5px;color:#9a3412;font-weight:800;margin-top:4px;letter-spacing:.03em;}
+[data-theme="dark"] .hib-unit{color:#fb923c;}
 
-.compare-card{margin:0 18px 14px;padding:16px;border-radius:var(--r-lg);background:#fff;border:1px solid var(--bd);box-shadow:var(--sh-sm);}
+.compare-card{margin:0 18px 14px;padding:16px;border-radius:var(--r-lg);background:var(--sf);border:1px solid var(--bd);box-shadow:var(--sh-sm);}
 .compare-card h4{font-size:12px;font-weight:900;color:var(--td);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;}
 .compare-bar-row{margin-bottom:10px;}
 .cbr-top{display:flex;justify-content:space-between;font-size:11.5px;font-weight:800;color:var(--tb);margin-bottom:4px;}
@@ -488,7 +577,7 @@ a{color:inherit;text-decoration:none;}
 .compare-bar-fill.expected{background:linear-gradient(90deg,#86efac,#16a34a);}
 .compare-bar-fill.actual{background:linear-gradient(90deg,#fdba74,#ea580c);}
 
-.info-card{display:flex;align-items:center;gap:12px;padding:14px;background:#fff;border:1px solid var(--bd);border-radius:var(--r-lg);margin-bottom:8px;cursor:pointer;transition:all .2s var(--e);box-shadow:var(--sh-xs);}
+.info-card{display:flex;align-items:center;gap:12px;padding:14px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);margin-bottom:8px;cursor:pointer;transition:all .2s var(--e);box-shadow:var(--sh-xs);}
 .info-card:active{transform:scale(.98);background:var(--p-l);border-color:var(--p);}
 .info-card .ic-ico{width:44px;height:44px;border-radius:12px;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
 .info-card .ic-tx{flex:1;min-width:0;}
@@ -498,10 +587,13 @@ a{color:inherit;text-decoration:none;}
 .info-card .ic-arrow svg{width:16px;height:16px;fill:currentColor;}
 
 .sun-arc-wrap{margin:0 18px 14px;padding:20px;border-radius:var(--r-xl);background:linear-gradient(135deg,#fff7ed 0%,#ffedd5 100%);border:1.5px solid rgba(234,88,12,.18);box-shadow:var(--sh-md);position:relative;overflow:hidden;}
+[data-theme="dark"] .sun-arc-wrap{background:linear-gradient(135deg,#1e293b,#0f172a);border-color:rgba(148,163,184,.2);}
 .sun-arc-title{font-size:11.5px;font-weight:800;color:#9a3412;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+[data-theme="dark"] .sun-arc-title{color:#fbbf24;}
 .sun-arc-svg{width:100%;height:auto;display:block;}
 
 .windmill-wrap{margin:0 18px 14px;padding:20px;border-radius:var(--r-xl);background:linear-gradient(135deg,#ecfeff 0%,#cffafe 100%);border:1.5px solid rgba(8,145,178,.18);box-shadow:var(--sh-md);display:flex;align-items:center;gap:18px;}
+[data-theme="dark"] .windmill-wrap{background:linear-gradient(135deg,#164e63,#0e7490);border-color:rgba(34,211,238,.25);}
 .windmill{width:80px;height:80px;position:relative;flex-shrink:0;}
 .windmill-tower{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:8px;height:44px;background:linear-gradient(180deg,#94a3b8,#64748b);border-radius:2px;}
 .windmill-blades{position:absolute;top:0;left:50%;transform:translateX(-50%);width:60px;height:60px;animation:windmillSpin 2s linear infinite;}
@@ -512,16 +604,24 @@ a{color:inherit;text-decoration:none;}
 @keyframes windmillSpin{from{transform:translateX(-50%) rotate(0deg)}to{transform:translateX(-50%) rotate(360deg)}}
 .windmill-info{flex:1;}
 .windmill-info .wi-title{font-size:11px;font-weight:800;color:#155e75;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+[data-theme="dark"] .windmill-info .wi-title{color:#67e8f9;}
 .windmill-info .wi-val{font-size:28px;font-weight:900;color:#0e7490;letter-spacing:-.03em;line-height:1;}
+[data-theme="dark"] .windmill-info .wi-val{color:#22d3ee;}
 .windmill-info .wi-unit{font-size:12px;font-weight:800;color:#155e75;margin-top:2px;}
+[data-theme="dark"] .windmill-info .wi-unit{color:#67e8f9;}
 .windmill-info .wi-sub{font-size:11px;color:#155e75;font-weight:600;margin-top:6px;line-height:1.4;}
+[data-theme="dark"] .windmill-info .wi-sub{color:#a5f3fc;}
 
 .humidity-card{margin:0 18px 14px;padding:18px;border-radius:var(--r-xl);background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%);border:1.5px solid rgba(37,99,235,.18);box-shadow:var(--sh-md);}
+[data-theme="dark"] .humidity-card{background:linear-gradient(135deg,#1e3a8a,#1e40af);border-color:rgba(96,165,250,.3);}
 .humidity-title{font-size:11px;font-weight:800;color:#1e40af;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+[data-theme="dark"] .humidity-title{color:#93c5fd;}
 .humidity-bar{height:14px;border-radius:7px;background:rgba(37,99,235,.15);overflow:hidden;margin-bottom:6px;}
 .humidity-fill{height:100%;border-radius:7px;background:linear-gradient(90deg,#60a5fa,#2563eb);transition:width .8s var(--e);}
 .humidity-val{font-size:28px;font-weight:900;color:#1e3a8a;letter-spacing:-.03em;line-height:1;}
+[data-theme="dark"] .humidity-val{color:#dbeafe;}
 .humidity-sub{font-size:11px;color:#1e40af;font-weight:600;margin-top:4px;}
+[data-theme="dark"] .humidity-sub{color:#bfdbfe;}
 
 .ma-header{margin:0 18px 14px;padding:20px;border-radius:var(--r-xl);background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);color:#fff;box-shadow:var(--sh-xl);position:relative;overflow:hidden;}
 .ma-header::before{content:'';position:absolute;top:-40px;right:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%);border-radius:50%;}
@@ -529,12 +629,12 @@ a{color:inherit;text-decoration:none;}
 .ma-header p{font-size:12.5px;font-weight:600;opacity:.85;margin-top:4px;position:relative;z-index:1;line-height:1.5;}
 
 .ma-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 18px 14px;}
-.ma-stat{padding:16px;border-radius:var(--r-lg);background:#fff;border:1px solid var(--bd);box-shadow:var(--sh-sm);}
+.ma-stat{padding:16px;border-radius:var(--r-lg);background:var(--sf);border:1px solid var(--bd);box-shadow:var(--sh-sm);}
 .ma-stat .ms-lb{font-size:10.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
 .ma-stat .ms-v{font-size:22px;font-weight:900;color:var(--td);letter-spacing:-.03em;line-height:1;}
 .ma-stat .ms-sub{font-size:11px;color:var(--tl);font-weight:600;margin-top:4px;}
 
-.ma-section{margin:0 18px 14px;padding:16px;border-radius:var(--r-lg);background:#fff;border:1px solid var(--bd);box-shadow:var(--sh-sm);}
+.ma-section{margin:0 18px 14px;padding:16px;border-radius:var(--r-lg);background:var(--sf);border:1px solid var(--bd);box-shadow:var(--sh-sm);}
 .ma-section h3{font-size:12.5px;font-weight:900;color:var(--td);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
 
 .ma-bar-row{margin-bottom:10px;}
@@ -546,15 +646,19 @@ a{color:inherit;text-decoration:none;}
 .ma-bar-fill.danger{background:linear-gradient(90deg,#fecaca,#dc2626);}
 
 .ma-warning{padding:12px 14px;border-radius:var(--r);background:#fef3c7;border:1px solid rgba(180,83,9,.2);font-size:12px;color:#92400e;font-weight:600;line-height:1.5;margin-bottom:10px;}
+[data-theme="dark"] .ma-warning{background:#422006;border-color:rgba(251,191,36,.3);color:#fbbf24;}
 .ma-warning strong{font-weight:800;}
 
 .demand-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:var(--r-p);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;}
 .demand-pill.high{background:#d1fae5;color:#065f46}
 .demand-pill.medium{background:#ffedd5;color:#9a3412}
 .demand-pill.low{background:#fee2e2;color:#991b1b}
+[data-theme="dark"] .demand-pill.high{background:#064e3b;color:#34d399}
+[data-theme="dark"] .demand-pill.medium{background:#422006;color:#fbbf24}
+[data-theme="dark"] .demand-pill.low{background:#450a0a;color:#f87171}
 .demand-pill .dotp{width:6px;height:6px;border-radius:50%;background:currentColor;}
 
-/* PREVIEW MARKET - full green page */
+/* PREVIEW MARKET */
 .market-board-page{
   background:
     radial-gradient(circle at top right, rgba(251,191,36,.15) 0%, transparent 60%),
@@ -596,7 +700,7 @@ a{color:inherit;text-decoration:none;}
 .pb-footer{margin-top:24px;padding-top:14px;border-top:1px dashed rgba(251,191,36,.25);text-align:center;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;opacity:.75;position:relative;z-index:1;}
 
 .analysis-filters{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:8px 18px 14px;}
-.af-box{position:relative;background:#fff;border:1.5px solid var(--bd);border-radius:var(--r-lg);padding:12px 14px;cursor:pointer;box-shadow:var(--sh-xs);transition:all .2s var(--e);}
+.af-box{position:relative;background:var(--sf);border:1.5px solid var(--bd);border-radius:var(--r-lg);padding:12px 14px;cursor:pointer;box-shadow:var(--sh-xs);transition:all .2s var(--e);}
 .af-box:active{border-color:var(--p);background:var(--p-ll);}
 .af-box label{display:block;font-size:10px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;}
 .af-box .af-value{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:14px;font-weight:900;color:var(--td);}
@@ -609,21 +713,26 @@ a{color:inherit;text-decoration:none;}
 .analysis-hero p{font-size:12px;font-weight:600;opacity:.8;margin-top:4px;position:relative;z-index:1;line-height:1.5;}
 
 .analysis-stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 18px 14px;}
-.as-card{padding:16px;border-radius:var(--r-lg);background:#fff;border:1px solid var(--bd);box-shadow:var(--sh-sm);position:relative;overflow:hidden;}
+.as-card{padding:16px;border-radius:var(--r-lg);background:var(--sf);border:1px solid var(--bd);box-shadow:var(--sh-sm);position:relative;overflow:hidden;}
 .as-card.highlight{background:linear-gradient(135deg,#e6f5eb,#d1fae5);border-color:rgba(15,122,52,.25);}
+[data-theme="dark"] .as-card.highlight{background:linear-gradient(135deg,#064e3b,#065f46);border-color:rgba(34,197,94,.3);}
 .as-card .as-ic{font-size:18px;margin-bottom:6px;}
 .as-card .as-lb{font-size:10px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
 .as-card .as-v{font-size:22px;font-weight:900;color:var(--td);letter-spacing:-.03em;line-height:1;}
 .as-card.highlight .as-v{color:var(--p-d);}
+[data-theme="dark"] .as-card.highlight .as-v{color:#86efac;}
 .as-card .as-sub{font-size:10.5px;color:var(--tl);font-weight:600;margin-top:4px;}
 .as-card .as-delta{font-size:10.5px;font-weight:800;margin-top:4px;}
 .as-card .as-delta.up{color:#16a34a}
+[data-theme="dark"] .as-card .as-delta.up{color:#34d399}
 .as-card .as-delta.down{color:#dc2626}
+[data-theme="dark"] .as-card .as-delta.down{color:#f87171}
 
 .analysis-crop-row{padding:12px;border-radius:var(--r);background:var(--sf2);border:1px solid var(--bd);margin-bottom:8px;}
 .acr-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;}
 .acr-name{font-size:13px;font-weight:900;color:var(--td);display:flex;align-items:center;gap:6px;}
 .acr-top{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:var(--r-p);background:#fef3c7;color:#9a3412;}
+[data-theme="dark"] .acr-top{background:#422006;color:#fbbf24;}
 .acr-bars{display:flex;flex-direction:column;gap:6px;}
 .acr-bar-row{display:flex;align-items:center;gap:8px;font-size:10.5px;font-weight:700;color:var(--tl);}
 .acr-bar-lb{width:60px;flex-shrink:0;text-transform:uppercase;letter-spacing:.03em;}
@@ -656,7 +765,7 @@ a{color:inherit;text-decoration:none;}
 .agro-hero p{font-size:12.5px;font-weight:600;opacity:.9;margin-top:4px;position:relative;z-index:1;line-height:1.5;}
 
 .agro-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 18px 18px;}
-.agro-card{background:#fff;border:1px solid var(--bd);border-radius:var(--r-lg);padding:12px;box-shadow:var(--sh-xs);cursor:pointer;transition:all .2s var(--e);display:flex;flex-direction:column;}
+.agro-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);padding:12px;box-shadow:var(--sh-xs);cursor:pointer;transition:all .2s var(--e);display:flex;flex-direction:column;}
 .agro-card:active{transform:scale(.97);box-shadow:var(--sh-md);}
 .agro-img{width:100%;height:90px;background:var(--sf2);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:42px;overflow:hidden;margin-bottom:8px;}
 .agro-img img{width:100%;height:100%;object-fit:cover;}
@@ -666,8 +775,10 @@ a{color:inherit;text-decoration:none;}
 .agro-cat{font-size:9.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-top:6px;padding:2px 6px;background:var(--sf2);border-radius:var(--r-p);align-self:flex-start;}
 
 .notice-banner{margin:0 18px 12px;padding:12px 14px;border-radius:var(--r-lg);background:#fef3c7;border:1px solid rgba(180,83,9,.22);display:flex;align-items:center;gap:10px;}
+[data-theme="dark"] .notice-banner{background:#422006;border-color:rgba(251,191,36,.3);}
 .notice-banner .nb-ic{font-size:20px;flex-shrink:0;}
 .notice-banner .nb-tx{flex:1;font-size:11.5px;color:#92400e;font-weight:700;line-height:1.4;}
+[data-theme="dark"] .notice-banner .nb-tx{color:#fbbf24;}
 
 .price-mode-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
 .price-mode-btn{padding:11px 8px;border-radius:var(--r);background:var(--sf);border:1.5px solid var(--bd);font-size:12px;font-weight:800;color:var(--tb);transition:all .2s var(--e);}
@@ -676,7 +787,7 @@ a{color:inherit;text-decoration:none;}
 .modal{position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;z-index:500;animation:fadeIn .22s ease;}
 .modal.open{display:flex;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal-card{background:#fff !important;border-radius:var(--r-2xl);width:100%;max-width:420px;padding:26px;text-align:center;box-shadow:var(--sh-xl);animation:modalIn .32s cubic-bezier(.34,1.4,.64,1);max-height:85vh;overflow-y:auto;color:var(--td);}
+.modal-card{background:var(--sf) !important;border-radius:var(--r-2xl);width:100%;max-width:420px;padding:26px;text-align:center;box-shadow:var(--sh-xl);animation:modalIn .32s cubic-bezier(.34,1.4,.64,1);max-height:85vh;overflow-y:auto;color:var(--td);}
 @keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(14px)}to{opacity:1;transform:scale(1) translateY(0)}}
 .modal-card h3{font-size:17px;font-weight:900;color:var(--td);margin-bottom:8px;letter-spacing:-.02em;}
 .modal-card p{font-size:13px;color:var(--tl);line-height:1.55;margin-bottom:16px;}
@@ -704,6 +815,22 @@ a{color:inherit;text-decoration:none;}
 .ps-n{font-size:20px;font-weight:900;letter-spacing:-.03em;}
 .ps-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.85;margin-top:2px;}
 
+/* Theme toggle segmented control */
+.theme-switch-wrap{
+  margin:0 18px 16px;padding:6px;background:var(--sf2);border:1px solid var(--bd);
+  border-radius:var(--r-lg);display:flex;gap:6px;
+}
+.theme-opt{
+  flex:1;padding:12px 10px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;
+  font-size:13px;font-weight:800;color:var(--tb);border:1.5px solid transparent;transition:all .25s var(--e);
+}
+.theme-opt .ti{font-size:17px;}
+.theme-opt.active{
+  background:linear-gradient(180deg,#12903e 0%,var(--p) 100%);color:#fff;border-color:var(--p);
+  box-shadow:0 6px 16px -6px var(--p-glow);
+}
+.theme-opt:active{transform:scale(.97);}
+
 .menu-list{padding:0 18px 18px;}
 .menu-item{display:flex;align-items:center;gap:12px;padding:15px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);margin-bottom:8px;cursor:pointer;transition:all .2s var(--e);box-shadow:var(--sh-xs);}
 .menu-item:active{background:var(--p-l);border-color:var(--p);transform:scale(.985);}
@@ -714,6 +841,7 @@ a{color:inherit;text-decoration:none;}
 .mi-ar svg{width:16px;height:16px;fill:var(--tm);}
 
 .bnav{position:absolute;bottom:0;left:0;right:0;height:var(--nav-h);background:rgba(255,255,255,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-around;padding:0 8px;padding-bottom:var(--safe-b);z-index:20;border-radius:var(--r-xl) var(--r-xl) 0 0;box-shadow:0 -4px 20px rgba(15,23,42,.06);}
+[data-theme="dark"] .bnav{background:rgba(15,23,42,.96);box-shadow:0 -4px 20px rgba(0,0,0,.5);}
 .bn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 0;border-radius:var(--r);transition:all .2s var(--e);position:relative;color:var(--tm);background:none;border:none;}
 .bn:active{transform:scale(.9);}
 .bn.active{color:var(--p);}
@@ -721,7 +849,7 @@ a{color:inherit;text-decoration:none;}
 .bn.active svg{transform:translateY(-2px);}
 .bn-lb{font-size:9.5px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;}
 .bn.active .bn-lb{font-weight:900;}
-.bn-badge{position:absolute;top:4px;right:calc(50% - 18px);min-width:16px;height:16px;background:var(--danger);color:#fff;font-size:9px;font-weight:800;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 4px;border:1.5px solid #fff;}
+.bn-badge{position:absolute;top:4px;right:calc(50% - 18px);min-width:16px;height:16px;background:var(--danger);color:#fff;font-size:9px;font-weight:800;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 4px;border:1.5px solid var(--sf);}
 
 .cart-float{position:fixed;right:16px;bottom:calc(var(--nav-h) + var(--safe-b) + 16px);z-index:30;padding:12px 18px;border-radius:var(--r-p);background:linear-gradient(180deg,#12903e 0%,var(--p) 100%);color:#fff;font-size:13px;font-weight:800;display:none;align-items:center;gap:8px;box-shadow:0 12px 30px -8px var(--p-glow),0 0 0 4px rgba(255,255,255,.9);animation:cartIn .35s var(--e);}
 .cart-float.show{display:flex;}
@@ -768,7 +896,7 @@ a{color:inherit;text-decoration:none;}
 
 .stage-selector{display:flex;gap:6px;padding:10px 0 4px;overflow-x:auto;scrollbar-width:none;}
 .stage-selector::-webkit-scrollbar{display:none}
-.stage-chip{flex-shrink:0;padding:8px 12px;border-radius:var(--r-p);background:#fff;border:1.5px solid var(--bd);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--tl);display:flex;align-items:center;gap:5px;transition:all .2s var(--e);}
+.stage-chip{flex-shrink:0;padding:8px 12px;border-radius:var(--r-p);background:var(--sf);border:1.5px solid var(--bd);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--tl);display:flex;align-items:center;gap:5px;transition:all .2s var(--e);}
 .stage-chip:active{transform:scale(.96)}
 .stage-chip.done{background:var(--p-ll);color:var(--p-d);border-color:rgba(15,122,52,.4);}
 .stage-chip.current{background:linear-gradient(180deg,#12903e,var(--p));color:#fff;border-color:var(--p);box-shadow:0 6px 14px -4px var(--p-glow);}
@@ -777,12 +905,12 @@ a{color:inherit;text-decoration:none;}
 
 .market-tabs{display:flex;gap:6px;padding:8px 18px 12px;overflow-x:auto;scrollbar-width:none;}
 .market-tabs::-webkit-scrollbar{display:none}
-.market-tab{flex-shrink:0;padding:9px 16px;border-radius:var(--r-p);background:#fff;border:1.5px solid var(--bd);font-size:12px;font-weight:800;color:var(--tb);transition:all .2s var(--e);}
+.market-tab{flex-shrink:0;padding:9px 16px;border-radius:var(--r-p);background:var(--sf);border:1.5px solid var(--bd);font-size:12px;font-weight:800;color:var(--tb);transition:all .2s var(--e);}
 .market-tab.active{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 4px 12px -4px var(--p-glow);}
 
 .market-tab-square{
   height:120px;border-radius:var(--r-lg);
-  background:linear-gradient(135deg,#fff,#f8fafc);
+  background:linear-gradient(135deg,var(--sf),var(--sf2));
   border:2px solid var(--bd);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:14px 10px;box-shadow:var(--sh-sm);
@@ -795,7 +923,7 @@ a{color:inherit;text-decoration:none;}
   box-shadow:0 8px 20px -6px var(--p-glow);
 }
 
-.market-card{margin:0 18px 10px;padding:14px;background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);box-shadow:var(--sh-sm);display:flex;gap:12px;cursor:pointer;transition:all .2s var(--e);}
+.market-card{margin:0 18px 10px;padding:14px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-xl);box-shadow:var(--sh-sm);display:flex;gap:12px;cursor:pointer;transition:all .2s var(--e);}
 .market-card:active{transform:scale(.985);box-shadow:var(--sh-md);}
 .mc-thumb{width:64px;height:64px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:30px;background:var(--sf2);box-shadow:0 3px 10px rgba(0,0,0,.06);}
 .mc-body{flex:1;min-width:0;}
@@ -807,25 +935,33 @@ a{color:inherit;text-decoration:none;}
 .mc-side{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;flex-shrink:0;gap:6px;}
 .mc-badge{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:var(--r-p);}
 .mc-badge.mine{background:#fef3c7;color:#9a3412;}
+[data-theme="dark"] .mc-badge.mine{background:#422006;color:#fbbf24;}
 .mc-badge.now{background:var(--ok-soft);color:#065f46;}
+[data-theme="dark"] .mc-badge.now{background:#064e3b;color:#34d399;}
 .mc-badge.later{background:var(--info-soft);color:#1e40af;}
+[data-theme="dark"] .mc-badge.later{background:#1e3a8a;color:#93c5fd;}
 .mc-badge.pending{background:#fef3c7;color:#9a3412;}
+[data-theme="dark"] .mc-badge.pending{background:#422006;color:#fbbf24;}
 .mc-badge.available{background:var(--ok-soft);color:#065f46;}
+[data-theme="dark"] .mc-badge.available{background:#064e3b;color:#34d399;}
 .mc-badge.sold{background:#ede9fe;color:#5b21b6;}
+[data-theme="dark"] .mc-badge.sold{background:#4c1d95;color:#c4b5fd;}
 .mc-badge.confirm{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;animation:confirmPulse 1.4s infinite;}
 @keyframes confirmPulse{0%,100%{box-shadow:0 0 0 0 rgba(234,88,12,.5)}50%{box-shadow:0 0 0 6px rgba(234,88,12,0)}}
 .mc-time{font-size:10px;color:var(--tm);font-weight:700;white-space:nowrap;}
 .mc-countdown{font-size:11px;font-weight:900;color:#9a3412;font-variant-numeric:tabular-nums;margin-top:4px;display:flex;align-items:center;gap:4px;background:#fef3c7;padding:3px 8px;border-radius:var(--r-p);display:inline-block;}
+[data-theme="dark"] .mc-countdown{background:#422006;color:#fbbf24;}
 .mc-contact{font-size:10.5px;font-weight:700;color:#065f46;margin-top:3px;display:flex;align-items:center;gap:4px;}
+[data-theme="dark"] .mc-contact{color:#34d399;}
 
 .city-chips{display:flex;gap:6px;padding:6px 18px 14px;overflow-x:auto;scrollbar-width:none;}
 .city-chips::-webkit-scrollbar{display:none}
-.city-chip{flex-shrink:0;padding:8px 14px;border-radius:var(--r-p);background:#fff;border:1.5px solid var(--bd);font-size:12px;font-weight:800;color:var(--tb);transition:all .2s var(--e);white-space:nowrap;}
+.city-chip{flex-shrink:0;padding:8px 14px;border-radius:var(--r-p);background:var(--sf);border:1.5px solid var(--bd);font-size:12px;font-weight:800;color:var(--tb);transition:all .2s var(--e);white-space:nowrap;}
 .city-chip.active{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 4px 12px -4px var(--p-glow);}
 
 .harvest-log-row{
   display:flex;align-items:center;gap:10px;padding:11px 14px;
-  background:#fff;border:1px solid var(--bd);border-radius:var(--r);margin-bottom:6px;
+  background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:6px;
 }
 .hlr-date{font-size:11.5px;font-weight:800;color:var(--td);flex-shrink:0;min-width:60px;}
 .hlr-boxes{font-size:14px;font-weight:900;color:var(--p-d);flex-shrink:0;}
@@ -834,7 +970,7 @@ a{color:inherit;text-decoration:none;}
 
 .filter-row{display:flex;gap:8px;padding:8px 18px 12px;overflow-x:auto;scrollbar-width:none;}
 .filter-row::-webkit-scrollbar{display:none}
-.filter-pill{flex-shrink:0;padding:8px 14px;border-radius:var(--r-p);background:#fff;border:1.5px solid var(--bd);font-size:11.5px;font-weight:800;color:var(--tb);transition:all .2s var(--e);white-space:nowrap;display:flex;align-items:center;gap:6px;}
+.filter-pill{flex-shrink:0;padding:8px 14px;border-radius:var(--r-p);background:var(--sf);border:1.5px solid var(--bd);font-size:11.5px;font-weight:800;color:var(--tb);transition:all .2s var(--e);white-space:nowrap;display:flex;align-items:center;gap:6px;}
 .filter-pill.active{background:var(--p);color:#fff;border-color:var(--p);}
 
 .trend-card{
@@ -842,19 +978,54 @@ a{color:inherit;text-decoration:none;}
   background:linear-gradient(135deg,#fef3c7,#fde68a);
   border:1.5px solid rgba(180,83,9,.25);border-radius:var(--r-lg);margin-bottom:8px;
 }
-.trend-ic{width:44px;height:44px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+[data-theme="dark"] .trend-card{background:linear-gradient(135deg,#422006,#78350f);border-color:rgba(251,191,36,.3);}
+.trend-ic{width:44px;height:44px;border-radius:14px;background:var(--sf);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.08);}
 .trend-body{flex:1;min-width:0;}
 .trend-name{font-size:13px;font-weight:900;color:#92400e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+[data-theme="dark"] .trend-name{color:#fbbf24;}
 .trend-market{font-size:10.5px;font-weight:700;color:#b45309;margin-top:2px;}
+[data-theme="dark"] .trend-market{color:#fcd34d;}
 .trend-price{text-align:right;flex-shrink:0;}
 .trend-price strong{display:block;font-size:15px;font-weight:900;color:#7c2d12;letter-spacing:-.02em;}
+[data-theme="dark"] .trend-price strong{color:#fef3c7;}
 .trend-price small{display:block;font-size:9.5px;font-weight:800;color:#b45309;text-transform:uppercase;letter-spacing:.04em;margin-top:1px;}
+[data-theme="dark"] .trend-price small{color:#fcd34d;}
 
 .info-block{
-  background:#f8fafc;border:1px solid var(--bd);border-radius:var(--r-lg);
+  background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r-lg);
   padding:12px 14px;margin-bottom:8px;font-size:12px;line-height:1.5;font-weight:600;color:var(--tb);
 }
 .info-block strong{font-weight:900;color:var(--td);}
+
+/* ============================================================
+   NEW: Image upload grid (post-harvest)
+   ============================================================ */
+.img-upload-section{margin:0 18px 14px;}
+.img-upload-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.img-upload-title{font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;}
+.img-upload-count{font-size:10.5px;font-weight:800;color:var(--tl);}
+.img-upload-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.img-slot{aspect-ratio:1/1;border-radius:12px;overflow:hidden;position:relative;background:var(--sf2);border:2px dashed var(--bd);display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.img-slot.filled{border-style:solid;border-color:var(--p);background:#000;}
+.img-slot img{width:100%;height:100%;object-fit:cover;}
+.img-slot-add{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--tl);font-size:9.5px;font-weight:800;width:100%;height:100%;cursor:pointer;}
+.img-slot-add .ic{font-size:24px;}
+.img-slot-remove{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.75);color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(255,255,255,.3);}
+.img-slot-remove:active{transform:scale(.9);}
+
+/* Small utility */
+.hidden{display:none !important;}
+
+/* Menu list action row for farm */
+.farm-action-row{display:flex;gap:8px;padding:0 18px 14px;}
+.farm-action-btn{
+  flex:1;padding:13px 10px;border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;gap:6px;
+  font-size:12.5px;font-weight:900;border:1.5px solid var(--bd);background:var(--sf);color:var(--td);
+  transition:all .2s var(--e);box-shadow:var(--sh-xs);
+}
+.farm-action-btn:active{transform:scale(.97);}
+.farm-action-btn.edit{color:var(--info);border-color:rgba(37,99,235,.3);background:var(--info-soft);}
+.farm-action-btn.delete{color:var(--danger);border-color:rgba(220,38,38,.3);background:var(--danger-soft);}
 </style>
 </head>
 <body>
@@ -981,6 +1152,9 @@ const S = {
   analysisMarket: 'all',
   analysisCrop: 'all',
   analysisMonth: 'all',
+  analysisYear: null,
+  analysisCity: 'all',
+  farmersCity: null,
   priceMode: 'per_box',
   agroProducts: [],
   agroProductsUnsub: null,
@@ -992,7 +1166,11 @@ const S = {
   lastSpacingByCrop: {},
   stageNotified: {},
   stageAdvancementTimer: null,
-  readyToListOpen: false
+  readyToListOpen: false,
+  /* THEME */
+  theme: 'light',
+  /* IMAGE DRAFTS keyed by batchId */
+  draftImages: {}
 };
 
 const $modal = document.getElementById('modal');
@@ -1008,6 +1186,30 @@ const $loaderText = document.getElementById('loaderText');
 const $loaderSub = document.getElementById('loaderSub');
 const $varietySheetOverlay = document.getElementById('varietySheetOverlay');
 const $varietySheetContent = document.getElementById('varietySheetContent');
+
+/* ============================================================
+   THEME
+   ============================================================ */
+function detectInitialTheme() {
+  try {
+    const saved = localStorage.getItem('agricare_theme');
+    if (saved === 'dark' || saved === 'light') return saved;
+  } catch(e){}
+  return 'light';
+}
+S.theme = detectInitialTheme();
+function applyTheme(t) {
+  S.theme = t;
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem('agricare_theme', t); } catch(e){}
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', t === 'dark' ? '#0f172a' : '#0f7a34');
+}
+window.setTheme = (t) => {
+  applyTheme(t);
+  if (S.screen === 'profile') route();
+  toast(t === 'dark' ? '🌙 Dark theme' : '☀️ Light theme', 1200);
+};
 
 /* ============================================================
    HELPERS
@@ -1120,7 +1322,6 @@ function getAllListingsForBatch(batchId) {
   return (S.marketplace || []).filter(l => l.fromBatchId === batchId);
 }
 
-/* Current farm's batches (falls back to all if no farm yet) */
 function currentFarmBatches() {
   if (!S.currentFarmId) return S.myBatches;
   return S.myBatches.filter(b => b.farmId === S.currentFarmId);
@@ -1137,7 +1338,6 @@ function startFarmsListener() {
     const arr = Object.entries(data).map(([id, v]) => ({ id, ...v }));
     arr.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
     S.farms = arr;
-    /* restore / auto-pick current farm */
     if (S.currentFarmId && !arr.find(f => f.id === S.currentFarmId)) {
       S.currentFarmId = arr[0]?.id || null;
     }
@@ -1149,7 +1349,6 @@ function startFarmsListener() {
 }
 
 async function ensureFarmAsync() {
-  /* Returns a farmId. Creates "My Farm" if none exist. */
   if (S.currentFarmId && S.farms.find(f => f.id === S.currentFarmId)) return S.currentFarmId;
   if (S.farms.length) {
     S.currentFarmId = S.farms[0].id;
@@ -1166,7 +1365,6 @@ async function ensureFarmAsync() {
 }
 
 async function migrateLegacyBatches() {
-  /* Assign any batch without farmId to the first farm */
   if (!S.user || !S.farms.length) return;
   const farmId = S.farms[0].id;
   const legacy = S.myBatches.filter(b => !b.farmId);
@@ -1225,6 +1423,97 @@ window.saveNewFarm = async () => {
     toast('Farm created ✓');
     showScreen('farm');
   } catch (e) { toast('Failed: ' + (e.message || e)); }
+};
+
+/* --- NEW: Edit farm --- */
+window.openEditFarm = () => {
+  const farm = S.farms.find(f => f.id === S.currentFarmId);
+  if (!farm) { toast('No farm selected'); return; }
+  const cities = [farm.city, ...ZAMBIA_TOWNS.filter(t => t !== farm.city)];
+  modal(`
+    <h3>✏️ Edit Farm</h3>
+    <p>Update your farm's name or location.</p>
+    <div style="text-align:left">
+      <div class="fld" style="margin-bottom:10px">
+        <label>Farm name</label>
+        <input id="ef-name" class="inp" value="${esc(farm.name || '')}">
+      </div>
+      <div class="fld" style="margin-bottom:14px">
+        <label>City / Town</label>
+        <select id="ef-city" class="inp">
+          ${cities.map(c => `<option value="${esc(c)}" ${c === farm.city ? 'selected' : ''}>${esc(c)}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="mc-actions">
+      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-p" onclick="saveEditedFarm('${esc(farm.id)}')">Save ✓</button>
+    </div>
+  `);
+  setTimeout(() => document.getElementById('ef-name')?.focus(), 100);
+};
+
+window.saveEditedFarm = async (farmId) => {
+  const name = (document.getElementById('ef-name').value || '').trim();
+  const city = document.getElementById('ef-city').value;
+  if (!name) { toast('Enter farm name'); return; }
+  if (!city) { toast('Choose city'); return; }
+  try {
+    await update(ref(db, `users/${S.user.uid}/farms/${farmId}`), { name, city, updatedAt: nowMs() });
+    const f = S.farms.find(x => x.id === farmId);
+    if (f) { f.name = name; f.city = city; }
+    closeModal();
+    toast('Farm updated ✓');
+    route();
+  } catch (e) { toast('Failed: ' + (e.message || e)); }
+};
+
+/* --- NEW: Delete farm + all batches --- */
+window.confirmDeleteFarm = () => {
+  const farm = S.farms.find(f => f.id === S.currentFarmId);
+  if (!farm) { toast('No farm selected'); return; }
+  const batchCount = (S.myBatches || []).filter(b => b.farmId === farm.id).length;
+  modal(`
+    <h3 style="color:var(--danger)">⚠️ Delete "${esc(farm.name)}"?</h3>
+    <p>This will permanently delete this farm${batchCount ? ` <strong style="color:var(--danger)">and ${batchCount} batch${batchCount === 1 ? '' : 'es'}</strong> planted on it` : ''}, including all their listings. <strong>This cannot be undone.</strong></p>
+    <div class="mc-actions">
+      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="doDeleteFarm('${esc(farm.id)}')">Delete Everything</button>
+    </div>
+  `);
+};
+
+window.doDeleteFarm = async (farmId) => {
+  if (!farmId) return;
+  showLoader('Deleting farm…', 'Removing all batches & listings');
+  try {
+    const batchesToDelete = (S.myBatches || []).filter(b => b.farmId === farmId);
+    for (const b of batchesToDelete) {
+      // Remove active listings for this batch too
+      const listing = getActiveListingForBatch(b.id);
+      if (listing) {
+        try { await update(ref(db, 'marketListings/' + listing.id), { status:'removed', availabilityStatus:'removed', removedAt: nowMs() }); } catch(e) {}
+      }
+      try { await remove(ref(db, 'batches/' + b.id)); } catch (e) {}
+    }
+    await remove(ref(db, `users/${S.user.uid}/farms/${farmId}`));
+    // Update local state
+    S.myBatches = (S.myBatches || []).filter(b => b.farmId !== farmId);
+    S.farms = (S.farms || []).filter(f => f.id !== farmId);
+    S.currentFarmId = S.farms[0]?.id || null;
+    try {
+      if (S.currentFarmId) await update(ref(db, 'users/' + S.user.uid), { currentFarmId: S.currentFarmId });
+      else await update(ref(db, 'users/' + S.user.uid), { currentFarmId: null });
+    } catch (e) {}
+    hideLoader();
+    closeModal();
+    toast('Farm & batches deleted');
+    if (S.farms.length) showScreen('farm');
+    else showScreen('farm-picker');
+  } catch (e) {
+    hideLoader();
+    toast('Failed: ' + (e.message || e));
+  }
 };
 
 /* ============================================================
@@ -1421,12 +1710,9 @@ function estimateHarvest(category, lengthM, widthM, cropName, animalCount) {
         };
       }
       return {
-        quantity: count,
-        low: count,
-        high: count,
+        quantity: count, low: count, high: count,
         totalKg: count * 2,
-        unit: 'birds',
-        unitLabel: 'birds',
+        unit: 'birds', unitLabel: 'birds',
         note: 'ready for market'
       };
     }
@@ -1711,7 +1997,6 @@ window.navTo = (id, data) => showScreen(id, data);
 window.showScreen = showScreen;
 window.goHome = () => navTo('home');
 window.goFarm = () => {
-  /* Multi-farm: show picker. Single farm selected: go straight. No farms: picker prompts creation. */
   if (S.farms.length >= 2) {
     navTo('farm-picker');
   } else if (S.farms.length === 1) {
@@ -1744,7 +2029,7 @@ window.openSupplierCart = () => {
 };
 
 /* ============================================================
-   NOTIFICATIONS (panel kept; bell removed from UI)
+   NOTIFICATIONS
    ============================================================ */
 window.openNotif = () => { $notifPanel.classList.add('open'); $notifOverlay.classList.add('open'); };
 window.closeNotif = () => { $notifPanel.classList.remove('open'); $notifOverlay.classList.remove('open'); };
@@ -2089,14 +2374,15 @@ function renderFarmPicker() {
           const count = (S.myBatches || []).filter(b => b.farmId === f.id).length;
           const isCurrent = f.id === S.currentFarmId;
           return `
-            <div class="list-row" onclick="selectFarm('${esc(f.id)}')" style="margin:0 0 10px;${isCurrent ? 'border-color:var(--p);background:var(--p-ll)' : ''}">
-              <div class="lr-ic green">🌾</div>
-              <div class="lr-tx">
+            <div class="list-row" style="margin:0 0 10px;${isCurrent ? 'border-color:var(--p);background:var(--p-ll)' : ''}">
+              <div class="lr-ic green" onclick="selectFarm('${esc(f.id)}')">🌾</div>
+              <div class="lr-tx" onclick="selectFarm('${esc(f.id)}')">
                 <div class="lr-tt">${esc(f.name)}</div>
                 <div class="lr-sb">📍 ${esc(f.city)} · ${count} batch${count === 1 ? '' : 'es'}</div>
               </div>
-              <div class="lr-arrow">
-                ${isCurrent ? `<span style="font-size:11px;font-weight:900;color:var(--p);padding:4px 8px;background:var(--p-l);border-radius:999px">Current</span>` : `<svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>`}
+              <div class="lr-actions">
+                <button class="lr-btn edit" onclick="event.stopPropagation();selectFarm('${esc(f.id)}').then(()=>openEditFarm());" title="Edit farm">✏️</button>
+                <button class="lr-btn delete" onclick="event.stopPropagation();selectFarm('${esc(f.id)}').then(()=>confirmDeleteFarm());" title="Delete farm">🗑</button>
               </div>
             </div>
           `;
@@ -2129,7 +2415,6 @@ function renderFarm() {
   const active = farmBatches.filter(b => b.stage !== 'harvested').length;
   const ready = farmBatches.filter(b => b.stage === 'harvesting').length;
 
-  /* No farms yet */
   if (!S.farms.length) {
     return `
     <div class="scroll">
@@ -2155,6 +2440,12 @@ function renderFarm() {
         <div style="font-size:11px;color:var(--tl);font-weight:700;margin-top:2px;display:flex;align-items:center;gap:4px">📍 ${esc(farm?.city || S.weatherCity || S.userLocation)}</div>
       </div>
       <div class="tb-actions">
+        <button class="tb-btn" onclick="openEditFarm()" title="Edit farm">
+          <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 000-1.41l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+        </button>
+        <button class="tb-btn danger" onclick="confirmDeleteFarm()" title="Delete farm">
+          <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+        </button>
         <button class="tb-btn" onclick="startPlantFlow()" title="Plant / Raise">
           <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>
         </button>
@@ -2271,7 +2562,6 @@ window.openBatch = (id, mode) => showScreen('batch-detail', { id, tab: mode || '
    PLANT FLOW
    ============================================================ */
 window.startPlantFlow = async () => {
-  /* Ensure at least one farm exists so the batch has a home */
   if (!S.farms.length) {
     try {
       await ensureFarmAsync();
@@ -2318,7 +2608,7 @@ function renderPlantStep1() {
     <div class="step-title">What do you want to plant / raise?</div>
     <div class="step-sub">Choose a crop, livestock or fish.</div>
     <div style="padding:0 18px 10px">
-      <input type="text" id="crop-search" placeholder="🔍 Search…" oninput="filterCrops(this.value)" style="width:100%;padding:14px 16px;border:1.5px solid var(--bd);border-radius:var(--r-lg);font-size:15px;outline:none;background:#fff;box-shadow:var(--sh-xs)">
+      <input type="text" id="crop-search" placeholder="🔍 Search…" oninput="filterCrops(this.value)" style="width:100%;padding:14px 16px;border:1.5px solid var(--bd);border-radius:var(--r-lg);font-size:15px;outline:none;background:var(--sf);color:var(--td);box-shadow:var(--sh-xs)">
     </div>
     <div class="crop-grid" id="crop-grid">
       ${shown.length ? shown.map(c => `
@@ -2380,6 +2670,11 @@ window.selectVariety = (name) => {
   closeVarietySheet();
   showScreen('plant-step-3');
 };
+
+/* Click outside sheet to close (fixes cancel issues) */
+$varietySheetOverlay.addEventListener('click', e => {
+  if (e.target === $varietySheetOverlay) closeVarietySheet();
+});
 
 function renderPlantStep3() {
   const w = S.plantWizard;
@@ -2799,7 +3094,7 @@ function renderBatchDetail(id, tab) {
       <h3>Market Status</h3>
       <div style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1px solid rgba(22,163,74,.25);border-radius:var(--r-lg);padding:16px">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-          <div style="width:48px;height:48px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:24px">🛒</div>
+          <div style="width:48px;height:48px;border-radius:14px;background:var(--sf);display:flex;align-items:center;justify-content:center;font-size:24px">🛒</div>
           <div style="flex:1;min-width:0">
             <div style="font-size:14px;font-weight:900;color:#065f46">Listed for Sale</div>
             <div style="font-size:11px;font-weight:700;color:#047857;margin-top:2px">${esc(activeListing.marketName || '')} · ${esc(activeListing.varietyName || b.varietyName || '')}</div>
@@ -2810,7 +3105,7 @@ function renderBatchDetail(id, tab) {
           <div class="info-row" style="border-color:rgba(6,95,70,.1)"><span class="ir-k" style="color:#047857">Quantity</span><span class="ir-v" style="color:#065f46">${activeListing.quantity || 0} ${esc(lUnit)}</span></div>
           <div class="info-row" style="border:none"><span class="ir-k" style="color:#047857">Price</span><span class="ir-v" style="color:#065f46">${fmtZMK(activeListing.priceAmount)} ${activeListing.priceMode === 'total' ? 'total' : '/ ' + esc(singularUnit(lUnit))}</span></div>
         </div>
-        <button class="btn btn-s" style="margin-top:12px;background:#fff;border-color:rgba(6,95,70,.3);color:#065f46;font-weight:800" onclick="navTo('marketplace')">View in Market →</button>
+        <button class="btn btn-s" style="margin-top:12px;background:var(--sf);border-color:rgba(6,95,70,.3);color:#065f46;font-weight:800" onclick="navTo('marketplace')">View in Market →</button>
       </div>
     </div>`;
   }
@@ -2874,7 +3169,7 @@ function renderBatchDetail(id, tab) {
           <div class="bn-lb">Batch Number</div>
           <div class="bn-v">${esc(b.batchNumber)} <span class="bn-est">📦 ${actual ? actual.toLocaleString() + ' ' + esc(unit) + ' harvested' : (b.estimatedBoxes ? b.estimatedBoxes.toLocaleString() + ' ' + esc(unit) + ' est.' : '—')}</span></div>
         </div>
-        <button onclick="copyBatchNumber('${esc(b.batchNumber)}')" style="width:40px;height:40px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">📋</button>
+        <button onclick="copyBatchNumber('${esc(b.batchNumber)}')" style="width:40px;height:40px;border-radius:50%;background:var(--sf);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">📋</button>
       </div>
 
       <div class="d-section">
@@ -3310,7 +3605,7 @@ function renderHarvestRecord(id) {
     </div>
     <div style="padding:16px 18px 0">
       <div style="display:flex;align-items:center;gap:12px;padding:14px;background:linear-gradient(135deg,#ffedd5,#fed7aa);border-radius:var(--r);margin-bottom:14px;border:1px solid rgba(234,88,12,.18)">
-        <div style="width:52px;height:52px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:26px">${ic}</div>
+        <div style="width:52px;height:52px;border-radius:14px;background:var(--sf);display:flex;align-items:center;justify-content:center;font-size:26px">${ic}</div>
         <div style="flex:1;min-width:0">
           <div style="font-size:15px;font-weight:900;color:#9a3412">${esc(b.cropName)}</div>
           <div style="font-size:11.5px;color:#c2410c;font-weight:700;margin-top:2px">${esc(b.varietyName)}</div>
@@ -3344,7 +3639,7 @@ function renderHarvestRecord(id) {
 }
 
 /* ============================================================
-   POST HARVEST TO MARKET
+   POST HARVEST TO MARKET (with image upload)
    ============================================================ */
 function renderPostHarvestGoods(batchId) {
   const b = S.myBatches.find(x => x.id === batchId);
@@ -3375,15 +3670,18 @@ function renderPostHarvestGoods(batchId) {
   const currentQty = b.actualBoxes || 0;
   const unit = singularUnit(unitForBatch(b));
 
+  /* init draft images for this batch */
+  if (!S.draftImages[batchId]) S.draftImages[batchId] = [];
+
   return `
   <div class="scroll">
     <div class="topbar bordered">
-      <button class="tb-back" onclick="navTo('marketplace')"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+      <button class="tb-back" onclick="cancelPostHarvest('${esc(b.id)}')"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
       <div class="tb-title">List for Sale</div>
     </div>
     <div style="padding:14px 18px 0">
       <div style="display:flex;align-items:center;gap:12px;padding:14px;background:linear-gradient(135deg,#ffedd5,#fed7aa);border-radius:var(--r);margin-bottom:14px;border:1px solid rgba(234,88,12,.18)">
-        <div style="width:52px;height:52px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:26px">${pickIcon(b.cropName)}</div>
+        <div style="width:52px;height:52px;border-radius:14px;background:var(--sf);display:flex;align-items:center;justify-content:center;font-size:26px">${pickIcon(b.cropName)}</div>
         <div style="flex:1;min-width:0">
           <div style="font-size:15px;font-weight:900;color:#9a3412">${esc(b.cropName)}</div>
           <div style="font-size:11.5px;color:#c2410c;font-weight:700;margin-top:2px">${currentQty} ${esc(pluralUnit(unit, currentQty))} harvested · ${esc(b.varietyName)}</div>
@@ -3391,7 +3689,7 @@ function renderPostHarvestGoods(batchId) {
       </div>
       <div class="notice-banner">
         <div class="nb-ic">💡</div>
-        <div class="nb-tx">Your listing will be marked <strong>Availability Pending</strong> with a live countdown. After the timer you confirm — buyers then see your name & phone. You can keep adding ${esc(pluralUnit(unit, 2))} as you harvest.</div>
+        <div class="nb-tx">Your listing will be marked <strong>Availability Pending</strong> with a live countdown. After the timer you confirm — buyers then see your name & phone. Add at least <strong>2 photos</strong> so buyers can see your produce.</div>
       </div>
     </div>
 
@@ -3429,11 +3727,104 @@ function renderPostHarvestGoods(batchId) {
 
       <div class="fld"><label>Description (optional)</label><textarea id="ph-desc" class="inp" rows="2">Fresh ${esc(b.cropName)} (${esc(b.varietyName)}). ${currentQty} ${esc(pluralUnit(unit, currentQty))} available.</textarea></div>
 
+      <!-- Images section -->
+      <div class="img-upload-section" style="margin-left:0;margin-right:0">
+        <div class="img-upload-head">
+          <div class="img-upload-title">📸 Photos <span style="color:var(--danger)">*</span></div>
+          <div class="img-upload-count" id="ph-image-count">${(S.draftImages[batchId]||[]).length} / 4 photos · minimum 2 required</div>
+        </div>
+        <div class="img-upload-grid" id="ph-images-grid">
+          ${renderDraftImageGrid(batchId)}
+        </div>
+      </div>
+
       <button type="submit" class="btn btn-p" id="ph-submit">💰 List for Sale</button>
+      <button type="button" class="btn btn-s" onclick="cancelPostHarvest('${esc(b.id)}')" style="margin-top:8px">Cancel</button>
     </form>
   </div>
   ${bottomNavHTML()}`;
 }
+
+/* ---- Image upload helpers ---- */
+function renderDraftImageGrid(batchId) {
+  const imgs = (S.draftImages[batchId] || []);
+  const slots = [];
+  for (let i = 0; i < 4; i++) {
+    if (imgs[i]) {
+      slots.push(`
+        <div class="img-slot filled">
+          <img src="${esc(imgs[i])}" alt="">
+          <button type="button" class="img-slot-remove" onclick="event.stopPropagation();removeDraftImage('${esc(batchId)}',${i})">✕</button>
+        </div>
+      `);
+    } else {
+      slots.push(`
+        <button type="button" class="img-slot" onclick="openImageUpload('${esc(batchId)}')">
+          <div class="img-slot-add">
+            <span class="ic">📷</span>
+            <span>Add photo</span>
+          </div>
+        </button>
+      `);
+    }
+  }
+  return slots.join('');
+}
+function updateDraftImagesUI(batchId) {
+  const grid = document.getElementById('ph-images-grid');
+  if (grid) grid.innerHTML = renderDraftImageGrid(batchId);
+  const counter = document.getElementById('ph-image-count');
+  if (counter) {
+    const n = (S.draftImages[batchId] || []).length;
+    counter.textContent = `${n} / 4 photos · minimum 2 required`;
+    counter.style.color = n >= 2 ? 'var(--p)' : 'var(--tl)';
+  }
+}
+window.openImageUpload = (batchId) => {
+  if (!window.cloudinary || !window.cloudinary.createUploadWidget) {
+    toast('Upload widget not loaded');
+    return;
+  }
+  if (!S.draftImages[batchId]) S.draftImages[batchId] = [];
+  if (S.draftImages[batchId].length >= 4) {
+    toast('Maximum 4 photos');
+    return;
+  }
+  try {
+    const widget = window.cloudinary.createUploadWidget({
+      cloudName: CLOUD_NAME,
+      uploadPreset: UPLOAD_PRESET,
+      sources: ['local', 'camera', 'url'],
+      multiple: false,
+      maxFiles: 1,
+      cropping: false,
+      folder: 'agricare/market',
+      resourceType: 'image',
+      clientAllowedFormats: ['jpg','jpeg','png','webp'],
+      maxFileSize: 8000000
+    }, (error, result) => {
+      if (error) { console.warn('upload', error); toast('Upload failed'); return; }
+      if (result && result.event === 'success') {
+        S.draftImages[batchId].push(result.info.secure_url);
+        updateDraftImagesUI(batchId);
+        toast('Photo added ✓');
+      }
+    });
+    widget.open();
+  } catch (e) {
+    console.warn('upload init', e);
+    toast('Upload unavailable');
+  }
+};
+window.removeDraftImage = (batchId, idx) => {
+  if (!S.draftImages[batchId]) return;
+  S.draftImages[batchId].splice(idx, 1);
+  updateDraftImagesUI(batchId);
+};
+window.cancelPostHarvest = (batchId) => {
+  delete S.draftImages[batchId];
+  navTo('marketplace');
+};
 
 window.onMarketChange = (v) => {
   const wrap = document.getElementById('ph-custom-market-wrap');
@@ -3467,6 +3858,7 @@ window.submitMarketPost = async (ev, batchId) => {
     const priceAmount = parseFloat(document.getElementById('ph-price').value) || 0;
     const availAtStr = document.getElementById('ph-avail-at').value;
     const desc = document.getElementById('ph-desc').value.trim();
+    const photoUrls = (S.draftImages[batchId] || []).slice(0, 4);
 
     if (!name) { toast('Name required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
     if (!phone) { toast('Phone required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
@@ -3474,6 +3866,7 @@ window.submitMarketPost = async (ev, batchId) => {
     if (!marketName) { toast('Market required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
     if (!priceAmount || priceAmount <= 0) { toast('Price required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
     if (!availAtStr) { toast('Availability time required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
+    if (photoUrls.length < 2) { toast('Please upload at least 2 photos'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
 
     const availAt = new Date(availAtStr).getTime();
     if (!availAt || isNaN(availAt)) { toast('Invalid date/time'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
@@ -3502,7 +3895,7 @@ window.submitMarketPost = async (ev, batchId) => {
       availabilityStatus: 'pending',
       availableAt: availAt,
       description: desc,
-      photoUrls: [],
+      photoUrls,
       status: 'pending',
       fromBatchId: batchId,
       fromBatchNumber: b.batchNumber,
@@ -3511,6 +3904,8 @@ window.submitMarketPost = async (ev, batchId) => {
 
     const newRef = push(ref(db, 'marketListings'));
     await set(newRef, data);
+    // Clear draft images for this batch
+    delete S.draftImages[batchId];
     toast('Listed! Countdown started ⏱');
     setTimeout(() => navTo('marketplace'), 600);
   } catch (e) {
@@ -3543,7 +3938,7 @@ function renderEditListing(id) {
   return `
   <div class="scroll">
     <div class="topbar bordered">
-      <button class="tb-back" onclick="navTo('marketplace')"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+      <button class="tb-back" onclick="cancelEditListing()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
       <div class="tb-title">Edit Listing</div>
     </div>
 
@@ -3587,10 +3982,14 @@ function renderEditListing(id) {
       <div class="fld"><label>Description (optional)</label><textarea id="el-desc" class="inp" rows="2">${esc(l.description || '')}</textarea></div>
 
       <button type="submit" class="btn btn-p" id="el-submit">💾 Save Changes</button>
+      <button type="button" class="btn btn-s" onclick="cancelEditListing()" style="margin-top:8px">Cancel</button>
     </form>
   </div>`;
 }
 
+window.cancelEditListing = () => {
+  navTo('marketplace');
+};
 window.onEditMarketChange = (v) => {
   const wrap = document.getElementById('el-custom-market-wrap');
   if (wrap) wrap.style.display = v === '__other' ? 'block' : 'none';
@@ -4076,9 +4475,11 @@ function renderMarketCard(l) {
   }
   if (isMine) badgeHTML = `<span class="mc-badge mine">Mine</span> ${badgeHTML}`;
 
+  const photoThumb = (l.photoUrls && l.photoUrls[0]) ? `<img src="${esc(l.photoUrls[0])}" style="width:100%;height:100%;object-fit:cover;border-radius:16px">` : pickIcon(l.productName || l.title);
+
   return `
   <div class="market-card" onclick="viewMarketListing('${esc(l.id)}')">
-    <div class="mc-thumb">${pickIcon(l.productName || l.title)}</div>
+    <div class="mc-thumb">${photoThumb}</div>
     <div class="mc-body">
       <div class="mc-title">${esc(l.title || l.productName || 'Produce')}</div>
       <div class="mc-meta">${esc(meta)}</div>
@@ -4104,14 +4505,16 @@ function renderMyPosts() {
     <div class="topbar bordered">
       <button class="tb-back" onclick="navTo('marketplace')"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
       <div class="tb-title">My Listings & History</div>
+      ${history.length ? `<div class="tb-actions"><button class="tb-btn danger" onclick="confirmDeleteHistory()" title="Clear history">🗑</button></div>` : ''}
     </div>
-    <div style="padding:14px 18px 6px">
-      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">🛒 Active (${active.length})</div>
+    <div style="padding:14px 18px 6px;display:flex;justify-content:space-between;align-items:center">
+      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em">🛒 Active (${active.length})</div>
     </div>
     ${active.length ? active.map(l => renderMyPostCard(l, false)).join('') : `<div class="empty" style="padding:20px 24px"><div class="e-ic">🛒</div><h3>No active listings</h3><p>List a batch from the Market tab.</p></div>`}
 
-    <div style="padding:20px 18px 6px">
-      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">📜 History (${history.length})</div>
+    <div style="padding:20px 18px 6px;display:flex;justify-content:space-between;align-items:center">
+      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em">📜 History (${history.length})</div>
+      ${history.length ? `<button onclick="confirmDeleteHistory()" style="font-size:11px;font-weight:800;color:var(--danger);padding:5px 10px;border-radius:var(--r-p);background:var(--danger-soft);border:1px solid rgba(220,38,38,.25)">Delete All</button>` : ''}
     </div>
     ${history.length ? history.map(l => renderMyPostCard(l, true)).join('') : `<div class="empty" style="padding:20px 24px"><div class="e-ic">📜</div><h3>History empty</h3><p>Sold and removed listings appear here.</p></div>`}
 
@@ -4142,9 +4545,11 @@ function renderMyPostCard(l, isHistory) {
     badgeHTML = `<span class="mc-badge now">Live</span>`;
   }
 
+  const photoThumb = (l.photoUrls && l.photoUrls[0]) ? `<img src="${esc(l.photoUrls[0])}" style="width:100%;height:100%;object-fit:cover;border-radius:16px">` : pickIcon(l.productName || l.title);
+
   return `
   <div class="market-card" onclick="viewMarketListing('${esc(l.id)}')" style="opacity:${isHistory ? '.85' : '1'}">
-    <div class="mc-thumb">${pickIcon(l.productName || l.title)}</div>
+    <div class="mc-thumb">${photoThumb}</div>
     <div class="mc-body">
       <div class="mc-title">${esc(l.title || l.productName || 'Produce')}</div>
       <div class="mc-meta">${esc(meta)}</div>
@@ -4154,6 +4559,38 @@ function renderMyPostCard(l, isHistory) {
     <div class="mc-side">${badgeHTML}</div>
   </div>`;
 }
+
+/* --- NEW: Delete history --- */
+window.confirmDeleteHistory = () => {
+  const mine = (S.marketplace || []).filter(l => l.seller_id === S.user?.uid);
+  const history = mine.filter(l => l.status === 'removed' || l.availabilityStatus === 'removed' || l.availabilityStatus === 'sold' || l.status === 'sold');
+  if (!history.length) { toast('No history to delete'); return; }
+  modal(`
+    <h3 style="color:var(--danger)">Clear history?</h3>
+    <p>This will permanently delete <strong>${history.length}</strong> sold / removed listing${history.length === 1 ? '' : 's'}. This cannot be undone.</p>
+    <div class="mc-actions">
+      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="doDeleteHistory()">Delete All</button>
+    </div>
+  `);
+};
+window.doDeleteHistory = async () => {
+  showLoader('Clearing history…', 'Removing old listings');
+  try {
+    const mine = (S.marketplace || []).filter(l => l.seller_id === S.user?.uid);
+    const history = mine.filter(l => l.status === 'removed' || l.availabilityStatus === 'removed' || l.availabilityStatus === 'sold' || l.status === 'sold');
+    for (const l of history) {
+      try { await remove(ref(db, 'marketListings/' + l.id)); } catch(e) {}
+    }
+    hideLoader();
+    closeModal();
+    toast('History cleared');
+    route();
+  } catch (e) {
+    hideLoader();
+    toast('Failed: ' + (e.message || e));
+  }
+};
 
 /* ============================================================
    VIEW LISTING MODAL
@@ -4221,6 +4658,11 @@ window.viewMarketListing = (id) => {
       ? `Was on market for ${fmtDuration((l.removedAt || Date.now()) - (l.createdAt || 0))}`
       : `On market for ${fmtDuration(onMarketMs)}`;
 
+  const photosBlock = (l.photoUrls && l.photoUrls.length) ? `
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:12px">
+      ${l.photoUrls.map(u => `<img src="${esc(u)}" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;background:#000">`).join('')}
+    </div>` : '';
+
   modal(`
     <h3 style="margin-bottom:4px">${esc(l.title || l.productName || 'Listing')}</h3>
     <p style="margin-bottom:10px">${esc(l.sellerName || '')} · ${esc(l.city || '')}</p>
@@ -4228,6 +4670,7 @@ window.viewMarketListing = (id) => {
       ${statusText}
     </div>
     <div style="font-size:11px;color:var(--tl);font-weight:700;margin-bottom:12px">⏱ ${timeOnMarket}</div>
+    ${photosBlock}
     ${contactBlock}
     <div class="info-table" style="text-align:left;margin-bottom:14px">
       ${l.varietyName ? `<div class="info-row"><span class="ir-k">Variety</span><span class="ir-v">${esc(l.varietyName)}</span></div>` : ''}
@@ -4445,8 +4888,7 @@ function renderMarketAnalysis() {
 }
 
 /* ============================================================
-   PREVIEW MARKET — full green page, only crops currently on market,
-   average price (or K0 if no price set)
+   PREVIEW MARKET
    ============================================================ */
 function renderPreviewMarket() {
   const city = S.analysisMarket !== 'all' ? S.analysisMarket : (S.weatherCity || 'Lusaka');
@@ -4455,7 +4897,6 @@ function renderPreviewMarket() {
   );
   const cityListings = allListings.filter(l => !l.city || l.city === city);
 
-  /* Aggregate by crop name: only crops actually listed on the market */
   const cropMap = {};
   cityListings.forEach(l => {
     const rawName = l.productName || l.title || 'Produce';
@@ -4595,12 +5036,13 @@ function renderDelivery() {
 }
 
 /* ============================================================
-   PROFILE (bell removed)
+   PROFILE (with theme toggle)
    ============================================================ */
 function renderProfile() {
   const p = S.profile || {};
   const fullName = ((p.firstName || '') + ' ' + (p.lastName || '')).trim() || 'Farmer';
   const initial = initials(fullName);
+  const isDark = S.theme === 'dark';
   return `
   <div class="scroll" style="padding-top:calc(var(--safe-t) + 14px)">
     <div class="prof-hero">
@@ -4614,6 +5056,20 @@ function renderProfile() {
         <div><div class="ps-n">${S.farms.length}</div><div class="ps-l">Farms</div></div>
       </div>
     </div>
+
+    <!-- Theme toggle -->
+    <div style="padding:0 18px 14px">
+      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Appearance</div>
+      <div class="theme-switch-wrap">
+        <button class="theme-opt ${!isDark ? 'active' : ''}" onclick="setTheme('light')">
+          <span class="ti">☀️</span> Light
+        </button>
+        <button class="theme-opt ${isDark ? 'active' : ''}" onclick="setTheme('dark')">
+          <span class="ti">🌙</span> Dark
+        </button>
+      </div>
+    </div>
+
     <div class="menu-list">
       <div class="menu-item" onclick="goFarm()"><div class="mi-ic">🌱</div><div class="mi-tx"><div class="mi-tt">My Farms</div><div class="mi-sb">${S.farms.length} farm${S.farms.length === 1 ? '' : 's'} · ${S.myBatches.length} batches</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="navTo('my-posts')"><div class="mi-ic">📋</div><div class="mi-tx"><div class="mi-tt">My Posts & History</div><div class="mi-sb">Active and sold listings</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
@@ -5013,6 +5469,9 @@ async function startApp() {
     if (!user) { window.location.href = 'index.html'; return; }
 
     S.user = user;
+    // Load theme from localStorage (already applied to <html>)
+    S.theme = document.documentElement.getAttribute('data-theme') || 'light';
+
     await loadAgriKnowledge();
     const ud = await loadUserData(user.uid);
     S.profile = ud.profile || {};
@@ -5046,7 +5505,6 @@ async function startApp() {
 
     await detectUserCityAndWeather();
 
-    /* Migrate any legacy batches to the first farm (if farms exist) */
     setTimeout(() => { migrateLegacyBatches(); }, 1500);
 
     startPendingCheckTimer();
