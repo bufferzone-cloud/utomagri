@@ -290,41 +290,44 @@ a{color:inherit;text-decoration:none;}
 .sh-cta{position:absolute;top:18px;right:18px;z-index:3;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:var(--r-p);background:rgba(255,255,255,.22);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.32);}
 
 /* ============================================================
-   HERO — HOME PLANT/RAISE CARD with profile top-left, windmill right
+   HERO — HOME PLANT/RAISE CARD
+   Profile + name + city top-left, weather top-right,
+   divider, then Plant/Raise title with the windmill inline
    ============================================================ */
 .hero-weather-col{
-  text-align:center;flex-shrink:0;min-width:88px;
+  text-align:center;flex-shrink:0;min-width:76px;
   display:flex;flex-direction:column;align-items:center;
-  padding:2px 0;
+  padding:0;
 }
-.hero-weather-icon{font-size:38px;line-height:1;filter:drop-shadow(0 2px 10px rgba(0,0,0,.35));}
-.hero-weather-temp{font-size:23px;font-weight:900;margin-top:2px;text-shadow:0 2px 8px rgba(0,0,0,.45);letter-spacing:-.02em;}
+.hero-weather-icon{font-size:34px;line-height:1;filter:drop-shadow(0 2px 10px rgba(0,0,0,.35));}
+.hero-weather-temp{font-size:22px;font-weight:900;margin-top:2px;text-shadow:0 2px 8px rgba(0,0,0,.45);letter-spacing:-.02em;}
 .hero-weather-desc{font-size:9.5px;font-weight:700;opacity:.92;margin-top:1px;line-height:1.2;max-width:82px;text-align:center;text-shadow:0 1px 4px rgba(0,0,0,.4);}
-.hero-windmill-wrap{
-  margin-top:12px;display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:6px 8px 5px;border-radius:14px;
-  background:rgba(255,255,255,.10);
-  border:1px solid rgba(255,255,255,.18);
+
+/* Inline windmill — sits on the same horizontal line as Plant / Raise */
+.hero-windmill-inline{
+  display:flex;align-items:center;gap:9px;flex-shrink:0;
+  padding:7px 12px 7px 10px;border-radius:16px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.22);
   backdrop-filter:blur(6px);
 }
-.hero-wind-val{font-size:11.5px;font-weight:900;text-shadow:0 2px 8px rgba(0,0,0,.4);line-height:1;}
-.hero-wind-val span{font-size:8px;font-weight:700;opacity:.85;margin-left:1px;}
-.hero-wind-lb{font-size:7.5px;font-weight:800;opacity:.8;letter-spacing:.1em;margin-top:1px;}
+.hero-wind-val{font-size:13px;font-weight:900;text-shadow:0 2px 8px rgba(0,0,0,.4);line-height:1;}
+.hero-wind-val span{font-size:8.5px;font-weight:700;opacity:.85;margin-left:1px;}
+.hero-wind-lb{font-size:7.5px;font-weight:800;opacity:.8;letter-spacing:.1em;margin-top:2px;}
 
-/* Hero windmill variant */
-.hero-windmill{width:42px;height:42px;position:relative;flex-shrink:0;}
+.hero-windmill{width:34px;height:34px;position:relative;flex-shrink:0;}
 .hero-windmill .windmill-tower{
   position:absolute;bottom:0;left:50%;transform:translateX(-50%);
-  width:4px;height:24px;background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.55));border-radius:2px;
+  width:4px;height:20px;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.55));border-radius:2px;
 }
 .hero-windmill .windmill-blades{
   position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:34px;height:34px;animation:windmillSpin 2s linear infinite;
+  width:28px;height:28px;animation:windmillSpin 2s linear infinite;
 }
 .hero-windmill .windmill-blades::before,
 .hero-windmill .windmill-blades::after,
 .hero-windmill .windmill-blades .blade3{
-  content:'';position:absolute;top:50%;left:50%;width:3px;height:16px;
+  content:'';position:absolute;top:50%;left:50%;width:3px;height:13px;
   background:rgba(255,255,255,.92);border-radius:2px;transform-origin:center bottom;
 }
 .hero-windmill .windmill-blades::before{transform:translate(-50%,-100%) rotate(0deg);}
@@ -342,9 +345,9 @@ a{color:inherit;text-decoration:none;}
   box-shadow:0 4px 14px rgba(0,0,0,.25);
 }
 .hero-profile-pic img{width:100%;height:100%;object-fit:cover;}
-.hero-name{font-size:17px;font-weight:900;line-height:1.15;margin-top:9px;text-shadow:0 2px 10px rgba(0,0,0,.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.hero-city-line{font-size:11.5px;font-weight:700;opacity:.95;margin-top:5px;display:flex;align-items:flex-start;gap:4px;line-height:1.4;text-shadow:0 1px 6px rgba(0,0,0,.4);}
-.hero-divider{height:1px;background:rgba(255,255,255,.22);margin:12px 0 12px;}
+.hero-name{font-size:17px;font-weight:900;line-height:1.15;margin-top:8px;text-shadow:0 2px 10px rgba(0,0,0,.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hero-city-line{font-size:11.5px;font-weight:700;opacity:.95;margin-top:4px;display:flex;align-items:flex-start;gap:4px;line-height:1.4;text-shadow:0 1px 6px rgba(0,0,0,.4);}
+.hero-divider{height:1px;background:rgba(255,255,255,.22);margin:10px 0;}
 
 .service-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 18px 14px;}
 .service-card{position:relative;overflow:hidden;border-radius:var(--r-xl);height:140px;display:flex;flex-direction:column;justify-content:flex-end;padding:16px;cursor:pointer;color:#fff;transition:transform .25s var(--e);box-shadow:var(--sh-md);}
@@ -356,7 +359,16 @@ a{color:inherit;text-decoration:none;}
 .sc-title{font-size:14px;font-weight:900;letter-spacing:-.01em;line-height:1.15;text-shadow:0 2px 8px rgba(0,0,0,.5);display:flex;align-items:center;gap:6px;}
 .sc-ic{width:22px;height:22px;border-radius:8px;background:rgba(255,255,255,.24);display:flex;align-items:center;justify-content:center;font-size:12px;backdrop-filter:blur(8px);flex-shrink:0;}
 .sc-sub{font-size:10.5px;font-weight:600;opacity:.95;margin-top:4px;text-shadow:0 1px 4px rgba(0,0,0,.5);line-height:1.35;}
-.service-card.blue .sc-bg{background:linear-gradient(135deg,#2563eb 0%,#1e40af 100%)}
+
+/* Blue card — graph-paper background + chart overlay */
+.service-card.blue .sc-bg{
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.07) 0 1px, transparent 1px 18px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.07) 0 1px, transparent 1px 22px),
+    linear-gradient(135deg,#2563eb 0%,#1e40af 100%);
+}
+.sc-graph{position:absolute;right:-8px;top:-6px;width:150px;height:118px;z-index:1;pointer-events:none;opacity:.92;}
+
 .service-card.orange .sc-bg{background:linear-gradient(135deg,#ea580c 0%,#9a3412 100%)}
 .service-card.purple .sc-bg{background:linear-gradient(135deg,#7c3aed 0%,#4c1d95 100%)}
 .service-card.teal .sc-bg{background:linear-gradient(135deg,#0891b2 0%,#155e75 100%)}
@@ -2388,11 +2400,11 @@ function renderHome() {
 
   const heroArt = `
     <div class="sh-bg"></div>
-    <div class="sh-art" style="font-size:110px;opacity:.22;top:-8px;right:-10px;z-index:1">🌱</div>
+    <div class="sh-art" style="font-size:104px;opacity:.20;top:-6px;right:-12px;z-index:1">🌱</div>
     <div class="sh-content" style="width:100%;position:relative;z-index:2">
-      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:10px">
 
-        <!-- LEFT: profile picture, name, "You are in [city]" -->
+      <!-- TOP ROW: profile pic / name / detected city on the left, weather on the right -->
+      <div style="display:flex;align-items:center;gap:12px">
         <div style="flex:1;min-width:0">
           <div class="hero-profile-pic">
             ${p.profileUrl ? `<img src="${esc(p.profileUrl)}" alt="">` : initial}
@@ -2404,26 +2416,32 @@ function renderHome() {
           </div>
         </div>
 
-        <!-- RIGHT: sun/moon icon, temp, description, windmill + wind speed -->
         <div class="hero-weather-col">
           <div class="hero-weather-icon">${w ? weatherIconFor(w.code, w.isDay) : '☀️'}</div>
           <div class="hero-weather-temp">${w ? w.temp + '°' : '—°'}</div>
           <div class="hero-weather-desc">${w ? weatherDescFor(w.code) : 'Loading'}</div>
+        </div>
+      </div>
 
-          <div class="hero-windmill-wrap">
-            <div class="hero-windmill">
-              <div class="windmill-tower"></div>
-              <div class="windmill-blades"><div class="blade3"></div></div>
-            </div>
+      <div class="hero-divider"></div>
+
+      <!-- BOTTOM ROW: Plant / Raise on the left, windmill horizontally aligned on the right -->
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+        <div style="min-width:0">
+          <div class="sh-title" style="font-size:21px"><span class="sh-ic">🌱</span>Plant / Raise</div>
+          <div class="sh-sub">Crops · Livestock · Fisheries</div>
+        </div>
+        <div class="hero-windmill-inline">
+          <div class="hero-windmill">
+            <div class="windmill-tower"></div>
+            <div class="windmill-blades"><div class="blade3"></div></div>
+          </div>
+          <div>
             <div class="hero-wind-val">${w ? w.wind : '—'} <span>km/h</span></div>
             <div class="hero-wind-lb">WIND</div>
           </div>
         </div>
-
       </div>
-      <div class="hero-divider"></div>
-      <div class="sh-title" style="font-size:22px"><span class="sh-ic">🌱</span>Plant / Raise</div>
-      <div class="sh-sub">Crops · Livestock · Fisheries</div>
     </div>`;
 
   const mfHTML = activeBatches.slice(0,8).map(b => {
@@ -2455,14 +2473,33 @@ function renderHome() {
 
   return `
   <div class="scroll" style="padding-top:calc(var(--safe-t) + 6px)">
-    <div class="service-hero" onclick="openPlantRaiseFlow()" style="height:262px;padding:18px 20px">
+    <div class="service-hero" onclick="openPlantRaiseFlow()" style="height:auto;padding:16px 18px">
       ${heroArt}
     </div>
 
     <div class="service-grid">
-      <div class="service-card blue" onclick="goFarm()">
-        <div class="sc-bg"></div><div class="sc-art">🔧</div>
-        <div class="sc-content"><div class="sc-title"><span class="sc-ic">🔧</span>Manage</div><div class="sc-sub">Soil, irrigation, spacing</div></div>
+      <div class="service-card blue" onclick="navTo('market-analysis')">
+        <div class="sc-bg"></div>
+        <svg class="sc-graph" viewBox="0 0 200 140" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="scGraphFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(255,255,255,.55)"/>
+              <stop offset="100%" stop-color="rgba(255,255,255,.06)"/>
+            </linearGradient>
+          </defs>
+          <g fill="url(#scGraphFill)">
+            <rect x="14" y="78" width="20" height="62" rx="3"/>
+            <rect x="46" y="58" width="20" height="82" rx="3"/>
+            <rect x="78" y="88" width="20" height="52" rx="3"/>
+            <rect x="110" y="40" width="20" height="100" rx="3"/>
+            <rect x="142" y="60" width="20" height="80" rx="3"/>
+          </g>
+          <polyline points="24,68 56,48 88,78 120,30 152,50" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="sc-content">
+          <div class="sc-title"><span class="sc-ic">📊</span>Market Analysis</div>
+          <div class="sc-sub">Prices · Demand · Trends</div>
+        </div>
       </div>
       <div class="service-card orange" onclick="goFarm()">
         <div class="sc-bg"></div><div class="sc-art">🌾</div>
