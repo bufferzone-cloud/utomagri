@@ -554,20 +554,19 @@ a{color:inherit;text-decoration:none;}
 .demand-pill.low{background:#fee2e2;color:#991b1b}
 .demand-pill .dotp{width:6px;height:6px;border-radius:50%;background:currentColor;}
 
-.price-board{
-  margin:0 18px 14px;padding:22px 18px;border-radius:var(--r-2xl);
+/* PREVIEW MARKET - full green page */
+.market-board-page{
   background:
     radial-gradient(circle at top right, rgba(251,191,36,.15) 0%, transparent 60%),
     radial-gradient(circle at bottom left, rgba(134,239,172,.15) 0%, transparent 60%),
     linear-gradient(135deg,#0a2e1b 0%,#052014 100%);
-  color:#fff;box-shadow:0 20px 50px -10px rgba(0,0,0,.5);
-  position:relative;overflow:hidden;border:2px solid #1a4a2f;
+  min-height:100%;
+  position:relative;
+  overflow:hidden;
 }
-.price-board::before{
+.market-board-page::before{
   content:'';position:absolute;inset:0;pointer-events:none;
-  background:
-    repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,.06) 3px 4px);
-  border-radius:inherit;
+  background:repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,.06) 3px 4px);
 }
 .pb-head{text-align:center;margin-bottom:18px;position:relative;z-index:1}
 .pb-sub{font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#fbbf24;opacity:.9;margin-bottom:6px;}
@@ -593,8 +592,8 @@ a{color:inherit;text-decoration:none;}
 .pb-icon{font-size:16px;flex-shrink:0;}
 .pb-name{flex:1;min-width:0;font-weight:800;color:#f0fdf4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;}
 .pb-price{font-weight:900;color:#fbbf24;font-size:11px;letter-spacing:-.01em;flex-shrink:0;}
-.pb-empty{text-align:center;padding:20px;color:#d1fae5;opacity:.7;font-size:12px;font-weight:600;}
-.pb-footer{margin-top:16px;padding-top:12px;border-top:1px dashed rgba(251,191,36,.25);text-align:center;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;opacity:.75;position:relative;z-index:1;}
+.pb-empty{text-align:center;padding:40px 20px;color:#d1fae5;opacity:.75;font-size:13px;font-weight:600;line-height:1.5;}
+.pb-footer{margin-top:24px;padding-top:14px;border-top:1px dashed rgba(251,191,36,.25);text-align:center;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;opacity:.75;position:relative;z-index:1;}
 
 .analysis-filters{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:8px 18px 14px;}
 .af-box{position:relative;background:#fff;border:1.5px solid var(--bd);border-radius:var(--r-lg);padding:12px 14px;cursor:pointer;box-shadow:var(--sh-xs);transition:all .2s var(--e);}
@@ -781,7 +780,6 @@ a{color:inherit;text-decoration:none;}
 .market-tab{flex-shrink:0;padding:9px 16px;border-radius:var(--r-p);background:#fff;border:1.5px solid var(--bd);font-size:12px;font-weight:800;color:var(--tb);transition:all .2s var(--e);}
 .market-tab.active{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 4px 12px -4px var(--p-glow);}
 
-/* Market top-two square tab buttons */
 .market-tab-square{
   height:120px;border-radius:var(--r-lg);
   background:linear-gradient(135deg,#fff,#f8fafc);
@@ -962,6 +960,10 @@ const S = {
   following: {},
   myBatches: [],
   allFarmersBatches: [],
+  /* FARMS */
+  farms: [],
+  currentFarmId: null,
+  farmsUnsub: null,
   plantWizard: { step:1, cropId:null, varietyName:null, length:null, width:null, town:null, animalCount:0 },
   varieties: {},
   cropSpacing: {},
@@ -988,7 +990,7 @@ const S = {
   promptedListings: {},
   prompted24h: {},
   lastSpacingByCrop: {},
-  stageNotified: {},   // in-memory: batchId -> stage it was notified for
+  stageNotified: {},
   stageAdvancementTimer: null,
   readyToListOpen: false
 };
@@ -1118,6 +1120,113 @@ function getAllListingsForBatch(batchId) {
   return (S.marketplace || []).filter(l => l.fromBatchId === batchId);
 }
 
+/* Current farm's batches (falls back to all if no farm yet) */
+function currentFarmBatches() {
+  if (!S.currentFarmId) return S.myBatches;
+  return S.myBatches.filter(b => b.farmId === S.currentFarmId);
+}
+
+/* ============================================================
+   FARMS
+   ============================================================ */
+function startFarmsListener() {
+  if (!S.user) return;
+  if (S.farmsUnsub) S.farmsUnsub();
+  S.farmsUnsub = onValue(ref(db, `users/${S.user.uid}/farms`), (snap) => {
+    const data = snap.val() || {};
+    const arr = Object.entries(data).map(([id, v]) => ({ id, ...v }));
+    arr.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+    S.farms = arr;
+    /* restore / auto-pick current farm */
+    if (S.currentFarmId && !arr.find(f => f.id === S.currentFarmId)) {
+      S.currentFarmId = arr[0]?.id || null;
+    }
+    if (!S.currentFarmId && arr.length) {
+      S.currentFarmId = arr[0].id;
+    }
+    if (['farm-picker', 'farm'].includes(S.screen)) route();
+  });
+}
+
+async function ensureFarmAsync() {
+  /* Returns a farmId. Creates "My Farm" if none exist. */
+  if (S.currentFarmId && S.farms.find(f => f.id === S.currentFarmId)) return S.currentFarmId;
+  if (S.farms.length) {
+    S.currentFarmId = S.farms[0].id;
+    try { await update(ref(db, 'users/' + S.user.uid), { currentFarmId: S.currentFarmId }); } catch (e) {}
+    return S.currentFarmId;
+  }
+  const newRef = push(ref(db, `users/${S.user.uid}/farms`));
+  const farm = { name: 'My Farm', city: S.weatherCity || S.userLocation || 'Lusaka', createdAt: nowMs() };
+  await set(newRef, farm);
+  S.currentFarmId = newRef.key;
+  try { await update(ref(db, 'users/' + S.user.uid), { currentFarmId: S.currentFarmId }); } catch (e) {}
+  S.farms.push({ id: newRef.key, ...farm });
+  return S.currentFarmId;
+}
+
+async function migrateLegacyBatches() {
+  /* Assign any batch without farmId to the first farm */
+  if (!S.user || !S.farms.length) return;
+  const farmId = S.farms[0].id;
+  const legacy = S.myBatches.filter(b => !b.farmId);
+  for (const b of legacy) {
+    try {
+      await update(ref(db, 'batches/' + b.id), { farmId });
+      b.farmId = farmId;
+    } catch (e) {}
+  }
+}
+
+window.selectFarm = async (farmId) => {
+  try {
+    await update(ref(db, 'users/' + S.user.uid), { currentFarmId: farmId });
+    S.currentFarmId = farmId;
+    showScreen('farm');
+  } catch (e) { toast('Failed: ' + (e.message || e)); }
+};
+
+window.openCreateFarm = () => {
+  const defaultCity = S.weatherCity || S.userLocation || 'Lusaka';
+  modal(`
+    <h3>Create a farm</h3>
+    <p>Give your farm a name and pick the city it's located in.</p>
+    <div style="text-align:left">
+      <div class="fld" style="margin-bottom:10px">
+        <label>Farm name</label>
+        <input id="cf-name" class="inp" placeholder="e.g. Sunrise Farm">
+      </div>
+      <div class="fld" style="margin-bottom:14px">
+        <label>City / Town</label>
+        <select id="cf-city" class="inp">
+          ${[defaultCity, ...ZAMBIA_TOWNS.filter(t => t !== defaultCity)].map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="mc-actions">
+      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-p" onclick="saveNewFarm()">Create ✓</button>
+    </div>
+  `);
+  setTimeout(() => document.getElementById('cf-name')?.focus(), 100);
+};
+
+window.saveNewFarm = async () => {
+  const name = (document.getElementById('cf-name').value || '').trim();
+  const city = document.getElementById('cf-city').value;
+  if (!name) { toast('Enter farm name'); return; }
+  if (!city) { toast('Choose city'); return; }
+  try {
+    const newRef = push(ref(db, `users/${S.user.uid}/farms`));
+    await set(newRef, { name, city, createdAt: nowMs() });
+    await update(ref(db, 'users/' + S.user.uid), { currentFarmId: newRef.key });
+    S.currentFarmId = newRef.key;
+    closeModal();
+    toast('Farm created ✓');
+    showScreen('farm');
+  } catch (e) { toast('Failed: ' + (e.message || e)); }
+};
+
 /* ============================================================
    ICON PICKER
    ============================================================ */
@@ -1193,7 +1302,6 @@ function gradFor(str) {
 
 /* ============================================================
    METRIC / UNIT SYSTEM
-   Each crop/livestock has its own natural unit of measurement.
    ============================================================ */
 function getHarvestUnit(cropName, category) {
   const n = String(cropName || '').toLowerCase();
@@ -1213,7 +1321,6 @@ function getHarvestUnit(cropName, category) {
     return { unit: 'kg', unitLabel: 'kg (fresh weight)', perUnit: 1, note: 'fresh weight' };
   }
 
-  /* CROPS - natural units per crop */
   if (n.includes('tomato')) return { unit: 'boxes', unitLabel: 'boxes (20 kg)', perUnit: 20, note: '20 kg per box' };
   if (n.includes('maize') || n.includes('corn')) return { unit: 'bags', unitLabel: 'bags (50 kg)', perUnit: 50, note: '50 kg per bag' };
   if (n.includes('groundnut') || n.includes('peanut')) return { unit: 'bags', unitLabel: 'bags (50 kg)', perUnit: 50, note: '50 kg per bag' };
@@ -1265,7 +1372,7 @@ function unitForBatch(b) {
 }
 
 /* ============================================================
-   HARVEST ESTIMATION (metric-aware)
+   HARVEST ESTIMATION
    ============================================================ */
 const ESTIMATION = {
   crop: {
@@ -1332,12 +1439,8 @@ function estimateHarvest(category, lengthM, widthM, cropName, animalCount) {
     else e = ESTIMATION.livestock.default;
     const totalKg = count * e.meatPerHead;
     return {
-      quantity: count,
-      low: count,
-      high: count,
-      totalKg,
-      unit: 'head',
-      unitLabel: 'head (animals)',
+      quantity: count, low: count, high: count, totalKg,
+      unit: 'head', unitLabel: 'head (animals)',
       note: `~${e.meatPerHead} kg meat per animal`
     };
   }
@@ -1352,8 +1455,7 @@ function estimateHarvest(category, lengthM, widthM, cropName, animalCount) {
       low: Math.max(1, Math.round(m2*e.low)),
       high: Math.max(1, Math.round(m2*e.high)),
       totalKg,
-      unit: 'kg',
-      unitLabel: 'kg (fresh weight)',
+      unit: 'kg', unitLabel: 'kg (fresh weight)',
       note: `~${e.kgPerM2} kg per m² of pond`
     };
   }
@@ -1515,35 +1617,6 @@ const CITY_MARKETS = {
 function marketsForCity(city) { return CITY_MARKETS[city] || CITY_MARKETS.default; }
 
 /* ============================================================
-   SAMPLE PRICES (Preview Market board fallback)
-   ============================================================ */
-const SAMPLE_PRICES = [
-  { name:'Lettuce', price:'K15 - K10' },
-  { name:'Fresh Maize', price:'K5' },
-  { name:'Tomato', price:'K280 - K250' },
-  { name:'Red Onion 14kg', price:'K250' },
-  { name:'Red Onion 10kg', price:'K200' },
-  { name:'White Onion 14kg', price:'K200' },
-  { name:'White Onion 10kg', price:'K150' },
-  { name:'Zambian Garlic 10kg', price:'K400' },
-  { name:'Chinese Garlic 10kg', price:'K900' },
-  { name:'Okra 25kg', price:'K350' },
-  { name:'Kalembula 25kg', price:'K95' },
-  { name:'Watermelons', price:'K120 - K30' },
-  { name:'Cabbage', price:'K15 - K5' },
-  { name:'Rape 50kg', price:'K75' },
-  { name:'Chinese Cabbage', price:'K50' },
-  { name:'Chilli M Buzi', price:'K400' },
-  { name:'Ginger P/KG', price:'K30' },
-  { name:'Cucumber 50kg', price:'K250' },
-  { name:'Green Peppers P/KG', price:'K12' },
-  { name:'Carrots P/KG', price:'K12' },
-  { name:'Broilers', price:'K120 - K150' },
-  { name:'Layers', price:'K90' },
-  { name:'Pineapples', price:'K15 - K10' }
-];
-
-/* ============================================================
    ROUTER
    ============================================================ */
 let activeScreenEl = null;
@@ -1596,7 +1669,7 @@ function updateNav(id) {
   if (!nav) return;
   const map = { home:'home', farm:'farm', market:'market', delivery:'delivery', profile:'profile' };
   let key = id;
-  if (['plant-loader','plant-step-1','plant-step-3','plant-step-4','plant-confirm','plant-success','batch-detail','harvest-record','post-harvest-goods','selected-crop-analysis'].includes(id)) key = 'farm';
+  if (['plant-loader','plant-step-1','plant-step-3','plant-step-4','plant-confirm','plant-success','batch-detail','harvest-record','post-harvest-goods','selected-crop-analysis','farm-picker'].includes(id)) key = 'farm';
   if (['marketplace','product-detail','buy-supplies','supplier-cart','supplier-checkout','edit-listing','preview-market'].includes(id)) key = 'market';
   if (['delivery-history','request-delivery'].includes(id)) key = 'delivery';
   if (['profile','weather','analysis','government','follow-ups','my-posts','explore','catalogue-detail','market-analysis','weather-detail','farm-analysis','farmers-by-city','agro-dealers'].includes(id)) key = 'profile';
@@ -1637,7 +1710,20 @@ function bottomNavHTML() {
 window.navTo = (id, data) => showScreen(id, data);
 window.showScreen = showScreen;
 window.goHome = () => navTo('home');
-window.goFarm = () => navTo('farm');
+window.goFarm = () => {
+  /* Multi-farm: show picker. Single farm selected: go straight. No farms: picker prompts creation. */
+  if (S.farms.length >= 2) {
+    navTo('farm-picker');
+  } else if (S.farms.length === 1) {
+    if (S.currentFarmId !== S.farms[0].id) {
+      S.currentFarmId = S.farms[0].id;
+      update(ref(db, 'users/' + S.user.uid), { currentFarmId: S.currentFarmId }).catch(()=>{});
+    }
+    navTo('farm');
+  } else {
+    navTo('farm-picker');
+  }
+};
 window.goMarket = () => { S.marketTab = 'mine'; navTo('marketplace'); };
 window.goDelivery = () => navTo('delivery');
 window.goProfile = () => navTo('profile');
@@ -1658,7 +1744,7 @@ window.openSupplierCart = () => {
 };
 
 /* ============================================================
-   NOTIFICATIONS
+   NOTIFICATIONS (panel kept; bell removed from UI)
    ============================================================ */
 window.openNotif = () => { $notifPanel.classList.add('open'); $notifOverlay.classList.add('open'); };
 window.closeNotif = () => { $notifPanel.classList.remove('open'); $notifOverlay.classList.remove('open'); };
@@ -1774,7 +1860,7 @@ function startAllBatchesListener() {
     arr.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
     S.allFarmersBatches = arr;
     if (S.user) S.myBatches = arr.filter(b => b.ownerId === S.user.uid);
-    if (['marketplace','market-analysis','farmers-by-city','selected-crop-analysis','preview-market','farm-analysis'].includes(S.screen)) route();
+    if (['marketplace','market-analysis','farmers-by-city','selected-crop-analysis','preview-market','farm-analysis','farm-picker'].includes(S.screen)) route();
   });
 }
 
@@ -1818,6 +1904,7 @@ function route() {
 
   switch (id) {
     case 'home': el.innerHTML = renderHome(); break;
+    case 'farm-picker': el.innerHTML = renderFarmPicker(); break;
     case 'farm': el.innerHTML = renderFarm(); break;
     case 'plant-loader': el.innerHTML = renderPlantLoader(); break;
     case 'plant-step-1': el.innerHTML = renderPlantStep1(); break;
@@ -1847,8 +1934,7 @@ function route() {
 }
 
 /* ============================================================
-   HOME  (reordered: Plant/Raise hero on top with weather+name inside,
-   Manage + Harvest below, then the rest)
+   HOME
    ============================================================ */
 function renderHome() {
   const p = S.profile || {};
@@ -1912,15 +1998,7 @@ function renderHome() {
     </div>`;
 
   return `
-  <div class="scroll">
-    <div class="topbar" style="padding-bottom:4px">
-      <div style="flex:1"></div>
-      <button class="tb-btn" onclick="openNotif()" style="position:relative">
-        <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-        ${S.unreadNotifCount ? `<span class="dot"></span>` : ''}
-      </button>
-    </div>
-
+  <div class="scroll" style="padding-top:calc(var(--safe-t) + 6px)">
     <div class="service-hero" onclick="startPlantFlow()" style="height:232px;padding:18px 20px">
       ${heroArt}
     </div>
@@ -1989,20 +2067,95 @@ function renderHome() {
 }
 
 /* ============================================================
+   FARM PICKER
+   ============================================================ */
+function renderFarmPicker() {
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goHome()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+      <div class="tb-title">My Farms</div>
+    </div>
+
+    <div style="padding:16px 18px 6px">
+      <div style="font-size:13px;color:var(--tl);font-weight:600;line-height:1.5;margin-bottom:14px">
+        ${S.farms.length ? 'Pick a farm to manage, or create a new one.' : 'Create your first farm to start planting, raising and tracking your harvests.'}
+      </div>
+    </div>
+
+    ${S.farms.length ? `
+      <div style="padding:0 18px">
+        ${S.farms.map(f => {
+          const count = (S.myBatches || []).filter(b => b.farmId === f.id).length;
+          const isCurrent = f.id === S.currentFarmId;
+          return `
+            <div class="list-row" onclick="selectFarm('${esc(f.id)}')" style="margin:0 0 10px;${isCurrent ? 'border-color:var(--p);background:var(--p-ll)' : ''}">
+              <div class="lr-ic green">🌾</div>
+              <div class="lr-tx">
+                <div class="lr-tt">${esc(f.name)}</div>
+                <div class="lr-sb">📍 ${esc(f.city)} · ${count} batch${count === 1 ? '' : 'es'}</div>
+              </div>
+              <div class="lr-arrow">
+                ${isCurrent ? `<span style="font-size:11px;font-weight:900;color:var(--p);padding:4px 8px;background:var(--p-l);border-radius:999px">Current</span>` : `<svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>`}
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    ` : `
+      <div class="empty" style="padding:20px 24px 10px">
+        <div class="e-ic">🌾</div>
+        <h3>No farms yet</h3>
+        <p>Create a farm by giving it a name and picking the city it's located in.</p>
+      </div>
+    `}
+
+    <div style="padding:14px 18px 20px">
+      <button class="btn btn-p" onclick="openCreateFarm()">+ Create New Farm</button>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
    FARM
    ============================================================ */
 window.switchFarmTab = (tab) => { S.farmTab = tab; route(); };
 
 function renderFarm() {
   const tab = S.farmTab || 'plant';
-  const active = (S.myBatches || []).filter(b => b.stage !== 'harvested').length;
-  const ready = (S.myBatches || []).filter(b => b.stage === 'harvesting').length;
+  const farm = S.farms.find(f => f.id === S.currentFarmId);
+  const farmBatches = currentFarmBatches();
+  const active = farmBatches.filter(b => b.stage !== 'harvested').length;
+  const ready = farmBatches.filter(b => b.stage === 'harvesting').length;
+
+  /* No farms yet */
+  if (!S.farms.length) {
+    return `
+    <div class="scroll">
+      <div class="topbar bordered"><div class="tb-title">My Farm</div></div>
+      <div class="empty" style="padding:40px 24px">
+        <div class="e-ic">🌾</div>
+        <h3>No farms yet</h3>
+        <p>Create a farm to start planting, raising and tracking your harvests.</p>
+        <button class="btn btn-p" style="max-width:220px;margin:14px auto 0" onclick="openCreateFarm()">+ Create Farm</button>
+      </div>
+    </div>
+    ${bottomNavHTML()}`;
+  }
+
   return `
   <div class="scroll">
     <div class="topbar bordered">
-      <div class="tb-title">My Farm</div>
+      <button class="tb-back" onclick="navTo('farm-picker')" title="Switch farm">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div style="flex:1;min-width:0">
+        <div class="tb-title" style="margin:0">${esc(farm?.name || 'My Farm')}</div>
+        <div style="font-size:11px;color:var(--tl);font-weight:700;margin-top:2px;display:flex;align-items:center;gap:4px">📍 ${esc(farm?.city || S.weatherCity || S.userLocation)}</div>
+      </div>
       <div class="tb-actions">
-        <button class="tb-btn" onclick="startPlantFlow()">
+        <button class="tb-btn" onclick="startPlantFlow()" title="Plant / Raise">
           <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>
         </button>
       </div>
@@ -2030,6 +2183,7 @@ function renderFarm() {
 }
 
 function renderFarmPlant() {
+  const farmBatches = currentFarmBatches();
   return `
   <div style="padding:0 18px 18px">
     <div class="service-hero" onclick="startPlantFlow()" style="margin-bottom:16px">
@@ -2042,17 +2196,18 @@ function renderFarmPlant() {
       </div>
     </div>
     <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Recent Plantings</div>
-    ${S.myBatches.length ? S.myBatches.slice(0,5).map(b => renderBatchCard(b)).join('') : `
+    ${farmBatches.length ? farmBatches.slice(0,5).map(b => renderBatchCard(b)).join('') : `
       <div class="empty">
         <div class="e-ic">🌱</div>
-        <h3>No plantings yet</h3>
-        <p>Tap the card above to record your first crop.</p>
+        <h3>No plantings on this farm yet</h3>
+        <p>Tap the card above to record your first crop on this farm.</p>
       </div>`}
   </div>`;
 }
 
 function renderFarmManage() {
-  const active = S.myBatches.filter(b => b.stage !== 'harvested');
+  const farmBatches = currentFarmBatches();
+  const active = farmBatches.filter(b => b.stage !== 'harvested');
   return `
   <div style="padding:0 18px 18px">
     <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Active Batches</div>
@@ -2066,8 +2221,9 @@ function renderFarmManage() {
 }
 
 function renderFarmHarvest() {
-  const ready = S.myBatches.filter(b => b.stage === 'harvesting');
-  const done = S.myBatches.filter(b => b.stage === 'harvested');
+  const farmBatches = currentFarmBatches();
+  const ready = farmBatches.filter(b => b.stage === 'harvesting');
+  const done = farmBatches.filter(b => b.stage === 'harvested');
   return `
   <div style="padding:0 18px 18px">
     <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Ready to Harvest</div>
@@ -2114,7 +2270,13 @@ window.openBatch = (id, mode) => showScreen('batch-detail', { id, tab: mode || '
 /* ============================================================
    PLANT FLOW
    ============================================================ */
-window.startPlantFlow = () => {
+window.startPlantFlow = async () => {
+  /* Ensure at least one farm exists so the batch has a home */
+  if (!S.farms.length) {
+    try {
+      await ensureFarmAsync();
+    } catch (e) { toast('Could not create farm: ' + (e.message || e)); return; }
+  }
   S.plantWizard = { step:1, cropId:null, varietyName:null, length:null, width:null, town:null, animalCount:0 };
   showScreen('plant-loader');
   let dots = 0;
@@ -2315,7 +2477,6 @@ function renderPlantStep3() {
   </div>`;
 }
 
-/* FIX: no full re-render — update estimate card only, keep input focus */
 window.updateArea = (field, value) => {
   const v = parseFloat(value) || 0;
   if (field === 'length') S.plantWizard.length = v;
@@ -2507,6 +2668,7 @@ window.finishPlanting = async () => {
   if (!crop) { toast('Crop not found'); return; }
   showLoader('Creating your batch…', 'Saving to your farm');
   try {
+    const farmId = await ensureFarmAsync();
     const area = computeArea(w.length, w.width);
     const est = estimateHarvest(crop.category, w.length, w.width, crop.name, w.animalCount);
     const { batchNumber, batchSeq, batchDateKey } = await generateBatchNumber();
@@ -2519,6 +2681,7 @@ window.finishPlanting = async () => {
       ownerId: S.user.uid,
       ownerName: (S.profile.firstName || '') + ' ' + (S.profile.lastName || ''),
       ownerCity: S.weatherCity || S.userLocation,
+      farmId,
       cropId: w.cropId, cropName: crop.name, varietyName: w.varietyName,
       category: crop.category,
       lengthM: w.length || 0, widthM: w.width || 0,
@@ -2857,7 +3020,7 @@ window.saveDailyHarvest = async (batchId) => {
   const total = existing.reduce((s, h) => s + (parseInt(h.boxes) || 0), 0);
 
   try {
-    await update(ref('batches/' + batchId), {
+    await update(ref(db, 'batches/' + batchId), {
       dailyHarvests: existing,
       actualBoxes: total,
       updatedAt: nowMs()
@@ -3572,7 +3735,7 @@ window.confirmSellListing = async (id) => {
 };
 
 /* ============================================================
-   AVAILABILITY CONFIRMATION MODALS
+   AVAILABILITY CONFIRMATION
    ============================================================ */
 function showAvailabilityConfirmModal(listing) {
   const unit = listing.unit || 'box';
@@ -3707,7 +3870,6 @@ function startPendingCheckTimer() {
 
 /* ============================================================
    STAGE ADVANCEMENT NOTIFICATIONS
-   Compares elapsed days vs totalDays thresholds to prompt the farmer.
    ============================================================ */
 const STAGE_THRESHOLDS = { planted: 0.25, growing: 0.45, flowering: 0.65, fruiting: 0.85 };
 const NEXT_STAGE = { planted: 'growing', growing: 'flowering', flowering: 'fruiting', fruiting: 'harvesting' };
@@ -3771,7 +3933,6 @@ window.advanceBatchStage = async (id, stage) => {
 };
 
 window.dismissStageNotification = (id) => {
-  // note already stamped into S.stageNotified
   closeModal();
 };
 
@@ -3782,7 +3943,7 @@ function startStageAdvancementChecker() {
 }
 
 /* ============================================================
-   MARKETPLACE — two square tabs; collapsible "Ready to list"
+   MARKETPLACE
    ============================================================ */
 window.setMarketTab = (tab) => { S.marketTab = tab; route(); };
 window.toggleReadyToList = () => {
@@ -4088,7 +4249,7 @@ window.contactSeller = (sellerId) => {
 };
 
 /* ============================================================
-   MARKET ANALYSIS — crop filter only from my planted crops
+   MARKET ANALYSIS
    ============================================================ */
 window.setAnalysisMarket = (v) => { S.analysisMarket = v; route(); };
 window.setAnalysisCrop = (v) => { S.analysisCrop = v; route(); };
@@ -4118,14 +4279,12 @@ function renderMarketAnalysis() {
   );
 
   const cities = [...new Set(allBatches.map(b => b.town).filter(Boolean))].sort();
-  /* Crop filter limited to my own planted crops */
   const crops = [...new Set((S.myBatches || []).map(b => b.cropName).filter(Boolean))].sort();
 
   const city = S.analysisMarket || 'all';
   const cropF = S.analysisCrop || 'all';
   const monthF = S.analysisMonth || 'all';
 
-  /* Guard: if previously selected crop no longer matches my crops, reset */
   if (cropF !== 'all' && !crops.includes(cropF)) S.analysisCrop = cropF;
 
   const cityBatches = allBatches.filter(b => city === 'all' || b.town === city);
@@ -4286,7 +4445,8 @@ function renderMarketAnalysis() {
 }
 
 /* ============================================================
-   PREVIEW MARKET
+   PREVIEW MARKET — full green page, only crops currently on market,
+   average price (or K0 if no price set)
    ============================================================ */
 function renderPreviewMarket() {
   const city = S.analysisMarket !== 'all' ? S.analysisMarket : (S.weatherCity || 'Lusaka');
@@ -4295,37 +4455,44 @@ function renderPreviewMarket() {
   );
   const cityListings = allListings.filter(l => !l.city || l.city === city);
 
-  const rows = [];
-  const seen = new Set();
-
+  /* Aggregate by crop name: only crops actually listed on the market */
+  const cropMap = {};
   cityListings.forEach(l => {
-    const name = (l.productName || l.title || 'Produce').replace(/^\s*Fresh\s+/i, '').replace(/\s*–.*$/, '');
-    if (seen.has(name)) return;
-    seen.add(name);
-    const price = l.priceMode === 'total'
-      ? `K${Math.round((l.priceAmount || 0))}`
-      : `K${Math.round(l.pricePerBox || l.priceAmount || 0)}`;
-    rows.push({ name, price, icon: pickIcon(name) });
+    const rawName = l.productName || l.title || 'Produce';
+    const name = String(rawName).replace(/^\s*Fresh\s+/i, '').replace(/\s*–.*$/, '').trim();
+    if (!name) return;
+    if (!cropMap[name]) cropMap[name] = { prices: [], count: 0 };
+    let p = 0;
+    if (l.priceMode === 'total' && l.quantity) {
+      p = (parseFloat(l.priceAmount) || 0) / l.quantity;
+    } else {
+      p = parseFloat(l.pricePerBox || l.priceAmount || 0);
+    }
+    if (p > 0) cropMap[name].prices.push(p);
+    cropMap[name].count++;
   });
 
-  SAMPLE_PRICES.forEach(s => {
-    if (seen.has(s.name)) return;
-    seen.add(s.name);
-    rows.push({ name: s.name, price: s.price, icon: pickIcon(s.name) });
+  const rows = Object.entries(cropMap).map(([name, data]) => {
+    const avg = data.prices.length
+      ? Math.round(data.prices.reduce((a, b) => a + b, 0) / data.prices.length)
+      : 0;
+    return { name, price: 'K' + avg, icon: pickIcon(name) };
   });
+  rows.sort((a, b) => a.name.localeCompare(b.name));
 
-  const shown = rows.slice(0, 30);
   const today = new Date();
   const dateStr = `${today.getDate()} ${MONTH_NAMES[today.getMonth()]} ${today.getFullYear()}`;
 
   return `
-  <div class="scroll">
-    <div class="topbar bordered">
-      <button class="tb-back" onclick="navTo('marketplace')"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
-      <div class="tb-title">Preview Market</div>
+  <div class="scroll market-board-page" style="padding-top:0">
+    <div class="topbar" style="background:transparent;border-bottom:1px solid rgba(255,255,255,.12)">
+      <button class="tb-back" onclick="navTo('marketplace')" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2)">
+        <svg viewBox="0 0 24 24" style="fill:#fff"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title" style="color:#fbbf24">Market Update</div>
     </div>
 
-    <div class="price-board">
+    <div style="padding:20px 18px 20px;position:relative;z-index:1">
       <div class="pb-head">
         <div class="pb-sub">Farmer · Championing Agribusiness</div>
         <div class="pb-title">MARKET UPDATE</div>
@@ -4334,24 +4501,23 @@ function renderPreviewMarket() {
       </div>
 
       <div class="pb-grid">
-        ${shown.length ? shown.map((r, i) => `
+        ${rows.length ? rows.map((r, i) => `
           <div class="pb-item">
-            <div class="pb-num">${i+1}</div>
+            <div class="pb-num">${i + 1}</div>
             <div class="pb-icon">${r.icon}</div>
             <div class="pb-name">${esc(r.name)}</div>
             <div class="pb-price">${esc(r.price)}</div>
           </div>
-        `).join('') : `<div class="pb-empty" style="grid-column:1/-1">No market prices available yet.</div>`}
+        `).join('') : `
+          <div class="pb-empty" style="grid-column:1/-1">
+            🌾 No crops are on the market in ${esc(city)} yet.
+            <div style="font-size:11.5px;font-weight:600;margin-top:10px;opacity:.85">List a harvest from your farm to start the board.</div>
+          </div>
+        `}
       </div>
 
       <div class="pb-footer">AgriCare · Market Data Live</div>
     </div>
-
-    <div style="padding:0 18px 18px">
-      <button class="btn btn-s" onclick="navTo('marketplace')">← Back to Market</button>
-    </div>
-
-    <div style="height:8px"></div>
   </div>
   ${bottomNavHTML()}`;
 }
@@ -4429,23 +4595,14 @@ function renderDelivery() {
 }
 
 /* ============================================================
-   PROFILE
+   PROFILE (bell removed)
    ============================================================ */
 function renderProfile() {
   const p = S.profile || {};
   const fullName = ((p.firstName || '') + ' ' + (p.lastName || '')).trim() || 'Farmer';
   const initial = initials(fullName);
   return `
-  <div class="scroll">
-    <div class="topbar bordered" style="background:transparent;border-bottom:none">
-      <div class="tb-title" style="opacity:0">Profile</div>
-      <div class="tb-actions">
-        <button class="tb-btn" onclick="openNotif()" style="position:relative">
-          <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-          ${S.unreadNotifCount ? `<span class="dot"></span>` : ''}
-        </button>
-      </div>
-    </div>
+  <div class="scroll" style="padding-top:calc(var(--safe-t) + 14px)">
     <div class="prof-hero">
       <div class="p-av">${p.profileUrl ? `<img src="${esc(p.profileUrl)}" alt="">` : initial}</div>
       <h2>${esc(fullName)}</h2>
@@ -4454,11 +4611,11 @@ function renderProfile() {
       <div class="prof-stats">
         <div><div class="ps-n">${S.myBatches.length}</div><div class="ps-l">Batches</div></div>
         <div><div class="ps-n">${S.myListings.length}</div><div class="ps-l">Listings</div></div>
-        <div><div class="ps-n">${Object.keys(S.following || {}).length}</div><div class="ps-l">Following</div></div>
+        <div><div class="ps-n">${S.farms.length}</div><div class="ps-l">Farms</div></div>
       </div>
     </div>
     <div class="menu-list">
-      <div class="menu-item" onclick="goFarm()"><div class="mi-ic">🌱</div><div class="mi-tx"><div class="mi-tt">My Farm</div><div class="mi-sb">${S.myBatches.length} batches</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="goFarm()"><div class="mi-ic">🌱</div><div class="mi-tx"><div class="mi-tt">My Farms</div><div class="mi-sb">${S.farms.length} farm${S.farms.length === 1 ? '' : 's'} · ${S.myBatches.length} batches</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="navTo('my-posts')"><div class="mi-ic">📋</div><div class="mi-tx"><div class="mi-tt">My Posts & History</div><div class="mi-sb">Active and sold listings</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="navTo('agro-dealers')"><div class="mi-ic">🏪</div><div class="mi-tx"><div class="mi-tt">Agro Dealers</div><div class="mi-sb">Pesticides, tools, seeds & more</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
       <div class="menu-item" onclick="navTo('weather-detail')"><div class="mi-ic">☁️</div><div class="mi-tx"><div class="mi-tt">Weather</div><div class="mi-sb">${esc(S.weatherCity || S.userLocation)}</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
@@ -4865,12 +5022,14 @@ async function startApp() {
 
     if (S.profile.location) S.userLocation = S.profile.location;
     if (S.profile.city) S.weatherCity = S.profile.city;
+    if (S.profile.currentFarmId) S.currentFarmId = S.profile.currentFarmId;
 
     S.marketplace = await loadMarketplace();
     startNotificationsListener();
     startAllBatchesListener();
     startMarketplaceListener();
     startAgroProductsListener();
+    startFarmsListener();
 
     const app = document.getElementById('app');
     app.innerHTML = `<div class="screen-wrap"></div>`;
@@ -4886,6 +5045,10 @@ async function startApp() {
     try { history.replaceState({ screen:'home' }, '', '#home'); } catch (e) {}
 
     await detectUserCityAndWeather();
+
+    /* Migrate any legacy batches to the first farm (if farms exist) */
+    setTimeout(() => { migrateLegacyBatches(); }, 1500);
+
     startPendingCheckTimer();
     startCountdownTicker();
     startStageAdvancementChecker();
