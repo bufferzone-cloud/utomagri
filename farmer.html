@@ -548,14 +548,12 @@ a{color:inherit;text-decoration:none;}
 .ma-warning{padding:12px 14px;border-radius:var(--r);background:#fef3c7;border:1px solid rgba(180,83,9,.2);font-size:12px;color:#92400e;font-weight:600;line-height:1.5;margin-bottom:10px;}
 .ma-warning strong{font-weight:800;}
 
-/* DEMAND PILL */
 .demand-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:var(--r-p);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;}
 .demand-pill.high{background:#d1fae5;color:#065f46}
 .demand-pill.medium{background:#ffedd5;color:#9a3412}
 .demand-pill.low{background:#fee2e2;color:#991b1b}
 .demand-pill .dotp{width:6px;height:6px;border-radius:50%;background:currentColor;}
 
-/* PRICE BOARD */
 .price-board{
   margin:0 18px 14px;padding:22px 18px;border-radius:var(--r-2xl);
   background:
@@ -598,7 +596,6 @@ a{color:inherit;text-decoration:none;}
 .pb-empty{text-align:center;padding:20px;color:#d1fae5;opacity:.7;font-size:12px;font-weight:600;}
 .pb-footer{margin-top:16px;padding-top:12px;border-top:1px dashed rgba(251,191,36,.25);text-align:center;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;opacity:.75;position:relative;z-index:1;}
 
-/* FILTER SELECTS */
 .analysis-filters{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:8px 18px 14px;}
 .af-box{position:relative;background:#fff;border:1.5px solid var(--bd);border-radius:var(--r-lg);padding:12px 14px;cursor:pointer;box-shadow:var(--sh-xs);transition:all .2s var(--e);}
 .af-box:active{border-color:var(--p);background:var(--p-ll);}
@@ -750,7 +747,6 @@ a{color:inherit;text-decoration:none;}
 .card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);padding:14px;box-shadow:var(--sh-xs);}
 @media(min-width:721px){.scroll{padding-bottom:calc(var(--nav-h) + 24px);}}
 
-/* POND */
 .pond-wrap{margin:0 18px 14px;border-radius:var(--r-xl);overflow:hidden;position:relative;aspect-ratio:16/10;max-height:280px;background:linear-gradient(180deg,#7dd3fc 0%,#38bdf8 45%,#0284c7 100%);border:2px solid rgba(2,132,199,.35);box-shadow:inset 0 8px 24px rgba(0,0,0,.12),0 8px 24px -8px rgba(2,132,199,.35);}
 .pond-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:20%;background:linear-gradient(180deg,rgba(255,255,255,.28),transparent);pointer-events:none;}
 .pond-lily{position:absolute;font-size:24px;opacity:.92;filter:drop-shadow(0 2px 3px rgba(0,0,0,.15));}
@@ -771,7 +767,6 @@ a{color:inherit;text-decoration:none;}
 @keyframes bubbleUp{0%{bottom:0;opacity:0;transform:translateY(0)}10%{opacity:.9}90%{opacity:.6}100%{bottom:100%;opacity:0;transform:translateY(-10px)}}
 .pond-label{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:900;color:#fff;background:rgba(2,132,199,.55);padding:5px 12px;border-radius:var(--r-p);letter-spacing:.03em;text-shadow:0 1px 3px rgba(0,0,0,.3);backdrop-filter:blur(4px);white-space:nowrap;}
 
-/* STAGE CHIPS */
 .stage-selector{display:flex;gap:6px;padding:10px 0 4px;overflow-x:auto;scrollbar-width:none;}
 .stage-selector::-webkit-scrollbar{display:none}
 .stage-chip{flex-shrink:0;padding:8px 12px;border-radius:var(--r-p);background:#fff;border:1.5px solid var(--bd);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--tl);display:flex;align-items:center;gap:5px;transition:all .2s var(--e);}
@@ -781,11 +776,26 @@ a{color:inherit;text-decoration:none;}
 .stage-chip.current.ready{background:linear-gradient(180deg,#f97316,#ea580c);border-color:#ea580c;box-shadow:0 6px 14px -4px rgba(234,88,12,.5);}
 .stage-chip .sch-i{font-size:13px}
 
-/* MARKET TABS */
 .market-tabs{display:flex;gap:6px;padding:8px 18px 12px;overflow-x:auto;scrollbar-width:none;}
 .market-tabs::-webkit-scrollbar{display:none}
 .market-tab{flex-shrink:0;padding:9px 16px;border-radius:var(--r-p);background:#fff;border:1.5px solid var(--bd);font-size:12px;font-weight:800;color:var(--tb);transition:all .2s var(--e);}
 .market-tab.active{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 4px 12px -4px var(--p-glow);}
+
+/* Market top-two square tab buttons */
+.market-tab-square{
+  height:120px;border-radius:var(--r-lg);
+  background:linear-gradient(135deg,#fff,#f8fafc);
+  border:2px solid var(--bd);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:14px 10px;box-shadow:var(--sh-sm);
+  transition:all .22s var(--e);color:var(--td);
+}
+.market-tab-square:active{transform:scale(.96);}
+.market-tab-square.active{
+  background:linear-gradient(135deg,#12903e,#0f7a34);
+  color:#fff;border-color:var(--p);
+  box-shadow:0 8px 20px -6px var(--p-glow);
+}
 
 .market-card{margin:0 18px 10px;padding:14px;background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);box-shadow:var(--sh-sm);display:flex;gap:12px;cursor:pointer;transition:all .2s var(--e);}
 .market-card:active{transform:scale(.985);box-shadow:var(--sh-md);}
@@ -810,13 +820,11 @@ a{color:inherit;text-decoration:none;}
 .mc-countdown{font-size:11px;font-weight:900;color:#9a3412;font-variant-numeric:tabular-nums;margin-top:4px;display:flex;align-items:center;gap:4px;background:#fef3c7;padding:3px 8px;border-radius:var(--r-p);display:inline-block;}
 .mc-contact{font-size:10.5px;font-weight:700;color:#065f46;margin-top:3px;display:flex;align-items:center;gap:4px;}
 
-/* CITY CHIPS */
 .city-chips{display:flex;gap:6px;padding:6px 18px 14px;overflow-x:auto;scrollbar-width:none;}
 .city-chips::-webkit-scrollbar{display:none}
 .city-chip{flex-shrink:0;padding:8px 14px;border-radius:var(--r-p);background:#fff;border:1.5px solid var(--bd);font-size:12px;font-weight:800;color:var(--tb);transition:all .2s var(--e);white-space:nowrap;}
 .city-chip.active{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 4px 12px -4px var(--p-glow);}
 
-/* HARVEST LOG */
 .harvest-log-row{
   display:flex;align-items:center;gap:10px;padding:11px 14px;
   background:#fff;border:1px solid var(--bd);border-radius:var(--r);margin-bottom:6px;
@@ -826,13 +834,11 @@ a{color:inherit;text-decoration:none;}
 .hlr-note{flex:1;font-size:11px;color:var(--tl);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .hlr-del{width:28px;height:28px;border-radius:50%;background:var(--danger-soft);color:var(--danger);font-size:12px;font-weight:900;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
 
-/* FILTER ROW */
 .filter-row{display:flex;gap:8px;padding:8px 18px 12px;overflow-x:auto;scrollbar-width:none;}
 .filter-row::-webkit-scrollbar{display:none}
 .filter-pill{flex-shrink:0;padding:8px 14px;border-radius:var(--r-p);background:#fff;border:1.5px solid var(--bd);font-size:11.5px;font-weight:800;color:var(--tb);transition:all .2s var(--e);white-space:nowrap;display:flex;align-items:center;gap:6px;}
 .filter-pill.active{background:var(--p);color:#fff;border-color:var(--p);}
 
-/* TRENDING CARD */
 .trend-card{
   display:flex;align-items:center;gap:12px;padding:12px 14px;
   background:linear-gradient(135deg,#fef3c7,#fde68a);
@@ -846,7 +852,6 @@ a{color:inherit;text-decoration:none;}
 .trend-price strong{display:block;font-size:15px;font-weight:900;color:#7c2d12;letter-spacing:-.02em;}
 .trend-price small{display:block;font-size:9.5px;font-weight:800;color:#b45309;text-transform:uppercase;letter-spacing:.04em;margin-top:1px;}
 
-/* INFO HEADS */
 .info-block{
   background:#f8fafc;border:1px solid var(--bd);border-radius:var(--r-lg);
   padding:12px 14px;margin-bottom:8px;font-size:12px;line-height:1.5;font-weight:600;color:var(--tb);
@@ -970,7 +975,7 @@ const S = {
   allBatchesUnsub: null,
   marketplaceUnsub: null,
   farmTab: 'plant',
-  marketTab: 'mine', // 'mine' | 'analysis'
+  marketTab: 'mine',
   analysisMarket: 'all',
   analysisCrop: 'all',
   analysisMonth: 'all',
@@ -982,7 +987,10 @@ const S = {
   pendingCheckTimer: null,
   promptedListings: {},
   prompted24h: {},
-  lastSpacingByCrop: {}
+  lastSpacingByCrop: {},
+  stageNotified: {},   // in-memory: batchId -> stage it was notified for
+  stageAdvancementTimer: null,
+  readyToListOpen: false
 };
 
 const $modal = document.getElementById('modal');
@@ -1184,9 +1192,81 @@ function gradFor(str) {
 }
 
 /* ============================================================
-   BOX ESTIMATION
+   METRIC / UNIT SYSTEM
+   Each crop/livestock has its own natural unit of measurement.
    ============================================================ */
-const BOX_KG = 20;
+function getHarvestUnit(cropName, category) {
+  const n = String(cropName || '').toLowerCase();
+  const cat = String(category || '').toLowerCase();
+
+  if (cat.includes('poultry')) {
+    if (n.includes('layer') || n.includes('hen')) {
+      return { unit: 'trays', unitLabel: 'trays (30 eggs)', perUnit: 30, note: '~300 eggs per bird per year' };
+    }
+    return { unit: 'birds', unitLabel: 'birds', perUnit: 1, note: 'ready for market' };
+  }
+  if (cat.includes('livestock')) {
+    if (n.includes('rabbit')) return { unit: 'head', unitLabel: 'head (rabbits)', perUnit: 1, note: '~2.5 kg meat per rabbit' };
+    return { unit: 'head', unitLabel: 'head (animals)', perUnit: 1, note: 'per animal' };
+  }
+  if (cat.includes('fisher')) {
+    return { unit: 'kg', unitLabel: 'kg (fresh weight)', perUnit: 1, note: 'fresh weight' };
+  }
+
+  /* CROPS - natural units per crop */
+  if (n.includes('tomato')) return { unit: 'boxes', unitLabel: 'boxes (20 kg)', perUnit: 20, note: '20 kg per box' };
+  if (n.includes('maize') || n.includes('corn')) return { unit: 'bags', unitLabel: 'bags (50 kg)', perUnit: 50, note: '50 kg per bag' };
+  if (n.includes('groundnut') || n.includes('peanut')) return { unit: 'bags', unitLabel: 'bags (50 kg)', perUnit: 50, note: '50 kg per bag' };
+  if (n.includes('green bean')) return { unit: 'crates', unitLabel: 'crates (10 kg)', perUnit: 10, note: '10 kg per crate' };
+  if (n.includes('bean')) return { unit: 'bags', unitLabel: 'bags (50 kg)', perUnit: 50, note: '50 kg per bag' };
+  if (n.includes('rice')) return { unit: 'bags', unitLabel: 'bags (50 kg)', perUnit: 50, note: '50 kg per bag' };
+  if (n.includes('soy')) return { unit: 'bags', unitLabel: 'bags (50 kg)', perUnit: 50, note: '50 kg per bag' };
+  if (n.includes('wheat')) return { unit: 'bags', unitLabel: 'bags (50 kg)', perUnit: 50, note: '50 kg per bag' };
+  if (n.includes('millet') || n.includes('sorghum')) return { unit: 'bags', unitLabel: 'bags (50 kg)', perUnit: 50, note: '50 kg per bag' };
+  if (n.includes('cassava')) return { unit: 'sacks', unitLabel: 'sacks', perUnit: 50, note: 'sold in sacks or heaps' };
+  if (n.includes('sweet potato')) return { unit: 'sacks', unitLabel: 'sacks', perUnit: 50, note: 'sold in sacks or heaps' };
+  if (n.includes('irish potato') || n.includes('potato')) return { unit: 'bags', unitLabel: 'bags (50 kg)', perUnit: 50, note: '50 kg per bag' };
+  if (n.includes('onion')) return { unit: 'bags', unitLabel: 'bags (50 kg)', perUnit: 50, note: '50 kg per bag' };
+  if (n.includes('cabbage')) return { unit: 'heads', unitLabel: 'heads', perUnit: 1.5, note: '~1.5 kg per head' };
+  if (n.includes('rape') || n.includes('spinach') || n.includes('pumpkin leaves') || n.includes('amaranth')) return { unit: 'bundles', unitLabel: 'bundles', perUnit: 1, note: 'per bundle' };
+  if (n.includes('okra')) return { unit: 'kg', unitLabel: 'kg', perUnit: 1, note: 'fresh weight, or baskets' };
+  if (n.includes('carrot')) return { unit: 'bags', unitLabel: 'bags (50 kg)', perUnit: 50, note: '50 kg per bag' };
+  if (n.includes('cucumber')) return { unit: 'pieces', unitLabel: 'pieces', perUnit: 0.3, note: '~0.3 kg per piece' };
+  if (n.includes('pepper')) return { unit: 'crates', unitLabel: 'crates (10 kg)', perUnit: 10, note: '10 kg per crate' };
+  if (n.includes('eggplant') || n.includes('aubergine')) return { unit: 'crates', unitLabel: 'crates', perUnit: 15, note: '~15 kg per crate' };
+  if (n.includes('banana') || n.includes('plantain')) return { unit: 'bunches', unitLabel: 'bunches', perUnit: 15, note: '~15 kg per bunch' };
+  if (n.includes('mango')) return { unit: 'crates', unitLabel: 'crates', perUnit: 15, note: '~15 kg per crate' };
+  if (n.includes('orange') || n.includes('citrus')) return { unit: 'crates', unitLabel: 'crates', perUnit: 15, note: '~15 kg per crate' };
+  if (n.includes('avocado')) return { unit: 'pieces', unitLabel: 'pieces', perUnit: 0.2, note: '~0.2 kg per piece' };
+  if (n.includes('pineapple')) return { unit: 'pieces', unitLabel: 'pieces', perUnit: 1.5, note: '~1.5 kg per piece' };
+  if (n.includes('watermelon')) return { unit: 'pieces', unitLabel: 'pieces', perUnit: 8, note: '~8 kg per piece' };
+  if (n.includes('sugarcane')) return { unit: 'tonnes', unitLabel: 'tonnes', perUnit: 1000, note: 'per tonne' };
+  if (n.includes('cotton')) return { unit: 'bales', unitLabel: 'bales', perUnit: 100, note: '~100 kg per bale' };
+  if (n.includes('tobacco')) return { unit: 'bales', unitLabel: 'bales', perUnit: 100, note: '~100 kg per bale' };
+  if (n.includes('coffee')) return { unit: 'bags', unitLabel: 'bags (50 kg)', perUnit: 50, note: '50 kg per bag' };
+  if (n.includes('ginger') || n.includes('garlic')) return { unit: 'bags', unitLabel: 'bags (50 kg)', perUnit: 50, note: '50 kg per bag' };
+
+  return { unit: 'kg', unitLabel: 'kg', perUnit: 1, note: 'fresh weight' };
+}
+function pluralUnit(u, qty) {
+  if (qty === 1) {
+    const sing = { boxes:'box', bags:'bag', sacks:'sack', crates:'crate', bunches:'bunch', heads:'head', pieces:'piece', bundles:'bundle', trays:'tray', birds:'bird', tonnes:'tonne', bales:'bale', kg:'kg' };
+    return sing[u] || u;
+  }
+  return u;
+}
+function singularUnit(u) {
+  const sing = { boxes:'box', bags:'bag', sacks:'sack', crates:'crate', bunches:'bunch', heads:'head', pieces:'piece', bundles:'bundle', trays:'tray', birds:'bird', tonnes:'tonne', bales:'bale' };
+  return sing[u] || u;
+}
+function unitForBatch(b) {
+  if (b.estimatedUnit) return b.estimatedUnit;
+  return getHarvestUnit(b.cropName, b.category).unit;
+}
+
+/* ============================================================
+   HARVEST ESTIMATION (metric-aware)
+   ============================================================ */
 const ESTIMATION = {
   crop: {
     tomato: { mid: 30000, low: 25000, high: 40000 },
@@ -1198,6 +1278,7 @@ const ESTIMATION = {
     goat: { meatPerHead: 20, low: 15, high: 25 },
     pig: { meatPerHead: 70, low: 55, high: 85 },
     sheep: { meatPerHead: 25, low: 18, high: 32 },
+    rabbit: { meatPerHead: 2.5, low: 2, high: 3 },
     default: { meatPerHead: 40, low: 30, high: 50 }
   },
   poultry: {
@@ -1212,24 +1293,53 @@ const ESTIMATION = {
   }
 };
 
-function estimateBoxes(category, lengthM, widthM, cropName, animalCount) {
+function estimateHarvest(category, lengthM, widthM, cropName, animalCount) {
   const cat = String(category || 'Crop').toLowerCase();
   const name = String(cropName || '').toLowerCase();
+  const unitInfo = getHarvestUnit(cropName, category);
 
   if (cat.includes('livestock') || cat.includes('poultry')) {
     const count = parseInt(animalCount) || 0;
     if (cat.includes('poultry')) {
       if (name.includes('layer') || name.includes('hen')) {
         const eggs = count * 300;
-        return { boxes: Math.max(1, Math.round(eggs/360)), lowBoxes: Math.max(1, Math.round(count*250/360)), highBoxes: Math.max(1, Math.round(count*350/360)), totalKg: eggs*0.06, unit: 'trays (30 eggs)' };
+        return {
+          quantity: Math.max(1, Math.round(eggs/30)),
+          low: Math.max(1, Math.round(count*250/30)),
+          high: Math.max(1, Math.round(count*350/30)),
+          totalKg: eggs * 0.06,
+          unit: 'trays',
+          unitLabel: 'trays (30 eggs)',
+          note: '~300 eggs per bird per year'
+        };
       }
-      const meat = count * 2;
-      return { boxes: Math.max(1, Math.round(meat/BOX_KG)), lowBoxes: Math.max(1, Math.round(count*1.5/BOX_KG)), highBoxes: Math.max(1, Math.round(count*2.5/BOX_KG)), totalKg: meat, unit: 'boxes (20 kg)' };
+      return {
+        quantity: count,
+        low: count,
+        high: count,
+        totalKg: count * 2,
+        unit: 'birds',
+        unitLabel: 'birds',
+        note: 'ready for market'
+      };
     }
-    const key = name.includes('cattle')||name.includes('cow') ? 'cattle' : name.includes('goat') ? 'goat' : name.includes('pig') ? 'pig' : name.includes('sheep') ? 'sheep' : 'default';
-    const e = ESTIMATION.livestock[key];
+    let e;
+    if (name.includes('cattle') || name.includes('cow')) e = ESTIMATION.livestock.cattle;
+    else if (name.includes('goat')) e = ESTIMATION.livestock.goat;
+    else if (name.includes('pig')) e = ESTIMATION.livestock.pig;
+    else if (name.includes('sheep')) e = ESTIMATION.livestock.sheep;
+    else if (name.includes('rabbit')) e = ESTIMATION.livestock.rabbit;
+    else e = ESTIMATION.livestock.default;
     const totalKg = count * e.meatPerHead;
-    return { boxes: Math.max(1, Math.round(totalKg/BOX_KG)), lowBoxes: Math.max(1, Math.round(count*e.low/BOX_KG)), highBoxes: Math.max(1, Math.round(count*e.high/BOX_KG)), totalKg, unit: 'boxes (20 kg)' };
+    return {
+      quantity: count,
+      low: count,
+      high: count,
+      totalKg,
+      unit: 'head',
+      unitLabel: 'head (animals)',
+      note: `~${e.meatPerHead} kg meat per animal`
+    };
   }
 
   if (cat.includes('fisher')) {
@@ -1237,7 +1347,15 @@ function estimateBoxes(category, lengthM, widthM, cropName, animalCount) {
     const key = name.includes('catfish') ? 'catfish' : 'tilapia';
     const e = ESTIMATION.fisheries[key];
     const totalKg = m2 * e.kgPerM2;
-    return { boxes: Math.max(1, Math.round(totalKg/BOX_KG)), lowBoxes: Math.max(1, Math.round(m2*e.low/BOX_KG)), highBoxes: Math.max(1, Math.round(m2*e.high/BOX_KG)), totalKg, unit: 'boxes (20 kg)' };
+    return {
+      quantity: Math.max(1, Math.round(totalKg)),
+      low: Math.max(1, Math.round(m2*e.low)),
+      high: Math.max(1, Math.round(m2*e.high)),
+      totalKg,
+      unit: 'kg',
+      unitLabel: 'kg (fresh weight)',
+      note: `~${e.kgPerM2} kg per m² of pond`
+    };
   }
 
   const m2 = (parseFloat(lengthM)||0) * (parseFloat(widthM)||0);
@@ -1245,7 +1363,16 @@ function estimateBoxes(category, lengthM, widthM, cropName, animalCount) {
   const key = name.includes('tomato') ? 'tomato' : name.includes('maize') ? 'maize' : 'default';
   const e = ESTIMATION.crop[key];
   const totalKg = ha * e.mid;
-  return { boxes: Math.max(1, Math.round(totalKg/BOX_KG)), lowBoxes: Math.max(1, Math.round(ha*e.low/BOX_KG)), highBoxes: Math.max(1, Math.round(ha*e.high/BOX_KG)), totalKg, unit: 'boxes (20 kg)' };
+  const perUnit = unitInfo.perUnit || 1;
+  return {
+    quantity: Math.max(1, Math.round(totalKg / perUnit)),
+    low: Math.max(1, Math.round(ha * e.low / perUnit)),
+    high: Math.max(1, Math.round(ha * e.high / perUnit)),
+    totalKg,
+    unit: unitInfo.unit,
+    unitLabel: unitInfo.unitLabel,
+    note: unitInfo.note
+  };
 }
 function computeArea(length, width) {
   const L = parseFloat(length) || 0, W = parseFloat(width) || 0;
@@ -1388,7 +1515,7 @@ const CITY_MARKETS = {
 function marketsForCity(city) { return CITY_MARKETS[city] || CITY_MARKETS.default; }
 
 /* ============================================================
-   SAMPLE PRICES (used for the Preview Market board)
+   SAMPLE PRICES (Preview Market board fallback)
    ============================================================ */
 const SAMPLE_PRICES = [
   { name:'Lettuce', price:'K15 - K10' },
@@ -1477,7 +1604,7 @@ function updateNav(id) {
 }
 
 /* ============================================================
-   BOTTOM NAV — "Transporter" replaces "Delivery"
+   BOTTOM NAV
    ============================================================ */
 function bottomNavHTML() {
   const harvestCount = (S.myBatches || []).filter(b => b.stage === 'harvesting').length;
@@ -1647,7 +1774,7 @@ function startAllBatchesListener() {
     arr.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
     S.allFarmersBatches = arr;
     if (S.user) S.myBatches = arr.filter(b => b.ownerId === S.user.uid);
-    if (['marketplace','market-analysis','farmers-by-city','selected-crop-analysis','preview-market'].includes(S.screen)) route();
+    if (['marketplace','market-analysis','farmers-by-city','selected-crop-analysis','preview-market','farm-analysis'].includes(S.screen)) route();
   });
 }
 
@@ -1698,9 +1825,7 @@ function route() {
     case 'plant-step-4': el.innerHTML = renderPlantStep4(); break;
     case 'plant-confirm': el.innerHTML = renderPlantConfirm(); break;
     case 'plant-success': el.innerHTML = renderPlantSuccess(S.screenData); break;
-    case 'batch-detail':
-      el.innerHTML = renderBatchDetail(S.screenData.id, S.screenData.tab);
-      break;
+    case 'batch-detail': el.innerHTML = renderBatchDetail(S.screenData.id, S.screenData.tab); break;
     case 'harvest-record': el.innerHTML = renderHarvestRecord(S.screenData.id); break;
     case 'post-harvest-goods': el.innerHTML = renderPostHarvestGoods(S.screenData.id); break;
     case 'edit-listing': el.innerHTML = renderEditListing(S.screenData.id); break;
@@ -1722,7 +1847,8 @@ function route() {
 }
 
 /* ============================================================
-   HOME
+   HOME  (reordered: Plant/Raise hero on top with weather+name inside,
+   Manage + Harvest below, then the rest)
    ============================================================ */
 function renderHome() {
   const p = S.profile || {};
@@ -1731,46 +1857,32 @@ function renderHome() {
   const w = S.weather;
   const cityDisplay = S.weatherCity || S.userLocation;
   const activeBatches = (S.myBatches || []).filter(b => b.stage !== 'harvested');
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 
-  const weatherHTML = w ? `
-    <div class="weather-card">
-      <div class="wc-icon">${weatherIconFor(w.code, w.isDay)}</div>
-      <div class="wc-head">
-        <div>
-          <div class="wc-profile">
-            <div class="wc-profile-pic">${p.profileUrl ? `<img src="${esc(p.profileUrl)}" alt="">` : initial}</div>
-            <div>
-              <div class="wc-greeting">Good ${new Date().getHours()<12?'morning':new Date().getHours()<17?'afternoon':'evening'},</div>
-              <div class="wc-name"><span>${esc(fullName)}</span> 👋</div>
-            </div>
-          </div>
-          <div class="wc-loc">
-            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-            ${esc(cityDisplay)}
-          </div>
+  const heroArt = `
+    <div class="sh-bg"></div>
+    <div class="sh-art" style="font-size:110px;opacity:.55;top:-6px;right:-10px">🌱</div>
+    <div class="sh-content" style="width:100%">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+        <div style="width:48px;height:48px;border-radius:50%;overflow:hidden;background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;flex-shrink:0">
+          ${p.profileUrl ? `<img src="${esc(p.profileUrl)}" style="width:100%;height:100%;object-fit:cover">` : initial}
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:11.5px;font-weight:700;opacity:.9">${greeting},</div>
+          <div style="font-size:18px;font-weight:900;line-height:1.1;margin-top:2px;text-shadow:0 2px 10px rgba(0,0,0,.4)">${esc(fullName)} <span style="color:#a7f3d0">👋</span></div>
+          <div style="font-size:11px;font-weight:700;opacity:.9;margin-top:4px;display:flex;align-items:center;gap:4px">📍 ${esc(cityDisplay)}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;min-width:70px">
+          <div style="font-size:32px;line-height:1">${w ? weatherIconFor(w.code, w.isDay) : '☀️'}</div>
+          <div style="font-size:20px;font-weight:900;margin-top:2px;text-shadow:0 2px 8px rgba(0,0,0,.4)">${w ? w.temp + '°' : '—°'}</div>
+          <div style="font-size:9.5px;font-weight:700;opacity:.9;margin-top:2px">${w ? weatherDescFor(w.code) : 'Loading'}</div>
         </div>
       </div>
-      <div class="wc-temp">${w.temp}°C</div>
-      <div class="wc-desc">${weatherDescFor(w.code)}</div>
-      <div class="wc-range">H: ${w.hi}° · L: ${w.lo}° · 💧 ${w.hum}%</div>
-    </div>
-  ` : `
-    <div class="weather-card">
-      <div class="wc-head">
-        <div>
-          <div class="wc-profile">
-            <div class="wc-profile-pic">${p.profileUrl ? `<img src="${esc(p.profileUrl)}" alt="">` : initial}</div>
-            <div>
-              <div class="wc-greeting">Good ${new Date().getHours()<12?'morning':new Date().getHours()<17?'afternoon':'evening'},</div>
-              <div class="wc-name"><span>${esc(fullName)}</span> 👋</div>
-            </div>
-          </div>
-          <div class="wc-loc">📍 Detecting city…</div>
-        </div>
-      </div>
-      <div class="wc-temp">—°C</div>
-    </div>
-  `;
+      <div style="height:1px;background:rgba(255,255,255,.22);margin-bottom:14px"></div>
+      <div class="sh-title" style="font-size:22px"><span class="sh-ic">🌱</span>Plant / Raise</div>
+      <div class="sh-sub">Crops · Livestock · Fisheries</div>
+    </div>`;
 
   const mfHTML = activeBatches.slice(0,8).map(b => {
     const crop = S.catalogue.find(c => c.id === b.cropId);
@@ -1780,6 +1892,7 @@ function renderHome() {
     const stageLabel = { planted:'Planted', growing:'Growing', flowering:'Flowering', fruiting:'Fruiting', harvesting:'Ready', harvested:'Finished' }[stage] || stage;
     const tag = stage === 'harvesting' ? 'ready' : (stage === 'harvested' ? 'ok' : '');
     const total = b.actualBoxes || 0;
+    const unit = unitForBatch(b);
     return `
       <div class="mf-card" onclick="openBatch('${esc(b.id)}','manage')">
         <div class="mf-img" style="background:${grad}">${b.coverUrl ? `<img src="${esc(b.coverUrl)}" alt="">` : ic}</div>
@@ -1787,7 +1900,7 @@ function renderHome() {
           <div class="mf-name">${esc(b.cropName)}</div>
           <div class="mf-sub">${esc(b.varietyName || '')}</div>
           <span class="mf-tag ${tag}">${esc(stageLabel)}</span>
-          <div class="mf-days"><span class="mf-dot"></span>${total ? total + ' boxes harvested' : 'In progress'}</div>
+          <div class="mf-days"><span class="mf-dot"></span>${total ? total.toLocaleString() + ' ' + esc(unit) + ' harvested' : 'In progress'}</div>
         </div>
       </div>`;
   }).join('');
@@ -1808,7 +1921,20 @@ function renderHome() {
       </button>
     </div>
 
-    ${weatherHTML}
+    <div class="service-hero" onclick="startPlantFlow()" style="height:232px;padding:18px 20px">
+      ${heroArt}
+    </div>
+
+    <div class="service-grid">
+      <div class="service-card blue" onclick="goFarm()">
+        <div class="sc-bg"></div><div class="sc-art">🔧</div>
+        <div class="sc-content"><div class="sc-title"><span class="sc-ic">🔧</span>Manage</div><div class="sc-sub">Soil, irrigation, spacing</div></div>
+      </div>
+      <div class="service-card orange" onclick="goFarm()">
+        <div class="sc-bg"></div><div class="sc-art">🌾</div>
+        <div class="sc-content"><div class="sc-title"><span class="sc-ic">🌾</span>Harvest</div><div class="sc-sub">Record your yield</div></div>
+      </div>
+    </div>
 
     <div class="qa-row">
       <button class="qa" onclick="navTo('plant-step-1')"><div class="qa-ic c1">🌱</div><div class="qa-lb">Crops</div></button>
@@ -1820,31 +1946,6 @@ function renderHome() {
 
     <div class="sec-h"><h3>Active Farm</h3><button onclick="goFarm()">View all ›</button></div>
     <div class="mf-row">${addCard}${mfHTML}</div>
-
-    <div style="padding:0 18px 8px">
-      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em">Services</div>
-    </div>
-
-    <div class="service-hero" onclick="startPlantFlow()">
-      <div class="sh-bg"></div>
-      <div class="sh-art">🌱</div>
-      <div class="sh-cta">Start Now</div>
-      <div class="sh-content">
-        <div class="sh-title"><span class="sh-ic">🌱</span>Plant / Raise</div>
-        <div class="sh-sub">Crops · Livestock · Fisheries</div>
-      </div>
-    </div>
-
-    <div class="service-grid">
-      <div class="service-card blue" onclick="goFarm()">
-        <div class="sc-bg"></div><div class="sc-art">🔧</div>
-        <div class="sc-content"><div class="sc-title"><span class="sc-ic">🔧</span>Manage</div><div class="sc-sub">Soil, irrigation, spacing</div></div>
-      </div>
-      <div class="service-card orange" onclick="goFarm()">
-        <div class="sc-bg"></div><div class="sc-art">🌾</div>
-        <div class="sc-content"><div class="sc-title"><span class="sc-ic">🌾</span>Harvest</div><div class="sc-sub">Record boxes</div></div>
-      </div>
-    </div>
 
     <div class="list-row" onclick="navTo('agro-dealers')">
       <div class="lr-ic purple">🏪</div>
@@ -1990,6 +2091,7 @@ function renderBatchCard(b, mode = 'manage') {
   const stage = b.stage || 'planted';
   const statusLabel = { planted:'Planted', growing:'Growing', flowering:'Flowering', fruiting:'Fruiting', harvesting:'Ready', harvested:'Finished' }[stage] || stage;
   const actual = b.actualBoxes || 0;
+  const unit = unitForBatch(b);
   return `
   <div class="batch-card" onclick="openBatch('${esc(b.id)}','${esc(mode)}')">
     <div class="bc-top">
@@ -1998,7 +2100,7 @@ function renderBatchCard(b, mode = 'manage') {
         <div class="bc-crop">${esc(b.cropName)}</div>
         <div class="bc-variety">${esc(b.varietyName || '')}</div>
         <div class="bc-batch-num">${esc(b.batchNumber || '')}</div>
-        ${actual ? `<span class="bc-est-boxes">📦 ${actual.toLocaleString()} harvested</span>` : (b.estimatedBoxes ? `<span class="bc-est-boxes">📦 Est. ${b.estimatedBoxes.toLocaleString()} boxes</span>` : '')}
+        ${actual ? `<span class="bc-est-boxes">📦 ${actual.toLocaleString()} ${esc(unit)} harvested</span>` : (b.estimatedBoxes ? `<span class="bc-est-boxes">📦 Est. ${b.estimatedBoxes.toLocaleString()} ${esc(unit)}</span>` : '')}
       </div>
       <div class="bc-stat">
         <div class="bc-status ${stage}">${esc(statusLabel)}</div>
@@ -2123,7 +2225,7 @@ function renderPlantStep3() {
   const isLivestock = crop && (crop.category.includes('Livestock') || crop.category.includes('Poultry'));
   const isFisheries = crop && crop.category.includes('Fisheries');
   const area = computeArea(w.length, w.width);
-  const est = (w.length > 0 && w.width > 0) ? estimateBoxes(crop ? crop.category : 'Crop', w.length, w.width, crop ? crop.name : '', w.animalCount) : null;
+  const est = (w.length > 0 && w.width > 0) ? estimateHarvest(crop ? crop.category : 'Crop', w.length, w.width, crop ? crop.name : '', w.animalCount) : null;
 
   if (isLivestock) {
     return `
@@ -2140,7 +2242,7 @@ function renderPlantStep3() {
         <div class="area-box" style="max-width:260px;margin:0 auto">
           <label>Count</label>
           <input type="number" id="animal-count" min="1" step="1" placeholder="0" value="${w.animalCount || ''}" oninput="updateAnimalCount(this.value)">
-          <div class="ab-unit">animals</div>
+          <div class="ab-unit">head</div>
         </div>
       </div>
       <div class="btn-row" style="padding-top:16px">
@@ -2162,17 +2264,19 @@ function renderPlantStep3() {
       <div class="step-title">How big is your pond?</div>
       <div class="step-sub">Enter pond length and width in metres. We'll estimate fish yield.</div>
       <div class="area-grid">
-        <div class="area-box"><label>Pond Length</label><input type="number" id="plant-length" min="0" step="0.5" placeholder="0" value="${w.length || ''}" oninput="updateArea('length', this.value)"><div class="ab-unit">metres (m)</div></div>
-        <div class="area-box"><label>Pond Width</label><input type="number" id="plant-width" min="0" step="0.5" placeholder="0" value="${w.width || ''}" oninput="updateArea('width', this.value)"><div class="ab-unit">metres (m)</div></div>
+        <div class="area-box"><label>Pond Length</label><input type="number" id="plant-length" min="0" step="0.5" inputmode="decimal" placeholder="0" value="${w.length || ''}" oninput="updateArea('length', this.value)"><div class="ab-unit">metres (m)</div></div>
+        <div class="area-box"><label>Pond Width</label><input type="number" id="plant-width" min="0" step="0.5" inputmode="decimal" placeholder="0" value="${w.width || ''}" oninput="updateArea('width', this.value)"><div class="ab-unit">metres (m)</div></div>
       </div>
-      ${est ? `
-      <div class="box-estimate-card">
-        <div class="bec-label">🐟 Estimated Fish Yield</div>
-        <div class="bec-value">${est.boxes.toLocaleString()}</div>
-        <div class="bec-unit">${est.unit}</div>
-        <div class="bec-range">Range: <strong>${est.lowBoxes.toLocaleString()}</strong> to <strong>${est.highBoxes.toLocaleString()}</strong> ${est.unit}.<br>Based on ${area.m2.toFixed(0)} m² pond.</div>
+      <div id="estimate-container">
+        ${est ? `
+        <div class="box-estimate-card">
+          <div class="bec-label">🐟 Estimated Fish Yield</div>
+          <div class="bec-value">${est.quantity.toLocaleString()}</div>
+          <div class="bec-unit">${esc(est.unitLabel)}</div>
+          <div class="bec-range">Range: <strong>${est.low.toLocaleString()}</strong> to <strong>${est.high.toLocaleString()}</strong> ${esc(est.unit)}.<br>Based on ${area.m2.toFixed(0)} m² pond.</div>
+        </div>
+        ` : ''}
       </div>
-      ` : ''}
       <div class="btn-row" style="padding-top:16px">
         <button class="btn btn-s" onclick="showScreen('plant-step-1')">← Back</button>
         <button class="btn btn-p" id="plant-step3-next" onclick="goPlantStep4()" ${!(w.length > 0 && w.width > 0) ? 'disabled' : ''}>Continue →</button>
@@ -2189,19 +2293,21 @@ function renderPlantStep3() {
     ${renderStepsIndicator(3)}
     <div class="step-label">Step 3 of 4</div>
     <div class="step-title">How big is your field?</div>
-    <div class="step-sub">Enter length and width in metres. We'll estimate boxes.</div>
+    <div class="step-sub">Enter length and width in metres. We'll estimate your harvest in the right unit.</div>
     <div class="area-grid">
-      <div class="area-box"><label>Length</label><input type="number" id="plant-length" min="0" step="0.5" placeholder="0" value="${w.length || ''}" oninput="updateArea('length', this.value)"><div class="ab-unit">metres (m)</div></div>
-      <div class="area-box"><label>Width</label><input type="number" id="plant-width" min="0" step="0.5" placeholder="0" value="${w.width || ''}" oninput="updateArea('width', this.value)"><div class="ab-unit">metres (m)</div></div>
+      <div class="area-box"><label>Length</label><input type="number" id="plant-length" min="0" step="0.5" inputmode="decimal" placeholder="0" value="${w.length || ''}" oninput="updateArea('length', this.value)"><div class="ab-unit">metres (m)</div></div>
+      <div class="area-box"><label>Width</label><input type="number" id="plant-width" min="0" step="0.5" inputmode="decimal" placeholder="0" value="${w.width || ''}" oninput="updateArea('width', this.value)"><div class="ab-unit">metres (m)</div></div>
     </div>
-    ${est ? `
-    <div class="box-estimate-card">
-      <div class="bec-label">📦 Estimated Harvest</div>
-      <div class="bec-value">${est.boxes.toLocaleString()}</div>
-      <div class="bec-unit">${est.unit}</div>
-      <div class="bec-range">Range: <strong>${est.lowBoxes.toLocaleString()}</strong> to <strong>${est.highBoxes.toLocaleString()}</strong> ${est.unit}.<br>Based on ${area.m2.toFixed(0)} m² field.</div>
+    <div id="estimate-container">
+      ${est ? `
+      <div class="box-estimate-card">
+        <div class="bec-label">📦 Estimated Harvest</div>
+        <div class="bec-value">${est.quantity.toLocaleString()}</div>
+        <div class="bec-unit">${esc(est.unitLabel)}</div>
+        <div class="bec-range">Range: <strong>${est.low.toLocaleString()}</strong> to <strong>${est.high.toLocaleString()}</strong> ${esc(est.unit)}.<br>Based on ${area.m2.toFixed(0)} m² field.</div>
+      </div>
+      ` : ''}
     </div>
-    ` : ''}
     <div class="btn-row" style="padding-top:16px">
       <button class="btn btn-s" onclick="showScreen('plant-step-1')">← Back</button>
       <button class="btn btn-p" id="plant-step3-next" onclick="goPlantStep4()" ${!(w.length > 0 && w.width > 0) ? 'disabled' : ''}>Continue →</button>
@@ -2209,13 +2315,32 @@ function renderPlantStep3() {
   </div>`;
 }
 
+/* FIX: no full re-render — update estimate card only, keep input focus */
 window.updateArea = (field, value) => {
   const v = parseFloat(value) || 0;
   if (field === 'length') S.plantWizard.length = v;
   if (field === 'width') S.plantWizard.width = v;
   const btn = document.getElementById('plant-step3-next');
   if (btn) btn.disabled = !(S.plantWizard.length > 0 && S.plantWizard.width > 0);
-  route();
+
+  const estContainer = document.getElementById('estimate-container');
+  if (!estContainer) return;
+  const w = S.plantWizard;
+  const crop = S.catalogue.find(c => c.id === w.cropId);
+  const isFisheries = crop && crop.category.includes('Fisheries');
+  if (w.length > 0 && w.width > 0) {
+    const est = estimateHarvest(crop ? crop.category : 'Crop', w.length, w.width, crop ? crop.name : '', w.animalCount);
+    const area = computeArea(w.length, w.width);
+    estContainer.innerHTML = `
+      <div class="box-estimate-card">
+        <div class="bec-label">${isFisheries ? '🐟 Estimated Fish Yield' : '📦 Estimated Harvest'}</div>
+        <div class="bec-value">${est.quantity.toLocaleString()}</div>
+        <div class="bec-unit">${esc(est.unitLabel)}</div>
+        <div class="bec-range">Range: <strong>${est.low.toLocaleString()}</strong> to <strong>${est.high.toLocaleString()}</strong> ${esc(est.unit)}.<br>Based on ${area.m2.toFixed(0)} m² ${isFisheries ? 'pond' : 'field'}.</div>
+      </div>`;
+  } else {
+    estContainer.innerHTML = '';
+  }
 };
 window.updateAnimalCount = (value) => { S.plantWizard.animalCount = parseInt(value) || 0; };
 window.goPlantStep4 = () => {
@@ -2313,7 +2438,7 @@ function renderPlantConfirm() {
   const isLivestock = crop && (crop.category.includes('Livestock') || crop.category.includes('Poultry'));
   const isFisheries = crop && crop.category.includes('Fisheries');
   const area = computeArea(w.length, w.width);
-  const est = estimateBoxes(crop ? crop.category : 'Crop', w.length, w.width, crop ? crop.name : '', w.animalCount);
+  const est = estimateHarvest(crop ? crop.category : 'Crop', w.length, w.width, crop ? crop.name : '', w.animalCount);
 
   const cols = 6, rows = 7;
   const cells = [];
@@ -2358,15 +2483,15 @@ function renderPlantConfirm() {
       <div class="batch-result" style="background:linear-gradient(135deg,#e6f5eb,#d1fae5)">
         <div class="br-row"><span>Variety</span><span>${esc(w.varietyName || '—')}</span></div>
         <div class="br-row"><span>Town</span><span>${esc(w.town || '—')}</span></div>
-        ${isLivestock ? `<div class="br-row"><span>Animals</span><span>${w.animalCount || 0}</span></div>` : `<div class="br-row"><span>${isFisheries ? 'Pond' : 'Field'}</span><span>${w.length}m × ${w.width}m</span></div>`}
+        ${isLivestock ? `<div class="br-row"><span>Animals</span><span>${w.animalCount || 0} head</span></div>` : `<div class="br-row"><span>${isFisheries ? 'Pond' : 'Field'}</span><span>${w.length}m × ${w.width}m</span></div>`}
         ${!isLivestock ? `<div class="br-row"><span>${isFisheries ? 'Pond area' : 'Area'}</span><span>${area.m2.toFixed(0)} m²</span></div>` : ''}
       </div>
       ${isFisheries ? pondHTML : gridHTML}
       <div class="box-estimate-card">
         <div class="bec-label">${isFisheries ? '🐟 Estimated Fish Yield' : '📦 Estimated Harvest'}</div>
-        <div class="bec-value">${est.boxes.toLocaleString()}</div>
-        <div class="bec-unit">${est.unit}</div>
-        <div class="bec-range">Range: <strong>${est.lowBoxes.toLocaleString()}</strong> to <strong>${est.highBoxes.toLocaleString()}</strong> ${est.unit}.</div>
+        <div class="bec-value">${est.quantity.toLocaleString()}</div>
+        <div class="bec-unit">${esc(est.unitLabel)}</div>
+        <div class="bec-range">Range: <strong>${est.low.toLocaleString()}</strong> to <strong>${est.high.toLocaleString()}</strong> ${esc(est.unit)}.</div>
       </div>
       <div class="btn-row" style="padding-top:8px">
         <button class="btn btn-s" onclick="showScreen('plant-step-4')">← Edit</button>
@@ -2383,7 +2508,7 @@ window.finishPlanting = async () => {
   showLoader('Creating your batch…', 'Saving to your farm');
   try {
     const area = computeArea(w.length, w.width);
-    const est = estimateBoxes(crop.category, w.length, w.width, crop.name, w.animalCount);
+    const est = estimateHarvest(crop.category, w.length, w.width, crop.name, w.animalCount);
     const { batchNumber, batchSeq, batchDateKey } = await generateBatchNumber();
     let totalDays = 120;
     const v = (S.varieties[w.cropId] || []).find(x => x.name === w.varietyName);
@@ -2402,7 +2527,11 @@ window.finishPlanting = async () => {
       plantedDate, totalDays,
       harvestStart: plantedDate + Math.round(totalDays * 0.85) * 86400000,
       harvestEnd: plantedDate + Math.round(totalDays * 1.15) * 86400000,
-      estimatedBoxes: est.boxes, estimatedBoxesLow: est.lowBoxes, estimatedBoxesHigh: est.highBoxes,
+      estimatedBoxes: est.quantity,
+      estimatedUnit: est.unit,
+      estimatedUnitLabel: est.unitLabel,
+      estimatedBoxesLow: est.low,
+      estimatedBoxesHigh: est.high,
       estimatedTotalKg: est.totalKg,
       actualBoxes: 0,
       dailyHarvests: [],
@@ -2426,6 +2555,7 @@ function renderPlantSuccess(data) {
   const b = data.batch;
   const est = data.est;
   if (!b) return `<div class="scroll"><div class="empty"><h3>Error</h3></div></div>`;
+  const unit = b.estimatedUnit || (est ? est.unit : 'units');
   return `
   <div class="scroll">
     <div style="padding:30px 18px 18px">
@@ -2436,7 +2566,7 @@ function renderPlantSuccess(data) {
       </div>
       <div class="batch-result">
         <div class="br-lb">Your Batch Number</div>
-        <div class="br-num">${esc(b.batchNumber)} <span class="bn-est">📦 ${est ? est.boxes.toLocaleString() : '—'} boxes</span></div>
+        <div class="br-num">${esc(b.batchNumber)} <span class="bn-est">📦 ${est ? est.quantity.toLocaleString() : '—'} ${esc(unit)}</span></div>
         <div class="br-row"><span>Crop</span><span>${esc(b.cropName)}</span></div>
         <div class="br-row"><span>Variety</span><span>${esc(b.varietyName)}</span></div>
         <div class="br-row"><span>Town</span><span>${esc(b.town)}</span></div>
@@ -2444,10 +2574,10 @@ function renderPlantSuccess(data) {
       </div>
       ${est ? `
       <div class="box-estimate-card">
-        <div class="bec-label">📦 Estimated Boxes</div>
-        <div class="bec-value">${est.boxes.toLocaleString()}</div>
-        <div class="bec-unit">${est.unit}</div>
-        <div class="bec-range">Range: <strong>${est.lowBoxes.toLocaleString()}</strong> to <strong>${est.highBoxes.toLocaleString()}</strong>.<br>About <strong>${(est.totalKg/1000).toFixed(1)} tonnes</strong> expected.</div>
+        <div class="bec-label">📦 Estimated Harvest</div>
+        <div class="bec-value">${est.quantity.toLocaleString()}</div>
+        <div class="bec-unit">${esc(est.unitLabel)}</div>
+        <div class="bec-range">Range: <strong>${est.low.toLocaleString()}</strong> to <strong>${est.high.toLocaleString()}</strong>.<br>About <strong>${(est.totalKg/1000).toFixed(1)} tonnes</strong> expected.</div>
       </div>` : ''}
       <button class="btn btn-p" onclick="openBatch('${esc(b.id)}','manage')" style="margin-bottom:10px">Go to Manage →</button>
       <button class="btn btn-s" onclick="goFarm()">Back to My Farm</button>
@@ -2464,7 +2594,7 @@ function renderStepsIndicator(active, total = 4) {
 }
 
 /* ============================================================
-   BATCH DETAIL — streamlined (no progress timeline, harvest-stage only)
+   BATCH DETAIL
    ============================================================ */
 const STAGE_ORDER = ['planted','growing','flowering','fruiting','harvesting','harvested'];
 const STAGE_LABELS = { planted:'Planted', growing:'Growing', flowering:'Flowering', fruiting:'Fruiting', harvesting:'Ready to Harvest', harvested:'Finished Harvesting' };
@@ -2485,6 +2615,8 @@ function renderBatchDetail(id, tab) {
   const activeListing = getActiveListingForBatch(b.id);
   const actual = b.actualBoxes || 0;
   const dailyHarvests = b.dailyHarvests || [];
+  const unit = unitForBatch(b);
+  const unitNote = getHarvestUnit(b.cropName, b.category).note;
 
   const stageChips = STAGE_ORDER.map((s, i) => {
     const isCurrent = s === (b.stage || 'planted');
@@ -2498,6 +2630,7 @@ function renderBatchDetail(id, tab) {
   let marketStatusHTML = '';
   if (activeListing) {
     const onMarketMs = Date.now() - (activeListing.createdAt || 0);
+    const lUnit = activeListing.unit || unit;
     marketStatusHTML = `
     <div class="d-section">
       <h3>Market Status</h3>
@@ -2511,22 +2644,21 @@ function renderBatchDetail(id, tab) {
         </div>
         <div class="info-table" style="box-shadow:none;border-color:rgba(6,95,70,.15)">
           <div class="info-row" style="border-color:rgba(6,95,70,.1)"><span class="ir-k" style="color:#047857">On market for</span><span class="ir-v" style="color:#065f46">${fmtDuration(onMarketMs)}</span></div>
-          <div class="info-row" style="border-color:rgba(6,95,70,.1)"><span class="ir-k" style="color:#047857">Quantity</span><span class="ir-v" style="color:#065f46">${activeListing.quantity || 0} boxes</span></div>
-          <div class="info-row" style="border:none"><span class="ir-k" style="color:#047857">Price</span><span class="ir-v" style="color:#065f46">${fmtZMK(activeListing.priceAmount)} ${activeListing.priceMode === 'total' ? 'total' : '/ box'}</span></div>
+          <div class="info-row" style="border-color:rgba(6,95,70,.1)"><span class="ir-k" style="color:#047857">Quantity</span><span class="ir-v" style="color:#065f46">${activeListing.quantity || 0} ${esc(lUnit)}</span></div>
+          <div class="info-row" style="border:none"><span class="ir-k" style="color:#047857">Price</span><span class="ir-v" style="color:#065f46">${fmtZMK(activeListing.priceAmount)} ${activeListing.priceMode === 'total' ? 'total' : '/ ' + esc(singularUnit(lUnit))}</span></div>
         </div>
         <button class="btn btn-s" style="margin-top:12px;background:#fff;border-color:rgba(6,95,70,.3);color:#065f46;font-weight:800" onclick="navTo('marketplace')">View in Market →</button>
       </div>
     </div>`;
   }
 
-  /* Harvest tracking block for harvesting/harvested stage */
   let harvestTrackingHTML = '';
   if (b.stage === 'harvesting' || b.stage === 'harvested') {
     const logRows = dailyHarvests.length
       ? dailyHarvests.slice().sort((a,b) => (b.date || 0) - (a.date || 0)).map(h => `
         <div class="harvest-log-row">
           <div class="hlr-date">${fmtDate(h.date)}</div>
-          <div class="hlr-boxes">${h.boxes} boxes</div>
+          <div class="hlr-boxes">${h.boxes} ${esc(unit)}</div>
           <div class="hlr-note">${esc(h.note || '')}</div>
           ${b.stage === 'harvesting' ? `<button class="hlr-del" onclick="removeDailyHarvest('${esc(b.id)}','${esc(h.id)}')">✕</button>` : ''}
         </div>`).join('')
@@ -2538,9 +2670,9 @@ function renderBatchDetail(id, tab) {
       <div class="box-estimate-card" style="margin:0 0 12px">
         <div class="bec-label">📦 Total Harvested</div>
         <div class="bec-value">${actual.toLocaleString()}</div>
-        <div class="bec-unit">boxes (20 kg)</div>
+        <div class="bec-unit">${esc(unit)} (${esc(unitNote)})</div>
         <div class="bec-range">
-          Estimated: <strong>${(b.estimatedBoxes || 0).toLocaleString()}</strong> boxes
+          Estimated: <strong>${(b.estimatedBoxes || 0).toLocaleString()}</strong> ${esc(unit)}
           ${b.estimatedBoxes ? ` · ${Math.round(actual / b.estimatedBoxes * 100)}%` : ''}
         </div>
       </div>
@@ -2553,11 +2685,11 @@ function renderBatchDetail(id, tab) {
           <button class="btn btn-s" onclick="confirmFinishHarvest('${esc(b.id)}')" style="flex:1">✓ Finish</button>
         </div>
         <div style="font-size:11px;color:var(--tl);font-weight:600;text-align:center;line-height:1.4">
-          Add boxes as you harvest each day / week. You can post to market anytime from the Market tab.
+          Add ${esc(unit)} as you harvest each day / week. You can post to market anytime from the Market tab.
         </div>
       ` : `
         <div style="padding:10px 12px;background:#d1fae5;border:1px solid rgba(22,163,74,.25);border-radius:var(--r);font-size:12px;font-weight:700;color:#065f46;text-align:center">
-          ✓ Harvest finished · ${actual.toLocaleString()} boxes total
+          ✓ Harvest finished · ${actual.toLocaleString()} ${esc(unit)} total
         </div>
       `}
     </div>`;
@@ -2577,12 +2709,11 @@ function renderBatchDetail(id, tab) {
       <div class="batch-num-box">
         <div style="flex:1;min-width:0">
           <div class="bn-lb">Batch Number</div>
-          <div class="bn-v">${esc(b.batchNumber)} <span class="bn-est">📦 ${actual ? actual.toLocaleString() + ' harvested' : (b.estimatedBoxes ? b.estimatedBoxes.toLocaleString() + ' est.' : '—')}</span></div>
+          <div class="bn-v">${esc(b.batchNumber)} <span class="bn-est">📦 ${actual ? actual.toLocaleString() + ' ' + esc(unit) + ' harvested' : (b.estimatedBoxes ? b.estimatedBoxes.toLocaleString() + ' ' + esc(unit) + ' est.' : '—')}</span></div>
         </div>
         <button onclick="copyBatchNumber('${esc(b.batchNumber)}')" style="width:40px;height:40px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">📋</button>
       </div>
 
-      <!-- Harvest Stage chips only -->
       <div class="d-section">
         <h3>Harvest Stage</h3>
         <div style="font-size:12px;color:var(--tl);font-weight:600;margin-bottom:8px;padding:4px 2px">Tap the stage that matches your farm today.</div>
@@ -2595,10 +2726,8 @@ function renderBatchDetail(id, tab) {
         </div>
       </div>
 
-      <!-- Harvest tracking (only shown when Ready/Finished) -->
       ${harvestTrackingHTML}
 
-      <!-- Farm Setup -->
       <div class="d-section">
         <h3>Farm Setup</h3>
         ${!isFisheries ? `
@@ -2624,15 +2753,14 @@ function renderBatchDetail(id, tab) {
         <input type="hidden" id="bs-space" value="${esc(b.spacingSystem || '')}">
       </div>
 
-      <!-- Field Summary -->
       <div class="d-section">
         <h3>Field Summary</h3>
         <div class="info-table">
           ${b.lengthM ? `<div class="info-row"><span class="ir-k">${isFisheries ? 'Pond' : 'Field'}</span><span class="ir-v">${b.lengthM}m × ${b.widthM}m</span></div>` : ''}
           ${b.areaM2 ? `<div class="info-row"><span class="ir-k">Area</span><span class="ir-v">${b.areaM2.toFixed(0)} m²</span></div>` : ''}
-          ${b.animalCount ? `<div class="info-row"><span class="ir-k">Animals</span><span class="ir-v">${b.animalCount}</span></div>` : ''}
-          <div class="info-row"><span class="ir-k">Est. boxes</span><span class="ir-v">${b.estimatedBoxes ? b.estimatedBoxes.toLocaleString() : '—'}</span></div>
-          ${actual ? `<div class="info-row"><span class="ir-k">Harvested boxes</span><span class="ir-v" style="color:var(--p-d)">${actual.toLocaleString()}</span></div>` : ''}
+          ${b.animalCount ? `<div class="info-row"><span class="ir-k">Animals</span><span class="ir-v">${b.animalCount} head</span></div>` : ''}
+          <div class="info-row"><span class="ir-k">Est. harvest</span><span class="ir-v">${b.estimatedBoxes ? b.estimatedBoxes.toLocaleString() + ' ' + esc(unit) : '—'}</span></div>
+          ${actual ? `<div class="info-row"><span class="ir-k">Harvested</span><span class="ir-v" style="color:var(--p-d)">${actual.toLocaleString()} ${esc(unit)}</span></div>` : ''}
         </div>
       </div>
 
@@ -2643,11 +2771,11 @@ function renderBatchDetail(id, tab) {
           <h3>Harvest Comparison</h3>
           <div class="compare-card" style="margin:0">
             <div class="compare-bar-row">
-              <div class="cbr-top"><span>Expected</span><span>${(b.estimatedBoxes || 0).toLocaleString()} boxes</span></div>
+              <div class="cbr-top"><span>Expected</span><span>${(b.estimatedBoxes || 0).toLocaleString()} ${esc(unit)}</span></div>
               <div class="compare-bar-track"><div class="compare-bar-fill expected" style="width:100%"></div></div>
             </div>
             <div class="compare-bar-row" style="margin-bottom:0">
-              <div class="cbr-top"><span>Actual</span><span>${actual.toLocaleString()} boxes</span></div>
+              <div class="cbr-top"><span>Actual</span><span>${actual.toLocaleString()} ${esc(unit)}</span></div>
               <div class="compare-bar-track"><div class="compare-bar-fill actual" style="width:${Math.min(100, Math.round(actual / (b.estimatedBoxes || actual) * 100))}%"></div></div>
             </div>
           </div>
@@ -2681,21 +2809,22 @@ window.setBatchStage = async (id, stage) => {
 };
 
 /* ============================================================
-   HARVEST TRACKING — Daily harvests
+   HARVEST TRACKING
    ============================================================ */
 window.openAddHarvest = (batchId) => {
   const b = S.myBatches.find(x => x.id === batchId);
   if (!b) return;
+  const unit = unitForBatch(b);
   modal(`
     <h3>🌾 Record Harvest</h3>
-    <p style="margin-bottom:10px">Add the boxes you harvested today (or this week).</p>
+    <p style="margin-bottom:10px">Add the ${esc(unit)} you harvested today (or this week).</p>
     <div style="text-align:left">
       <div class="fld" style="margin-bottom:10px">
         <label>Date</label>
         <input id="ah-date" class="inp" type="date" value="${toDateLocal(Date.now())}">
       </div>
       <div class="fld" style="margin-bottom:10px">
-        <label>Boxes harvested</label>
+        <label>${esc(unit.charAt(0).toUpperCase() + unit.slice(1))} harvested</label>
         <input id="ah-boxes" class="inp" type="number" min="1" step="1" placeholder="e.g. 25">
       </div>
       <div class="fld" style="margin-bottom:14px">
@@ -2717,9 +2846,10 @@ window.saveDailyHarvest = async (batchId) => {
   const boxes = parseInt(document.getElementById('ah-boxes').value) || 0;
   const dateStr = document.getElementById('ah-date').value;
   const note = (document.getElementById('ah-note').value || '').trim();
-  if (!boxes || boxes < 1) { toast('Enter box count'); return; }
+  if (!boxes || boxes < 1) { toast('Enter quantity'); return; }
   if (!dateStr) { toast('Enter date'); return; }
   const dateMs = new Date(dateStr).getTime();
+  const unit = unitForBatch(b);
 
   const newHarvest = { id: 'h_' + Date.now(), date: dateMs, boxes, note, addedAt: nowMs() };
   const existing = Array.isArray(b.dailyHarvests) ? b.dailyHarvests.slice() : [];
@@ -2727,7 +2857,7 @@ window.saveDailyHarvest = async (batchId) => {
   const total = existing.reduce((s, h) => s + (parseInt(h.boxes) || 0), 0);
 
   try {
-    await update(ref(db, 'batches/' + batchId), {
+    await update(ref('batches/' + batchId), {
       dailyHarvests: existing,
       actualBoxes: total,
       updatedAt: nowMs()
@@ -2735,7 +2865,6 @@ window.saveDailyHarvest = async (batchId) => {
     b.dailyHarvests = existing;
     b.actualBoxes = total;
 
-    // If there's an active listing, offer to sync quantity
     const activeListing = getActiveListingForBatch(batchId);
     if (activeListing) {
       const listedQty = activeListing.quantity || 0;
@@ -2744,12 +2873,12 @@ window.saveDailyHarvest = async (batchId) => {
           quantity: total,
           updatedAt: nowMs()
         });
-        toast(`+${boxes} boxes · listing updated to ${total} ✓`);
+        toast(`+${boxes} ${unit} · listing updated to ${total} ✓`);
       } else {
-        toast(`+${boxes} boxes ✓`);
+        toast(`+${boxes} ${unit} ✓`);
       }
     } else {
-      toast(`+${boxes} boxes ✓`);
+      toast(`+${boxes} ${unit} ✓`);
     }
     closeModal();
     route();
@@ -2759,7 +2888,7 @@ window.saveDailyHarvest = async (batchId) => {
 window.removeDailyHarvest = (batchId, harvestId) => {
   modal(`
     <h3>Remove this harvest?</h3>
-    <p>This will subtract the boxes from your running total.</p>
+    <p>This will subtract the quantity from your running total.</p>
     <div class="mc-actions">
       <button class="btn btn-s" onclick="closeModal()">Cancel</button>
       <button class="btn btn-danger" onclick="doRemoveDailyHarvest('${esc(batchId)}','${esc(harvestId)}')">Remove</button>
@@ -2783,9 +2912,10 @@ window.doRemoveDailyHarvest = async (batchId, harvestId) => {
 window.confirmFinishHarvest = (batchId) => {
   const b = S.myBatches.find(x => x.id === batchId);
   if (!b) return;
+  const unit = unitForBatch(b);
   modal(`
     <h3>Finish harvesting?</h3>
-    <p>You'll no longer be able to add harvest boxes. Total: <strong>${(b.actualBoxes || 0).toLocaleString()} boxes</strong>.</p>
+    <p>You'll no longer be able to add harvest entries. Total: <strong>${(b.actualBoxes || 0).toLocaleString()} ${esc(unit)}</strong>.</p>
     <p style="font-size:12px;color:var(--tl);margin-top:6px">You can still sell or update listings from the Market tab.</p>
     <div class="mc-actions">
       <button class="btn btn-s" onclick="closeModal()">Cancel</button>
@@ -2914,7 +3044,7 @@ window.deleteBatch = async (id) => {
 };
 
 /* ============================================================
-   SELECTED CROP ANALYSIS — info about ideal growing conditions
+   SELECTED CROP ANALYSIS
    ============================================================ */
 function renderSelectedCropAnalysis() {
   const cropId = S.screenData.cropId;
@@ -3000,13 +3130,14 @@ function renderSelectedCropAnalysis() {
 }
 
 /* ============================================================
-   HARVEST RECORD — running tally style (redirects into batch add-harvest modal)
+   HARVEST RECORD
    ============================================================ */
 function renderHarvestRecord(id) {
   const b = S.myBatches.find(x => x.id === id);
   if (!b) return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goFarm()">←</button></div></div>`;
   const crop = S.catalogue.find(c => c.id === b.cropId);
   const ic = crop ? pickIcon(crop.name) : '🌱';
+  const unit = unitForBatch(b);
   const harvests = (b.dailyHarvests || []).slice().sort((a,b) => (b.date||0)-(a.date||0));
   return `
   <div class="scroll">
@@ -3027,7 +3158,7 @@ function renderHarvestRecord(id) {
     <div class="harvest-box">
       <h4>🌾 Harvest so far</h4>
       <div class="harvest-input-row">
-        <div class="harvest-input-box"><label>Total</label><input type="text" value="${b.actualBoxes || 0}" readonly style="background:transparent"><div class="hib-unit">boxes</div></div>
+        <div class="harvest-input-box"><label>Total</label><input type="text" value="${b.actualBoxes || 0}" readonly style="background:transparent"><div class="hib-unit">${esc(unit)}</div></div>
         <div class="harvest-input-box"><label>Est.</label><input type="text" value="${b.estimatedBoxes || 0}" readonly style="background:transparent;color:var(--tl)"><div class="hib-unit">estimated</div></div>
       </div>
     </div>
@@ -3036,7 +3167,7 @@ function renderHarvestRecord(id) {
       ${harvests.length ? harvests.map(h => `
         <div class="harvest-log-row">
           <div class="hlr-date">${fmtDate(h.date)}</div>
-          <div class="hlr-boxes">${h.boxes} boxes</div>
+          <div class="hlr-boxes">${h.boxes} ${esc(unit)}</div>
           <div class="hlr-note">${esc(h.note || '')}</div>
         </div>
       `).join('') : `<div style="text-align:center;padding:24px;color:var(--tl);font-weight:600;font-size:12px">No entries yet.</div>`}
@@ -3050,7 +3181,7 @@ function renderHarvestRecord(id) {
 }
 
 /* ============================================================
-   POST HARVEST TO MARKET — allow variety, keep ability to sync boxes
+   POST HARVEST TO MARKET
    ============================================================ */
 function renderPostHarvestGoods(batchId) {
   const b = S.myBatches.find(x => x.id === batchId);
@@ -3079,6 +3210,7 @@ function renderPostHarvestGoods(batchId) {
   S.priceMode = 'per_box';
   const defaultAvail = Date.now() + 60 * 60 * 1000;
   const currentQty = b.actualBoxes || 0;
+  const unit = singularUnit(unitForBatch(b));
 
   return `
   <div class="scroll">
@@ -3091,12 +3223,12 @@ function renderPostHarvestGoods(batchId) {
         <div style="width:52px;height:52px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:26px">${pickIcon(b.cropName)}</div>
         <div style="flex:1;min-width:0">
           <div style="font-size:15px;font-weight:900;color:#9a3412">${esc(b.cropName)}</div>
-          <div style="font-size:11.5px;color:#c2410c;font-weight:700;margin-top:2px">${currentQty} boxes harvested · ${esc(b.varietyName)}</div>
+          <div style="font-size:11.5px;color:#c2410c;font-weight:700;margin-top:2px">${currentQty} ${esc(pluralUnit(unit, currentQty))} harvested · ${esc(b.varietyName)}</div>
         </div>
       </div>
       <div class="notice-banner">
         <div class="nb-ic">💡</div>
-        <div class="nb-tx">Your listing will be marked <strong>Availability Pending</strong> with a live countdown. After the timer you confirm — buyers then see your name & phone. You can keep adding boxes as you harvest.</div>
+        <div class="nb-tx">Your listing will be marked <strong>Availability Pending</strong> with a live countdown. After the timer you confirm — buyers then see your name & phone. You can keep adding ${esc(pluralUnit(unit, 2))} as you harvest.</div>
       </div>
     </div>
 
@@ -3109,7 +3241,7 @@ function renderPostHarvestGoods(batchId) {
         <input id="ph-variety" class="inp" value="${esc(b.varietyName || '')}" placeholder="e.g. Roma VF">
       </div>
 
-      <div class="fld"><label>Number of Boxes</label><input id="ph-qty" class="inp" type="number" min="1" step="1" value="${currentQty || 1}" required></div>
+      <div class="fld"><label>Number of ${esc(pluralUnit(unit, 2).charAt(0).toUpperCase() + pluralUnit(unit, 2).slice(1))}</label><input id="ph-qty" class="inp" type="number" min="1" step="1" value="${currentQty || 1}" required></div>
 
       <div class="fld">
         <label>Market (in ${esc(city)})</label>
@@ -3124,15 +3256,15 @@ function renderPostHarvestGoods(batchId) {
       <div class="fld">
         <label>Pricing</label>
         <div class="price-mode-toggle">
-          <button type="button" id="ph-mode-perbox" class="price-mode-btn active" onclick="setPriceMode('per_box')">💰 Per Box</button>
-          <button type="button" id="ph-mode-total" class="price-mode-btn" onclick="setPriceMode('total')">📦 All Boxes</button>
+          <button type="button" id="ph-mode-perbox" class="price-mode-btn active" onclick="setPriceMode('per_box')">💰 Per ${esc(unit.charAt(0).toUpperCase() + unit.slice(1))}</button>
+          <button type="button" id="ph-mode-total" class="price-mode-btn" onclick="setPriceMode('total')">📦 All ${esc(pluralUnit(unit, 2).charAt(0).toUpperCase() + pluralUnit(unit, 2).slice(1))}</button>
         </div>
         <input id="ph-price" class="inp" type="number" min="0" step="0.01" placeholder="Price in ZMK" required>
       </div>
 
       <div class="fld"><label>Available On Market From</label><input id="ph-avail-at" class="inp" type="datetime-local" value="${toDatetimeLocal(defaultAvail)}" required></div>
 
-      <div class="fld"><label>Description (optional)</label><textarea id="ph-desc" class="inp" rows="2">Fresh ${esc(b.cropName)} (${esc(b.varietyName)}). ${currentQty} boxes available.</textarea></div>
+      <div class="fld"><label>Description (optional)</label><textarea id="ph-desc" class="inp" rows="2">Fresh ${esc(b.cropName)} (${esc(b.varietyName)}). ${currentQty} ${esc(pluralUnit(unit, currentQty))} available.</textarea></div>
 
       <button type="submit" class="btn btn-p" id="ph-submit">💰 List for Sale</button>
     </form>
@@ -3175,7 +3307,7 @@ window.submitMarketPost = async (ev, batchId) => {
 
     if (!name) { toast('Name required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
     if (!phone) { toast('Phone required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
-    if (!qty || qty < 1) { toast('Boxes required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
+    if (!qty || qty < 1) { toast('Quantity required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
     if (!marketName) { toast('Market required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
     if (!priceAmount || priceAmount <= 0) { toast('Price required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
     if (!availAtStr) { toast('Availability time required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
@@ -3188,6 +3320,7 @@ window.submitMarketPost = async (ev, batchId) => {
     const totalPrice = priceMode === 'total' ? priceAmount : priceAmount * qty;
     const pricePerBox = priceMode === 'total' ? (qty ? priceAmount / qty : 0) : priceAmount;
     const city = S.weatherCity || S.userLocation;
+    const unit = singularUnit(unitForBatch(b));
 
     const data = {
       seller_id: S.user.uid,
@@ -3195,12 +3328,12 @@ window.submitMarketPost = async (ev, batchId) => {
       sellerPhone: phone,
       sellerPhoto: S.profile?.profileUrl || '',
       catalog_item_id: b.cropId,
-      title: `Fresh ${b.cropName} – ${qty} boxes`,
+      title: `Fresh ${b.cropName} – ${qty} ${pluralUnit(unit, qty)}`,
       productName: b.cropName,
       varietyName: variety || b.varietyName || '',
       quantity: qty,
       soldQuantity: 0,
-      unit: 'box',
+      unit,
       priceMode, priceAmount, pricePerBox, totalPrice, currency: 'ZMW',
       city, marketName,
       availabilityStatus: 'pending',
@@ -3224,7 +3357,7 @@ window.submitMarketPost = async (ev, batchId) => {
 };
 
 /* ============================================================
-   EDIT LISTING — allow editing always (price, market, variety, qty)
+   EDIT LISTING
    ============================================================ */
 window.editOwnListing = (id) => {
   closeModal();
@@ -3242,6 +3375,7 @@ function renderEditListing(id) {
   const markets = marketsForCity(city);
   const hasCustomMarket = l.marketName && !markets.includes(l.marketName);
   S.priceMode = l.priceMode || 'per_box';
+  const unit = singularUnit(l.unit || 'box');
 
   return `
   <div class="scroll">
@@ -3258,7 +3392,7 @@ function renderEditListing(id) {
         <input id="el-variety" class="inp" value="${esc(l.varietyName || '')}" placeholder="e.g. Roma VF">
       </div>
 
-      <div class="fld"><label>Number of Boxes</label><input id="el-qty" class="inp" type="number" min="1" step="1" value="${l.quantity || 1}" required></div>
+      <div class="fld"><label>Number of ${esc(pluralUnit(unit, 2).charAt(0).toUpperCase() + pluralUnit(unit, 2).slice(1))}</label><input id="el-qty" class="inp" type="number" min="1" step="1" value="${l.quantity || 1}" required></div>
 
       <div class="fld">
         <label>Market</label>
@@ -3276,8 +3410,8 @@ function renderEditListing(id) {
       <div class="fld">
         <label>Pricing</label>
         <div class="price-mode-toggle">
-          <button type="button" id="el-mode-perbox" class="price-mode-btn ${S.priceMode === 'per_box' ? 'active' : ''}" onclick="setEditPriceMode('per_box')">💰 Per Box</button>
-          <button type="button" id="el-mode-total" class="price-mode-btn ${S.priceMode === 'total' ? 'active' : ''}" onclick="setEditPriceMode('total')">📦 All Boxes</button>
+          <button type="button" id="el-mode-perbox" class="price-mode-btn ${S.priceMode === 'per_box' ? 'active' : ''}" onclick="setEditPriceMode('per_box')">💰 Per ${esc(unit.charAt(0).toUpperCase() + unit.slice(1))}</button>
+          <button type="button" id="el-mode-total" class="price-mode-btn ${S.priceMode === 'total' ? 'active' : ''}" onclick="setEditPriceMode('total')">📦 All ${esc(pluralUnit(unit, 2).charAt(0).toUpperCase() + pluralUnit(unit, 2).slice(1))}</button>
         </div>
         <input id="el-price" class="inp" type="number" min="0" step="0.01" value="${l.priceAmount || 0}" required>
       </div>
@@ -3326,7 +3460,7 @@ window.saveEditedListing = async (ev, id) => {
     const desc = document.getElementById('el-desc').value.trim();
 
     if (!phone) { toast('Phone required'); btn.disabled = false; btn.textContent = '💾 Save Changes'; return; }
-    if (!qty || qty < 1) { toast('Boxes required'); btn.disabled = false; btn.textContent = '💾 Save Changes'; return; }
+    if (!qty || qty < 1) { toast('Quantity required'); btn.disabled = false; btn.textContent = '💾 Save Changes'; return; }
     if (!marketName) { toast('Market required'); btn.disabled = false; btn.textContent = '💾 Save Changes'; return; }
     if (!priceAmount || priceAmount <= 0) { toast('Price required'); btn.disabled = false; btn.textContent = '💾 Save Changes'; return; }
 
@@ -3378,18 +3512,18 @@ window.confirmDeleteListing = async (id) => {
   } catch (e) { toast('Failed: ' + (e.message || e)); }
 };
 
-/* SELL — mark listing sold (full or partial) */
 window.sellListing = (id) => {
   closeModal();
   const l = S.marketplace.find(x => x.id === id);
   if (!l) return;
   const remaining = l.quantity || 0;
+  const unit = l.unit || 'box';
   modal(`
     <h3>💰 Mark as Sold</h3>
-    <p>How many boxes did you sell? Remaining listed: <strong>${remaining}</strong> boxes.</p>
+    <p>How many ${esc(pluralUnit(unit, remaining))} did you sell? Remaining listed: <strong>${remaining}</strong>.</p>
     <div style="text-align:left;margin:12px 0">
       <div class="fld">
-        <label>Boxes sold</label>
+        <label>${esc(pluralUnit(unit, 2).charAt(0).toUpperCase() + pluralUnit(unit, 2).slice(1))} sold</label>
         <input id="sell-qty" class="inp" type="number" min="1" max="${remaining}" step="1" value="${remaining}">
       </div>
       <div class="fld" style="margin-top:10px">
@@ -3417,28 +3551,20 @@ window.confirmSellListing = async (id) => {
   const newRemaining = total - soldQty;
   const newSoldQty = alreadySold + soldQty;
   const now = nowMs();
+  const unit = l.unit || 'box';
 
   try {
     if (newRemaining <= 0) {
       await update(ref(db, 'marketListings/' + id), {
-        availabilityStatus: 'sold',
-        status: 'sold',
-        quantity: 0,
-        soldQuantity: newSoldQty,
-        soldAt: now,
-        buyerName: buyer,
-        removedAt: now
+        availabilityStatus: 'sold', status: 'sold', quantity: 0,
+        soldQuantity: newSoldQty, soldAt: now, buyerName: buyer, removedAt: now
       });
       toast('✅ Sold — moved to history');
     } else {
       await update(ref(db, 'marketListings/' + id), {
-        quantity: newRemaining,
-        soldQuantity: newSoldQty,
-        soldAt: now,
-        buyerName: buyer,
-        updatedAt: now
+        quantity: newRemaining, soldQuantity: newSoldQty, soldAt: now, buyerName: buyer, updatedAt: now
       });
-      toast(`Sold ${soldQty} boxes · ${newRemaining} remaining`);
+      toast(`Sold ${soldQty} ${pluralUnit(unit, soldQty)} · ${newRemaining} remaining`);
     }
     closeModal();
     setTimeout(() => { if (S.screen === 'marketplace' || S.screen === 'my-posts') route(); }, 200);
@@ -3446,14 +3572,15 @@ window.confirmSellListing = async (id) => {
 };
 
 /* ============================================================
-   AVAILABILITY CONFIRMATION MODALS (unchanged logic)
+   AVAILABILITY CONFIRMATION MODALS
    ============================================================ */
 function showAvailabilityConfirmModal(listing) {
+  const unit = listing.unit || 'box';
   modal(`
     <h3>⏰ Availability Time Up!</h3>
     <p>Is <strong>${esc(listing.title || listing.productName)}</strong> still available on the market?</p>
     <div style="font-size:12px;color:var(--tl);margin:10px 0;font-weight:600">
-      ${esc(listing.quantity)} boxes at ${esc(listing.marketName)}
+      ${esc(listing.quantity)} ${esc(pluralUnit(unit, listing.quantity))} at ${esc(listing.marketName)}
     </div>
     <div class="mc-actions">
       <button class="btn btn-s" onclick="removeListingConfirm('${esc(listing.id)}')">No, Remove</button>
@@ -3486,11 +3613,12 @@ window.removeListingConfirm = async (id) => {
 
 function show24hConfirmModal(listing) {
   const onMarketMs = Date.now() - (listing.createdAt || 0);
+  const unit = listing.unit || 'box';
   modal(`
     <h3>⏰ Still on the Market?</h3>
     <p>Your listing <strong>${esc(listing.title || listing.productName)}</strong> has been on the market for <strong>${fmtDuration(onMarketMs)}</strong>.</p>
     <div style="font-size:12px;color:var(--tl);margin:10px 0;font-weight:600">
-      ${esc(listing.quantity)} boxes at ${esc(listing.marketName)} · ${fmtZMK(listing.priceAmount)} ${listing.priceMode === 'total' ? 'total' : '/ box'}
+      ${esc(listing.quantity)} ${esc(pluralUnit(unit, listing.quantity))} at ${esc(listing.marketName)} · ${fmtZMK(listing.priceAmount)} ${listing.priceMode === 'total' ? 'total' : 'per ' + esc(singularUnit(unit))}
     </div>
     <div class="mc-actions">
       <button class="btn btn-s" onclick="removeListingFromMarket('${esc(listing.id)}')">🗑 Remove</button>
@@ -3578,16 +3706,98 @@ function startPendingCheckTimer() {
 }
 
 /* ============================================================
-   MARKETPLACE — 2 tabs: My Listings / Market Analysis
+   STAGE ADVANCEMENT NOTIFICATIONS
+   Compares elapsed days vs totalDays thresholds to prompt the farmer.
+   ============================================================ */
+const STAGE_THRESHOLDS = { planted: 0.25, growing: 0.45, flowering: 0.65, fruiting: 0.85 };
+const NEXT_STAGE = { planted: 'growing', growing: 'flowering', flowering: 'fruiting', fruiting: 'harvesting' };
+
+function checkStageAdvancement() {
+  if (!S.user || !S.myBatches?.length) return;
+  if ($modal.classList.contains('open')) return;
+  if ($varietySheetOverlay.classList.contains('open')) return;
+  if (['plant-loader','plant-step-1','plant-step-3','plant-step-4','plant-confirm','plant-success','batch-detail','harvest-record','post-harvest-goods','edit-listing'].includes(S.screen)) return;
+
+  const now = Date.now();
+  for (const b of S.myBatches) {
+    if (!b.plantedDate || !b.totalDays) continue;
+    if (b.stage === 'harvesting' || b.stage === 'harvested') continue;
+    if (S.stageNotified[b.id] === b.stage) continue;
+
+    const daysSince = (now - b.plantedDate) / 86400000;
+    const threshold = STAGE_THRESHOLDS[b.stage];
+    if (threshold && daysSince >= b.totalDays * threshold) {
+      const next = NEXT_STAGE[b.stage];
+      if (next) {
+        S.stageNotified[b.id] = b.stage;
+        showStageAdvanceModal(b, next);
+        return;
+      }
+    }
+  }
+}
+
+function showStageAdvanceModal(batch, nextStage) {
+  const farmerName = (S.profile?.firstName || 'Farmer').trim() || 'Farmer';
+  const stageLabel = STAGE_LABELS[nextStage] || nextStage;
+  const stageIcon = STAGE_ICONS[nextStage] || '';
+  const daysSince = Math.round((Date.now() - batch.plantedDate) / 86400000);
+  modal(`
+    <h3>🌱 Hey ${esc(farmerName)}!</h3>
+    <p>Your <strong>${esc(batch.cropName)}</strong> (${esc(batch.varietyName || '')}) batch is ready to move to the next stage:</p>
+    <div style="font-size:18px;font-weight:900;color:var(--p-d);margin:14px 0;padding:16px;background:linear-gradient(135deg,#e6f5eb,#d1fae5);border-radius:var(--r-lg);border:1px solid rgba(15,122,52,.2)">
+      ${stageIcon} ${esc(stageLabel)}
+    </div>
+    <p style="font-size:12px;color:var(--tl);margin-bottom:0">
+      ${daysSince} day${daysSince === 1 ? '' : 's'} since planting.
+      Tap <strong>Advance</strong> to update your batch.
+    </p>
+    <div class="mc-actions">
+      <button class="btn btn-s" onclick="dismissStageNotification('${esc(batch.id)}')">Later</button>
+      <button class="btn btn-p" onclick="advanceBatchStage('${esc(batch.id)}','${nextStage}')">Advance ✓</button>
+    </div>
+  `, true);
+}
+
+window.advanceBatchStage = async (id, stage) => {
+  try {
+    await update(ref(db, 'batches/' + id), { stage, updatedAt: nowMs() });
+    const b = S.myBatches.find(x => x.id === id);
+    if (b) b.stage = stage;
+    closeModal();
+    toast('Stage advanced to ' + (STAGE_LABELS[stage] || stage) + ' ✓');
+    route();
+  } catch (e) { toast('Failed: ' + (e.message || e)); }
+};
+
+window.dismissStageNotification = (id) => {
+  // note already stamped into S.stageNotified
+  closeModal();
+};
+
+function startStageAdvancementChecker() {
+  clearInterval(S.stageAdvancementTimer);
+  setTimeout(checkStageAdvancement, 4000);
+  S.stageAdvancementTimer = setInterval(checkStageAdvancement, 30000);
+}
+
+/* ============================================================
+   MARKETPLACE — two square tabs; collapsible "Ready to list"
    ============================================================ */
 window.setMarketTab = (tab) => { S.marketTab = tab; route(); };
+window.toggleReadyToList = () => {
+  S.readyToListOpen = !S.readyToListOpen;
+  const content = document.getElementById('ready-to-list-content');
+  const chevron = document.getElementById('ready-to-list-chevron');
+  if (!content) return;
+  content.style.display = S.readyToListOpen ? 'block' : 'none';
+  if (chevron) chevron.style.transform = S.readyToListOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+};
 
 function renderMarketplace() {
   const tab = S.marketTab || 'mine';
   if (tab === 'analysis') return renderMarketAnalysis();
 
-  /* MY LISTINGS TAB */
-  // batches that are ready/finished with at least 1 box and no active listing
   const readyToList = S.myBatches.filter(b => {
     if (b.stage !== 'harvesting' && b.stage !== 'harvested') return false;
     if (!b.actualBoxes || b.actualBoxes < 1) return false;
@@ -3610,28 +3820,46 @@ function renderMarketplace() {
   setTimeout(startCountdownTicker, 50);
   setTimeout(runConfirmationChecks, 800);
 
+  const readyOpen = !!S.readyToListOpen;
+
   return `
   <div class="scroll">
     <div class="topbar bordered"><div class="tb-title">Market</div></div>
 
-    <div class="market-tabs" style="padding-top:12px">
-      <button class="market-tab ${tab === 'mine' ? 'active' : ''}" onclick="setMarketTab('mine')">📋 My Listing</button>
-      <button class="market-tab ${tab === 'analysis' ? 'active' : ''}" onclick="setMarketTab('analysis')">📊 Market Analysis</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 18px 14px">
+      <button class="market-tab-square ${tab === 'mine' ? 'active' : ''}" onclick="setMarketTab('mine')">
+        <div style="font-size:32px;margin-bottom:6px">📋</div>
+        <div style="font-size:13.5px;font-weight:900;letter-spacing:-.01em">My Listings</div>
+        <div style="font-size:10.5px;font-weight:700;opacity:.8;margin-top:4px">${mine.length} active</div>
+      </button>
+      <button class="market-tab-square ${tab === 'analysis' ? 'active' : ''}" onclick="setMarketTab('analysis')">
+        <div style="font-size:32px;margin-bottom:6px">📊</div>
+        <div style="font-size:13.5px;font-weight:900;letter-spacing:-.01em">Market Analysis</div>
+        <div style="font-size:10.5px;font-weight:700;opacity:.8;margin-top:4px">Prices · Demand</div>
+      </button>
     </div>
 
     ${readyToList.length ? `
-    <div style="padding:4px 18px 6px">
-      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">Ready to list for sale</div>
-      ${readyToList.slice(0,5).map(b => `
-        <div class="list-row" onclick="showScreen('post-harvest-goods',{id:'${esc(b.id)}'})" style="margin:0 0 8px">
-          <div class="lr-ic orange">${pickIcon(b.cropName)}</div>
-          <div class="lr-tx">
-            <div class="lr-tt">${esc(b.cropName)}</div>
-            <div class="lr-sb">${b.actualBoxes || 0} boxes · ${esc(b.varietyName)}</div>
+    <div style="padding:0 18px 10px">
+      <button onclick="toggleReadyToList()" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:linear-gradient(135deg,#ffedd5,#fed7aa);border:1.5px solid rgba(234,88,12,.28);border-radius:var(--r-lg);font-size:13px;font-weight:900;color:#9a3412;box-shadow:var(--sh-sm);text-align:left">
+        <span style="display:flex;align-items:center;gap:8px">
+          🌾 Ready to list for sale
+          <span style="background:#9a3412;color:#fff;padding:2px 8px;border-radius:999px;font-size:10px">${readyToList.length}</span>
+        </span>
+        <span id="ready-to-list-chevron" style="transition:transform .25s ${readyOpen ? 'rotate(180deg)' : 'rotate(0deg)'}">▼</span>
+      </button>
+      <div id="ready-to-list-content" style="display:${readyOpen ? 'block' : 'none'};margin-top:8px">
+        ${readyToList.slice(0,5).map(b => `
+          <div class="list-row" onclick="showScreen('post-harvest-goods',{id:'${esc(b.id)}'})" style="margin:0 0 8px">
+            <div class="lr-ic orange">${pickIcon(b.cropName)}</div>
+            <div class="lr-tx">
+              <div class="lr-tt">${esc(b.cropName)}</div>
+              <div class="lr-sb">${b.actualBoxes || 0} ${esc(unitForBatch(b))} · ${esc(b.varietyName)}</div>
+            </div>
+            <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
           </div>
-          <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-        </div>
-      `).join('')}
+        `).join('')}
+      </div>
     </div>
     ` : ''}
 
@@ -3663,10 +3891,11 @@ function renderMarketplace() {
 function renderMarketCard(l) {
   const isMine = l.seller_id === S.user?.uid;
   const availStatus = l.availabilityStatus || 'pending';
-  const qty = l.quantity ? `${l.quantity} ${l.unit || 'box'}` : '';
+  const unit = l.unit || 'box';
+  const qty = l.quantity ? `${l.quantity} ${pluralUnit(unit, l.quantity)}` : '';
   const meta = [qty, l.marketName, l.city].filter(Boolean).join(' · ');
   let priceDisplay = fmtZMK(l.priceAmount);
-  let priceLabel = l.priceMode === 'total' ? 'total' : '/ box';
+  let priceLabel = l.priceMode === 'total' ? 'total' : '/ ' + singularUnit(unit);
   const due = availStatus === 'pending' && l.availableAt && Date.now() >= l.availableAt;
 
   let badgeHTML = '', countdownHTML = '', contactHTML = '';
@@ -3734,7 +3963,8 @@ function renderMyPostCard(l, isHistory) {
   const posted = l.createdAt ? `Listed ${timeAgo(l.createdAt)}` : '';
   const sold = l.soldAt ? `Sold ${timeAgo(l.soldAt)}` : '';
   const removed = l.removedAt ? `Removed ${timeAgo(l.removedAt)}` : '';
-  const meta = [l.quantity + ' ' + (l.unit || 'box'), l.marketName, l.city].filter(Boolean).join(' · ');
+  const unit = l.unit || 'box';
+  const meta = [l.quantity + ' ' + pluralUnit(unit, l.quantity), l.marketName, l.city].filter(Boolean).join(' · ');
   const isSold = l.availabilityStatus === 'sold' || l.status === 'sold';
 
   let badgeHTML = '';
@@ -3757,7 +3987,7 @@ function renderMyPostCard(l, isHistory) {
     <div class="mc-body">
       <div class="mc-title">${esc(l.title || l.productName || 'Produce')}</div>
       <div class="mc-meta">${esc(meta)}</div>
-      <div class="mc-price"><strong>${fmtZMK(l.priceAmount)}</strong><small>${l.priceMode === 'total' ? 'total' : '/ box'}</small></div>
+      <div class="mc-price"><strong>${fmtZMK(l.priceAmount)}</strong><small>${l.priceMode === 'total' ? 'total' : '/ ' + singularUnit(unit)}</small></div>
       <div class="mc-time">${isSold ? sold : (isHistory ? removed : posted)}</div>
     </div>
     <div class="mc-side">${badgeHTML}</div>
@@ -3765,7 +3995,7 @@ function renderMyPostCard(l, isHistory) {
 }
 
 /* ============================================================
-   VIEW LISTING MODAL — with Sell / Edit / Remove
+   VIEW LISTING MODAL
    ============================================================ */
 window.viewMarketListing = (id) => {
   const l = S.marketplace.find(x => x.id === id);
@@ -3778,10 +4008,11 @@ window.viewMarketListing = (id) => {
   const isSold = availStatus === 'sold' || l.status === 'sold';
   const isRemoved = !isSold && (availStatus === 'removed' || l.status === 'removed');
   const due = isPending && l.availableAt && Date.now() >= l.availableAt;
+  const unit = l.unit || 'box';
 
   const priceDisplay = l.priceMode === 'total'
     ? fmtZMK(l.priceAmount) + ' (total)'
-    : fmtZMK(l.priceAmount) + ' / box';
+    : fmtZMK(l.priceAmount) + ' / ' + singularUnit(unit);
 
   let statusText = '';
   if (isSold) statusText = '💰 Sold';
@@ -3839,10 +4070,10 @@ window.viewMarketListing = (id) => {
     ${contactBlock}
     <div class="info-table" style="text-align:left;margin-bottom:14px">
       ${l.varietyName ? `<div class="info-row"><span class="ir-k">Variety</span><span class="ir-v">${esc(l.varietyName)}</span></div>` : ''}
-      <div class="info-row"><span class="ir-k">Quantity</span><span class="ir-v">${esc((l.quantity || '—') + ' ' + (l.unit || 'box'))}</span></div>
+      <div class="info-row"><span class="ir-k">Quantity</span><span class="ir-v">${esc((l.quantity || '—') + ' ' + pluralUnit(unit, l.quantity || 1))}</span></div>
       <div class="info-row"><span class="ir-k">Price</span><span class="ir-v">${esc(priceDisplay)}</span></div>
       <div class="info-row"><span class="ir-k">Market</span><span class="ir-v">${esc(l.marketName || '—')}</span></div>
-      ${l.soldQuantity ? `<div class="info-row"><span class="ir-k">Sold</span><span class="ir-v" style="color:#5b21b6">${l.soldQuantity} boxes</span></div>` : ''}
+      ${l.soldQuantity ? `<div class="info-row"><span class="ir-k">Sold</span><span class="ir-v" style="color:#5b21b6">${l.soldQuantity} ${esc(pluralUnit(unit, l.soldQuantity))}</span></div>` : ''}
       ${l.buyerName ? `<div class="info-row"><span class="ir-k">Buyer</span><span class="ir-v">${esc(l.buyerName)}</span></div>` : ''}
       ${l.availableAt ? `<div class="info-row"><span class="ir-k">Available from</span><span class="ir-v">${esc(fmtDateTime(l.availableAt))}</span></div>` : ''}
       ${l.description ? `<div class="info-row"><span class="ir-k">Notes</span><span class="ir-v">${esc(l.description)}</span></div>` : ''}
@@ -3857,14 +4088,13 @@ window.contactSeller = (sellerId) => {
 };
 
 /* ============================================================
-   MARKET ANALYSIS — filters, expected yield, price range, demand, trending
+   MARKET ANALYSIS — crop filter only from my planted crops
    ============================================================ */
 window.setAnalysisMarket = (v) => { S.analysisMarket = v; route(); };
 window.setAnalysisCrop = (v) => { S.analysisCrop = v; route(); };
 window.setAnalysisMonth = (v) => { S.analysisMonth = v; route(); };
 
 function computeDemandIndicator(crop, city, allBatches, allListings) {
-  // supply signals
   const expectedSupply = allBatches
     .filter(b => (city === 'all' || b.town === city) && (!crop || b.cropName === crop))
     .reduce((s, b) => s + (b.estimatedBoxes || 0), 0);
@@ -3875,10 +4105,7 @@ function computeDemandIndicator(crop, city, allBatches, allListings) {
     (city === 'all' || l.city === city) &&
     (!crop || l.productName === crop)
   ).length;
-
   const supplyRatio = totalExpected > 0 ? expectedSupply / totalExpected : 0;
-
-  // heuristic: high supply → low demand; low supply → high demand
   if (supplyRatio > 0.45 || listings > 8) return 'low';
   if (supplyRatio > 0.2 || listings > 3) return 'medium';
   return 'high';
@@ -3891,16 +4118,19 @@ function renderMarketAnalysis() {
   );
 
   const cities = [...new Set(allBatches.map(b => b.town).filter(Boolean))].sort();
-  const crops = [...new Set([...allBatches.map(b => b.cropName), ...allListings.map(l => l.productName)].filter(Boolean))].sort();
+  /* Crop filter limited to my own planted crops */
+  const crops = [...new Set((S.myBatches || []).map(b => b.cropName).filter(Boolean))].sort();
 
   const city = S.analysisMarket || 'all';
   const cropF = S.analysisCrop || 'all';
   const monthF = S.analysisMonth || 'all';
 
+  /* Guard: if previously selected crop no longer matches my crops, reset */
+  if (cropF !== 'all' && !crops.includes(cropF)) S.analysisCrop = cropF;
+
   const cityBatches = allBatches.filter(b => city === 'all' || b.town === city);
   const cityListings = allListings.filter(l => city === 'all' || l.city === city);
 
-  /* Expected yield per crop (filtered by month if chosen) */
   let yieldBatches = cityBatches;
   if (cropF !== 'all') yieldBatches = yieldBatches.filter(b => b.cropName === cropF);
   if (monthF !== 'all') {
@@ -3916,7 +4146,6 @@ function renderMarketAnalysis() {
   });
   const yieldList = Object.entries(yieldByCrop).sort((a,b) => b[1] - a[1]);
 
-  /* Price range per crop from listings */
   let priceListings = cityListings;
   if (cropF !== 'all') priceListings = priceListings.filter(l => l.productName === cropF);
   const priceByCrop = {};
@@ -3931,7 +4160,6 @@ function renderMarketAnalysis() {
   });
   const priceList = Object.entries(priceByCrop).sort((a,b) => b[1].count - a[1].count);
 
-  /* Trending — latest listings across the selected city */
   const trending = cityListings
     .slice()
     .sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0))
@@ -3961,10 +4189,10 @@ function renderMarketAnalysis() {
         </select>
       </div>
       <div class="af-box">
-        <label>Crop</label>
-        <div class="af-value"><span>🌱 ${cropF === 'all' ? 'All crops' : esc(cropF)}</span><span class="st-arrow">▼</span></div>
+        <label>My crop</label>
+        <div class="af-value"><span>🌱 ${cropF === 'all' ? 'All my crops' : esc(cropF)}</span><span class="st-arrow">▼</span></div>
         <select onchange="setAnalysisCrop(this.value)">
-          <option value="all" ${cropF === 'all' ? 'selected' : ''}>All crops</option>
+          <option value="all" ${cropF === 'all' ? 'selected' : ''}>All my crops</option>
           ${crops.map(c => `<option value="${esc(c)}" ${c === cropF ? 'selected' : ''}>${esc(c)}</option>`).join('')}
         </select>
       </div>
@@ -3978,22 +4206,31 @@ function renderMarketAnalysis() {
       </div>
     </div>
 
+    ${!crops.length ? `
+    <div class="empty" style="padding:20px 24px">
+      <div class="e-ic">🌱</div>
+      <h3>You haven't planted yet</h3>
+      <p>Plant a crop first to see analysis for your own crops.</p>
+    </div>` : ''}
+
     <div class="analysis-hero">
       <h2>📊 Market Intelligence</h2>
-      <p>Expected yields, market price ranges and demand for ${city === 'all' ? 'Zambia' : esc(city)}${monthF !== 'all' ? ' · ' + MONTH_NAMES[parseInt(monthF)] : ''}.</p>
+      <p>Expected yields, market price ranges and demand for ${city === 'all' ? 'Zambia' : esc(city)}${monthF !== 'all' ? ' · ' + MONTH_NAMES[parseInt(monthF)] : ''}${cropF !== 'all' ? ' · ' + esc(cropF) : ''}.</p>
     </div>
 
     <div class="ma-section">
       <h3>📦 Expected Yield by Crop</h3>
-      ${yieldList.length ? yieldList.map(([name, boxes]) => {
-        const pct = totalExpected ? Math.round(boxes / totalExpected * 100) : 0;
+      ${yieldList.length ? yieldList.map(([name, qty]) => {
+        const pct = totalExpected ? Math.round(qty / totalExpected * 100) : 0;
         const demand = computeDemandIndicator(name, city, allBatches, allListings);
         const demandLabel = demand === 'high' ? 'High demand' : demand === 'medium' ? 'Moderate' : 'Oversupply';
+        const crop = S.catalogue.find(c => c.name === name);
+        const unit = crop ? getHarvestUnit(crop.name, crop.category).unit : 'units';
         return `
           <div class="ma-bar-row">
             <div class="ma-bar-top">
               <span>${pickIcon(name)} ${esc(name)}</span>
-              <span>${boxes.toLocaleString()} boxes</span>
+              <span>${qty.toLocaleString()} ${esc(unit)}</span>
             </div>
             <div class="ma-bar-track"><div class="ma-bar-fill ${demand === 'low' ? 'danger' : demand === 'medium' ? 'warn' : ''}" style="width:${pct}%"></div></div>
             <div style="margin-top:4px;display:flex;justify-content:space-between;align-items:center">
@@ -4021,8 +4258,10 @@ function renderMarketAnalysis() {
     </div>
 
     <div class="ma-section">
-      <h3>🔥 Trending Crops</h3>
-      ${trending.length ? trending.map(l => `
+      <h3>🔥 Trending</h3>
+      ${trending.length ? trending.map(l => {
+        const unit = l.unit || 'box';
+        return `
         <div class="trend-card" onclick="viewMarketListing('${esc(l.id)}')">
           <div class="trend-ic">${pickIcon(l.productName || l.title)}</div>
           <div class="trend-body">
@@ -4031,10 +4270,10 @@ function renderMarketAnalysis() {
           </div>
           <div class="trend-price">
             <strong>${fmtZMK(l.priceAmount)}</strong>
-            <small>${l.priceMode === 'total' ? 'total' : '/ box'}</small>
+            <small>${l.priceMode === 'total' ? 'total' : '/ ' + singularUnit(unit)}</small>
           </div>
-        </div>
-      `).join('') : `<div class="empty" style="padding:16px"><p>No listings on market yet.</p></div>`}
+        </div>`;
+      }).join('') : `<div class="empty" style="padding:16px"><p>No listings on market yet.</p></div>`}
     </div>
 
     <div style="padding:0 18px 18px">
@@ -4047,7 +4286,7 @@ function renderMarketAnalysis() {
 }
 
 /* ============================================================
-   PREVIEW MARKET — stylized price board page
+   PREVIEW MARKET
    ============================================================ */
 function renderPreviewMarket() {
   const city = S.analysisMarket !== 'all' ? S.analysisMarket : (S.weatherCity || 'Lusaka');
@@ -4056,7 +4295,6 @@ function renderPreviewMarket() {
   );
   const cityListings = allListings.filter(l => !l.city || l.city === city);
 
-  // Build rows: prefer live listing data, fallback to sample
   const rows = [];
   const seen = new Set();
 
@@ -4179,7 +4417,7 @@ window.viewAgroProduct = (id) => {
 };
 
 /* ============================================================
-   TRANSPORTER (was Delivery)
+   TRANSPORTER
    ============================================================ */
 function renderDelivery() {
   return `
@@ -4394,7 +4632,7 @@ function renderWeatherDetail() {
 }
 
 /* ============================================================
-   FARMERS BY CITY (kept — separate from Market Analysis)
+   FARMERS BY CITY
    ============================================================ */
 window.setFarmersCity = (city) => { S.farmersCity = city; route(); };
 function renderFarmersByCity() {
@@ -4442,7 +4680,7 @@ function renderFarmersByCity() {
             </div>
             <div class="acr-bars">
               <div class="acr-bar-row">
-                <span class="acr-bar-lb">Boxes</span>
+                <span class="acr-bar-lb">Yield</span>
                 <div class="acr-bar-track"><div class="acr-bar-fill act" style="width:${Math.min(100, data.expected / Math.max(1, totalExpected) * 100)}%"></div></div>
                 <span class="acr-bar-val">${data.expected.toLocaleString()}</span>
               </div>
@@ -4456,7 +4694,7 @@ function renderFarmersByCity() {
 }
 
 /* ============================================================
-   FARM ANALYSIS — remove farmers & batches counts
+   FARM ANALYSIS
    ============================================================ */
 window.setAnalysisYear = (y) => { S.analysisYear = parseInt(y); route(); };
 window.setAnalysisCity = (c) => { S.analysisCity = c; route(); };
@@ -4521,13 +4759,13 @@ function renderFarmAnalysis() {
         <div class="as-ic">📦</div>
         <div class="as-lb">Expected</div>
         <div class="as-v">${totalExpected.toLocaleString()}</div>
-        <div class="as-sub">boxes planned</div>
+        <div class="as-sub">units planned</div>
       </div>
       <div class="as-card highlight">
         <div class="as-ic">✅</div>
         <div class="as-lb">Produced</div>
         <div class="as-v">${totalActual.toLocaleString()}</div>
-        <div class="as-sub">actual boxes</div>
+        <div class="as-sub">actual units</div>
       </div>
       <div class="as-card">
         <div class="as-ic">${deltaPct >= 0 ? '📈' : '📉'}</div>
@@ -4539,7 +4777,7 @@ function renderFarmAnalysis() {
         <div class="as-ic">🥇</div>
         <div class="as-lb">Top crop</div>
         <div class="as-v" style="font-size:16px">${topCrop ? esc(topCrop[0]) : '—'}</div>
-        <div class="as-sub">${topCrop ? topCrop[1].expected.toLocaleString() + ' boxes' : '—'}</div>
+        <div class="as-sub">${topCrop ? topCrop[1].expected.toLocaleString() + ' units' : '—'}</div>
       </div>
     </div>
     <div class="ma-section">
@@ -4650,6 +4888,7 @@ async function startApp() {
     await detectUserCityAndWeather();
     startPendingCheckTimer();
     startCountdownTicker();
+    startStageAdvancementChecker();
 
     clearInterval(S.weatherRefreshTimer);
     S.weatherRefreshTimer = setInterval(async () => {
