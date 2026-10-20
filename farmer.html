@@ -7,7 +7,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>AgriCare · Farmer</title>
 
-<!-- Theme bootstrap (prevents flash of wrong theme) -->
 <script>
 (function(){
   try {
@@ -84,9 +83,6 @@
   --safe-b:env(safe-area-inset-bottom,0px);
 }
 
-/* ============================================================
-   DARK THEME — sleek black
-   ============================================================ */
 [data-theme="dark"]{
   --p:#22c55e;
   --p-h:#16a34a;
@@ -658,41 +654,23 @@ a{color:inherit;text-decoration:none;}
 [data-theme="dark"] .demand-pill.low{background:#450a0a;color:#f87171}
 .demand-pill .dotp{width:6px;height:6px;border-radius:50%;background:currentColor;}
 
-/* PREVIEW MARKET */
 .market-board-page{
   background:
     radial-gradient(circle at top right, rgba(251,191,36,.15) 0%, transparent 60%),
     radial-gradient(circle at bottom left, rgba(134,239,172,.15) 0%, transparent 60%),
     linear-gradient(135deg,#0a2e1b 0%,#052014 100%);
-  min-height:100%;
-  position:relative;
-  overflow:hidden;
+  min-height:100%;position:relative;overflow:hidden;
 }
-.market-board-page::before{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  background:repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,.06) 3px 4px);
-}
+.market-board-page::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,.06) 3px 4px);}
 .pb-head{text-align:center;margin-bottom:18px;position:relative;z-index:1}
 .pb-sub{font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#fbbf24;opacity:.9;margin-bottom:6px;}
 .pb-title{font-size:26px;font-weight:900;letter-spacing:-.02em;color:#fbbf24;text-shadow:0 2px 8px rgba(0,0,0,.6);line-height:1.1;}
 .pb-loc{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 14px;border-radius:var(--r-p);background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.35);font-size:12px;font-weight:800;color:#fbbf24;letter-spacing:.03em;}
 .pb-date{margin-top:10px;font-size:11.5px;font-weight:700;color:#d1fae5;opacity:.85;letter-spacing:.03em;}
-.pb-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:6px;
-  margin-top:18px;position:relative;z-index:1;
-}
+.pb-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:18px;position:relative;z-index:1;}
 @media(min-width:560px){.pb-grid{grid-template-columns:repeat(3,1fr);}}
-.pb-item{
-  display:flex;align-items:center;gap:8px;padding:8px 10px;
-  background:rgba(0,0,0,.35);border:1px solid rgba(251,191,36,.12);border-radius:10px;
-  font-size:11.5px;
-}
-.pb-num{
-  flex-shrink:0;width:20px;height:20px;border-radius:50%;
-  background:linear-gradient(135deg,#fbbf24,#d97706);color:#000;
-  display:flex;align-items:center;justify-content:center;
-  font-size:10px;font-weight:900;
-}
+.pb-item{display:flex;align-items:center;gap:8px;padding:8px 10px;background:rgba(0,0,0,.35);border:1px solid rgba(251,191,36,.12);border-radius:10px;font-size:11.5px;}
+.pb-num{flex-shrink:0;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#fbbf24,#d97706);color:#000;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;}
 .pb-icon{font-size:16px;flex-shrink:0;}
 .pb-name{flex:1;min-width:0;font-weight:800;color:#f0fdf4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;}
 .pb-price{font-weight:900;color:#fbbf24;font-size:11px;letter-spacing:-.01em;flex-shrink:0;}
@@ -815,20 +793,10 @@ a{color:inherit;text-decoration:none;}
 .ps-n{font-size:20px;font-weight:900;letter-spacing:-.03em;}
 .ps-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.85;margin-top:2px;}
 
-/* Theme toggle segmented control */
-.theme-switch-wrap{
-  margin:0 18px 16px;padding:6px;background:var(--sf2);border:1px solid var(--bd);
-  border-radius:var(--r-lg);display:flex;gap:6px;
-}
-.theme-opt{
-  flex:1;padding:12px 10px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;
-  font-size:13px;font-weight:800;color:var(--tb);border:1.5px solid transparent;transition:all .25s var(--e);
-}
+.theme-switch-wrap{margin:0 18px 16px;padding:6px;background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r-lg);display:flex;gap:6px;}
+.theme-opt{flex:1;padding:12px 10px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:800;color:var(--tb);border:1.5px solid transparent;transition:all .25s var(--e);}
 .theme-opt .ti{font-size:17px;}
-.theme-opt.active{
-  background:linear-gradient(180deg,#12903e 0%,var(--p) 100%);color:#fff;border-color:var(--p);
-  box-shadow:0 6px 16px -6px var(--p-glow);
-}
+.theme-opt.active{background:linear-gradient(180deg,#12903e 0%,var(--p) 100%);color:#fff;border-color:var(--p);box-shadow:0 6px 16px -6px var(--p-glow);}
 .theme-opt:active{transform:scale(.97);}
 
 .menu-list{padding:0 18px 18px;}
@@ -917,15 +885,11 @@ a{color:inherit;text-decoration:none;}
   transition:all .22s var(--e);color:var(--td);
 }
 .market-tab-square:active{transform:scale(.96);}
-.market-tab-square.active{
-  background:linear-gradient(135deg,#12903e,#0f7a34);
-  color:#fff;border-color:var(--p);
-  box-shadow:0 8px 20px -6px var(--p-glow);
-}
+.market-tab-square.active{background:linear-gradient(135deg,#12903e,#0f7a34);color:#fff;border-color:var(--p);box-shadow:0 8px 20px -6px var(--p-glow);}
 
 .market-card{margin:0 18px 10px;padding:14px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-xl);box-shadow:var(--sh-sm);display:flex;gap:12px;cursor:pointer;transition:all .2s var(--e);}
 .market-card:active{transform:scale(.985);box-shadow:var(--sh-md);}
-.mc-thumb{width:64px;height:64px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:30px;background:var(--sf2);box-shadow:0 3px 10px rgba(0,0,0,.06);}
+.mc-thumb{width:64px;height:64px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:30px;background:var(--sf2);box-shadow:0 3px 10px rgba(0,0,0,.06);overflow:hidden;}
 .mc-body{flex:1;min-width:0;}
 .mc-title{font-size:14px;font-weight:900;color:var(--td);letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .mc-meta{font-size:11px;color:var(--tl);font-weight:600;margin-top:3px;line-height:1.4;}
@@ -959,10 +923,7 @@ a{color:inherit;text-decoration:none;}
 .city-chip{flex-shrink:0;padding:8px 14px;border-radius:var(--r-p);background:var(--sf);border:1.5px solid var(--bd);font-size:12px;font-weight:800;color:var(--tb);transition:all .2s var(--e);white-space:nowrap;}
 .city-chip.active{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 4px 12px -4px var(--p-glow);}
 
-.harvest-log-row{
-  display:flex;align-items:center;gap:10px;padding:11px 14px;
-  background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:6px;
-}
+.harvest-log-row{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:6px;}
 .hlr-date{font-size:11.5px;font-weight:800;color:var(--td);flex-shrink:0;min-width:60px;}
 .hlr-boxes{font-size:14px;font-weight:900;color:var(--p-d);flex-shrink:0;}
 .hlr-note{flex:1;font-size:11px;color:var(--tl);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -973,11 +934,7 @@ a{color:inherit;text-decoration:none;}
 .filter-pill{flex-shrink:0;padding:8px 14px;border-radius:var(--r-p);background:var(--sf);border:1.5px solid var(--bd);font-size:11.5px;font-weight:800;color:var(--tb);transition:all .2s var(--e);white-space:nowrap;display:flex;align-items:center;gap:6px;}
 .filter-pill.active{background:var(--p);color:#fff;border-color:var(--p);}
 
-.trend-card{
-  display:flex;align-items:center;gap:12px;padding:12px 14px;
-  background:linear-gradient(135deg,#fef3c7,#fde68a);
-  border:1.5px solid rgba(180,83,9,.25);border-radius:var(--r-lg);margin-bottom:8px;
-}
+.trend-card{display:flex;align-items:center;gap:12px;padding:12px 14px;background:linear-gradient(135deg,#fef3c7,#fde68a);border:1.5px solid rgba(180,83,9,.25);border-radius:var(--r-lg);margin-bottom:8px;}
 [data-theme="dark"] .trend-card{background:linear-gradient(135deg,#422006,#78350f);border-color:rgba(251,191,36,.3);}
 .trend-ic{width:44px;height:44px;border-radius:14px;background:var(--sf);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.08);}
 .trend-body{flex:1;min-width:0;}
@@ -991,15 +948,9 @@ a{color:inherit;text-decoration:none;}
 .trend-price small{display:block;font-size:9.5px;font-weight:800;color:#b45309;text-transform:uppercase;letter-spacing:.04em;margin-top:1px;}
 [data-theme="dark"] .trend-price small{color:#fcd34d;}
 
-.info-block{
-  background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r-lg);
-  padding:12px 14px;margin-bottom:8px;font-size:12px;line-height:1.5;font-weight:600;color:var(--tb);
-}
+.info-block{background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r-lg);padding:12px 14px;margin-bottom:8px;font-size:12px;line-height:1.5;font-weight:600;color:var(--tb);}
 .info-block strong{font-weight:900;color:var(--td);}
 
-/* ============================================================
-   NEW: Image upload grid (post-harvest)
-   ============================================================ */
 .img-upload-section{margin:0 18px 14px;}
 .img-upload-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
 .img-upload-title{font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;}
@@ -1013,19 +964,23 @@ a{color:inherit;text-decoration:none;}
 .img-slot-remove{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.75);color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(255,255,255,.3);}
 .img-slot-remove:active{transform:scale(.9);}
 
-/* Small utility */
-.hidden{display:none !important;}
-
-/* Menu list action row for farm */
-.farm-action-row{display:flex;gap:8px;padding:0 18px 14px;}
-.farm-action-btn{
-  flex:1;padding:13px 10px;border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;gap:6px;
-  font-size:12.5px;font-weight:900;border:1.5px solid var(--bd);background:var(--sf);color:var(--td);
-  transition:all .2s var(--e);box-shadow:var(--sh-xs);
+/* Farm picker banner */
+.planting-banner{
+  margin:0 18px 12px;padding:12px 14px;
+  background:linear-gradient(135deg,#e6f5eb,#d1fae5);
+  border:1px solid rgba(15,122,52,.25);
+  border-radius:var(--r-lg);
+  display:flex;align-items:center;gap:10px;
 }
-.farm-action-btn:active{transform:scale(.97);}
-.farm-action-btn.edit{color:var(--info);border-color:rgba(37,99,235,.3);background:var(--info-soft);}
-.farm-action-btn.delete{color:var(--danger);border-color:rgba(220,38,38,.3);background:var(--danger-soft);}
+[data-theme="dark"] .planting-banner{
+  background:linear-gradient(135deg,#064e3b,#065f46);
+  border-color:rgba(34,197,94,.3);
+}
+.planting-banner .pb-ico{font-size:22px;flex-shrink:0;}
+.planting-banner .pb-txt{flex:1;font-size:12px;font-weight:700;color:var(--p-d);line-height:1.4;}
+[data-theme="dark"] .planting-banner .pb-txt{color:#86efac;}
+
+.hidden{display:none !important;}
 </style>
 </head>
 <body>
@@ -1170,7 +1125,9 @@ const S = {
   /* THEME */
   theme: 'light',
   /* IMAGE DRAFTS keyed by batchId */
-  draftImages: {}
+  draftImages: {},
+  /* NEW: planting flow mode — when true, the next selectFarm forces Plant tab */
+  plantingFlowMode: false
 };
 
 const $modal = document.getElementById('modal');
@@ -1321,7 +1278,6 @@ function getActiveListingForBatch(batchId) {
 function getAllListingsForBatch(batchId) {
   return (S.marketplace || []).filter(l => l.fromBatchId === batchId);
 }
-
 function currentFarmBatches() {
   if (!S.currentFarmId) return S.myBatches;
   return S.myBatches.filter(b => b.farmId === S.currentFarmId);
@@ -1380,6 +1336,11 @@ window.selectFarm = async (farmId) => {
   try {
     await update(ref(db, 'users/' + S.user.uid), { currentFarmId: farmId });
     S.currentFarmId = farmId;
+    /* If coming from the plant/raise flow, force Plant tab */
+    if (S.plantingFlowMode) {
+      S.farmTab = 'plant';
+      S.plantingFlowMode = false;
+    }
     showScreen('farm');
   } catch (e) { toast('Failed: ' + (e.message || e)); }
 };
@@ -1421,11 +1382,15 @@ window.saveNewFarm = async () => {
     S.currentFarmId = newRef.key;
     closeModal();
     toast('Farm created ✓');
+    /* If in planting flow, force Plant tab */
+    if (S.plantingFlowMode) {
+      S.farmTab = 'plant';
+      S.plantingFlowMode = false;
+    }
     showScreen('farm');
   } catch (e) { toast('Failed: ' + (e.message || e)); }
 };
 
-/* --- NEW: Edit farm --- */
 window.openEditFarm = () => {
   const farm = S.farms.find(f => f.id === S.currentFarmId);
   if (!farm) { toast('No farm selected'); return; }
@@ -1468,7 +1433,6 @@ window.saveEditedFarm = async (farmId) => {
   } catch (e) { toast('Failed: ' + (e.message || e)); }
 };
 
-/* --- NEW: Delete farm + all batches --- */
 window.confirmDeleteFarm = () => {
   const farm = S.farms.find(f => f.id === S.currentFarmId);
   if (!farm) { toast('No farm selected'); return; }
@@ -1489,7 +1453,6 @@ window.doDeleteFarm = async (farmId) => {
   try {
     const batchesToDelete = (S.myBatches || []).filter(b => b.farmId === farmId);
     for (const b of batchesToDelete) {
-      // Remove active listings for this batch too
       const listing = getActiveListingForBatch(b.id);
       if (listing) {
         try { await update(ref(db, 'marketListings/' + listing.id), { status:'removed', availabilityStatus:'removed', removedAt: nowMs() }); } catch(e) {}
@@ -1497,7 +1460,6 @@ window.doDeleteFarm = async (farmId) => {
       try { await remove(ref(db, 'batches/' + b.id)); } catch (e) {}
     }
     await remove(ref(db, `users/${S.user.uid}/farms/${farmId}`));
-    // Update local state
     S.myBatches = (S.myBatches || []).filter(b => b.farmId !== farmId);
     S.farms = (S.farms || []).filter(f => f.id !== farmId);
     S.currentFarmId = S.farms[0]?.id || null;
@@ -1995,8 +1957,9 @@ function bottomNavHTML() {
 
 window.navTo = (id, data) => showScreen(id, data);
 window.showScreen = showScreen;
-window.goHome = () => navTo('home');
+window.goHome = () => { S.plantingFlowMode = false; navTo('home'); };
 window.goFarm = () => {
+  S.plantingFlowMode = false;
   if (S.farms.length >= 2) {
     navTo('farm-picker');
   } else if (S.farms.length === 1) {
@@ -2009,10 +1972,21 @@ window.goFarm = () => {
     navTo('farm-picker');
   }
 };
-window.goMarket = () => { S.marketTab = 'mine'; navTo('marketplace'); };
-window.goDelivery = () => navTo('delivery');
-window.goProfile = () => navTo('profile');
+window.goMarket = () => { S.plantingFlowMode = false; S.marketTab = 'mine'; navTo('marketplace'); };
+window.goDelivery = () => { S.plantingFlowMode = false; navTo('delivery'); };
+window.goProfile = () => { S.plantingFlowMode = false; navTo('profile'); };
 window.goBack = () => { try { history.back(); } catch (e) { navTo('home'); } };
+
+/* ============================================================
+   NEW: Farm-first Plant/Raise flow entry point
+   Called from Home "Plant/Raise" hero + QA buttons.
+   → Opens farm picker. User picks farm.
+   → selectFarm forces Plant tab and shows crops + "Plant or Raise" button.
+   ============================================================ */
+window.openPlantRaiseFlow = () => {
+  S.plantingFlowMode = true;
+  navTo('farm-picker');
+};
 
 /* ============================================================
    CART
@@ -2219,7 +2193,7 @@ function route() {
 }
 
 /* ============================================================
-   HOME
+   HOME — uses openPlantRaiseFlow for the hero + QA buttons
    ============================================================ */
 function renderHome() {
   const p = S.profile || {};
@@ -2277,14 +2251,14 @@ function renderHome() {
   }).join('');
 
   const addCard = `
-    <div class="mf-card mf-add" onclick="startPlantFlow()">
+    <div class="mf-card mf-add" onclick="openPlantRaiseFlow()">
       <div class="mf-plus">➕</div>
-      <div class="mf-lb">Plant a Crop</div>
+      <div class="mf-lb">Plant or Raise</div>
     </div>`;
 
   return `
   <div class="scroll" style="padding-top:calc(var(--safe-t) + 6px)">
-    <div class="service-hero" onclick="startPlantFlow()" style="height:232px;padding:18px 20px">
+    <div class="service-hero" onclick="openPlantRaiseFlow()" style="height:232px;padding:18px 20px">
       ${heroArt}
     </div>
 
@@ -2300,9 +2274,9 @@ function renderHome() {
     </div>
 
     <div class="qa-row">
-      <button class="qa" onclick="navTo('plant-step-1')"><div class="qa-ic c1">🌱</div><div class="qa-lb">Crops</div></button>
-      <button class="qa" onclick="navTo('plant-step-1')"><div class="qa-ic c2">🐄</div><div class="qa-lb">Livestock</div></button>
-      <button class="qa" onclick="navTo('plant-step-1')"><div class="qa-ic c3">🐟</div><div class="qa-lb">Fisheries</div></button>
+      <button class="qa" onclick="openPlantRaiseFlow()"><div class="qa-ic c1">🌱</div><div class="qa-lb">Crops</div></button>
+      <button class="qa" onclick="openPlantRaiseFlow()"><div class="qa-ic c2">🐄</div><div class="qa-lb">Livestock</div></button>
+      <button class="qa" onclick="openPlantRaiseFlow()"><div class="qa-ic c3">🐟</div><div class="qa-lb">Fisheries</div></button>
       <button class="qa" onclick="goMarket()"><div class="qa-ic c4">🛒</div><div class="qa-lb">Market</div></button>
       <button class="qa" onclick="goDelivery()"><div class="qa-ic c5">🚚</div><div class="qa-lb">Transport</div></button>
     </div>
@@ -2352,33 +2326,42 @@ function renderHome() {
 }
 
 /* ============================================================
-   FARM PICKER
+   FARM PICKER — shows banner when in planting flow
    ============================================================ */
 function renderFarmPicker() {
+  const isPlantingMode = !!S.plantingFlowMode;
   return `
   <div class="scroll">
     <div class="topbar bordered">
       <button class="tb-back" onclick="goHome()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
-      <div class="tb-title">My Farms</div>
+      <div class="tb-title">${isPlantingMode ? 'Pick a Farm' : 'My Farms'}</div>
     </div>
 
-    <div style="padding:16px 18px 6px">
-      <div style="font-size:13px;color:var(--tl);font-weight:600;line-height:1.5;margin-bottom:14px">
-        ${S.farms.length ? 'Pick a farm to manage, or create a new one.' : 'Create your first farm to start planting, raising and tracking your harvests.'}
+    ${isPlantingMode ? `
+      <div class="planting-banner">
+        <div class="pb-ico">🌱</div>
+        <div class="pb-txt">Pick a farm to see what's growing and start a new planting.</div>
       </div>
-    </div>
+    ` : `
+      <div style="padding:16px 18px 6px">
+        <div style="font-size:13px;color:var(--tl);font-weight:600;line-height:1.5;margin-bottom:14px">
+          ${S.farms.length ? 'Pick a farm to manage, or create a new one.' : 'Create your first farm to start planting, raising and tracking your harvests.'}
+        </div>
+      </div>
+    `}
 
     ${S.farms.length ? `
       <div style="padding:0 18px">
         ${S.farms.map(f => {
           const count = (S.myBatches || []).filter(b => b.farmId === f.id).length;
+          const activeCount = (S.myBatches || []).filter(b => b.farmId === f.id && b.stage !== 'harvested').length;
           const isCurrent = f.id === S.currentFarmId;
           return `
             <div class="list-row" style="margin:0 0 10px;${isCurrent ? 'border-color:var(--p);background:var(--p-ll)' : ''}">
               <div class="lr-ic green" onclick="selectFarm('${esc(f.id)}')">🌾</div>
               <div class="lr-tx" onclick="selectFarm('${esc(f.id)}')">
                 <div class="lr-tt">${esc(f.name)}</div>
-                <div class="lr-sb">📍 ${esc(f.city)} · ${count} batch${count === 1 ? '' : 'es'}</div>
+                <div class="lr-sb">📍 ${esc(f.city)} · ${activeCount} growing${count > activeCount ? ` · ${count - activeCount} finished` : ''}</div>
               </div>
               <div class="lr-actions">
                 <button class="lr-btn edit" onclick="event.stopPropagation();selectFarm('${esc(f.id)}').then(()=>openEditFarm());" title="Edit farm">✏️</button>
@@ -2392,7 +2375,7 @@ function renderFarmPicker() {
       <div class="empty" style="padding:20px 24px 10px">
         <div class="e-ic">🌾</div>
         <h3>No farms yet</h3>
-        <p>Create a farm by giving it a name and picking the city it's located in.</p>
+        <p>Create a farm to start planting, raising and tracking your harvests.</p>
       </div>
     `}
 
@@ -2404,7 +2387,7 @@ function renderFarmPicker() {
 }
 
 /* ============================================================
-   FARM
+   FARM — Plant tab now shows active crops + "Plant or Raise" button
    ============================================================ */
 window.switchFarmTab = (tab) => { S.farmTab = tab; route(); };
 
@@ -2446,9 +2429,6 @@ function renderFarm() {
         <button class="tb-btn danger" onclick="confirmDeleteFarm()" title="Delete farm">
           <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
         </button>
-        <button class="tb-btn" onclick="startPlantFlow()" title="Plant / Raise">
-          <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg>
-        </button>
       </div>
     </div>
 
@@ -2475,23 +2455,32 @@ function renderFarm() {
 
 function renderFarmPlant() {
   const farmBatches = currentFarmBatches();
+  const activeBatches = farmBatches.filter(b => b.stage !== 'harvested');
+  const finishedCount = farmBatches.length - activeBatches.length;
+
   return `
   <div style="padding:0 18px 18px">
+    <!-- Plant or Raise button -->
     <div class="service-hero" onclick="startPlantFlow()" style="margin-bottom:16px">
       <div class="sh-bg"></div>
       <div class="sh-art">🌱</div>
       <div class="sh-cta">Start</div>
       <div class="sh-content">
-        <div class="sh-title"><span class="sh-ic">🌱</span>New Planting</div>
+        <div class="sh-title"><span class="sh-ic">🌱</span>Plant or Raise</div>
         <div class="sh-sub">Crops · Livestock · Fisheries</div>
       </div>
     </div>
-    <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Recent Plantings</div>
-    ${farmBatches.length ? farmBatches.slice(0,5).map(b => renderBatchCard(b)).join('') : `
+
+    <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">
+      <span>Growing on this farm (${activeBatches.length})</span>
+      ${finishedCount ? `<span style="font-weight:600;text-transform:none;letter-spacing:0;color:var(--tm);font-size:11px">· ${finishedCount} finished</span>` : ''}
+    </div>
+
+    ${activeBatches.length ? activeBatches.map(b => renderBatchCard(b)).join('') : `
       <div class="empty">
         <div class="e-ic">🌱</div>
-        <h3>No plantings on this farm yet</h3>
-        <p>Tap the card above to record your first crop on this farm.</p>
+        <h3>Nothing growing here yet</h3>
+        <p>Tap the <strong>Plant or Raise</strong> card above to record your first crop, livestock or fish on this farm.</p>
       </div>`}
   </div>`;
 }
@@ -2559,13 +2548,14 @@ function renderBatchCard(b, mode = 'manage') {
 window.openBatch = (id, mode) => showScreen('batch-detail', { id, tab: mode || 'manage' });
 
 /* ============================================================
-   PLANT FLOW
+   PLANT FLOW — startPlantFlow is called from farm page "Plant or Raise" button
    ============================================================ */
 window.startPlantFlow = async () => {
-  if (!S.farms.length) {
-    try {
-      await ensureFarmAsync();
-    } catch (e) { toast('Could not create farm: ' + (e.message || e)); return; }
+  /* If no farm selected, route to farm picker with planting flag */
+  if (!S.farms.length || !S.currentFarmId) {
+    S.plantingFlowMode = true;
+    navTo('farm-picker');
+    return;
   }
   S.plantWizard = { step:1, cropId:null, varietyName:null, length:null, width:null, town:null, animalCount:0 };
   showScreen('plant-loader');
@@ -2597,11 +2587,15 @@ function renderPlantStep1() {
   const allCrops = S.catalogue;
   const categories = ['Field Crops','Pulses','Vegetables','Fruits','Livestock','Poultry','Fisheries'];
   const shown = allCrops.filter(c => categories.includes(c.category));
+  const farm = S.farms.find(f => f.id === S.currentFarmId);
   return `
   <div class="scroll">
     <div class="topbar bordered">
-      <button class="tb-back" onclick="goFarm()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
-      <div class="tb-title">New Planting</div>
+      <button class="tb-back" onclick="showScreen('farm')"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+      <div style="flex:1;min-width:0">
+        <div class="tb-title">New Planting</div>
+        <div style="font-size:11px;color:var(--tl);font-weight:700;margin-top:2px">${esc(farm?.name || 'My Farm')}</div>
+      </div>
     </div>
     ${renderStepsIndicator(1)}
     <div class="step-label">Step 1 of 4</div>
@@ -2671,7 +2665,6 @@ window.selectVariety = (name) => {
   showScreen('plant-step-3');
 };
 
-/* Click outside sheet to close (fixes cancel issues) */
 $varietySheetOverlay.addEventListener('click', e => {
   if (e.target === $varietySheetOverlay) closeVarietySheet();
 });
@@ -3398,7 +3391,6 @@ window.doFinishHarvest = async (batchId) => {
   } catch (e) { toast('Failed: ' + (e.message || e)); }
 };
 
-/* ---- Soil / Irrigation / Spacing ---- */
 window.showSoilInfo = () => {
   $varietySheetContent.innerHTML = `
     <div class="sheet-handle"></div>
@@ -3670,7 +3662,6 @@ function renderPostHarvestGoods(batchId) {
   const currentQty = b.actualBoxes || 0;
   const unit = singularUnit(unitForBatch(b));
 
-  /* init draft images for this batch */
   if (!S.draftImages[batchId]) S.draftImages[batchId] = [];
 
   return `
@@ -3689,7 +3680,7 @@ function renderPostHarvestGoods(batchId) {
       </div>
       <div class="notice-banner">
         <div class="nb-ic">💡</div>
-        <div class="nb-tx">Your listing will be marked <strong>Availability Pending</strong> with a live countdown. After the timer you confirm — buyers then see your name & phone. Add at least <strong>2 photos</strong> so buyers can see your produce.</div>
+        <div class="nb-tx">Your listing will be marked <strong>Availability Pending</strong> with a live countdown. Add at least <strong>2 photos</strong> so buyers can see your produce.</div>
       </div>
     </div>
 
@@ -3727,7 +3718,6 @@ function renderPostHarvestGoods(batchId) {
 
       <div class="fld"><label>Description (optional)</label><textarea id="ph-desc" class="inp" rows="2">Fresh ${esc(b.cropName)} (${esc(b.varietyName)}). ${currentQty} ${esc(pluralUnit(unit, currentQty))} available.</textarea></div>
 
-      <!-- Images section -->
       <div class="img-upload-section" style="margin-left:0;margin-right:0">
         <div class="img-upload-head">
           <div class="img-upload-title">📸 Photos <span style="color:var(--danger)">*</span></div>
@@ -3745,7 +3735,6 @@ function renderPostHarvestGoods(batchId) {
   ${bottomNavHTML()}`;
 }
 
-/* ---- Image upload helpers ---- */
 function renderDraftImageGrid(batchId) {
   const imgs = (S.draftImages[batchId] || []);
   const slots = [];
@@ -3904,7 +3893,6 @@ window.submitMarketPost = async (ev, batchId) => {
 
     const newRef = push(ref(db, 'marketListings'));
     await set(newRef, data);
-    // Clear draft images for this batch
     delete S.draftImages[batchId];
     toast('Listed! Countdown started ⏱');
     setTimeout(() => navTo('marketplace'), 600);
@@ -4560,7 +4548,6 @@ function renderMyPostCard(l, isHistory) {
   </div>`;
 }
 
-/* --- NEW: Delete history --- */
 window.confirmDeleteHistory = () => {
   const mine = (S.marketplace || []).filter(l => l.seller_id === S.user?.uid);
   const history = mine.filter(l => l.status === 'removed' || l.availabilityStatus === 'removed' || l.availabilityStatus === 'sold' || l.status === 'sold');
@@ -5036,7 +5023,7 @@ function renderDelivery() {
 }
 
 /* ============================================================
-   PROFILE (with theme toggle)
+   PROFILE
    ============================================================ */
 function renderProfile() {
   const p = S.profile || {};
@@ -5057,7 +5044,6 @@ function renderProfile() {
       </div>
     </div>
 
-    <!-- Theme toggle -->
     <div style="padding:0 18px 14px">
       <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Appearance</div>
       <div class="theme-switch-wrap">
@@ -5469,7 +5455,6 @@ async function startApp() {
     if (!user) { window.location.href = 'index.html'; return; }
 
     S.user = user;
-    // Load theme from localStorage (already applied to <html>)
     S.theme = document.documentElement.getAttribute('data-theme') || 'light';
 
     await loadAgriKnowledge();
