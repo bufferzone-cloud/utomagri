@@ -7,10 +7,10 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="U-AGRI">
-<meta name="application-name" content="U-AGRI">
-<meta name="description" content="U-AGRI — Farm · Buy · Sell · Deliver">
-<title>U-AGRI · Farm to Table</title>
+<meta name="apple-mobile-web-app-title" content="UTOM">
+<meta name="application-name" content="UTOM">
+<meta name="description" content="UTOM — Farm · Buy · Sell · Deliver">
+<title>UTOM · Farm · Buy · Sell · Deliver</title>
 
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="logo.png">
@@ -238,13 +238,17 @@ body {
     -webkit-user-select: none;
 }
 
-.icon-circle.tomato   { background: linear-gradient(145deg, #ff8a8a 0%, #e63946 55%, #b91c1c 100%); }
-.icon-circle.maize    { background: linear-gradient(145deg, #ffe066 0%, #f4a100 55%, #c47b00 100%); }
-.icon-circle.cow      { background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 55%, #5c3a22 100%); }
-.icon-circle.onion    { background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 55%, #6b21a8 100%); }
-.icon-circle.apple    { background: linear-gradient(145deg, #fca5a5 0%, #dc2626 55%, #991b1b 100%); }
-.icon-circle.delivery { background: linear-gradient(145deg, #93c5fd 0%, #2563eb 55%, #1e40af 100%); }
-.icon-circle.pharmacy { background: linear-gradient(145deg, #6ee7b7 0%, #10b981 55%, #047857 100%); }
+/* ---- UTOM letter icon (loader) ---- */
+.icon-circle.letter-icon {
+    background: linear-gradient(145deg, #12903e 0%, var(--primary) 55%, var(--primary-dark) 100%);
+    color: #ffffff;
+    font-weight: 900;
+    font-size: clamp(72px, 30vw, 116px);
+    font-family: inherit;
+    letter-spacing: -0.05em;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+    line-height: 1;
+}
 
 .icon-circle.logo-circle {
     background: linear-gradient(145deg, #ffffff 0%, #f3fbf5 60%, #d7f0df 100%);
@@ -256,23 +260,6 @@ body {
     object-fit: contain;
     filter: drop-shadow(0 6px 14px rgba(15, 122, 52, 0.28));
 }
-
-.plus-icon {
-    position: relative;
-    display: block;
-    width: 1em;
-    height: 1em;
-    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
-}
-.plus-icon::before,
-.plus-icon::after {
-    content: '';
-    position: absolute;
-    background: #ffffff;
-    border-radius: 0.09em;
-}
-.plus-icon::before { left: 50%; top: 0; width: 0.28em; height: 100%; transform: translateX(-50%); }
-.plus-icon::after  { top: 50%; left: 0; height: 0.28em; width: 100%; transform: translateY(-50%); }
 
 .loader-brand {
     position: relative;
@@ -431,14 +418,17 @@ body {
     user-select: none;
     transition: transform 0.3s var(--ease);
 }
-.hero-icon-chip.tomato   { background: linear-gradient(145deg, #ff8a8a 0%, #e63946 100%); }
-.hero-icon-chip.maize    { background: linear-gradient(145deg, #ffe066 0%, #f4a100 100%); }
-.hero-icon-chip.cow      { background: linear-gradient(145deg, #c9a487 0%, #8b5e3c 100%); }
-.hero-icon-chip.onion    { background: linear-gradient(145deg, #d8b4fe 0%, #9333ea 100%); }
-.hero-icon-chip.apple    { background: linear-gradient(145deg, #fca5a5 0%, #dc2626 100%); }
-.hero-icon-chip.delivery { background: linear-gradient(145deg, #93c5fd 0%, #2563eb 100%); }
-.hero-icon-chip.pharmacy { background: linear-gradient(145deg, #6ee7b7 0%, #10b981 100%); }
-.hero-icon-chip .plus-icon { width: 0.9em; height: 0.9em; }
+
+/* ---- UTOM letter chip (splash) ---- */
+.hero-icon-chip.letter-chip {
+    background: linear-gradient(145deg, #12903e 0%, var(--primary) 55%, var(--primary-dark) 100%);
+    color: #ffffff;
+    font-weight: 900;
+    font-size: clamp(22px, 7.5vw, 30px);
+    font-family: inherit;
+    letter-spacing: -0.03em;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
 
 .splash-btn-container {
     position: absolute;
@@ -1343,20 +1333,17 @@ p  { color: var(--text-light); text-align: center; font-size: var(--fs-base); li
         <div class="loader-blob b2"></div>
 
         <div class="loader-stage">
-            <div class="loader-icon" data-index="0"><div class="icon-circle tomato">🍅</div></div>
-            <div class="loader-icon" data-index="1"><div class="icon-circle maize">🌽</div></div>
-            <div class="loader-icon" data-index="2"><div class="icon-circle cow">🐄</div></div>
-            <div class="loader-icon" data-index="3"><div class="icon-circle onion">🧅</div></div>
-            <div class="loader-icon" data-index="4"><div class="icon-circle apple">🍎</div></div>
-            <div class="loader-icon" data-index="5"><div class="icon-circle delivery">🚚</div></div>
-            <div class="loader-icon" data-index="6"><div class="icon-circle pharmacy"><span class="plus-icon"></span></div></div>
-            <div class="loader-icon" data-index="7">
-                <div class="icon-circle logo-circle"><img src="logo.png" alt="U-AGRI"></div>
+            <div class="loader-icon" data-index="0"><div class="icon-circle letter-icon">U</div></div>
+            <div class="loader-icon" data-index="1"><div class="icon-circle letter-icon">T</div></div>
+            <div class="loader-icon" data-index="2"><div class="icon-circle letter-icon">O</div></div>
+            <div class="loader-icon" data-index="3"><div class="icon-circle letter-icon">M</div></div>
+            <div class="loader-icon" data-index="4">
+                <div class="icon-circle logo-circle"><img src="logo.png" alt="UTOM"></div>
             </div>
         </div>
 
         <div class="loader-brand">
-            <h1>UTOM-AGRI</h1>
+            <h1>UTOM</h1>
             <p>Farm · Buy · Sell · Deliver</p>
         </div>
 
@@ -1370,28 +1357,25 @@ p  { color: var(--text-light); text-align: center; font-size: var(--fs-base); li
          ============================ -->
     <div id="screen-splash" class="screen">
         <div class="splash-inner">
-            <img src="logo.png" alt="U-AGRI Logo" class="splash-logo"
+            <img src="logo.png" alt="UTOM Logo" class="splash-logo"
                  onerror="this.style.display='none'">
-            <h1 class="splash-title">UTOM-AGRI</h1>
+            <h1 class="splash-title">UTOM</h1>
             <div class="splash-tagline">
                 Farm <span>•</span> Buy <span>•</span> Sell <span>•</span> Deliver
             </div>
 
             <div class="hero-icons-row">
-                <div class="hero-icon-chip tomato">🍅</div>
-                <div class="hero-icon-chip maize">🌽</div>
-                <div class="hero-icon-chip cow">🐄</div>
-                <div class="hero-icon-chip onion">🧅</div>
-                <div class="hero-icon-chip apple">🍎</div>
-                <div class="hero-icon-chip delivery">🚚</div>
-                <div class="hero-icon-chip pharmacy"><span class="plus-icon"></span></div>
+                <div class="hero-icon-chip letter-chip">U</div>
+                <div class="hero-icon-chip letter-chip">T</div>
+                <div class="hero-icon-chip letter-chip">O</div>
+                <div class="hero-icon-chip letter-chip">M</div>
             </div>
         </div>
 
         <div class="splash-btn-container">
             <button id="installBtn" class="btn-install" type="button">
                 <svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
-                Install U-AGRI App
+                Install UTOM App
             </button>
             <button class="btn btn-primary" type="button" data-nav="screen-login">Get Started →</button>
         </div>
@@ -1403,7 +1387,7 @@ p  { color: var(--text-light); text-align: center; font-size: var(--fs-base); li
     <div id="screen-login" class="screen">
         <div class="screen-content">
             <div class="logo-container">
-                <img src="logo.png" alt="U-AGRI Logo" class="logo" onerror="this.style.display='none'">
+                <img src="logo.png" alt="UTOM Logo" class="logo" onerror="this.style.display='none'">
                 <h2>Welcome Back</h2>
                 <p>Log in to your account to continue</p>
             </div>
@@ -1444,7 +1428,7 @@ p  { color: var(--text-light); text-align: center; font-size: var(--fs-base); li
                 <button class="back-btn" type="button" data-back>
                     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="U-AGRI" onerror="this.style.display='none'"></div>
+                <div class="header-logo"><img src="logo.png" alt="UTOM" onerror="this.style.display='none'"></div>
             </div>
 
             <h2>Create Your Account</h2>
@@ -1498,7 +1482,7 @@ p  { color: var(--text-light); text-align: center; font-size: var(--fs-base); li
                 <button class="back-btn" type="button" data-back>
                     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="U-AGRI" onerror="this.style.display='none'"></div>
+                <div class="header-logo"><img src="logo.png" alt="UTOM" onerror="this.style.display='none'"></div>
             </div>
 
             <h2>Customer Account</h2>
@@ -1547,7 +1531,7 @@ p  { color: var(--text-light); text-align: center; font-size: var(--fs-base); li
                 <button class="back-btn" type="button" data-back>
                     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="U-AGRI" onerror="this.style.display='none'"></div>
+                <div class="header-logo"><img src="logo.png" alt="UTOM" onerror="this.style.display='none'"></div>
             </div>
 
             <h2>Farmer Account</h2>
@@ -1624,7 +1608,7 @@ p  { color: var(--text-light); text-align: center; font-size: var(--fs-base); li
                 <button class="back-btn" type="button" data-back>
                     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="U-AGRI" onerror="this.style.display='none'"></div>
+                <div class="header-logo"><img src="logo.png" alt="UTOM" onerror="this.style.display='none'"></div>
             </div>
 
             <h2>Supplier Account</h2>
@@ -1708,7 +1692,7 @@ p  { color: var(--text-light); text-align: center; font-size: var(--fs-base); li
                 <button class="back-btn" type="button" data-back>
                     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="U-AGRI" onerror="this.style.display='none'"></div>
+                <div class="header-logo"><img src="logo.png" alt="UTOM" onerror="this.style.display='none'"></div>
             </div>
 
             <h2>Marketeer Account</h2>
@@ -1785,7 +1769,7 @@ p  { color: var(--text-light); text-align: center; font-size: var(--fs-base); li
                 <button class="back-btn" type="button" data-back>
                     <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 </button>
-                <div class="header-logo"><img src="logo.png" alt="U-AGRI" onerror="this.style.display='none'"></div>
+                <div class="header-logo"><img src="logo.png" alt="UTOM" onerror="this.style.display='none'"></div>
             </div>
 
             <h2>Delivery Partner</h2>
@@ -1864,7 +1848,7 @@ p  { color: var(--text-light); text-align: center; font-size: var(--fs-base); li
     <div id="screen-success" class="screen">
         <div class="screen-content" style="justify-content: center; align-items: center;">
             <div class="logo-container">
-                <img src="logo.png" alt="U-AGRI Logo" class="logo" onerror="this.style.display='none'">
+                <img src="logo.png" alt="UTOM Logo" class="logo" onerror="this.style.display='none'">
             </div>
 
             <div class="success-icon" id="success-icon">
@@ -1946,7 +1930,7 @@ const auth     = getAuth(app);
 const database = getDatabase(app);
 
 /* ============================================================
-   CLOUDINARY CONFIG (same as UTOM)
+   CLOUDINARY CONFIG
    ============================================================ */
 const CLOUD_NAME    = 'dd3lcymrk';
 const UPLOAD_PRESET = 'h3eyhc2o';
@@ -2962,14 +2946,14 @@ if (installBtn) {
         if (!deferredInstallPrompt) return;
         deferredInstallPrompt.prompt();
         const { outcome } = await deferredInstallPrompt.userChoice;
-        console.log('[U-AGRI] Install choice:', outcome);
+        console.log('[UTOM] Install choice:', outcome);
         deferredInstallPrompt = null;
         installBtn.classList.remove('show');
     });
 }
 
 window.addEventListener('appinstalled', () => {
-    console.log('[U-AGRI] App installed');
+    console.log('[UTOM] App installed');
     deferredInstallPrompt = null;
     if (installBtn) installBtn.classList.remove('show');
 });
@@ -2980,8 +2964,8 @@ window.addEventListener('appinstalled', () => {
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js')
-            .then(reg => console.log('[U-AGRI] SW registered:', reg.scope))
-            .catch(err => console.warn('[U-AGRI] SW registration skipped:', err.message));
+            .then(reg => console.log('[UTOM] SW registered:', reg.scope))
+            .catch(err => console.warn('[UTOM] SW registration skipped:', err.message));
     });
 }
 
