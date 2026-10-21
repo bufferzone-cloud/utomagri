@@ -1341,7 +1341,6 @@ a{color:inherit;text-decoration:none;}
 }
 .dpc-call-btn.disabled svg{fill:var(--tm);}
 
-/* Delivery Detail Page */
 .delivery-detail-hero{
   margin:0 18px 16px;padding:26px 22px 22px;
   border-radius:var(--r-2xl);
@@ -1578,6 +1577,7 @@ const S = {
   agroProducts: [],
   agroProductsUnsub: null,
   agroTab: 'all',
+  agroSearch: '',
   countdownTimer: null,
   pendingCheckTimer: null,
   promptedListings: {},
@@ -1591,11 +1591,11 @@ const S = {
   plantingFlowMode: false,
   tempFarmPhoto: '',
   _finishing: false,
+  _submittingOrder: false,
   previewYear: null,
   previewCity: null,
   previewMarket: null,
   previewCrop: null,
-  /* NEW: delivery vehicles */
   allDeliveryPartners: [],
   deliveryPartnersUnsub: null,
   deliveryVehicleFilter: 'all'
@@ -1764,7 +1764,7 @@ function currentFarmBatches() {
 }
 
 /* ============================================================
-   DELIVERY PARTNER HELPERS (NEW)
+   DELIVERY PARTNER HELPERS
    ============================================================ */
 const VEHICLE_TYPES = [
   { key: 'all',     em: '🚚', lb: 'All',     db: 'all' },
@@ -2555,9 +2555,9 @@ function updateNav(id) {
   const map = { home:'home', farm:'farm', market:'market', delivery:'delivery', profile:'profile' };
   let key = id;
   if (['plant-loader','plant-step-1','plant-step-3','plant-step-4','plant-confirm','plant-success','batch-detail','harvest-record','post-harvest-goods','selected-crop-analysis','farm-picker'].includes(id)) key = 'farm';
-  if (['marketplace','product-detail','buy-supplies','supplier-cart','supplier-checkout','edit-listing','preview-market'].includes(id)) key = 'market';
+  if (['marketplace','product-detail','buy-supplies','supplier-cart','supplier-checkout','edit-listing','preview-market','agro-dealers'].includes(id)) key = 'market';
   if (['delivery-history','request-delivery','delivery-detail'].includes(id)) key = 'delivery';
-  if (['profile','weather','analysis','government','follow-ups','my-posts','explore','catalogue-detail','market-analysis','weather-detail','farm-analysis','farmers-by-city','agro-dealers'].includes(id)) key = 'profile';
+  if (['profile','weather','analysis','government','follow-ups','my-posts','explore','catalogue-detail','market-analysis','weather-detail','farm-analysis','farmers-by-city'].includes(id)) key = 'profile';
   nav.querySelectorAll('.bn').forEach(b => b.classList.toggle('active', map[key] === b.dataset.nav));
 }
 
@@ -2653,7 +2653,7 @@ function startNotificationsListener() {
 }
 
 /* ============================================================
-   DELIVERY PARTNERS LISTENER (NEW)
+   DELIVERY PARTNERS LISTENER
    ============================================================ */
 function startDeliveryPartnersListener() {
   if (S.deliveryPartnersUnsub) S.deliveryPartnersUnsub();
@@ -2800,7 +2800,7 @@ function startAgroProductsListener() {
     const arr = Object.entries(data).map(([id,v]) => ({ id, ...v }));
     arr.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
     S.agroProducts = arr;
-    if (S.screen === 'agro-dealers') route();
+    if (['agro-dealers', 'product-detail', 'supplier-cart', 'supplier-checkout'].includes(S.screen)) route();
   });
 }
 
@@ -2829,6 +2829,9 @@ function route() {
     case 'marketplace': el.innerHTML = renderMarketplace(); break;
     case 'my-posts': el.innerHTML = renderMyPosts(); break;
     case 'agro-dealers': el.innerHTML = renderAgroDealers(); break;
+    case 'product-detail': el.innerHTML = renderProductDetail(); break;
+    case 'supplier-cart': el.innerHTML = renderSupplierCart(); break;
+    case 'supplier-checkout': el.innerHTML = renderSupplierCheckout(); break;
     case 'delivery': el.innerHTML = renderDelivery(); break;
     case 'delivery-detail': el.innerHTML = renderDeliveryDetail(S.screenData.id); break;
     case 'profile': el.innerHTML = renderProfile(); break;
@@ -3825,7 +3828,6 @@ function renderBatchDetail(id, tab) {
   const unit = unitForBatch(b);
   const unitNote = getHarvestUnit(b.cropName, b.category).note;
 
-  const isPlantTab = tab === 'plant';
   const isManageTab = !tab || tab === 'manage';
   const isHarvestTab = tab === 'harvest' || tab === 'harvested';
 
@@ -4427,7 +4429,7 @@ function renderHarvestRecord(id) {
 }
 
 /* ============================================================
-   POST HARVEST TO MARKET (2-photo upload)
+   POST HARVEST TO MARKET
    ============================================================ */
 function renderPostHarvestGoods(batchId) {
   const b = S.myBatches.find(x => x.id === batchId);
@@ -5478,6 +5480,348 @@ window.contactSeller = (sellerId) => {
 };
 
 /* ============================================================
+   AGRO DEALERS (FARMER VIEW) — NEW
+   ============================================================ */
+window.setAgroTab = (tab) => { S.agroTab = tab; route(); };
+window.onAgroSearch = (v) => {
+  S.agroSearch = v;
+  clearTimeout(window._agroSearchTimer);
+  window._agroSearchTimer = setTimeout(() => {
+    route();
+    const el = document.getElementById('agro-search');
+    if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
+  }, 220);
+};
+window.openAgroProduct = (id) => showScreen('product-detail', { id });
+
+window.addToCart = (productId) => {
+  const p = (S.agroProducts || []).find(x => x.id === productId);
+  if (!p) { toast('Product not found'); return; }
+  if (p.available === false) { toast('Product unavailable'); return; }
+  if (p.stock != null && Number(p.stock) === 0) { toast('Out of stock'); return; }
+
+  const existing = S.cart.find(it => it.product.id === productId);
+  if (existing) existing.qty++;
+  else S.cart.push({ product: p, qty: 1 });
+
+  updateCartFloat();
+  toast(`✓ Added ${p.name}`);
+};
+
+window.updateCartQty = (productId, delta) => {
+  const idx = S.cart.findIndex(it => it.product.id === productId);
+  if (idx < 0) return;
+  S.cart[idx].qty += delta;
+  if (S.cart[idx].qty <= 0) S.cart.splice(idx, 1);
+  updateCartFloat();
+  if (S.screen === 'supplier-cart') route();
+};
+
+window.callSeller = (phone, name) => {
+  if (!phone) { toast('No phone number'); return; }
+  const clean = String(phone).replace(/[^\d+]/g, '');
+  modal(`
+    <h3>📞 Call ${esc(name || 'Dealer')}?</h3>
+    <p style="font-size:16px;font-weight:900;color:var(--td);margin:8px 0">${esc(phone)}</p>
+    <p style="font-size:12px;color:var(--tl)">Call the dealer to ask about this product.</p>
+    <div class="mc-actions">
+      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+      <a class="btn btn-p" href="tel:${esc(clean)}" onclick="setTimeout(closeModal,300)" style="text-decoration:none">📞 Call Now</a>
+    </div>
+  `);
+};
+
+window.submitOrder = async () => {
+  if (S._submittingOrder) return;
+  const btn = document.getElementById('co-submit');
+  if (btn) { btn.disabled = true; btn.textContent = 'Placing…'; }
+  const restore = () => { if (btn) { btn.disabled = false; btn.textContent = 'Place Order ✓'; } };
+
+  try {
+    const name = (document.getElementById('co-name')?.value || '').trim();
+    const phone = (document.getElementById('co-phone')?.value || '').trim();
+    const notes = (document.getElementById('co-notes')?.value || '').trim();
+
+    if (!name) { toast('Enter your name'); restore(); return; }
+    if (!phone) { toast('Enter phone'); restore(); return; }
+    if (!S.cart.length) { toast('Cart is empty'); navTo('agro-dealers'); return; }
+
+    S._submittingOrder = true;
+
+    const items = S.cart.map(it => ({
+      productId: it.product.id,
+      productName: it.product.name,
+      sellerId: it.product.sellerId,
+      sellerName: it.product.sellerName,
+      price: it.product.price,
+      unit: it.product.unit,
+      qty: it.qty,
+      subtotal: Number(it.product.price) * it.qty
+    }));
+    const total = items.reduce((s, i) => s + i.subtotal, 0);
+
+    const newRef = push(ref(db, 'orders'));
+    await set(newRef, {
+      buyerId: S.user.uid,
+      buyerName: name,
+      buyerPhone: phone,
+      buyerCity: S.weatherCity || S.userLocation,
+      notes,
+      items,
+      total,
+      status: 'pending',
+      createdAt: nowMs()
+    });
+
+    S.cart = [];
+    updateCartFloat();
+    modal(`
+      <h3>✅ Order Placed!</h3>
+      <p>Your order has been sent to the dealer${items.length > 1 ? 's' : ''}. They'll contact you on <strong>${esc(phone)}</strong> to confirm delivery.</p>
+      <div class="mc-actions">
+        <button class="btn btn-p" onclick="closeModal();navTo('agro-dealers')">Keep Shopping</button>
+      </div>
+    `);
+  } catch (e) {
+    toast('Failed: ' + (e.message || e));
+    restore();
+  } finally {
+    S._submittingOrder = false;
+  }
+};
+
+function renderAgroDealers() {
+  const all = S.agroProducts || [];
+  const products = all.filter(p => p.available !== false);
+  const search = (S.agroSearch || '').toLowerCase().trim();
+  const tab = S.agroTab || 'all';
+
+  let filtered = products.slice();
+  if (search) {
+    filtered = filtered.filter(p =>
+      String(p.name || '').toLowerCase().includes(search) ||
+      String(p.sellerName || '').toLowerCase().includes(search) ||
+      String(p.cropTag || '').toLowerCase().includes(search) ||
+      String(p.category || '').toLowerCase().includes(search)
+    );
+  }
+  if (tab !== 'all') filtered = filtered.filter(p => p.category === tab);
+
+  const categories = [...new Set(products.map(p => p.category).filter(Boolean))].sort();
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goHome()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+      <div class="tb-title">Agro Dealers</div>
+    </div>
+
+    <div style="padding:0 18px 12px">
+      <input id="agro-search" class="inp" style="width:100%" placeholder="🔍 Search products or dealers…" value="${esc(S.agroSearch || '')}" oninput="onAgroSearch(this.value)">
+    </div>
+
+    <div class="chips-row">
+      <button class="chip ${tab === 'all' ? 'active' : ''}" onclick="setAgroTab('all')">All</button>
+      ${categories.map(c => `<button class="chip ${tab === c ? 'active' : ''}" onclick="setAgroTab('${esc(c)}')">${esc(c)}</button>`).join('')}
+    </div>
+
+    ${filtered.length ? filtered.map(p => renderAgroProductCard(p)).join('') : `
+      <div class="empty">
+        <div class="e-ic">🏪</div>
+        <h3>No products found</h3>
+        <p>${search || tab !== 'all' ? 'Try a different search or category.' : 'Agro dealers will show their products here.'}</p>
+      </div>
+    `}
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+function renderAgroProductCard(p) {
+  const stock = p.stock;
+  const stockNum = stock != null ? Number(stock) : null;
+  const outOfStock = stockNum === 0;
+  const lowStock = stockNum != null && stockNum > 0 && stockNum < 10;
+
+  return `
+  <div class="market-card" onclick="openAgroProduct('${esc(p.id)}')">
+    <div class="mc-thumb">
+      ${p.photoUrl ? `<img src="${esc(p.photoUrl)}" style="width:100%;height:100%;object-fit:cover;border-radius:16px">` : pickIcon(p.name)}
+    </div>
+    <div class="mc-body">
+      <div style="display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:800;color:var(--p);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">
+        🏪 ${esc(p.sellerName || 'Dealer')}
+      </div>
+      <div class="mc-title">${esc(p.name)}</div>
+      <div class="mc-meta">${esc(p.category || '')}${p.cropTag ? ' · ' + esc(p.cropTag) : ''}</div>
+      <div class="mc-price"><strong>${fmtZMK(p.price)}</strong><small>/ ${esc(p.unit || 'unit')}</small></div>
+      ${outOfStock ? `<div style="font-size:10.5px;color:var(--danger);font-weight:800;margin-top:4px">● Out of stock</div>` : ''}
+      ${lowStock ? `<div style="font-size:10.5px;color:var(--warn);font-weight:800;margin-top:4px">⚠ Only ${stockNum} left</div>` : ''}
+    </div>
+    <div class="mc-side">
+      ${!outOfStock
+        ? `<button class="lr-btn edit" style="background:var(--p);color:#fff;border-color:var(--p);width:36px;height:36px" onclick="event.stopPropagation();addToCart('${esc(p.id)}')" title="Add to cart">+</button>`
+        : ''}
+    </div>
+  </div>`;
+}
+
+function renderProductDetail() {
+  const p = (S.agroProducts || []).find(x => x.id === S.screenData.id);
+  if (!p) {
+    return `<div class="scroll">
+      <div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button><div class="tb-title">Product</div></div>
+      <div class="empty"><div class="e-ic">📦</div><h3>Product not found</h3></div>
+    </div>${bottomNavHTML()}`;
+  }
+
+  const stock = p.stock;
+  const stockNum = stock != null ? Number(stock) : null;
+  const outOfStock = stockNum === 0;
+  const lowStock = stockNum != null && stockNum > 0 && stockNum < 10;
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+      <div class="tb-title">Product Details</div>
+    </div>
+
+    <div class="detail-hero" style="background:${p.photoUrl ? '#000' : gradFor(p.name)}">
+      ${p.photoUrl ? `<img src="${esc(p.photoUrl)}" style="width:100%;height:100%;object-fit:cover">` : pickIcon(p.name)}
+    </div>
+
+    <div style="padding:18px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:10px 14px;background:linear-gradient(135deg,var(--p-l),var(--p-ll));border:1px solid rgba(15,122,52,.2);border-radius:var(--r-lg)">
+        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(145deg,#d1fae5,#10b981);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;flex-shrink:0;overflow:hidden">
+          ${p.sellerLogo ? `<img src="${esc(p.sellerLogo)}" style="width:100%;height:100%;object-fit:cover">` : initials(p.sellerName || 'Dealer')}
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:10px;font-weight:800;color:var(--p);text-transform:uppercase;letter-spacing:.04em">Sold by</div>
+          <div style="font-size:14px;font-weight:900;color:var(--p-d);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.sellerName || 'Agro Dealer')}</div>
+          <div style="font-size:11px;color:var(--p);font-weight:600;margin-top:1px">📍 ${esc(p.city || '—')}</div>
+        </div>
+        ${p.sellerPhone ? `<a href="tel:${esc(p.sellerPhone)}" onclick="event.stopPropagation()" style="width:38px;height:38px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;text-decoration:none">
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        </a>` : ''}
+      </div>
+
+      <h1 style="font-size:22px;font-weight:900;letter-spacing:-.03em;color:var(--td);margin-bottom:6px">${esc(p.name)}</h1>
+      <div style="font-size:12px;color:var(--tl);font-weight:700;margin-bottom:14px">${esc(p.category || '')}${p.cropTag ? ' · ' + esc(p.cropTag) : ''}</div>
+
+      <div class="box-estimate-card" style="margin:0 0 14px">
+        <div class="bec-label">💰 Price</div>
+        <div class="bec-value">${fmtZMK(p.price)}</div>
+        <div class="bec-unit">per ${esc(p.unit || 'unit')}</div>
+        ${outOfStock ? `<div class="bec-range" style="color:var(--danger)">● Out of stock</div>` : lowStock ? `<div class="bec-range">⚠ Only <strong>${stockNum}</strong> left in stock</div>` : stockNum != null ? `<div class="bec-range">✓ <strong>${stockNum}</strong> in stock</div>` : ''}
+      </div>
+
+      ${p.description ? `<div class="info-block" style="margin-bottom:14px"><strong>Details:</strong> ${esc(p.description)}</div>` : ''}
+
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <button class="btn btn-s" style="flex:1" onclick="callSeller('${esc(p.sellerPhone || '')}','${esc(p.sellerName || '')}')">📞 Call Dealer</button>
+        <button class="btn btn-p" style="flex:1" ${outOfStock ? 'disabled style="opacity:.5"' : ''} onclick="addToCart('${esc(p.id)}')">+ Add to Cart</button>
+      </div>
+
+      <div style="height:8px"></div>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+function renderSupplierCart() {
+  const items = S.cart || [];
+
+  if (!items.length) {
+    return `<div class="scroll">
+      <div class="topbar bordered">
+        <button class="tb-back" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+        <div class="tb-title">Cart</div>
+      </div>
+      <div class="empty">
+        <div class="e-ic">🛒</div>
+        <h3>Your cart is empty</h3>
+        <p>Browse agro dealers to add products.</p>
+        <button class="btn btn-p" style="max-width:240px;margin:14px auto 0" onclick="navTo('agro-dealers')">Browse Agro Dealers</button>
+      </div>
+    </div>${bottomNavHTML()}`;
+  }
+
+  const total = items.reduce((s, it) => s + (Number(it.product.price) * it.qty), 0);
+
+  return `<div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+      <div class="tb-title">Cart (${items.length})</div>
+    </div>
+
+    <div style="padding:14px 18px">
+      ${items.map(it => {
+        const p = it.product;
+        return `
+        <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);margin-bottom:10px;box-shadow:var(--sh-xs)">
+          <div style="width:56px;height:56px;border-radius:12px;background:var(--sf2);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;overflow:hidden">
+            ${p.photoUrl ? `<img src="${esc(p.photoUrl)}" style="width:100%;height:100%;object-fit:cover">` : pickIcon(p.name)}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:10px;font-weight:800;color:var(--p);text-transform:uppercase;letter-spacing:.04em">🏪 ${esc(p.sellerName || 'Dealer')}</div>
+            <div style="font-size:13px;font-weight:800;color:var(--td);line-height:1.2;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.name)}</div>
+            <div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:2px">${fmtZMK(p.price)} / ${esc(p.unit || 'unit')}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+            <button onclick="updateCartQty('${esc(p.id)}',-1)" style="width:28px;height:28px;border-radius:50%;background:var(--sf2);border:1px solid var(--bd);font-weight:900;font-size:14px;color:var(--td)">−</button>
+            <span style="min-width:24px;text-align:center;font-weight:900;font-size:14px;color:var(--td)">${it.qty}</span>
+            <button onclick="updateCartQty('${esc(p.id)}',1)" style="width:28px;height:28px;border-radius:50%;background:var(--sf2);border:1px solid var(--bd);font-weight:900;font-size:14px;color:var(--td)">+</button>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <div style="padding:0 18px 18px">
+      <div style="display:flex;justify-content:space-between;padding:14px 0;border-top:1px solid var(--bd);font-size:16px;font-weight:900;color:var(--td);margin-bottom:14px">
+        <span>Total</span>
+        <span style="color:var(--p-d)">${fmtZMK(total)}</span>
+      </div>
+      <button class="btn btn-p" onclick="navTo('supplier-checkout')">Checkout →</button>
+      <button class="btn btn-s" style="margin-top:8px" onclick="navTo('agro-dealers')">Continue Shopping</button>
+    </div>
+  </div>${bottomNavHTML()}`;
+}
+
+function renderSupplierCheckout() {
+  const items = S.cart || [];
+  if (!items.length) {
+    setTimeout(() => navTo('supplier-cart'), 100);
+    return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button><div class="tb-title">Checkout</div></div></div>`;
+  }
+
+  const total = items.reduce((s, it) => s + (Number(it.product.price) * it.qty), 0);
+  const p = S.profile || {};
+  const name = ((p.firstName || '') + ' ' + (p.lastName || '')).trim();
+  const phone = p.phone || p.phoneNumber || '';
+
+  return `<div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+      <div class="tb-title">Checkout</div>
+    </div>
+
+    <div class="frm" style="padding-top:14px">
+      <div class="fld"><label>Your Name</label><input id="co-name" class="inp" value="${esc(name)}" placeholder="Full name"></div>
+      <div class="fld"><label>Phone Number</label><input id="co-phone" class="inp" type="tel" value="${esc(phone)}" placeholder="e.g. 0977 123 456"></div>
+      <div class="fld"><label>Delivery Address / Notes</label><textarea id="co-notes" class="inp" rows="2" placeholder="Where should the dealer deliver? Any special instructions?"></textarea></div>
+
+      <div style="background:var(--sf2);border-radius:var(--r-lg);padding:14px">
+        <div style="font-size:11px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Order Summary</div>
+        ${items.map(it => `<div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;gap:8px"><span style="color:var(--tb);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(it.product.name)} <span style="color:var(--tl)">× ${it.qty}</span></span><span style="font-weight:800;color:var(--td);white-space:nowrap">${fmtZMK(Number(it.product.price) * it.qty)}</span></div>`).join('')}
+        <div style="display:flex;justify-content:space-between;font-size:15px;padding-top:10px;margin-top:8px;border-top:1px solid var(--bd);font-weight:900"><span>Total</span><span style="color:var(--p-d)">${fmtZMK(total)}</span></div>
+      </div>
+
+      <button class="btn btn-p" id="co-submit" onclick="submitOrder()">Place Order ✓</button>
+    </div>
+  </div>${bottomNavHTML()}`;
+}
+
+/* ============================================================
    MARKET ANALYSIS
    ============================================================ */
 window.setAnalysisMarket = (v) => { S.analysisMarket = v; route(); };
@@ -5779,7 +6123,7 @@ function renderPreviewMarket() {
 }
 
 /* ============================================================
-   DELIVERY VEHICLES (NEW PAGE)
+   DELIVERY VEHICLES
    ============================================================ */
 window.setDeliveryVehicleFilter = (type) => {
   S.deliveryVehicleFilter = type;
@@ -5797,10 +6141,8 @@ function renderDelivery() {
 
   const allPartners = S.allDeliveryPartners || [];
 
-  // All partners in city (across all vehicle types)
   const inCityAll = allPartners.filter(p => partnerMatchesCity(p, farmerCity, farmerCoords));
 
-  // Partners filtered by vehicle type
   const pool = filter === 'all'
     ? inCityAll
     : inCityAll.filter(p => p.vehicleType === filter);
@@ -5811,7 +6153,6 @@ function renderDelivery() {
   available.sort((a,b) => partnerDisplayName(a).localeCompare(partnerDisplayName(b)));
   unavailable.sort((a,b) => partnerDisplayName(a).localeCompare(partnerDisplayName(b)));
 
-  // Filter pill counts (of in-city partners, per type)
   const pillDefs = [
     { key: 'all',     em: '🚚', lb: 'All',     count: inCityAll.length },
     { key: 'bicycle', em: '🚲', lb: 'Bicycle', count: inCityAll.filter(p => p.vehicleType === 'bicycle').length },
@@ -6038,7 +6379,6 @@ function renderDeliveryDetail(id) {
 }
 
 window.trackDeliveryCall = (partnerId) => {
-  // Placeholder for telemetry — not required but useful
   try { console.log('[AgriCare] call_delivery_partner', partnerId); } catch (e) {}
 };
 
