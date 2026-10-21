@@ -87,7 +87,7 @@ a{color:inherit;text-decoration:none}
 .hero-card::before{content:'';position:absolute;top:-30px;right:-20px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,255,255,.22) 0%,transparent 70%);border-radius:50%;pointer-events:none}
 .hc-head{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1;gap:12px}
 .hc-profile{display:flex;align-items:center;gap:12px}
-.hc-avatar{width:48px;height:48px;border-radius:50%;overflow:hidden;background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;flex-shrink:0}
+.hc-avatar{width:48px;height:48px;border-radius:50%;overflow:hidden;background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;flex-shrink:0;background-size:cover;background-position:center}
 .hc-avatar img{width:100%;height:100%;object-fit:cover}
 .hc-greet{font-size:12px;font-weight:700;opacity:.9;letter-spacing:.02em}
 .hc-name{font-size:20px;font-weight:900;letter-spacing:-.02em;line-height:1.2;margin-top:2px}
@@ -123,7 +123,8 @@ a{color:inherit;text-decoration:none}
 .h-card-mini{width:190px;flex-shrink:0;scroll-snap-align:start;background:#fff;border:1px solid var(--bd);border-radius:16px;padding:12px;box-shadow:var(--sh-sm);transition:all .2s var(--e);cursor:pointer}
 .h-card-mini:active{transform:scale(.97);box-shadow:var(--sh-md)}
 .hcm-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.hcm-thumb{width:36px;height:36px;border-radius:11px;background:var(--sf2);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.hcm-thumb{width:36px;height:36px;border-radius:11px;background:var(--sf2);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.05);overflow:hidden}
+.hcm-thumb img{width:100%;height:100%;object-fit:cover}
 .hcm-info{flex:1;min-width:0}
 .hcm-name{font-size:13px;font-weight:900;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-.01em}
 .hcm-sub{font-size:10px;color:var(--tl);font-weight:600;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -133,13 +134,18 @@ a{color:inherit;text-decoration:none}
 .hcm-badge{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 7px;border-radius:999px;background:var(--ok-soft);color:#065f46;white-space:nowrap}
 .hcm-badge.pending{background:var(--warn-soft);color:#92400e}
 
-.opp-card-mini{width:142px;flex-shrink:0;scroll-snap-align:start;padding:14px;border-radius:16px;box-shadow:var(--sh-sm);display:flex;flex-direction:column;gap:2px;cursor:pointer;transition:all .2s var(--e)}
+.opp-card-mini{width:154px;flex-shrink:0;scroll-snap-align:start;padding:14px;border-radius:16px;box-shadow:var(--sh-sm);display:flex;flex-direction:column;gap:2px;cursor:pointer;transition:all .2s var(--e)}
 .opp-card-mini:active{transform:scale(.97)}
 .opp-card-mini.tight{background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1.5px solid rgba(22,163,74,.22)}
 .opp-card-mini.coming{background:linear-gradient(135deg,#dbeafe,#bfdbfe);border:1.5px solid rgba(37,99,235,.22)}
 .opp-card-mini.oversupply{background:linear-gradient(135deg,#fee2e2,#fecaca);border:1.5px solid rgba(220,38,38,.22)}
+.opp-card-mini.local{border-width:2.5px;box-shadow:0 8px 20px -8px rgba(15,122,52,.45)}
 .opp-mini-emoji{font-size:22px;line-height:1;margin-bottom:4px}
 .opp-mini-name{font-size:12px;font-weight:900;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.opp-mini-city{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;margin-top:3px;padding:2px 7px;border-radius:999px;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.opp-card-mini.tight .opp-mini-city{background:rgba(6,95,70,.18);color:#065f46}
+.opp-card-mini.coming .opp-mini-city{background:rgba(30,64,175,.18);color:#1e40af}
+.opp-card-mini.oversupply .opp-mini-city{background:rgba(153,27,27,.18);color:#991b1b}
 .opp-mini-num{font-size:20px;font-weight:900;letter-spacing:-.03em;line-height:1.1;margin-top:6px}
 .opp-mini-lb{font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;opacity:.85;margin-top:2px}
 .opp-card-mini.tight .opp-mini-name,.opp-card-mini.tight .opp-mini-num{color:#065f46}
@@ -188,9 +194,11 @@ a{color:inherit;text-decoration:none}
 
 .market-card{margin:0 18px 10px;padding:14px;background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);box-shadow:var(--sh-sm);display:flex;gap:12px;align-items:flex-start;transition:all .2s var(--e);position:relative}
 .market-card:active{transform:scale(.985);box-shadow:var(--sh-md)}
-.mc-thumb{width:60px;height:60px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--sf2);box-shadow:0 3px 10px rgba(0,0,0,.06)}
+.mc-thumb{width:64px;height:64px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--sf2);box-shadow:0 3px 10px rgba(0,0,0,.06);overflow:hidden}
+.mc-thumb img{width:100%;height:100%;object-fit:cover}
 .mc-body{flex:1;min-width:0}
 .mc-title{font-size:14px;font-weight:900;color:var(--td);letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mc-variety{font-size:10.5px;font-weight:800;color:var(--p);margin-top:2px;letter-spacing:.02em;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mc-meta{font-size:11px;color:var(--tl);font-weight:600;margin-top:3px;line-height:1.4}
 .mc-price{display:flex;align-items:baseline;gap:5px;margin-top:6px}
 .mc-price strong{font-size:16px;font-weight:900;letter-spacing:-.02em;color:var(--p-d)}
@@ -208,11 +216,12 @@ a{color:inherit;text-decoration:none}
 
 .plant-card{margin:0 18px 10px;padding:14px;background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);box-shadow:var(--sh-sm);display:flex;gap:12px;align-items:center;transition:all .2s var(--e)}
 .plant-card:active{transform:scale(.985);box-shadow:var(--sh-md)}
-.pc-ic{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,.06)}
+.pc-ic{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,.06);overflow:hidden}
+.pc-ic img{width:100%;height:100%;object-fit:cover}
 .pc-body{flex:1;min-width:0}
 .pc-title{font-size:14px;font-weight:900;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pc-meta{font-size:11px;color:var(--tl);font-weight:600;margin-top:3px;line-height:1.4}
-.pc-farmer{font-size:10.5px;font-weight:800;color:var(--p);margin-top:4px;display:flex;align-items:center;gap:4px}
+.pc-farmer{font-size:10.5px;font-weight:800;color:var(--p);margin-top:4px;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
 
 .circle-cta-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 0 22px}
 .circle-btn{width:82px;height:82px;border-radius:50%;background:linear-gradient(180deg,#12903e,var(--p-d));color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:34px;line-height:1;box-shadow:0 18px 44px -10px var(--p-glow),inset 0 -3px 8px rgba(0,0,0,.18);transition:all .25s var(--e);border:3px solid rgba(255,255,255,.5);position:relative}
@@ -261,7 +270,6 @@ a{color:inherit;text-decoration:none}
 .acr-bar-fill.act{background:linear-gradient(90deg,#93c5fd,#2563eb)}
 .acr-bar-val{width:64px;text-align:right;font-weight:800;color:var(--td);flex-shrink:0}
 
-/* NEW: Analysis filters (farmer-style) */
 .analysis-filters{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:8px 18px 14px}
 .af-box{position:relative;background:#fff;border:1.5px solid var(--bd);border-radius:var(--r-lg);padding:12px 14px;cursor:pointer;box-shadow:var(--sh-xs);transition:all .2s var(--e)}
 .af-box:active{border-color:var(--p);background:var(--p-ll)}
@@ -274,7 +282,8 @@ a{color:inherit;text-decoration:none}
 .ma-section h3{font-size:12.5px;font-weight:900;color:var(--td);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
 
 .trend-card{display:flex;align-items:center;gap:12px;padding:12px 14px;background:linear-gradient(135deg,#fef3c7,#fde68a);border:1.5px solid rgba(180,83,9,.25);border-radius:var(--r-lg);margin-bottom:8px;cursor:pointer}
-.trend-ic{width:44px;height:44px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.trend-ic{width:48px;height:48px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden}
+.trend-ic img{width:100%;height:100%;object-fit:cover}
 .trend-body{flex:1;min-width:0}
 .trend-name{font-size:13px;font-weight:900;color:#92400e;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .trend-market{font-size:10.5px;font-weight:700;color:#b45309;margin-top:2px}
@@ -346,7 +355,7 @@ a{color:inherit;text-decoration:none}
 
 .modal{position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;z-index:500}
 .modal.open{display:flex}
-.modal-card{background:#fff;border-radius:var(--r-2xl);width:100%;max-width:400px;padding:24px;text-align:center;box-shadow:var(--sh-xl);max-height:85vh;overflow-y:auto}
+.modal-card{background:#fff;border-radius:var(--r-2xl);width:100%;max-width:420px;padding:24px;text-align:center;box-shadow:var(--sh-xl);max-height:85vh;overflow-y:auto}
 .modal-card h3{font-size:18px;font-weight:900;color:var(--td);margin-bottom:8px;letter-spacing:-.02em}
 .modal-card p{font-size:13px;color:var(--tl);line-height:1.55;margin-bottom:16px}
 .mc-actions{display:flex;gap:8px;margin-top:8px}
@@ -378,11 +387,11 @@ a{color:inherit;text-decoration:none}
 .menu-list{padding:0 18px 18px}
 .menu-item{display:flex;align-items:center;gap:12px;padding:15px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);margin-bottom:8px;cursor:pointer;transition:all .2s var(--e);box-shadow:var(--sh-xs)}
 .menu-item:active{background:var(--p-l);border-color:var(--p);transform:scale(.985)}
-.mi-ic{width:38px;height:38px;border-radius:50%;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;overflow:hidden;font-weight:900}
+.mi-ic{width:42px;height:42px;border-radius:50%;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;overflow:hidden;font-weight:900;background-size:cover;background-position:center}
 .mi-ic img{width:100%;height:100%;object-fit:cover}
 .mi-tx{flex:1;min-width:0}
 .mi-tt{font-size:13.5px;font-weight:800;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mi-sb{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px}
+.mi-sb{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mi-ar svg{width:16px;height:16px;fill:var(--tm)}
 
 .notice-banner{margin:0 18px 12px;padding:12px 14px;border-radius:var(--r-lg);background:#fef3c7;border:1px solid rgba(180,83,9,.22);display:flex;align-items:center;gap:10px}
@@ -396,6 +405,16 @@ a{color:inherit;text-decoration:none}
 .stage-pill.fruiting{background:#ede9fe;color:#5b21b6}
 .stage-pill.harvesting{background:#ffedd5;color:#9a3412}
 .stage-pill.harvested{background:#f1f5f9;color:#475569}
+
+/* Farm cards in farmer detail */
+.farm-card-mkt{display:flex;gap:12px;padding:12px;background:#fff;border:1px solid var(--bd);border-radius:var(--r-lg);margin:0 18px 8px;box-shadow:var(--sh-xs);align-items:center;transition:all .2s var(--e)}
+.farm-card-mkt:active{transform:scale(.98);background:var(--p-ll);border-color:var(--p)}
+.farm-photo{width:64px;height:64px;border-radius:14px;object-fit:cover;flex-shrink:0;background:var(--sf2);box-shadow:0 3px 10px rgba(0,0,0,.06)}
+.farm-photo-placeholder{width:64px;height:64px;border-radius:14px;background:linear-gradient(145deg,#d1fae5,#10b981);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,.06)}
+.farm-info{flex:1;min-width:0}
+.farm-name{font-size:14px;font-weight:900;color:var(--td);letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.farm-city{font-size:11.5px;color:var(--tl);font-weight:700;margin-top:2px}
+.farm-meta{font-size:10.5px;font-weight:800;color:var(--p);margin-top:4px}
 </style>
 </head>
 <body>
@@ -461,17 +480,14 @@ const S = {
   marketFilter: '__all-city',
   plantedCategory: 'all',
   plantedFilter: '__all-city',
-  /* Market analysis filters */
   analysisYear: 'all',
   analysisCity: 'all',
   analysisCrop: 'all',
   analysisMonth: 'all',
-  /* Preview market filters */
   previewYear: null,
   previewCity: null,
   previewMarket: null,
   previewCrop: null,
-  /* Farm analysis filters */
   farmAnalysisYear: null,
   farmAnalysisCity: 'all',
   busiestOpen: false,
@@ -500,6 +516,14 @@ function fmtZMK(n){ if(n==null||isNaN(n)) return '—'; return 'ZMK ' + Number(n
 function fmtDate(ts){ if(!ts) return '—'; const d = typeof ts==='number'? new Date(ts): new Date(ts); return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); }
 function pad2(n){ return String(n).padStart(2,'0'); }
 function timeUntil(ts){ const diff = ts - Date.now(); if(diff<=0) return 'Ready'; const h=Math.floor(diff/3600000); const m=Math.floor((diff%3600000)/60000); const s=Math.floor((diff%60000)/1000); return `${pad2(h)}:${pad2(m)}:${pad2(s)}`; }
+function singularUnit(u){
+  const sing = { boxes:'box', bags:'bag', sacks:'sack', crates:'crate', bunches:'bunch', heads:'head', pieces:'piece', bundles:'bundle', trays:'tray', birds:'bird', tonnes:'tonne', bales:'bale' };
+  return sing[u] || u;
+}
+function pluralUnit(u, qty){
+  if(qty === 1) return singularUnit(u);
+  return u;
+}
 
 /* ============================================================
    ICONS
@@ -596,6 +620,7 @@ function marketsForCity(city){
 }
 function cityOfListing(l){ return normalizeCity(l.city || ''); }
 function cityOfBatch(b){ return normalizeCity(b.town || b.ownerCity || ''); }
+function detectedCity(){ return normalizeCity(S.weatherCity || S.userLocation); }
 
 /* ============================================================
    WEATHER
@@ -768,9 +793,12 @@ function getCropNameFromListing(l){
   if(l.productName) return l.productName;
   return String(l.title || '').replace(/^\s*Fresh\s+/i, '').replace(/\s*–.*$/, '').trim() || 'Other';
 }
+function listingPhoto(l){
+  return (l.photoUrls && l.photoUrls[0]) ? l.photoUrls[0] : null;
+}
 
 function filterListings(){
-  const city = normalizeCity(S.weatherCity || S.userLocation);
+  const city = detectedCity();
   const nearby = nearbyCities(city);
   const cat = S.marketCategory;
   const filter = S.marketFilter;
@@ -786,7 +814,7 @@ function filterListings(){
   });
 }
 function filterBatches(){
-  const city = normalizeCity(S.weatherCity || S.userLocation);
+  const city = detectedCity();
   const nearby = nearbyCities(city);
   const cat = S.plantedCategory;
   const filter = S.plantedFilter;
@@ -806,7 +834,7 @@ function phoneForBatch(b){
 }
 
 /* ============================================================
-   ANALYSIS COMPUTE (for supply insights / tips)
+   ANALYSIS COMPUTE
    ============================================================ */
 function computeSupplyInsights(){
   const year = S.analysisYear || 'all';
@@ -828,16 +856,27 @@ function computeSupplyInsights(){
 
   const incomingByCrop = {};
   const availableByCrop = {};
+  const citiesByCrop = {};
 
   active.forEach(b => {
     if(b.harvestStart && b.harvestStart <= now + HORIZON){
       const name = b.cropName || 'Other';
       incomingByCrop[name] = (incomingByCrop[name] || 0) + (b.estimatedBoxes || 0);
+      const c = cityOfBatch(b);
+      if(c){
+        if(!citiesByCrop[name]) citiesByCrop[name] = new Set();
+        citiesByCrop[name].add(c);
+      }
     }
   });
   listings.forEach(l => {
-    const name = l.productName || l.title || 'Other';
+    const name = getCropNameFromListing(l);
     availableByCrop[name] = (availableByCrop[name] || 0) + (l.quantity || 0);
+    const c = cityOfListing(l);
+    if(c){
+      if(!citiesByCrop[name]) citiesByCrop[name] = new Set();
+      citiesByCrop[name].add(c);
+    }
   });
 
   const allCrops = new Set([...Object.keys(incomingByCrop), ...Object.keys(availableByCrop)]);
@@ -849,7 +888,8 @@ function computeSupplyInsights(){
     if(available > 0 && incoming > available * 2) status = 'oversupply';
     else if(incoming > 0 && available === 0) status = 'coming';
     else if(available > 0 && incoming < available * 0.5) status = 'tight';
-    return { name, incoming, available, total, status };
+    const cities = citiesByCrop[name] ? [...citiesByCrop[name]] : [];
+    return { name, incoming, available, total, status, cities };
   }).sort((a,b) => (b.incoming + b.available) - (a.incoming + a.available));
 
   const farmerSet = new Set();
@@ -876,48 +916,88 @@ function computeSupplyInsights(){
   };
 }
 
+/* Sort opportunities: detected city first, then by total volume */
+function sortOpportunities(rows){
+  const dc = detectedCity();
+  return [...rows].sort((a, b) => {
+    const aLocal = (a.cities || []).includes(dc) ? 1 : 0;
+    const bLocal = (b.cities || []).includes(dc) ? 1 : 0;
+    if(aLocal !== bLocal) return bLocal - aLocal;
+    return (b.incoming + b.available) - (a.incoming + a.available);
+  });
+}
+
+/* ============================================================
+   FARMERS
+   ============================================================ */
+function farmerFarmsFromUser(u){
+  if(!u || !u.farms) return [];
+  const obj = u.farms || {};
+  return Object.entries(obj).map(([id, v]) => ({ id, ...(v || {}) })).filter(f => f && (f.name || f.photoUrl));
+}
+
 function buildFarmersList(){
   const farmerMap = {};
-  S.batches.forEach(b => {
-    if(!b.ownerId) return;
-    if(!farmerMap[b.ownerId]){
-      const u = S.usersById[b.ownerId] || {};
-      farmerMap[b.ownerId] = {
-        id: b.ownerId,
-        name: (b.ownerName || '').trim() || ((u.firstName||'')+' '+(u.lastName||'')).trim() || 'Farmer',
-        phone: u.phone || u.phoneNumber || '',
-        city: b.town || b.ownerCity || u.city || '',
-        photo: u.profileUrl || '',
+
+  const ensureFarmer = (uid, seed) => {
+    if(!uid) return null;
+    if(!farmerMap[uid]){
+      const u = S.usersById[uid] || {};
+      const farms = farmerFarmsFromUser(u);
+      const farmPhoto = farms.find(f => f.photoUrl)?.photoUrl || '';
+      const profilePhoto = u.profileUrl || '';
+      farmerMap[uid] = {
+        id: uid,
+        name: (seed && seed.name) || ((u.firstName||'')+' '+(u.lastName||'')).trim() || 'Farmer',
+        phone: (seed && seed.phone) || u.phone || u.phoneNumber || '',
+        city: (seed && seed.city) || u.city || '',
+        photo: farmPhoto || profilePhoto,
+        profilePhoto,
+        farmPhoto,
+        farms,
+        farmNames: farms.map(f => f.name).filter(Boolean),
         planted: 0,
         listings: 0
       };
+    } else {
+      const f = farmerMap[uid];
+      if(!f.phone && seed && seed.phone) f.phone = seed.phone;
+      if(!f.name || f.name === 'Farmer'){
+        if(seed && seed.name) f.name = seed.name;
+      }
+      if(!f.city && seed && seed.city) f.city = seed.city;
+      if(!f.farmPhoto){
+        const u = S.usersById[uid] || {};
+        const farms = farmerFarmsFromUser(u);
+        const fp = farms.find(x => x.photoUrl)?.photoUrl;
+        if(fp){ f.farmPhoto = fp; f.photo = fp; }
+        if(!f.farms.length){
+          f.farms = farms;
+          f.farmNames = farms.map(x => x.name).filter(Boolean);
+        }
+      }
     }
+    return farmerMap[uid];
+  };
+
+  S.batches.forEach(b => {
+    if(!b.ownerId) return;
+    ensureFarmer(b.ownerId, { name: b.ownerName, phone: '', city: b.town || b.ownerCity });
     farmerMap[b.ownerId].planted++;
   });
   S.listings.forEach(l => {
     if(!l.seller_id) return;
-    if(!farmerMap[l.seller_id]){
-      const u = S.usersById[l.seller_id] || {};
-      farmerMap[l.seller_id] = {
-        id: l.seller_id,
-        name: l.sellerName || ((u.firstName||'')+' '+(u.lastName||'')).trim() || 'Farmer',
-        phone: l.sellerPhone || u.phone || u.phoneNumber || '',
-        city: l.city || u.city || '',
-        photo: l.sellerPhoto || u.profileUrl || '',
-        planted: 0,
-        listings: 0
-      };
-    }
+    ensureFarmer(l.seller_id, { name: l.sellerName, phone: l.sellerPhone, city: l.city });
     farmerMap[l.seller_id].listings++;
   });
   return Object.values(farmerMap).sort((a,b) => (b.planted + b.listings) - (a.planted + a.listings));
 }
 
 /* ============================================================
-   DROPDOWN SYSTEM
+   DROPDOWN HELPERS
    ============================================================ */
 function getMarketDropdownOptions(){
-  const city = normalizeCity(S.weatherCity || S.userLocation);
+  const city = detectedCity();
   const markets = marketsForCity(city);
   return [
     { value: '__all-city', label: `📍 All ${city} markets` },
@@ -940,24 +1020,20 @@ function getPlantedCropOptions(){
     ...crops.map(c => ({ value: c, label: `${pickIcon(c)} ${c}` }))
   ];
 }
-
-/* Market analysis option lists */
 function getAnalysisMarketOptions(){
   const cities = new Set();
   S.listings.forEach(l => { if(isLiveListing(l) && l.city) cities.add(l.city); });
-  const sorted = [...cities].sort();
   return [
     { value: 'all', label: '📍 All cities' },
-    ...sorted.map(c => ({ value: c, label: `📍 ${c}` }))
+    ...[...cities].sort().map(c => ({ value: c, label: `📍 ${c}` }))
   ];
 }
 function getAnalysisCropOptions(){
   const crops = new Set();
   S.listings.forEach(l => { if(isLiveListing(l)){ const n = getCropNameFromListing(l); if(n) crops.add(n); } });
-  const sorted = [...crops].sort();
   return [
     { value: 'all', label: '🌱 All crops' },
-    ...sorted.map(c => ({ value: c, label: `${pickIcon(c)} ${c}` }))
+    ...[...crops].sort().map(c => ({ value: c, label: `${pickIcon(c)} ${c}` }))
   ];
 }
 function getAnalysisMonthOptions(){
@@ -980,14 +1056,11 @@ function getAnalysisYearOptions(){
       if(y > 2000) years.add(y);
     }
   });
-  const sorted = [...years].sort((a,b) => b-a);
   return [
     { value: 'all', label: '📅 All years' },
-    ...sorted.map(y => ({ value: String(y), label: `📅 ${y}` }))
+    ...[...years].sort((a,b)=>b-a).map(y => ({ value: String(y), label: `📅 ${y}` }))
   ];
 }
-
-/* Preview market option lists */
 function getPreviewCityOptions(){
   const cities = new Set();
   S.listings.forEach(l => { if(isLiveListing(l) && l.city) cities.add(l.city); });
@@ -1012,8 +1085,6 @@ function getPreviewCropOptions(){
     ...[...crops].sort().map(c => ({ value: c, label: `${pickIcon(c)} ${c}` }))
   ];
 }
-
-/* Farm analysis option lists */
 function getFarmAnalysisYearOptions(){
   const years = new Set();
   S.batches.forEach(b => {
@@ -1022,28 +1093,22 @@ function getFarmAnalysisYearOptions(){
       if(y > 2000) years.add(y);
     }
   });
-  const sorted = [...years].sort((a,b) => b-a);
+  const list = [...years].sort((a,b) => b-a);
   const current = new Date().getFullYear();
-  const list = sorted.length ? sorted : [current];
-  return list.map(y => ({ value: String(y), label: `📅 ${y}` }));
+  return (list.length ? list : [current]).map(y => ({ value: String(y), label: `📅 ${y}` }));
 }
 function getFarmAnalysisCityOptions(){
   const cities = new Set();
-  S.batches.forEach(b => {
-    const c = cityOfBatch(b);
-    if(c) cities.add(c);
-  });
+  S.batches.forEach(b => { const c = cityOfBatch(b); if(c) cities.add(c); });
   return [
     { value: 'all', label: '📍 All cities' },
     ...[...cities].sort().map(c => ({ value: c, label: `📍 ${c}` }))
   ];
 }
-
 function selectedLabel(options, value, fallback){
   const found = options.find(o => String(o.value) === String(value));
   return found ? found.label : fallback;
 }
-
 function renderDropdown(id, options, currentValue, onPick){
   return `
   <div class="dd-wrap">
@@ -1078,7 +1143,6 @@ document.addEventListener('click', e => {
   if(!e.target.closest('.dd-wrap') && !e.target.closest('.dd-busiest-wrap')) closeAllDds();
 });
 
-/* Existing state setters */
 window.setMarketCategory = (v) => { S.marketCategory = v; route(); };
 window.setMarketFilter = (v) => { S.marketFilter = v; route(); };
 window.setPlantedCategory = (v) => { S.plantedCategory = v; route(); };
@@ -1090,20 +1154,14 @@ window.toggleBusiest = () => {
   if(menu) menu.classList.toggle('open', S.busiestOpen);
   if(trigger) trigger.classList.toggle('open', S.busiestOpen);
 };
-
-/* Market analysis setters */
 window.setAnalysisYear = (v) => { S.analysisYear = v; route(); };
 window.setAnalysisCity = (v) => { S.analysisCity = v; route(); };
 window.setAnalysisCrop = (v) => { S.analysisCrop = v; route(); };
 window.setAnalysisMonth = (v) => { S.analysisMonth = v; route(); };
-
-/* Preview market setters */
 window.setPreviewYear = (v) => { S.previewYear = v === 'all' ? null : v; route(); };
 window.setPreviewCity = (v) => { S.previewCity = v === 'all' ? null : v; route(); };
 window.setPreviewMarket = (v) => { S.previewMarket = v === 'all' ? null : v; route(); };
 window.setPreviewCrop = (v) => { S.previewCrop = v === 'all' ? null : v; route(); };
-
-/* Farm analysis setters */
 window.setFarmAnalysisYear = (v) => { S.farmAnalysisYear = v; route(); };
 window.setFarmAnalysisCity = (v) => { S.farmAnalysisCity = v; route(); };
 
@@ -1114,7 +1172,7 @@ function renderHome(){
   const p = S.profile || {};
   const fullName = ((p.firstName||'') + ' ' + (p.lastName||'')).trim() || p.displayName || 'Marketeer';
   const initial = initials(fullName);
-  const city = normalizeCity(S.weatherCity || S.userLocation);
+  const city = detectedCity();
   const w = S.weather;
 
   const available = S.listings.filter(isAvailable).length;
@@ -1125,7 +1183,9 @@ function renderHome(){
   const topCity = myCityAvailable.slice(0, 8);
 
   const ins = computeSupplyInsights();
-  const opportunities = ins.rows.filter(r => r.status === 'tight' || r.status === 'oversupply' || r.status === 'coming').slice(0, 8);
+  const opportunities = sortOpportunities(
+    ins.rows.filter(r => r.status === 'tight' || r.status === 'oversupply' || r.status === 'coming')
+  ).slice(0, 8);
 
   const weatherBlock = w ? `
     <div class="hero-card">
@@ -1224,12 +1284,15 @@ function renderHome(){
 
 function renderMiniMarketCard(l){
   const avail = isAvailable(l);
-  const priceText = l.priceMode === 'total' ? fmtZMK(l.priceAmount) + ' total' : fmtZMK(l.priceAmount) + ' / box';
-  const sub = [l.quantity ? `${l.quantity} box${l.quantity===1?'':'es'}` : '', l.marketName || ''].filter(Boolean).join(' · ');
+  const photo = listingPhoto(l);
+  const variety = l.varietyName || '';
+  const unit = l.unit || 'box';
+  const priceText = l.priceMode === 'total' ? fmtZMK(l.priceAmount) + ' total' : fmtZMK(l.priceAmount) + ' / ' + singularUnit(unit);
+  const sub = [variety, l.quantity ? `${l.quantity} ${pluralUnit(unit, l.quantity)}` : '', l.marketName || ''].filter(Boolean).join(' · ');
   return `
   <div class="h-card-mini" onclick="viewListing('${esc(l.id)}')">
     <div class="hcm-head">
-      <div class="hcm-thumb">${pickIcon(l.productName || l.title)}</div>
+      <div class="hcm-thumb">${photo ? `<img src="${esc(photo)}" alt="">` : pickIcon(l.productName || l.title)}</div>
       <div class="hcm-info">
         <div class="hcm-name">${esc(l.productName || l.title || 'Produce')}</div>
         <div class="hcm-sub">${esc(sub || l.city || '')}</div>
@@ -1246,20 +1309,26 @@ function renderMiniOppCard(row){
   const kind = row.status === 'oversupply' ? 'oversupply' : row.status === 'tight' ? 'tight' : 'coming';
   const num = kind === 'tight' ? row.available : row.incoming;
   const unit = kind === 'tight' ? 'boxes available' : 'boxes incoming';
+  const dc = detectedCity();
+  const cities = row.cities || [];
+  const isLocal = cities.includes(dc);
+  const cityLabel = isLocal
+    ? `📍 ${dc}`
+    : (cities.length ? `📍 ${cities.slice(0,2).join(', ')}${cities.length>2?'…':''}` : '');
   return `
-  <div class="opp-card-mini ${kind}">
+  <div class="opp-card-mini ${kind} ${isLocal?'local':''}">
     <div class="opp-mini-emoji">${pickIcon(row.name)}</div>
     <div class="opp-mini-name">${esc(row.name)}</div>
+    ${cityLabel ? `<div class="opp-mini-city">${esc(cityLabel)}</div>` : ''}
     <div class="opp-mini-num">${num.toLocaleString()}</div>
     <div class="opp-mini-lb">${unit}</div>
   </div>`;
 }
 
 /* ============================================================
-   MARKET SCREEN — WITH PREVIEW MARKET BUTTON
+   MARKET SCREEN
    ============================================================ */
 function renderMarket(){
-  const city = normalizeCity(S.weatherCity || S.userLocation);
   const cat = S.marketCategory;
   const filter = S.marketFilter;
   const filtered = filterListings();
@@ -1304,15 +1373,18 @@ function renderMarket(){
 function renderMarketCard(l){
   const avail = isAvailable(l);
   const pend = isPending(l);
+  const photo = listingPhoto(l);
+  const variety = l.varietyName || '';
+  const unit = l.unit || 'box';
   const meta = [
-    l.quantity ? `${l.quantity} ${l.unit || 'box'}` : '',
+    l.quantity ? `${l.quantity} ${pluralUnit(unit, l.quantity)}` : '',
     l.marketName || '',
     l.city || ''
   ].filter(Boolean).join(' · ');
 
   const priceText = l.priceMode === 'total'
     ? fmtZMK(l.priceAmount) + ' total'
-    : fmtZMK(l.priceAmount) + ' / box';
+    : fmtZMK(l.priceAmount) + ' / ' + singularUnit(unit);
 
   const badge = avail
     ? `<span class="mc-badge available">✅ Available</span>`
@@ -1334,9 +1406,10 @@ function renderMarketCard(l){
 
   return `
   <div class="market-card" onclick="viewListing('${esc(l.id)}')">
-    <div class="mc-thumb">${pickIcon(l.productName || l.title)}</div>
+    <div class="mc-thumb">${photo ? `<img src="${esc(photo)}" alt="">` : pickIcon(l.productName || l.title)}</div>
     <div class="mc-body">
       <div class="mc-title">${esc(l.productName || l.title || 'Produce')}</div>
+      ${variety ? `<div class="mc-variety">🌱 ${esc(variety)}</div>` : ''}
       <div class="mc-meta">${esc(meta)}</div>
       <div class="mc-price"><strong>${esc(priceText)}</strong></div>
       ${contactLine}
@@ -1409,6 +1482,7 @@ function renderPlantCard(b){
   const est = b.estimatedBoxes || 0;
   const harvest = b.harvestStart ? fmtDate(b.harvestStart) : '—';
   const grad = gradFor(b.cropName || '');
+  const cover = b.coverUrl || '';
   const callBtn = phone
     ? `<button class="call-btn" onclick="callFarmer('${esc(phone)}','${esc(farmer)}')" aria-label="Call farmer">
          <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
@@ -1416,7 +1490,7 @@ function renderPlantCard(b){
     : '';
   return `
   <div class="plant-card">
-    <div class="pc-ic" style="background:${grad}">${pickIcon(b.cropName)}</div>
+    <div class="pc-ic" style="background:${grad}">${cover ? `<img src="${esc(cover)}" alt="">` : pickIcon(b.cropName)}</div>
     <div class="pc-body">
       <div class="pc-title">${esc(b.cropName)}${b.varietyName ? ' · ' + esc(b.varietyName) : ''}</div>
       <div class="pc-meta">${est ? `${est.toLocaleString()} boxes` : 'Boxes TBD'} · 🌾 ${esc(harvest)}</div>
@@ -1427,7 +1501,7 @@ function renderPlantCard(b){
 }
 
 /* ============================================================
-   MARKET ANALYSIS (matches farmer)
+   MARKET ANALYSIS
    ============================================================ */
 function renderMarketAnalysis(){
   const allListings = S.listings.filter(isLiveListing);
@@ -1540,11 +1614,12 @@ function renderMarketAnalysis(){
       <h3>🔥 Trending</h3>
       ${trending.length ? trending.map(l => {
         const unit = l.unit || 'box';
+        const photo = listingPhoto(l);
         return `
         <div class="trend-card" onclick="viewListing('${esc(l.id)}')">
-          <div class="trend-ic">${pickIcon(getCropNameFromListing(l))}</div>
+          <div class="trend-ic">${photo ? `<img src="${esc(photo)}" alt="">` : pickIcon(getCropNameFromListing(l))}</div>
           <div class="trend-body">
-            <div class="trend-name">${esc(getCropNameFromListing(l))}</div>
+            <div class="trend-name">${esc(getCropNameFromListing(l))}${l.varietyName ? ' · ' + esc(l.varietyName) : ''}</div>
             <div class="trend-market">${esc(l.marketName || 'Market')} · ${esc(l.city || '')}</div>
           </div>
           <div class="trend-price">
@@ -1569,13 +1644,8 @@ function renderMarketAnalysis(){
   ${bottomNavHTML()}`;
 }
 
-function singularUnit(u){
-  const sing = { boxes:'box', bags:'bag', sacks:'sack', crates:'crate', bunches:'bunch', heads:'head', pieces:'piece', bundles:'bundle', trays:'tray', birds:'bird', tonnes:'tonne', bales:'bale' };
-  return sing[u] || u;
-}
-
 /* ============================================================
-   FARM ANALYSIS (matches farmer)
+   FARM ANALYSIS
    ============================================================ */
 function renderFarmAnalysis(){
   const all = S.batches.filter(b => b.plantedDate);
@@ -1698,7 +1768,7 @@ function renderFarmAnalysis(){
 }
 
 /* ============================================================
-   PREVIEW MARKET (matches farmer)
+   PREVIEW MARKET
    ============================================================ */
 function renderPreviewMarket(){
   const allListings = S.listings.filter(isLiveListing);
@@ -1786,7 +1856,7 @@ function renderPreviewMarket(){
       <div class="pb-head">
         <div class="pb-sub">Farmer · Championing Agribusiness</div>
         <div class="pb-title">MARKET UPDATE</div>
-        <div class="pb-loc">📍 ${selCity === 'all' ? 'ALL CITIES' : esc(selCity.toUpperCase())}</div>
+        <div class="pb-loc">📍 ${selCity === 'all' ? 'ALL CITIES' : esc(String(selCity).toUpperCase())}</div>
         <div class="pb-date">📅 ${esc(dateStr)}</div>
       </div>
 
@@ -1817,9 +1887,11 @@ function renderPreviewMarket(){
 function buildBuyTips(ins){
   const tips = [];
   const rows = ins.rows;
+  const dc = detectedCity();
 
   rows.filter(r => r.status === 'tight' && r.available > 0).slice(0,3).forEach(r => {
-    tips.push({ kind:'buy', title:`Buy ${r.name} now`, desc:`Only ${r.available.toLocaleString()} boxes on market and little coming soon. Lock in supply.` });
+    const local = (r.cities || []).includes(dc);
+    tips.push({ kind:'buy', title:`Buy ${r.name} now${local ? ' (near you)' : ''}`, desc:`Only ${r.available.toLocaleString()} boxes on market and little coming soon. Lock in supply.` });
   });
   rows.filter(r => r.status === 'oversupply').slice(0,3).forEach(r => {
     tips.push({ kind:'wait', title:`Wait on ${r.name}`, desc:`${r.incoming.toLocaleString()} boxes expected vs ${r.available.toLocaleString()} available. Don't over-buy today.` });
@@ -1913,7 +1985,7 @@ function renderResources(){
 }
 
 /* ============================================================
-   FARMERS LIST + DETAIL
+   FARMERS
    ============================================================ */
 function renderFarmers(){
   const farmers = buildFarmersList();
@@ -1928,7 +2000,7 @@ function renderFarmers(){
 
     <div class="analysis-hero">
       <h2>🧑‍🌾 Farmers</h2>
-      <p>Everyone in the app — tap a farmer to see their plantings and listings.</p>
+      <p>Everyone in the app — tap a farmer to see their farms, plantings and listings.</p>
     </div>
 
     <div style="padding:0 18px 10px;font-size:11.5px;color:var(--tl);font-weight:700">
@@ -1950,10 +2022,14 @@ function renderFarmers(){
 
 function renderFarmerRow(f){
   const avatarStyle = f.photo
-    ? `background-image:url('${esc(f.photo)}')`
-    : `background:${gradFor(f.name)};color:#fff;font-size:14px`;
+    ? `background-image:url('${esc(f.photo)}');background-size:cover;background-position:center`
+    : `background:${gradFor(f.name)};color:#fff;font-size:15px`;
   const avatarContent = f.photo ? '' : initials(f.name);
+  const farmLabel = f.farmNames && f.farmNames.length
+    ? `🌾 ${f.farmNames.slice(0,2).join(', ')}${f.farmNames.length>2?'…':''}`
+    : '';
   const sub = [
+    farmLabel,
     f.city ? `📍 ${f.city}` : '',
     f.planted ? `${f.planted} planted` : '',
     f.listings ? `${f.listings} listed` : ''
@@ -1994,7 +2070,7 @@ function renderFarmerDetail(id){
   const harvested = batches.filter(b => b.stage === 'harvested');
 
   const avatarStyle = farmer.photo
-    ? `background-image:url('${esc(farmer.photo)}')`
+    ? `background-image:url('${esc(farmer.photo)}');background-size:cover;background-position:center`
     : `background:rgba(255,255,255,.2)`;
   const avatarContent = farmer.photo ? '' : initials(farmer.name);
 
@@ -2002,6 +2078,25 @@ function renderFarmerDetail(id){
     <button class="btn btn-p" style="max-width:220px;margin:12px auto 0;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.4);box-shadow:none" onclick="callFarmer('${esc(farmer.phone)}','${esc(farmer.name)}')">
       📞 ${esc(farmer.phone)}
     </button>
+  ` : '';
+
+  const farmsHTML = farmer.farms && farmer.farms.length ? `
+    <div class="sec-h"><h3>🌾 Farms · ${farmer.farms.length}</h3></div>
+    ${farmer.farms.map(farm => {
+      const photo = farm.photoUrl || '';
+      const farmBatches = batches.filter(b => b.farmId === farm.id);
+      return `
+      <div class="farm-card-mkt">
+        ${photo
+          ? `<img src="${esc(photo)}" alt="" class="farm-photo">`
+          : `<div class="farm-photo-placeholder">🌾</div>`}
+        <div class="farm-info">
+          <div class="farm-name">${esc(farm.name || 'Unnamed Farm')}</div>
+          <div class="farm-city">📍 ${esc(farm.city || farmer.city || '—')}</div>
+          ${farmBatches.length ? `<div class="farm-meta">${farmBatches.length} batch${farmBatches.length===1?'':'es'}</div>` : ''}
+        </div>
+      </div>`;
+    }).join('')}
   ` : '';
 
   return `
@@ -2026,11 +2121,13 @@ function renderFarmerDetail(id){
       </div>
     </div>
 
+    ${farmsHTML}
+
     ${active.length ? `
       <div class="sec-h"><h3>🌱 Planted · ${active.length}</h3></div>
       ${active.map(b => `
         <div class="plant-card">
-          <div class="pc-ic" style="background:${gradFor(b.cropName||'')}">${pickIcon(b.cropName)}</div>
+          <div class="pc-ic" style="background:${gradFor(b.cropName||'')}">${b.coverUrl ? `<img src="${esc(b.coverUrl)}" alt="">` : pickIcon(b.cropName)}</div>
           <div class="pc-body">
             <div class="pc-title">${esc(b.cropName)}${b.varietyName ? ' · ' + esc(b.varietyName) : ''}</div>
             <div class="pc-meta">${b.estimatedBoxes ? `${b.estimatedBoxes.toLocaleString()} boxes` : 'Boxes TBD'} · 🌾 ${b.harvestStart ? fmtDate(b.harvestStart) : '—'}</div>
@@ -2049,7 +2146,7 @@ function renderFarmerDetail(id){
       <div class="sec-h"><h3>✅ Harvested · ${harvested.length}</h3></div>
       ${harvested.map(b => `
         <div class="plant-card">
-          <div class="pc-ic" style="background:${gradFor(b.cropName||'')}">${pickIcon(b.cropName)}</div>
+          <div class="pc-ic" style="background:${gradFor(b.cropName||'')}">${b.coverUrl ? `<img src="${esc(b.coverUrl)}" alt="">` : pickIcon(b.cropName)}</div>
           <div class="pc-body">
             <div class="pc-title">${esc(b.cropName)}</div>
             <div class="pc-meta">${b.actualBoxes ? `${b.actualBoxes.toLocaleString()} boxes harvested` : 'Harvested'}</div>
@@ -2059,7 +2156,7 @@ function renderFarmerDetail(id){
       `).join('')}
     ` : ''}
 
-    ${!active.length && !listings.length && !harvested.length ? `
+    ${!active.length && !listings.length && !harvested.length && !(farmer.farms && farmer.farms.length) ? `
       <div class="empty">
         <div class="e-ic">🌱</div>
         <h3>No activity yet</h3>
@@ -2079,7 +2176,7 @@ function renderProfile(){
   const p = S.profile || {};
   const fullName = ((p.firstName||'') + ' ' + (p.lastName||'')).trim() || p.displayName || 'Marketeer';
   const initial = initials(fullName);
-  const city = normalizeCity(S.weatherCity || S.userLocation);
+  const city = detectedCity();
   return `
   <div class="scroll">
     <div class="topbar bordered" style="background:transparent;border-bottom:none">
@@ -2133,12 +2230,20 @@ window.viewListing = (id) => {
   if(!l) return;
   const avail = isAvailable(l);
   const pend = isPending(l);
-  const priceText = l.priceMode === 'total' ? fmtZMK(l.priceAmount) + ' (total)' : fmtZMK(l.priceAmount) + ' / box';
+  const unit = l.unit || 'box';
+  const priceText = l.priceMode === 'total' ? fmtZMK(l.priceAmount) + ' (total)' : fmtZMK(l.priceAmount) + ' / ' + singularUnit(unit);
   const statusLine = avail
     ? `<span style="color:#16a34a;background:#d1fae5;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800">✅ Available now</span>`
     : pend
       ? `<span style="color:#92400e;background:#fef3c7;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800">⏳ Pending · ${timeUntil(l.availableAt||0)}</span>`
       : '';
+
+  const photos = (l.photoUrls && l.photoUrls.length) ? l.photoUrls : [];
+  const galleryHTML = photos.length ? `
+    <div style="display:grid;grid-template-columns:repeat(${Math.min(photos.length,2)},1fr);gap:6px;margin-bottom:12px">
+      ${photos.map(u => `<img src="${esc(u)}" alt="" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;background:#000">`).join('')}
+    </div>` : '';
+
   const callBlock = avail && l.sellerPhone ? `
     <div style="background:var(--ok-soft);border:1px solid rgba(22,163,74,.2);padding:12px 14px;border-radius:14px;margin-bottom:12px;text-align:left">
       <div style="font-size:10.5px;color:#065f46;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Contact Farmer</div>
@@ -2157,9 +2262,11 @@ window.viewListing = (id) => {
     <h3>${pickIcon(l.productName||l.title)} ${esc(l.productName||l.title||'Listing')}</h3>
     <p style="margin-bottom:6px">${esc(l.sellerName||'')} · ${esc(l.city||'')}</p>
     <div style="margin-bottom:12px">${statusLine}</div>
+    ${galleryHTML}
     ${callBlock}
     <div style="text-align:left;background:var(--sf2);border:1px solid var(--bd);border-radius:14px;overflow:hidden;margin-bottom:14px">
-      <div style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Quantity</span><span style="font-weight:800">${esc((l.quantity||'—')+' '+(l.unit||'box'))}</span></div>
+      ${l.varietyName ? `<div style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Variety</span><span style="font-weight:800">${esc(l.varietyName)}</span></div>` : ''}
+      <div style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Quantity</span><span style="font-weight:800">${esc((l.quantity||'—')+' '+pluralUnit(unit, l.quantity||1))}</span></div>
       <div style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Price</span><span style="font-weight:800">${esc(priceText)}</span></div>
       <div style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Market</span><span style="font-weight:800">${esc(l.marketName||'—')}</span></div>
       <div style="display:flex;justify-content:space-between;padding:11px 14px;font-size:12.5px"><span style="color:var(--tl);font-weight:700">Posted</span><span style="font-weight:800">${timeAgo(l.createdAt)}</span></div>
