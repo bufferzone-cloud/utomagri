@@ -146,11 +146,15 @@ a{color:inherit;text-decoration:none;}
 }
 .screen{
   position:absolute;inset:0;display:flex;flex-direction:column;background:var(--sf);
-  opacity:0;transform:translateY(14px);
-  transition:opacity .35s var(--e),transform .4s var(--e);
+  opacity:0;transform:translateY(20px) scale(0.985);
+  transition:opacity .4s var(--e),transform .5s var(--e);
   pointer-events:none;will-change:opacity,transform;
 }
-.screen.active{opacity:1;transform:translateY(0);pointer-events:auto;z-index:5;}
+.screen.active{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;z-index:5;}
+@keyframes pageSlideIn{
+  from{opacity:.4;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
+}
 .scroll{
   flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
   padding-bottom:calc(var(--nav-h) + var(--safe-b) + 24px);scrollbar-width:none;
@@ -289,11 +293,6 @@ a{color:inherit;text-decoration:none;}
 .sh-sub{font-size:12.5px;font-weight:600;opacity:.95;margin-top:5px;text-shadow:0 1px 6px rgba(0,0,0,.5);}
 .sh-cta{position:absolute;top:18px;right:18px;z-index:3;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:var(--r-p);background:rgba(255,255,255,.22);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.32);}
 
-/* ============================================================
-   HERO — HOME PLANT/RAISE CARD
-   Profile + name + city top-left, weather top-right,
-   divider, then Plant/Raise title with the windmill inline
-   ============================================================ */
 .hero-weather-col{
   text-align:center;flex-shrink:0;min-width:76px;
   display:flex;flex-direction:column;align-items:center;
@@ -303,7 +302,6 @@ a{color:inherit;text-decoration:none;}
 .hero-weather-temp{font-size:22px;font-weight:900;margin-top:2px;text-shadow:0 2px 8px rgba(0,0,0,.45);letter-spacing:-.02em;}
 .hero-weather-desc{font-size:9.5px;font-weight:700;opacity:.92;margin-top:1px;line-height:1.2;max-width:82px;text-align:center;text-shadow:0 1px 4px rgba(0,0,0,.4);}
 
-/* Inline windmill — sits on the same horizontal line as Plant / Raise */
 .hero-windmill-inline{
   display:flex;align-items:center;gap:9px;flex-shrink:0;
   padding:7px 12px 7px 10px;border-radius:16px;
@@ -336,7 +334,6 @@ a{color:inherit;text-decoration:none;}
   position:absolute;top:50%;left:50%;transform:translate(-50%,-100%) rotate(240deg);
 }
 
-/* Profile block in hero */
 .hero-profile-pic{
   width:52px;height:52px;border-radius:50%;overflow:hidden;
   background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.65);
@@ -360,7 +357,6 @@ a{color:inherit;text-decoration:none;}
 .sc-ic{width:22px;height:22px;border-radius:8px;background:rgba(255,255,255,.24);display:flex;align-items:center;justify-content:center;font-size:12px;backdrop-filter:blur(8px);flex-shrink:0;}
 .sc-sub{font-size:10.5px;font-weight:600;opacity:.95;margin-top:4px;text-shadow:0 1px 4px rgba(0,0,0,.5);line-height:1.35;}
 
-/* Blue card — graph-paper background + chart overlay */
 .service-card.blue .sc-bg{
   background:
     repeating-linear-gradient(0deg, rgba(255,255,255,.07) 0 1px, transparent 1px 18px),
@@ -400,9 +396,6 @@ a{color:inherit;text-decoration:none;}
 .lr-btn.delete{color:var(--danger);border-color:rgba(220,38,38,.3);background:var(--danger-soft);}
 .lr-btn:active{transform:scale(.9);}
 
-/* ============================================================
-   FARM CARDS — richer detail cards for the farm picker
-   ============================================================ */
 .farm-card{
   margin:0 0 14px;background:var(--sf);border:1.5px solid var(--bd);
   border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--sh-md);
@@ -1067,7 +1060,7 @@ a{color:inherit;text-decoration:none;}
 .img-upload-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
 .img-upload-title{font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;}
 .img-upload-count{font-size:10.5px;font-weight:800;color:var(--tl);}
-.img-upload-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.img-upload-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-width:200px;}
 .img-slot{aspect-ratio:1/1;border-radius:12px;overflow:hidden;position:relative;background:var(--sf2);border:2px dashed var(--bd);display:flex;align-items:center;justify-content:center;transition:all .2s;}
 .img-slot.filled{border-style:solid;border-color:var(--p);background:#000;}
 .img-slot img{width:100%;height:100%;object-fit:cover;}
@@ -1076,14 +1069,12 @@ a{color:inherit;text-decoration:none;}
 .img-slot-remove{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.75);color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(255,255,255,.3);}
 .img-slot-remove:active{transform:scale(.9);}
 
-/* Farm photo picker in modal */
 .farm-photo-picker{display:flex;align-items:center;gap:12px;}
 .farm-photo-preview{position:relative;height:64px;flex:1;min-width:0;border-radius:10px;overflow:hidden;background:#000;display:none;}
 .farm-photo-preview.show{display:block;}
 .farm-photo-preview img{width:100%;height:100%;object-fit:cover;}
 .farm-photo-remove{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.75);color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(255,255,255,.3);}
 
-/* Farm picker banner */
 .planting-banner{
   margin:0 18px 12px;padding:12px 14px;
   background:linear-gradient(135deg,#e6f5eb,#d1fae5);
@@ -1250,7 +1241,12 @@ const S = {
   /* NEW: temp farm photo during create/edit */
   tempFarmPhoto: '',
   /* NEW: guard so finishPlanting can't double-fire */
-  _finishing: false
+  _finishing: false,
+  /* NEW: preview market filters */
+  previewYear: null,
+  previewCity: null,
+  previewMarket: null,
+  previewCrop: null
 };
 
 const $modal = document.getElementById('modal');
@@ -1459,7 +1455,6 @@ window.selectFarm = async (farmId) => {
   try {
     await update(ref(db, 'users/' + S.user.uid), { currentFarmId: farmId });
     S.currentFarmId = farmId;
-    /* If coming from the plant/raise flow, force Plant tab */
     if (S.plantingFlowMode) {
       S.farmTab = 'plant';
       S.plantingFlowMode = false;
@@ -2060,6 +2055,7 @@ function marketsForCity(city) { return CITY_MARKETS[city] || CITY_MARKETS.defaul
    ROUTER
    ============================================================ */
 let activeScreenEl = null;
+let _suppressContentAnim = false;
 
 function buildScreen(id) {
   const wrap = document.querySelector('.screen-wrap');
@@ -2081,7 +2077,9 @@ function showScreen(id, data = {}, pushHistory = true) {
   target.classList.add('active');
   activeScreenEl = target;
   S.screen = id;
+  _suppressContentAnim = true;
   route();
+  _suppressContentAnim = false;
   if (pushHistory) {
     try {
       history.pushState({ screen:id, data }, '', '#' + id);
@@ -2175,9 +2173,6 @@ window.goDelivery = () => { S.plantingFlowMode = false; navTo('delivery'); };
 window.goProfile = () => { S.plantingFlowMode = false; navTo('profile'); };
 window.goBack = () => { try { history.back(); } catch (e) { navTo('home'); } };
 
-/* ============================================================
-   Farm-first Plant/Raise flow entry point
-   ============================================================ */
 window.openPlantRaiseFlow = () => {
   S.plantingFlowMode = true;
   navTo('farm-picker');
@@ -2333,7 +2328,7 @@ function startMarketplaceListener() {
         l.availabilityStatus !== 'sold'
       );
     }
-    if (['marketplace','my-posts','preview-market'].includes(S.screen)) route();
+    if (['marketplace','my-posts','preview-market','market-analysis'].includes(S.screen)) route();
   });
 }
 
@@ -2385,10 +2380,20 @@ function route() {
     default: el.innerHTML = renderHome();
   }
   updateNav(id);
+
+  /* Content transition — fade/slide for same-screen re-renders (tabs, filters, etc.) */
+  if (!_suppressContentAnim) {
+    const sc = el.querySelector('.scroll');
+    if (sc) {
+      sc.style.animation = 'none';
+      void sc.offsetWidth;
+      sc.style.animation = 'pageSlideIn 0.38s cubic-bezier(.22,1,.36,1)';
+    }
+  }
 }
 
 /* ============================================================
-   HOME — hero with profile top-left, name, city, sun + windmill column right
+   HOME
    ============================================================ */
 function renderHome() {
   const p = S.profile || {};
@@ -2403,7 +2408,6 @@ function renderHome() {
     <div class="sh-art" style="font-size:104px;opacity:.20;top:-6px;right:-12px;z-index:1">🌱</div>
     <div class="sh-content" style="width:100%;position:relative;z-index:2">
 
-      <!-- TOP ROW: profile pic / name / detected city on the left, weather on the right -->
       <div style="display:flex;align-items:center;gap:12px">
         <div style="flex:1;min-width:0">
           <div class="hero-profile-pic">
@@ -2425,7 +2429,6 @@ function renderHome() {
 
       <div class="hero-divider"></div>
 
-      <!-- BOTTOM ROW: Plant / Raise on the left, windmill horizontally aligned on the right -->
       <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
         <div style="min-width:0">
           <div class="sh-title" style="font-size:21px"><span class="sh-ic">🌱</span>Plant / Raise</div>
@@ -2560,7 +2563,7 @@ function renderHome() {
 }
 
 /* ============================================================
-   FARM PICKER — richer cards with optional picture
+   FARM PICKER
    ============================================================ */
 function renderFarmPicker() {
   const isPlantingMode = !!S.plantingFlowMode;
@@ -2643,7 +2646,7 @@ function renderFarmPicker() {
 }
 
 /* ============================================================
-   FARM — Plant tab with "Plant or Raise" button
+   FARM
    ============================================================ */
 window.switchFarmTab = (tab) => { S.farmTab = tab; route(); };
 
@@ -3222,7 +3225,6 @@ function renderPlantConfirm() {
   </div>`;
 }
 
-/* Called when user wants to cancel from within the plant flow */
 window.cancelPlantingFlow = () => {
   S.plantWizard = { step:1, cropId:null, varietyName:null, length:null, width:null, town:null, animalCount:0 };
   showScreen('farm');
@@ -3280,15 +3282,11 @@ window.finishPlanting = async () => {
     const newRef = push(ref(db, 'batches'));
     await set(newRef, batch);
     batch.id = newRef.key;
-    /* NOTE: the onValue listener on `batches` already adds this batch
-       to S.myBatches — do NOT unshift manually or it will duplicate. */
 
-    /* Clear wizard so back-then-finish can't create another batch */
     const successBatch = { ...batch };
     S.plantWizard = { step:1, cropId:null, varietyName:null, length:null, width:null, town:null, animalCount:0 };
 
     hideLoader();
-    /* replaceState so back-button from success goes to farm, not confirm */
     showScreen('plant-success', { batch: successBatch, est }, false);
     try { history.replaceState({ screen: 'plant-success', data: { batch: successBatch, est } }, '', '#plant-success'); } catch(e) {}
   } catch (e) {
@@ -3365,6 +3363,7 @@ function renderBatchDetail(id, tab) {
   const dailyHarvests = b.dailyHarvests || [];
   const unit = unitForBatch(b);
   const unitNote = getHarvestUnit(b.cropName, b.category).note;
+  const isManageTab = (tab || 'manage') === 'manage';
 
   const stageChips = STAGE_ORDER.map((s, i) => {
     const isCurrent = s === (b.stage || 'planted');
@@ -3466,16 +3465,16 @@ function renderBatchDetail(id, tab) {
         <h3>Harvest Stage</h3>
         <div style="font-size:12px;color:var(--tl);font-weight:600;margin-bottom:8px;padding:4px 2px">Tap the stage that matches your farm today.</div>
         <div class="stage-selector">${stageChips}</div>
-        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn btn-s" style="flex:1;min-width:140px;font-size:12.5px;padding:11px" onclick="navTo('selected-crop-analysis',{cropId:'${esc(b.cropId)}',batchId:'${esc(b.id)}'})">
+        <div style="margin-top:12px">
+          <button class="btn btn-s" style="width:100%;font-size:12.5px;padding:11px" onclick="navTo('selected-crop-analysis',{cropId:'${esc(b.cropId)}',batchId:'${esc(b.id)}'})">
             🌿 Selected Crop Analysis
           </button>
-          ${b.stage === 'harvesting' ? `<button class="btn btn-s" style="flex:1;min-width:140px;font-size:12.5px;padding:11px;color:#ea580c;border-color:#ea580c" onclick="openAddHarvest('${esc(b.id)}')">➕ Record Harvest</button>` : ''}
         </div>
       </div>
 
       ${harvestTrackingHTML}
 
+      ${isManageTab ? `
       <div class="d-section">
         <h3>Farm Setup</h3>
         ${!isFisheries ? `
@@ -3500,6 +3499,7 @@ function renderBatchDetail(id, tab) {
         <input type="hidden" id="bs-irr" value="${esc(b.irrigationType || '')}">
         <input type="hidden" id="bs-space" value="${esc(b.spacingSystem || '')}">
       </div>
+      ` : ''}
 
       <div class="d-section">
         <h3>Field Summary</h3>
@@ -3531,8 +3531,8 @@ function renderBatchDetail(id, tab) {
 
       <button class="btn btn-danger" onclick="confirmDeleteBatch('${esc(b.id)}')" style="margin-top:10px">🗑 Delete Batch</button>
 
-      ${spacing.length && isCrop ? renderSpacingBlock(spacing) : ''}
-      ${Object.keys(fert).length ? renderFertilizerBlock(fert) : ''}
+      ${isManageTab && spacing.length && isCrop ? renderSpacingBlock(spacing) : ''}
+      ${isManageTab && Object.keys(fert).length ? renderFertilizerBlock(fert) : ''}
     </div>
   </div>
   ${bottomNavHTML()}`;
@@ -3625,11 +3625,25 @@ window.saveDailyHarvest = async (batchId) => {
       } else {
         toast(`+${boxes} ${unit} ✓`);
       }
+      closeModal();
+      route();
     } else {
+      closeModal();
       toast(`+${boxes} ${unit} ✓`);
+      route();
+      /* NEW: Prompt to list for sale immediately after recording a harvest */
+      setTimeout(() => {
+        modal(`
+          <h3>🌾 Harvest Recorded!</h3>
+          <p>You've added <strong>${boxes} ${unit}</strong>. Total harvest is now <strong>${total} ${unit}</strong>.</p>
+          <p>Would you like to list your harvest for sale on the market now?</p>
+          <div class="mc-actions">
+            <button class="btn btn-s" onclick="closeModal();">Later</button>
+            <button class="btn btn-p" onclick="closeModal(); showScreen('post-harvest-goods',{id:'${esc(batchId)}'})">🛒 List for Sale</button>
+          </div>
+        `);
+      }, 450);
     }
-    closeModal();
-    route();
   } catch (e) { toast('Failed: ' + (e.message || e)); }
 };
 
@@ -3928,7 +3942,7 @@ function renderHarvestRecord(id) {
 }
 
 /* ============================================================
-   POST HARVEST TO MARKET (with image upload)
+   POST HARVEST TO MARKET (2-photo upload)
    ============================================================ */
 function renderPostHarvestGoods(batchId) {
   const b = S.myBatches.find(x => x.id === batchId);
@@ -3977,7 +3991,7 @@ function renderPostHarvestGoods(batchId) {
       </div>
       <div class="notice-banner">
         <div class="nb-ic">💡</div>
-        <div class="nb-tx">Your listing will be marked <strong>Availability Pending</strong> with a live countdown. Add at least <strong>2 photos</strong> so buyers can see your produce.</div>
+        <div class="nb-tx">Your listing will be marked <strong>Availability Pending</strong> with a live countdown. Add <strong>2 photos</strong> so buyers can see your produce.</div>
       </div>
     </div>
 
@@ -4018,7 +4032,7 @@ function renderPostHarvestGoods(batchId) {
       <div class="img-upload-section" style="margin-left:0;margin-right:0">
         <div class="img-upload-head">
           <div class="img-upload-title">📸 Photos <span style="color:var(--danger)">*</span></div>
-          <div class="img-upload-count" id="ph-image-count">${(S.draftImages[batchId]||[]).length} / 4 photos · minimum 2 required</div>
+          <div class="img-upload-count" id="ph-image-count">${(S.draftImages[batchId]||[]).length} / 2 photos · 2 required</div>
         </div>
         <div class="img-upload-grid" id="ph-images-grid">
           ${renderDraftImageGrid(batchId)}
@@ -4035,7 +4049,8 @@ function renderPostHarvestGoods(batchId) {
 function renderDraftImageGrid(batchId) {
   const imgs = (S.draftImages[batchId] || []);
   const slots = [];
-  for (let i = 0; i < 4; i++) {
+  /* Only 2 photo slots now */
+  for (let i = 0; i < 2; i++) {
     if (imgs[i]) {
       slots.push(`
         <div class="img-slot filled">
@@ -4062,7 +4077,7 @@ function updateDraftImagesUI(batchId) {
   const counter = document.getElementById('ph-image-count');
   if (counter) {
     const n = (S.draftImages[batchId] || []).length;
-    counter.textContent = `${n} / 4 photos · minimum 2 required`;
+    counter.textContent = `${n} / 2 photos · 2 required`;
     counter.style.color = n >= 2 ? 'var(--p)' : 'var(--tl)';
   }
 }
@@ -4072,8 +4087,8 @@ window.openImageUpload = (batchId) => {
     return;
   }
   if (!S.draftImages[batchId]) S.draftImages[batchId] = [];
-  if (S.draftImages[batchId].length >= 4) {
-    toast('Maximum 4 photos');
+  if (S.draftImages[batchId].length >= 2) {
+    toast('Maximum 2 photos');
     return;
   }
   try {
@@ -4109,7 +4124,6 @@ window.removeDraftImage = (batchId, idx) => {
 };
 window.cancelPostHarvest = (batchId) => {
   delete S.draftImages[batchId];
-  /* Ensure we don't get stuck — navigate explicitly */
   try { navTo('marketplace'); }
   catch (e) { showScreen('marketplace'); }
 };
@@ -4146,7 +4160,7 @@ window.submitMarketPost = async (ev, batchId) => {
     const priceAmount = parseFloat(document.getElementById('ph-price').value) || 0;
     const availAtStr = document.getElementById('ph-avail-at').value;
     const desc = document.getElementById('ph-desc').value.trim();
-    const photoUrls = (S.draftImages[batchId] || []).slice(0, 4);
+    const photoUrls = (S.draftImages[batchId] || []).slice(0, 2);
 
     if (!name) { toast('Name required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
     if (!phone) { toast('Phone required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
@@ -4154,7 +4168,7 @@ window.submitMarketPost = async (ev, batchId) => {
     if (!marketName) { toast('Market required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
     if (!priceAmount || priceAmount <= 0) { toast('Price required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
     if (!availAtStr) { toast('Availability time required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
-    if (photoUrls.length < 2) { toast('Please upload at least 2 photos'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
+    if (photoUrls.length < 2) { toast('Please upload 2 photos'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
 
     const availAt = new Date(availAtStr).getTime();
     if (!availAt || isNaN(availAt)) { toast('Invalid date/time'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
@@ -4978,11 +4992,16 @@ window.contactSeller = (sellerId) => {
 };
 
 /* ============================================================
-   MARKET ANALYSIS
+   MARKET ANALYSIS — Year filter, prices & towns only (no quantities)
    ============================================================ */
 window.setAnalysisMarket = (v) => { S.analysisMarket = v; route(); };
 window.setAnalysisCrop = (v) => { S.analysisCrop = v; route(); };
 window.setAnalysisMonth = (v) => { S.analysisMonth = v; route(); };
+
+function getCropNameFromListing(l) {
+  if (l.productName) return l.productName;
+  return String(l.title || '').replace(/^\s*Fresh\s+/i, '').replace(/\s*–.*$/, '').trim() || 'Other';
+}
 
 function computeDemandIndicator(crop, city, allBatches, allListings) {
   const expectedSupply = allBatches
@@ -4993,7 +5012,7 @@ function computeDemandIndicator(crop, city, allBatches, allListings) {
     .reduce((s, b) => s + (b.estimatedBoxes || 0), 0);
   const listings = allListings.filter(l =>
     (city === 'all' || l.city === city) &&
-    (!crop || l.productName === crop)
+    (!crop || getCropNameFromListing(l) === crop)
   ).length;
   const supplyRatio = totalExpected > 0 ? expectedSupply / totalExpected : 0;
   if (supplyRatio > 0.45 || listings > 8) return 'low';
@@ -5002,58 +5021,47 @@ function computeDemandIndicator(crop, city, allBatches, allListings) {
 }
 
 function renderMarketAnalysis() {
-  const allBatches = S.allFarmersBatches || [];
   const allListings = (S.marketplace || []).filter(l =>
     l.status !== 'removed' && l.availabilityStatus !== 'removed' && l.availabilityStatus !== 'sold'
   );
 
-  const cities = [...new Set(allBatches.map(b => b.town).filter(Boolean))].sort();
-  const crops = [...new Set((S.myBatches || []).map(b => b.cropName).filter(Boolean))].sort();
+  const years = [...new Set(allListings.map(l => l.createdAt ? new Date(l.createdAt).getFullYear() : null).filter(Boolean))].sort((a,b) => b - a);
+  const cities = [...new Set(allListings.map(l => l.city).filter(Boolean))].sort();
+  const crops = [...new Set(allListings.map(l => getCropNameFromListing(l)).filter(Boolean))].sort();
 
   const city = S.analysisMarket || 'all';
   const cropF = S.analysisCrop || 'all';
   const monthF = S.analysisMonth || 'all';
+  const yearF = S.analysisYear || 'all';
 
-  if (cropF !== 'all' && !crops.includes(cropF)) S.analysisCrop = cropF;
+  let filtered = allListings.slice();
+  if (city !== 'all') filtered = filtered.filter(l => l.city === city);
+  if (cropF !== 'all') filtered = filtered.filter(l => getCropNameFromListing(l) === cropF);
+  if (monthF !== 'all') filtered = filtered.filter(l => l.createdAt && new Date(l.createdAt).getMonth() === parseInt(monthF));
+  if (yearF !== 'all') filtered = filtered.filter(l => l.createdAt && new Date(l.createdAt).getFullYear() === parseInt(yearF));
 
-  const cityBatches = allBatches.filter(b => city === 'all' || b.town === city);
-  const cityListings = allListings.filter(l => city === 'all' || l.city === city);
-
-  let yieldBatches = cityBatches;
-  if (cropF !== 'all') yieldBatches = yieldBatches.filter(b => b.cropName === cropF);
-  if (monthF !== 'all') {
-    const mIdx = parseInt(monthF);
-    yieldBatches = yieldBatches.filter(b => {
-      const hs = new Date(b.harvestStart || b.plantedDate || Date.now());
-      return hs.getMonth() === mIdx;
-    });
-  }
-  const yieldByCrop = {};
-  yieldBatches.forEach(b => {
-    yieldByCrop[b.cropName] = (yieldByCrop[b.cropName] || 0) + (b.estimatedBoxes || 0);
-  });
-  const yieldList = Object.entries(yieldByCrop).sort((a,b) => b[1] - a[1]);
-
-  let priceListings = cityListings;
-  if (cropF !== 'all') priceListings = priceListings.filter(l => l.productName === cropF);
   const priceByCrop = {};
-  priceListings.forEach(l => {
-    const p = l.pricePerBox || l.priceAmount || 0;
+  filtered.forEach(l => {
+    const name = getCropNameFromListing(l);
+    let p = 0;
+    if (l.priceMode === 'total' && l.quantity) p = (parseFloat(l.priceAmount) || 0) / l.quantity;
+    else p = parseFloat(l.pricePerBox || l.priceAmount || 0);
     if (p <= 0) return;
-    const c = l.productName || l.title || 'Other';
-    if (!priceByCrop[c]) priceByCrop[c] = { min: Infinity, max: 0, count: 0 };
-    priceByCrop[c].min = Math.min(priceByCrop[c].min, p);
-    priceByCrop[c].max = Math.max(priceByCrop[c].max, p);
-    priceByCrop[c].count++;
+    if (!priceByCrop[name]) priceByCrop[name] = { min: Infinity, max: 0, towns: new Set(), unit: l.unit || 'box' };
+    priceByCrop[name].min = Math.min(priceByCrop[name].min, p);
+    priceByCrop[name].max = Math.max(priceByCrop[name].max, p);
+    if (l.city) priceByCrop[name].towns.add(l.city);
   });
-  const priceList = Object.entries(priceByCrop).sort((a,b) => b[1].count - a[1].count);
+  const priceList = Object.entries(priceByCrop).sort((a,b) => {
+    const aAvg = (a[1].min + a[1].max) / 2;
+    const bAvg = (b[1].min + b[1].max) / 2;
+    return bAvg - aAvg;
+  });
 
-  const trending = cityListings
+  const trending = filtered
     .slice()
     .sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0))
     .slice(0, 8);
-
-  const totalExpected = yieldList.reduce((s,[,v]) => s + v, 0);
 
   return `
   <div class="scroll">
@@ -5077,14 +5085,14 @@ function renderMarketAnalysis() {
         </select>
       </div>
       <div class="af-box">
-        <label>My crop</label>
-        <div class="af-value"><span>🌱 ${cropF === 'all' ? 'All my crops' : esc(cropF)}</span><span class="st-arrow">▼</span></div>
+        <label>Crop</label>
+        <div class="af-value"><span>🌱 ${cropF === 'all' ? 'All crops' : esc(cropF)}</span><span class="st-arrow">▼</span></div>
         <select onchange="setAnalysisCrop(this.value)">
-          <option value="all" ${cropF === 'all' ? 'selected' : ''}>All my crops</option>
+          <option value="all" ${cropF === 'all' ? 'selected' : ''}>All crops</option>
           ${crops.map(c => `<option value="${esc(c)}" ${c === cropF ? 'selected' : ''}>${esc(c)}</option>`).join('')}
         </select>
       </div>
-      <div class="af-box" style="grid-column:1/-1">
+      <div class="af-box">
         <label>Month</label>
         <div class="af-value"><span>📅 ${monthF === 'all' ? 'All months' : MONTH_NAMES[parseInt(monthF)]}</span><span class="st-arrow">▼</span></div>
         <select onchange="setAnalysisMonth(this.value)">
@@ -5092,57 +5100,42 @@ function renderMarketAnalysis() {
           ${MONTH_NAMES.map((m, i) => `<option value="${i}" ${String(i) === monthF ? 'selected' : ''}>${m}</option>`).join('')}
         </select>
       </div>
+      <div class="af-box">
+        <label>Year</label>
+        <div class="af-value"><span>🗓️ ${yearF === 'all' ? 'All years' : yearF}</span><span class="st-arrow">▼</span></div>
+        <select onchange="setAnalysisYear(this.value)">
+          <option value="all" ${yearF === 'all' ? 'selected' : ''}>All years</option>
+          ${years.map(y => `<option value="${y}" ${String(y) === String(yearF) ? 'selected' : ''}>${y}</option>`).join('')}
+        </select>
+      </div>
     </div>
-
-    ${!crops.length ? `
-    <div class="empty" style="padding:20px 24px">
-      <div class="e-ic">🌱</div>
-      <h3>You haven't planted yet</h3>
-      <p>Plant a crop first to see analysis for your own crops.</p>
-    </div>` : ''}
 
     <div class="analysis-hero">
-      <h2>📊 Market Intelligence</h2>
-      <p>Expected yields, market price ranges and demand for ${city === 'all' ? 'Zambia' : esc(city)}${monthF !== 'all' ? ' · ' + MONTH_NAMES[parseInt(monthF)] : ''}${cropF !== 'all' ? ' · ' + esc(cropF) : ''}.</p>
+      <h2>📊 Market Prices</h2>
+      <p>Prices per crop and the towns where they're being sold${city !== 'all' ? ' in ' + esc(city) : ''}${cropF !== 'all' ? ' for ' + esc(cropF) : ''}${monthF !== 'all' ? ' · ' + MONTH_NAMES[parseInt(monthF)] : ''}${yearF !== 'all' ? ' · ' + yearF : ''}.</p>
     </div>
 
     <div class="ma-section">
-      <h3>📦 Expected Yield by Crop</h3>
-      ${yieldList.length ? yieldList.map(([name, qty]) => {
-        const pct = totalExpected ? Math.round(qty / totalExpected * 100) : 0;
-        const demand = computeDemandIndicator(name, city, allBatches, allListings);
-        const demandLabel = demand === 'high' ? 'High demand' : demand === 'medium' ? 'Moderate' : 'Oversupply';
-        const crop = S.catalogue.find(c => c.name === name);
-        const unit = crop ? getHarvestUnit(crop.name, crop.category).unit : 'units';
-        return `
-          <div class="ma-bar-row">
-            <div class="ma-bar-top">
-              <span>${pickIcon(name)} ${esc(name)}</span>
-              <span>${qty.toLocaleString()} ${esc(unit)}</span>
-            </div>
-            <div class="ma-bar-track"><div class="ma-bar-fill ${demand === 'low' ? 'danger' : demand === 'medium' ? 'warn' : ''}" style="width:${pct}%"></div></div>
-            <div style="margin-top:4px;display:flex;justify-content:space-between;align-items:center">
-              <span class="demand-pill ${demand}"><span class="dotp"></span>${demandLabel}</span>
-              <span style="font-size:10.5px;color:var(--tl);font-weight:700">${pct}% of total</span>
-            </div>
-          </div>`;
-      }).join('') : `<div class="empty" style="padding:16px"><p>No expected yield data for this filter.</p></div>`}
-    </div>
-
-    <div class="ma-section">
-      <h3>💰 Market Price Range</h3>
+      <h3>💰 Price Range by Crop</h3>
       ${priceList.length ? priceList.map(([name, data]) => {
-        const demand = computeDemandIndicator(name, city, allBatches, allListings);
-        const demandLabel = demand === 'high' ? 'Rising' : demand === 'medium' ? 'Stable' : 'Falling';
+        const unit = data.unit || 'box';
+        const towns = [...data.towns];
         return `
-          <div class="info-row" style="align-items:center">
-            <span class="ir-k">${pickIcon(name)} ${esc(name)}</span>
-            <span class="ir-v" style="display:flex;gap:8px;align-items:center;justify-content:flex-end">
-              <span>${fmtZMK(data.min)}${data.max > data.min ? ' – ' + fmtZMK(data.max) : ''}</span>
-              <span class="demand-pill ${demand}"><span class="dotp"></span>${demandLabel}</span>
-            </span>
-          </div>`;
-      }).join('') : `<div class="empty" style="padding:16px"><p>No listings on market for this filter.</p></div>`}
+          <div style="padding:12px 0;border-bottom:1px solid var(--bd)">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px">
+              <div style="font-size:13px;font-weight:900;color:var(--td)">${pickIcon(name)} ${esc(name)}</div>
+              <div style="font-size:14px;font-weight:900;color:var(--p-d);white-space:nowrap;text-align:right">
+                ${fmtZMK(data.min)}${data.max > data.min ? ' – ' + fmtZMK(data.max) : ''}
+              </div>
+            </div>
+            <div style="font-size:11px;color:var(--tl);font-weight:700;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+              <span>📍 ${towns.length ? towns.map(t => esc(t)).join(', ') : 'No towns'}</span>
+              <span style="color:var(--tm)">·</span>
+              <span>/ ${esc(singularUnit(unit))}</span>
+            </div>
+          </div>
+        `;
+      }).join('') : `<div class="empty" style="padding:16px"><p>No listings match this filter.</p></div>`}
     </div>
 
     <div class="ma-section">
@@ -5151,9 +5144,9 @@ function renderMarketAnalysis() {
         const unit = l.unit || 'box';
         return `
         <div class="trend-card" onclick="viewMarketListing('${esc(l.id)}')">
-          <div class="trend-ic">${pickIcon(l.productName || l.title)}</div>
+          <div class="trend-ic">${pickIcon(getCropNameFromListing(l))}</div>
           <div class="trend-body">
-            <div class="trend-name">${esc(l.productName || l.title)}</div>
+            <div class="trend-name">${esc(getCropNameFromListing(l))}</div>
             <div class="trend-market">${esc(l.marketName || 'Market')} · ${esc(l.city || '')}</div>
           </div>
           <div class="trend-price">
@@ -5161,7 +5154,7 @@ function renderMarketAnalysis() {
             <small>${l.priceMode === 'total' ? 'total' : '/ ' + singularUnit(unit)}</small>
           </div>
         </div>`;
-      }).join('') : `<div class="empty" style="padding:16px"><p>No listings on market yet.</p></div>`}
+      }).join('') : `<div class="empty" style="padding:16px"><p>No listings match this filter.</p></div>`}
     </div>
 
     <div style="padding:0 18px 18px">
@@ -5174,35 +5167,48 @@ function renderMarketAnalysis() {
 }
 
 /* ============================================================
-   PREVIEW MARKET
+   PREVIEW MARKET — with year, city, market & crop filters
    ============================================================ */
+window.setPreviewYear = (v) => { S.previewYear = v === 'all' ? null : v; route(); };
+window.setPreviewCity = (v) => { S.previewCity = v === 'all' ? null : v; route(); };
+window.setPreviewMarket = (v) => { S.previewMarket = v === 'all' ? null : v; route(); };
+window.setPreviewCrop = (v) => { S.previewCrop = v === 'all' ? null : v; route(); };
+
 function renderPreviewMarket() {
-  const city = S.analysisMarket !== 'all' ? S.analysisMarket : (S.weatherCity || 'Lusaka');
   const allListings = (S.marketplace || []).filter(l =>
     l.status !== 'removed' && l.availabilityStatus !== 'removed' && l.availabilityStatus !== 'sold'
   );
-  const cityListings = allListings.filter(l => !l.city || l.city === city);
+
+  const years = [...new Set(allListings.map(l => l.createdAt ? new Date(l.createdAt).getFullYear() : null).filter(Boolean))].sort((a,b) => b - a);
+  const cities = [...new Set(allListings.map(l => l.city).filter(Boolean))].sort();
+  const markets = [...new Set(allListings.map(l => l.marketName).filter(Boolean))].sort();
+  const crops = [...new Set(allListings.map(l => getCropNameFromListing(l)).filter(Boolean))].sort();
+
+  const selYear = S.previewYear || 'all';
+  const selCity = S.previewCity || (S.weatherCity || 'all');
+  const selMarket = S.previewMarket || 'all';
+  const selCrop = S.previewCrop || 'all';
+
+  let filtered = allListings.slice();
+  if (selYear !== 'all') filtered = filtered.filter(l => l.createdAt && new Date(l.createdAt).getFullYear() === parseInt(selYear));
+  if (selCity !== 'all') filtered = filtered.filter(l => l.city === selCity);
+  if (selMarket !== 'all') filtered = filtered.filter(l => l.marketName === selMarket);
+  if (selCrop !== 'all') filtered = filtered.filter(l => getCropNameFromListing(l) === selCrop);
 
   const cropMap = {};
-  cityListings.forEach(l => {
-    const rawName = l.productName || l.title || 'Produce';
-    const name = String(rawName).replace(/^\s*Fresh\s+/i, '').replace(/\s*–.*$/, '').trim();
+  filtered.forEach(l => {
+    const name = getCropNameFromListing(l);
     if (!name) return;
     if (!cropMap[name]) cropMap[name] = { prices: [], count: 0 };
     let p = 0;
-    if (l.priceMode === 'total' && l.quantity) {
-      p = (parseFloat(l.priceAmount) || 0) / l.quantity;
-    } else {
-      p = parseFloat(l.pricePerBox || l.priceAmount || 0);
-    }
+    if (l.priceMode === 'total' && l.quantity) p = (parseFloat(l.priceAmount) || 0) / l.quantity;
+    else p = parseFloat(l.pricePerBox || l.priceAmount || 0);
     if (p > 0) cropMap[name].prices.push(p);
     cropMap[name].count++;
   });
 
   const rows = Object.entries(cropMap).map(([name, data]) => {
-    const avg = data.prices.length
-      ? Math.round(data.prices.reduce((a, b) => a + b, 0) / data.prices.length)
-      : 0;
+    const avg = data.prices.length ? Math.round(data.prices.reduce((a, b) => a + b, 0) / data.prices.length) : 0;
     return { name, price: 'K' + avg, icon: pickIcon(name) };
   });
   rows.sort((a, b) => a.name.localeCompare(b.name));
@@ -5219,11 +5225,48 @@ function renderPreviewMarket() {
       <div class="tb-title" style="color:#fbbf24">Market Update</div>
     </div>
 
+    <div style="padding:10px 18px 0;position:relative;z-index:2">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="af-box" style="background:rgba(0,0,0,.35);border:1px solid rgba(251,191,36,.3)">
+          <label style="color:#fbbf24">Year</label>
+          <div class="af-value" style="color:#f0fdf4"><span>🗓️ ${selYear === 'all' ? 'All years' : selYear}</span><span class="st-arrow" style="color:#fbbf24">▼</span></div>
+          <select onchange="setPreviewYear(this.value)">
+            <option value="all" ${selYear === 'all' ? 'selected' : ''}>All years</option>
+            ${years.map(y => `<option value="${y}" ${String(y) === String(selYear) ? 'selected' : ''}>${y}</option>`).join('')}
+          </select>
+        </div>
+        <div class="af-box" style="background:rgba(0,0,0,.35);border:1px solid rgba(251,191,36,.3)">
+          <label style="color:#fbbf24">City</label>
+          <div class="af-value" style="color:#f0fdf4"><span>📍 ${selCity === 'all' ? 'All cities' : esc(selCity)}</span><span class="st-arrow" style="color:#fbbf24">▼</span></div>
+          <select onchange="setPreviewCity(this.value)">
+            <option value="all" ${selCity === 'all' ? 'selected' : ''}>All cities</option>
+            ${cities.map(c => `<option value="${esc(c)}" ${c === selCity ? 'selected' : ''}>${esc(c)}</option>`).join('')}
+          </select>
+        </div>
+        <div class="af-box" style="background:rgba(0,0,0,.35);border:1px solid rgba(251,191,36,.3)">
+          <label style="color:#fbbf24">Market</label>
+          <div class="af-value" style="color:#f0fdf4"><span>🏪 ${selMarket === 'all' ? 'All markets' : esc(selMarket)}</span><span class="st-arrow" style="color:#fbbf24">▼</span></div>
+          <select onchange="setPreviewMarket(this.value)">
+            <option value="all" ${selMarket === 'all' ? 'selected' : ''}>All markets</option>
+            ${markets.map(m => `<option value="${esc(m)}" ${m === selMarket ? 'selected' : ''}>${esc(m)}</option>`).join('')}
+          </select>
+        </div>
+        <div class="af-box" style="background:rgba(0,0,0,.35);border:1px solid rgba(251,191,36,.3)">
+          <label style="color:#fbbf24">Crop</label>
+          <div class="af-value" style="color:#f0fdf4"><span>🌱 ${selCrop === 'all' ? 'All crops' : esc(selCrop)}</span><span class="st-arrow" style="color:#fbbf24">▼</span></div>
+          <select onchange="setPreviewCrop(this.value)">
+            <option value="all" ${selCrop === 'all' ? 'selected' : ''}>All crops</option>
+            ${crops.map(c => `<option value="${esc(c)}" ${c === selCrop ? 'selected' : ''}>${esc(c)}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+    </div>
+
     <div style="padding:20px 18px 20px;position:relative;z-index:1">
       <div class="pb-head">
         <div class="pb-sub">Farmer · Championing Agribusiness</div>
         <div class="pb-title">MARKET UPDATE</div>
-        <div class="pb-loc">📍 FROM ${esc(city.toUpperCase())}</div>
+        <div class="pb-loc">📍 ${selCity === 'all' ? 'ALL CITIES' : esc(selCity.toUpperCase())}</div>
         <div class="pb-date">📅 ${esc(dateStr)}</div>
       </div>
 
@@ -5237,8 +5280,8 @@ function renderPreviewMarket() {
           </div>
         `).join('') : `
           <div class="pb-empty" style="grid-column:1/-1">
-            🌾 No crops are on the market in ${esc(city)} yet.
-            <div style="font-size:11.5px;font-weight:600;margin-top:10px;opacity:.85">List a harvest from your farm to start the board.</div>
+            🌾 No crops match the current filters.
+            <div style="font-size:11.5px;font-weight:600;margin-top:10px;opacity:.85">Try changing the filters above.</div>
           </div>
         `}
       </div>
@@ -5594,7 +5637,7 @@ function renderFarmersByCity() {
 /* ============================================================
    FARM ANALYSIS
    ============================================================ */
-window.setAnalysisYear = (y) => { S.analysisYear = parseInt(y); route(); };
+window.setAnalysisYear = (y) => { S.analysisYear = (y === 'all') ? null : parseInt(y); route(); };
 window.setAnalysisCity = (c) => { S.analysisCity = c; route(); };
 
 function renderFarmAnalysis() {
