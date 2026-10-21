@@ -1,0 +1,2658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0f7a34">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>AgriCare · Agro Dealer</title>
+
+<script>
+(function(){
+  try {
+    const t = localStorage.getItem('agricare_theme');
+    if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+  } catch(e){}
+})();
+</script>
+
+<script src="https://upload-widget.cloudinary.com/global/all.js"></script>
+
+<script type="importmap">
+{
+  "imports": {
+    "firebase/app": "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js",
+    "firebase/auth": "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js",
+    "firebase/database": "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js"
+  }
+}
+</script>
+
+<style>
+:root{
+  --p:#0f7a34;--p-h:#0b5f28;--p-d:#084d20;--p-l:#e6f5eb;--p-ll:#f1faf4;
+  --p-glow:rgba(15,122,52,.28);
+  --acc:#16a34a;--acc-soft:#86efac;
+  --td:#0f172a;--tb:#334155;--tl:#64748b;--tm:#94a3b8;
+  --bd:#e2e8f0;--bd-s:#cbd5e1;
+  --sf:#ffffff;--sf2:#f8fafc;--bg:#f4f7f5;
+  --danger:#dc2626;--danger-soft:#fee2e2;
+  --warn:#b45309;--warn-soft:#fef3c7;
+  --ok:#16a34a;--ok-soft:#d1fae5;
+  --info:#2563eb;--info-soft:#dbeafe;
+  --purple:#7c3aed;--purple-soft:#ede9fe;
+  --orange:#ea580c;--orange-soft:#ffedd5;
+  --r-sm:10px;--r:14px;--r-lg:20px;--r-xl:26px;--r-2xl:32px;
+  --r-p:999px;
+  --e:cubic-bezier(.22,1,.36,1);
+  --e-bounce:cubic-bezier(.34,1.56,.64,1);
+  --sh-xs:0 1px 2px rgba(15,23,42,.05);
+  --sh-sm:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04);
+  --sh:0 4px 12px rgba(15,23,42,.07),0 2px 4px rgba(15,23,42,.04);
+  --sh-md:0 8px 24px rgba(15,23,42,.09),0 3px 8px rgba(15,23,42,.05);
+  --sh-lg:0 12px 28px rgba(15,23,42,.09),0 4px 10px rgba(15,23,42,.05);
+  --sh-xl:0 20px 48px rgba(15,23,42,.12),0 6px 16px rgba(15,23,42,.06);
+  --sh-brand:0 10px 30px -8px var(--p-glow);
+  --sh-brand-lg:0 20px 50px -10px rgba(15,122,52,.4);
+  --ring:0 0 0 4px rgba(15,122,52,.14);
+  --nav-h:68px;
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+
+[data-theme="dark"]{
+  --p:#22c55e;--p-h:#16a34a;--p-d:#86efac;
+  --p-l:#064e3b;--p-ll:#022c22;--p-glow:rgba(34,197,94,.32);
+  --acc:#22c55e;--acc-soft:#065f46;
+  --td:#f1f5f9;--tb:#cbd5e1;--tl:#94a3b8;--tm:#64748b;
+  --bd:#1e293b;--bd-s:#334155;
+  --sf:#0f172a;--sf2:#1e293b;--bg:#020617;
+  --danger:#f87171;--danger-soft:#450a0a;
+  --warn:#fbbf24;--warn-soft:#422006;
+  --ok:#34d399;--ok-soft:#064e3b;
+  --info:#60a5fa;--info-soft:#1e3a8a;
+  --purple:#c4b5fd;--purple-soft:#2e1065;
+  --orange:#fdba74;--orange-soft:#431407;
+  --sh-xs:0 1px 2px rgba(0,0,0,.5);
+  --sh-sm:0 1px 3px rgba(0,0,0,.6),0 1px 2px rgba(0,0,0,.4);
+  --sh:0 4px 12px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.4);
+  --sh-md:0 8px 24px rgba(0,0,0,.65),0 3px 8px rgba(0,0,0,.5);
+  --sh-lg:0 12px 28px rgba(0,0,0,.7),0 4px 10px rgba(0,0,0,.5);
+  --sh-xl:0 20px 48px rgba(0,0,0,.8),0 6px 16px rgba(0,0,0,.6);
+  --sh-brand:0 10px 30px -8px rgba(34,197,94,.4);
+  --sh-brand-lg:0 20px 50px -10px rgba(34,197,94,.35);
+  --ring:0 0 0 4px rgba(34,197,94,.22);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{-webkit-text-size-adjust:100%;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);color:var(--tb);height:100dvh;overflow:hidden;
+  -webkit-font-smoothing:antialiased;overscroll-behavior:none;
+  user-select:none;-webkit-user-select:none;
+}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit;}
+button{cursor:pointer;border:none;background:none;}
+img{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+
+#app{position:fixed;inset:0;overflow:hidden;display:flex;justify-content:center;}
+.screen-wrap{
+  width:100%;max-width:720px;height:100%;position:relative;
+  display:flex;flex-direction:column;background:var(--sf);
+  box-shadow:0 0 60px rgba(15,23,42,.06);
+}
+@media(min-width:721px){
+  body{background:linear-gradient(135deg,#eef7f0 0%,#e0f2e6 50%,#d5ecdc 100%);}
+  [data-theme="dark"] body{background:linear-gradient(135deg,#020617 0%,#0f172a 50%,#020617 100%);}
+  .screen-wrap{margin:0 auto;height:100dvh;}
+}
+.screen{
+  position:absolute;inset:0;display:flex;flex-direction:column;background:var(--sf);
+  opacity:0;transform:translateY(20px) scale(0.985);
+  transition:opacity .4s var(--e),transform .5s var(--e);
+  pointer-events:none;will-change:opacity,transform;
+}
+.screen.active{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;z-index:5;}
+@keyframes pageSlideIn{from{opacity:.4;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.scroll{
+  flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
+  padding-bottom:calc(var(--nav-h) + var(--safe-b) + 24px);scrollbar-width:none;
+}
+.scroll::-webkit-scrollbar{display:none;}
+
+#splash{background:#000;z-index:100;display:flex;align-items:center;justify-content:center;opacity:1;transform:none;pointer-events:auto;}
+#splash img{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s ease-in-out;}
+#splash.show img{opacity:1;}
+#splash .brand-overlay{
+  position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;
+  padding:calc(var(--safe-t) + 40px) 24px calc(var(--safe-b) + 40px);
+  background:linear-gradient(180deg,rgba(0,0,0,.15) 0%,transparent 40%,transparent 60%,rgba(0,0,0,.55) 100%);
+  pointer-events:none;opacity:0;transition:opacity 1s ease-in-out;
+}
+#splash.show .brand-overlay{opacity:1;}
+#splash .brand-top{text-align:center;color:#fff;}
+#splash .brand-top .leaf{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 12px;box-shadow:0 12px 30px rgba(0,0,0,.3);}
+#splash .brand-top h1{font-size:34px;font-weight:900;letter-spacing:-.03em;text-shadow:0 2px 14px rgba(0,0,0,.5);}
+#splash .brand-top p{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.95;margin-top:6px;}
+#splash .brand-bottom{text-align:center;color:#fff;}
+#splash .brand-bottom h2{font-size:22px;font-weight:900;letter-spacing:-.02em;line-height:1.25;text-shadow:0 2px 14px rgba(0,0,0,.5);}
+
+.topbar{padding:calc(var(--safe-t) + 14px) 18px 10px;display:flex;align-items:center;gap:12px;background:var(--sf);flex-shrink:0;}
+.topbar.bordered{border-bottom:1px solid var(--bd);}
+.tb-back{width:38px;height:38px;border-radius:50%;background:var(--sf2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s var(--e);}
+.tb-back:active{transform:scale(.92);background:var(--p-l);border-color:var(--p);}
+.tb-back svg{width:18px;height:18px;fill:var(--td);}
+.tb-title{flex:1;font-size:17px;font-weight:800;letter-spacing:-.02em;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tb-actions{display:flex;gap:8px;align-items:center;}
+.tb-btn{width:38px;height:38px;border-radius:50%;background:var(--sf2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;transition:all .2s var(--e);position:relative;}
+.tb-btn:active{transform:scale(.92);background:var(--p-l);}
+.tb-btn svg{width:18px;height:18px;fill:var(--td);}
+.tb-btn.danger{background:var(--danger-soft);border-color:rgba(220,38,38,.3);}
+.tb-btn.danger svg{fill:var(--danger);}
+
+.btn{width:100%;padding:15px 20px;border-radius:var(--r-p);font-size:14.5px;font-weight:800;letter-spacing:-.01em;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .22s var(--e);}
+.btn:disabled{opacity:.55;cursor:not-allowed;}
+.btn-p{background:linear-gradient(180deg,#12903e 0%,var(--p) 100%);color:#fff;box-shadow:var(--sh-brand);}
+.btn-p:active:not(:disabled){transform:scale(.97);}
+.btn-o{background:transparent;color:var(--p);border:1.5px solid var(--p);}
+.btn-o:active:not(:disabled){background:var(--p-l);}
+.btn-s{background:var(--sf);color:var(--td);border:1.5px solid var(--bd);}
+.btn-s:active:not(:disabled){background:var(--sf2);}
+.btn-danger{background:var(--danger-soft);color:var(--danger);border:1.5px solid rgba(220,38,38,.25);}
+.btn-row{display:flex;gap:10px;padding:0 18px 18px;}
+.btn-row .btn{flex:1;}
+
+/* HERO / HEADER */
+.hero{
+  margin:0 18px 14px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#7c3aed 0%,#5b21b6 60%,#4c1d95 100%);
+  border-radius:var(--r-2xl);padding:20px;color:#fff;
+  box-shadow:0 20px 50px -10px rgba(124,58,237,.4);
+}
+.hero::before{content:'';position:absolute;top:-30px;right:-20px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,255,255,.22) 0%,transparent 70%);border-radius:50%;pointer-events:none;}
+.hero-head{display:flex;align-items:center;gap:12px;position:relative;z-index:1;}
+.hero-profile-pic{width:52px;height:52px;border-radius:50%;overflow:hidden;background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;flex-shrink:0;}
+.hero-profile-pic img{width:100%;height:100%;object-fit:cover;}
+.hero-greeting{font-size:12px;font-weight:700;opacity:.9;}
+.hero-name{font-size:20px;font-weight:900;letter-spacing:-.02em;line-height:1.2;margin-top:2px;}
+.hero-name span{color:#fde68a;}
+.hero-loc{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;opacity:.95;margin-top:8px;}
+
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px;position:relative;z-index:1;}
+.hero-stat{background:rgba(255,255,255,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:12px 8px;border-radius:var(--r);text-align:center;border:1px solid rgba(255,255,255,.2);}
+.hero-stat .n{font-size:20px;font-weight:900;line-height:1;letter-spacing:-.03em;}
+.hero-stat .l{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;opacity:.92;margin-top:4px;}
+
+/* QUICK ACTIONS */
+.qa-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 18px 16px;}
+.qa{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px 10px;border-radius:var(--r-lg);background:var(--sf2);border:1px solid var(--bd);transition:all .22s var(--e);}
+.qa:active{transform:scale(.94);background:var(--p-l);border-color:var(--p);}
+.qa-ic{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;line-height:1;box-shadow:0 3px 10px rgba(0,0,0,.08);}
+.qa-lb{font-size:9.5px;font-weight:800;color:var(--td);text-transform:uppercase;text-align:center;letter-spacing:.02em;}
+.qa-ic.c1{background:linear-gradient(145deg,#d1fae5,#10b981)}
+.qa-ic.c2{background:linear-gradient(145deg,#dbeafe,#2563eb)}
+.qa-ic.c3{background:linear-gradient(145deg,#ffedd5,#ea580c)}
+.qa-ic.c4{background:linear-gradient(145deg,#ede9fe,#7c3aed)}
+
+/* SECTIONS */
+.sec-h{padding:4px 18px 10px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.sec-h h3{font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--td);display:flex;align-items:center;gap:6px;}
+.sec-h .em{font-size:17px;}
+.sec-h button{font-size:12px;font-weight:700;color:var(--p);padding:6px 10px;border-radius:var(--r-p);transition:background .2s var(--e);}
+.sec-h button:active{background:var(--p-l);}
+
+/* SMART RECOMMENDATIONS CARDS */
+.rec-card{
+  margin:0 18px 10px;padding:14px 16px;
+  background:var(--sf);border:1.5px solid var(--bd);
+  border-radius:var(--r-xl);display:flex;gap:12px;
+  box-shadow:var(--sh-sm);position:relative;overflow:hidden;
+}
+.rec-card.high{border-color:rgba(220,38,38,.28);background:linear-gradient(135deg,var(--sf) 0%,#fef2f2 100%);}
+[data-theme="dark"] .rec-card.high{background:linear-gradient(135deg,var(--sf) 0%,#3b0a0a 100%);}
+.rec-card.medium{border-color:rgba(234,88,12,.28);background:linear-gradient(135deg,var(--sf) 0%,#fff7ed 100%);}
+[data-theme="dark"] .rec-card.medium{background:linear-gradient(135deg,var(--sf) 0%,#431407 100%);}
+.rec-card.low{border-color:rgba(22,163,74,.28);background:linear-gradient(135deg,var(--sf) 0%,#f0fdf4 100%);}
+[data-theme="dark"] .rec-card.low{background:linear-gradient(135deg,var(--sf) 0%,#052e1b 100%);}
+.rec-ic{
+  width:46px;height:46px;border-radius:14px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:24px;
+  box-shadow:0 3px 10px rgba(0,0,0,.08);
+  background:var(--sf2);
+}
+.rec-card.high .rec-ic{background:linear-gradient(145deg,#fee2e2,#ef4444);}
+.rec-card.medium .rec-ic{background:linear-gradient(145deg,#ffedd5,#ea580c);}
+.rec-card.low .rec-ic{background:linear-gradient(145deg,#d1fae5,#10b981);}
+.rec-body{flex:1;min-width:0;}
+.rec-title{font-size:13.5px;font-weight:900;color:var(--td);letter-spacing:-.01em;margin-bottom:4px;}
+.rec-desc{font-size:11.5px;color:var(--tl);font-weight:600;line-height:1.45;}
+.rec-tag{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:9.5px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.04em;padding:3px 8px;border-radius:var(--r-p);
+  margin-top:8px;
+  background:var(--sf2);color:var(--tl);
+}
+.rec-card.high .rec-tag{background:#fee2e2;color:#991b1b;}
+.rec-card.medium .rec-tag{background:#ffedd5;color:#9a3412;}
+.rec-card.low .rec-tag{background:#d1fae5;color:#065f46;}
+[data-theme="dark"] .rec-card.high .rec-tag{background:#450a0a;color:#f87171;}
+[data-theme="dark"] .rec-card.medium .rec-tag{background:#431407;color:#fdba74;}
+[data-theme="dark"] .rec-card.low .rec-tag{background:#064e3b;color:#34d399;}
+
+/* TOP CROPS */
+.crop-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;background:var(--sf);
+  border:1.5px solid var(--bd);border-radius:var(--r-lg);
+  margin:0 18px 8px;box-shadow:var(--sh-xs);
+}
+.crop-row.stocked{border-color:rgba(22,163,74,.22);}
+.crop-row.gap{border-color:rgba(234,88,12,.28);background:linear-gradient(135deg,var(--sf) 0%,#fff7ed 100%);}
+[data-theme="dark"] .crop-row.gap{background:linear-gradient(135deg,var(--sf) 0%,#431407 100%);}
+.crop-em{font-size:26px;flex-shrink:0;line-height:1;}
+.crop-body{flex:1;min-width:0;}
+.crop-name{font-size:13.5px;font-weight:900;color:var(--td);letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.crop-meta{font-size:11px;color:var(--tl);font-weight:600;margin-top:3px;}
+.crop-badge{
+  flex-shrink:0;padding:4px 10px;border-radius:var(--r-p);
+  font-size:9.5px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;
+  white-space:nowrap;
+}
+.crop-badge.stocked{background:var(--ok-soft);color:#065f46;}
+.crop-badge.gap{background:#ffedd5;color:#9a3412;}
+
+/* GAP CARDS */
+.gap-card{
+  margin:0 18px 10px;padding:16px;
+  background:linear-gradient(135deg,#fff7ed 0%,#fed7aa 100%);
+  border:1.5px solid rgba(234,88,12,.3);
+  border-radius:var(--r-xl);box-shadow:var(--sh-sm);
+}
+[data-theme="dark"] .gap-card{background:linear-gradient(135deg,#431407 0%,#78350f 100%);border-color:rgba(251,146,60,.3);}
+.gap-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.gap-em{font-size:32px;line-height:1;flex-shrink:0;}
+.gap-title{font-size:15px;font-weight:900;color:#9a3412;letter-spacing:-.01em;}
+[data-theme="dark"] .gap-title{color:#fdba74;}
+.gap-count{font-size:11px;color:#c2410c;font-weight:700;margin-top:2px;}
+[data-theme="dark"] .gap-count{color:#fb923c;}
+.gap-sugg-label{
+  font-size:10px;font-weight:800;color:#9a3412;text-transform:uppercase;
+  letter-spacing:.05em;margin-bottom:6px;
+}
+[data-theme="dark"] .gap-sugg-label{color:#fdba74;}
+.gap-sugg{display:flex;flex-wrap:wrap;gap:6px;}
+.gap-sugg-item{
+  font-size:11px;font-weight:800;color:#7c2d12;
+  background:rgba(255,255,255,.85);padding:5px 10px;
+  border-radius:var(--r-p);
+}
+[data-theme="dark"] .gap-sugg-item{background:rgba(0,0,0,.35);color:#fef3c7;}
+
+/* PRODUCTS */
+.prod-search{
+  margin:0 18px 12px;position:relative;
+}
+.prod-search input{
+  width:100%;padding:13px 16px 13px 42px;
+  border:1.5px solid var(--bd);border-radius:var(--r-lg);
+  font-size:14px;background:var(--sf);color:var(--td);
+  outline:none;transition:all .2s var(--e);box-shadow:var(--sh-xs);
+}
+.prod-search input:focus{border-color:var(--p);box-shadow:var(--ring);}
+.prod-search::before{content:'🔍';position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;opacity:.6;}
+
+.prod-filter-row{display:flex;gap:8px;padding:0 18px 12px;overflow-x:auto;scrollbar-width:none;}
+.prod-filter-row::-webkit-scrollbar{display:none;}
+.prod-chip{
+  flex-shrink:0;padding:8px 14px;border-radius:var(--r-p);
+  background:var(--sf);border:1.5px solid var(--bd);
+  font-size:11.5px;font-weight:800;color:var(--tb);
+  transition:all .2s var(--e);white-space:nowrap;
+  display:flex;align-items:center;gap:5px;
+}
+.prod-chip.active{background:var(--p);color:#fff;border-color:var(--p);box-shadow:0 4px 12px -4px var(--p-glow);}
+.prod-chip .cnt{font-size:9px;background:rgba(15,23,42,.08);padding:1px 6px;border-radius:999px;min-width:16px;text-align:center;}
+.prod-chip.active .cnt{background:rgba(255,255,255,.25);}
+
+.prod-card{
+  margin:0 18px 10px;padding:12px;
+  background:var(--sf);border:1.5px solid var(--bd);
+  border-radius:var(--r-xl);display:flex;gap:12px;
+  box-shadow:var(--sh-sm);position:relative;
+}
+.prod-card.soldout{opacity:.68;background:var(--sf2);}
+.prod-photo{
+  width:76px;height:76px;border-radius:14px;flex-shrink:0;
+  background:var(--sf2);overflow:hidden;
+  display:flex;align-items:center;justify-content:center;font-size:36px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  position:relative;
+}
+.prod-photo img{width:100%;height:100%;object-fit:cover;}
+.prod-photo .badge{
+  position:absolute;top:4px;left:4px;
+  font-size:8.5px;font-weight:900;text-transform:uppercase;
+  letter-spacing:.04em;padding:2px 6px;border-radius:var(--r-p);
+  background:var(--ok-soft);color:#065f46;
+  box-shadow:0 2px 6px rgba(0,0,0,.15);
+}
+.prod-photo .badge.soldout{background:#f1f5f9;color:#475569;}
+.prod-photo .badge.low{background:#fef3c7;color:#92400e;}
+
+.prod-body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:space-between;}
+.prod-name{font-size:13.5px;font-weight:900;color:var(--td);letter-spacing:-.01em;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.prod-cat{font-size:10.5px;color:var(--p);font-weight:800;text-transform:uppercase;letter-spacing:.03em;margin-top:2px;}
+.prod-desc{font-size:11px;color:var(--tl);font-weight:600;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.35;}
+.prod-price-row{display:flex;align-items:baseline;gap:5px;margin-top:6px;}
+.prod-price{font-size:15px;font-weight:900;color:var(--p-d);letter-spacing:-.02em;}
+.prod-unit{font-size:10px;font-weight:700;color:var(--tl);}
+.prod-stock-info{font-size:10.5px;font-weight:700;color:var(--tl);margin-top:3px;}
+.prod-stock-info.low{color:#92400e;}
+.prod-stock-info.out{color:var(--danger);}
+
+.prod-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+.prod-avail-toggle{
+  padding:6px 12px;border-radius:var(--r-p);font-size:10px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.04em;
+  display:flex;align-items:center;gap:4px;
+  transition:all .2s var(--e);
+}
+.prod-avail-toggle.on{background:var(--ok-soft);color:#065f46;}
+.prod-avail-toggle.off{background:var(--sf2);color:var(--tl);border:1px solid var(--bd);}
+.prod-avail-toggle:active{transform:scale(.95);}
+.prod-menu-btn{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--sf2);border:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--tl);font-size:14px;font-weight:900;
+  transition:all .2s var(--e);
+}
+.prod-menu-btn:active{transform:scale(.9);background:var(--p-l);}
+
+.prod-empty{
+  text-align:center;padding:60px 24px;color:var(--tl);
+}
+.prod-empty .em{font-size:56px;margin-bottom:14px;opacity:.5;line-height:1;}
+.prod-empty h3{font-size:15px;font-weight:800;color:var(--td);margin-bottom:6px;}
+.prod-empty p{font-size:12.5px;line-height:1.5;max-width:300px;margin:0 auto;}
+
+/* ADD/EDIT PRODUCT FORM */
+.prod-form{padding:0 18px 18px;display:flex;flex-direction:column;gap:12px;}
+.fld{position:relative;}
+.fld label{display:block;font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
+.fld .inp{
+  width:100%;padding:14px 16px;
+  border:1.5px solid var(--bd);border-radius:var(--r-lg);
+  background:var(--sf);font-size:15px;font-weight:500;color:var(--td);
+  outline:none;transition:all .2s var(--e);
+  -webkit-appearance:none;appearance:none;box-shadow:var(--sh-xs);
+}
+.fld select.inp{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 16px center;
+  padding-right:40px;cursor:pointer;
+}
+.fld .inp:focus{border-color:var(--p);box-shadow:var(--ring);}
+.fld textarea.inp{resize:vertical;min-height:70px;line-height:1.5;}
+
+/* PHOTO UPLOAD */
+.photo-upload{
+  margin:0 18px 14px;padding:16px;
+  border:2px dashed var(--bd-s);border-radius:var(--r-lg);
+  background:var(--sf2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;cursor:pointer;transition:all .2s var(--e);
+  min-height:120px;position:relative;
+}
+.photo-upload:active{border-color:var(--p);background:#fff;}
+.photo-upload.has-image{border-style:solid;border-color:var(--p);background:#000;padding:0;overflow:hidden;}
+.photo-upload.has-image img{width:100%;height:180px;object-fit:cover;display:block;}
+.photo-upload .icon{font-size:32px;opacity:.6;}
+.photo-upload .label{font-size:12px;font-weight:700;color:var(--tl);}
+.photo-upload .hint{font-size:10px;font-weight:600;color:var(--tm);text-transform:uppercase;letter-spacing:.03em;}
+.photo-upload .change-badge{
+  position:absolute;bottom:8px;right:8px;
+  background:rgba(15,23,42,.85);color:#fff;
+  padding:5px 10px;border-radius:var(--r-p);
+  font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+  backdrop-filter:blur(4px);
+  display:none;
+}
+.photo-upload.has-image .change-badge{display:block;}
+
+/* TOGGLE SWITCH */
+.toggle-wrap{
+  margin:0 18px 14px;padding:14px 16px;
+  background:var(--sf);border:1.5px solid var(--bd);
+  border-radius:var(--r-lg);display:flex;align-items:center;gap:12px;
+  box-shadow:var(--sh-xs);
+}
+.toggle-wrap-tx{flex:1;min-width:0;}
+.toggle-wrap-title{font-size:13px;font-weight:900;color:var(--td);}
+.toggle-wrap-sub{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px;}
+.toggle{
+  width:52px;height:30px;border-radius:15px;
+  background:var(--bd-s);position:relative;flex-shrink:0;
+  cursor:pointer;transition:background .25s var(--e);
+}
+.toggle.on{background:var(--p);}
+.toggle::before{
+  content:'';position:absolute;top:3px;left:3px;
+  width:24px;height:24px;border-radius:50%;
+  background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);
+  transition:transform .25s var(--e-bounce);
+}
+.toggle.on::before{transform:translateX(22px);}
+
+/* INFO BANNER */
+.info-banner{
+  margin:0 18px 14px;padding:12px 14px;
+  border-radius:var(--r-lg);
+  background:#dbeafe;border:1px solid rgba(37,99,235,.22);
+  display:flex;align-items:flex-start;gap:10px;
+}
+[data-theme="dark"] .info-banner{background:#1e3a8a;border-color:rgba(96,165,250,.3);}
+.info-banner .ic{font-size:18px;flex-shrink:0;margin-top:1px;}
+.info-banner .tx{flex:1;font-size:11.5px;color:#1e40af;font-weight:600;line-height:1.45;}
+[data-theme="dark"] .info-banner .tx{color:#bfdbfe;}
+
+.warn-banner{
+  margin:0 18px 14px;padding:12px 14px;
+  border-radius:var(--r-lg);
+  background:#fef3c7;border:1px solid rgba(180,83,9,.22);
+  display:flex;align-items:flex-start;gap:10px;
+}
+[data-theme="dark"] .warn-banner{background:#422006;border-color:rgba(251,191,36,.3);}
+.warn-banner .ic{font-size:18px;flex-shrink:0;margin-top:1px;}
+.warn-banner .tx{flex:1;font-size:11.5px;color:#92400e;font-weight:600;line-height:1.45;}
+[data-theme="dark"] .warn-banner .tx{color:#fbbf24;}
+
+/* FARMERS */
+.farmer-card{
+  margin:0 18px 10px;padding:14px;
+  background:var(--sf);border:1.5px solid var(--bd);
+  border-radius:var(--r-xl);box-shadow:var(--sh-sm);
+  cursor:pointer;transition:all .2s var(--e);
+  display:flex;gap:12px;
+}
+.farmer-card:active{transform:scale(.985);box-shadow:var(--sh-md);}
+.farmer-card.urgent{border-color:rgba(220,38,38,.28);background:linear-gradient(135deg,var(--sf) 0%,#fef2f2 100%);}
+[data-theme="dark"] .farmer-card.urgent{background:linear-gradient(135deg,var(--sf) 0%,#3b0a0a 100%);}
+.farmer-card.hot{border-color:rgba(234,88,12,.28);background:linear-gradient(135deg,var(--sf) 0%,#fff7ed 100%);}
+[data-theme="dark"] .farmer-card.hot{background:linear-gradient(135deg,var(--sf) 0%,#431407 100%);}
+
+.farmer-photo{
+  width:56px;height:56px;border-radius:14px;flex-shrink:0;
+  background:linear-gradient(145deg,#d1fae5,#10b981);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:900;color:#fff;
+  overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.08);
+}
+.farmer-photo img{width:100%;height:100%;object-fit:cover;}
+.farmer-body{flex:1;min-width:0;}
+.farmer-name{font-size:14px;font-weight:900;color:var(--td);letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.farmer-meta{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.farmer-crops{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;}
+.farmer-crop-chip{
+  font-size:9.5px;font-weight:800;padding:2px 7px;
+  border-radius:var(--r-p);white-space:nowrap;
+}
+.farmer-crop-chip.harvesting{background:#fee2e2;color:#991b1b;}
+.farmer-crop-chip.fruiting{background:#ffedd5;color:#9a3412;}
+.farmer-crop-chip.flowering{background:#fef3c7;color:#92400e;}
+.farmer-crop-chip.growing{background:#d1fae5;color:#065f46;}
+.farmer-crop-chip.planted{background:#dbeafe;color:#1e40af;}
+
+.farmer-call-btn{
+  width:40px;height:40px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(145deg,#22c55e,#15803d);
+  color:#fff;box-shadow:0 5px 14px -4px rgba(34,197,94,.55);
+  transition:transform .2s var(--e);
+}
+.farmer-call-btn:active{transform:scale(.9);}
+.farmer-call-btn svg{width:17px;height:17px;fill:#fff;}
+
+/* DELIVERY (same as farmer) */
+.delivery-intro{
+  margin:0 18px 14px;padding:18px;border-radius:var(--r-xl);
+  background:linear-gradient(135deg,#0f7a34 0%,#084d20 100%);
+  color:#fff;position:relative;overflow:hidden;
+  box-shadow:var(--sh-brand-lg);
+}
+[data-theme="dark"] .delivery-intro{background:linear-gradient(135deg,#064e3b,#022c22);}
+.delivery-intro::before{content:'';position:absolute;top:-30px;right:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,255,255,.18) 0%,transparent 65%);border-radius:50%;pointer-events:none;}
+.delivery-intro h2{font-size:19px;font-weight:900;letter-spacing:-.02em;position:relative;z-index:1;display:flex;align-items:center;gap:8px;}
+.delivery-intro p{font-size:12px;font-weight:600;opacity:.92;margin-top:6px;line-height:1.5;position:relative;z-index:1;}
+.delivery-intro .di-city{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:10px;padding:5px 12px;border-radius:var(--r-p);
+  background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.24);
+  font-size:11px;font-weight:800;letter-spacing:.03em;
+  position:relative;z-index:1;
+}
+
+.delivery-filter-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:0 18px 14px;}
+.delivery-filter-pill{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:10px 4px 8px;border-radius:14px;
+  background:var(--sf);border:1.5px solid var(--bd);
+  transition:all .2s var(--e);cursor:pointer;position:relative;
+}
+.delivery-filter-pill:active{transform:scale(.94);}
+.delivery-filter-pill.active{background:var(--p);border-color:var(--p);color:#fff;box-shadow:0 6px 16px -4px var(--p-glow);}
+.delivery-filter-pill .dfp-em{font-size:22px;line-height:1;}
+.delivery-filter-pill .dfp-lb{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.02em;color:var(--td);text-align:center;line-height:1.1;}
+.delivery-filter-pill.active .dfp-lb{color:#fff;}
+.delivery-filter-pill .dfp-cnt{
+  position:absolute;top:-3px;right:-3px;
+  min-width:18px;height:18px;padding:0 5px;border-radius:9px;
+  background:var(--sf2);border:1.5px solid var(--sf);
+  color:var(--p-d);font-size:9px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+}
+.delivery-filter-pill.active .dfp-cnt{background:#fff;color:var(--p-d);border-color:var(--p);}
+.delivery-filter-pill .dfp-cnt.zero{display:none;}
+
+.delivery-section-label{
+  padding:8px 18px 8px;display:flex;align-items:center;gap:8px;
+  font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);
+}
+.delivery-section-label .dsl-dot{width:8px;height:8px;border-radius:50%;}
+.delivery-section-label.available{color:#065f46;}
+.delivery-section-label.available .dsl-dot{background:var(--ok);box-shadow:0 0 0 3px rgba(22,163,74,.18);}
+.delivery-section-label.unavailable .dsl-dot{background:var(--tm);}
+.delivery-section-label .dsl-cnt{margin-left:auto;padding:2px 8px;border-radius:var(--r-p);background:var(--sf2);color:var(--tb);font-size:10px;font-weight:900;}
+.delivery-section-label.available .dsl-cnt{background:var(--ok-soft);color:#065f46;}
+
+.delivery-partner-card{
+  margin:0 18px 10px;padding:14px;
+  background:var(--sf);border:1.5px solid var(--bd);border-radius:var(--r-xl);
+  display:flex;align-items:center;gap:12px;box-shadow:var(--sh-sm);
+  cursor:pointer;transition:all .2s var(--e);position:relative;
+}
+.delivery-partner-card:active{transform:scale(.985);box-shadow:var(--sh-md);}
+.delivery-partner-card.available{border-color:rgba(22,163,74,.28);background:linear-gradient(135deg,var(--sf) 0%,#f0fdf4 100%);}
+[data-theme="dark"] .delivery-partner-card.available{background:linear-gradient(135deg,var(--sf) 0%,#052e1b 100%);}
+.delivery-partner-card.unavailable{opacity:.75;background:var(--sf2);}
+
+.dpc-avatar{
+  width:52px;height:52px;border-radius:50%;flex-shrink:0;
+  overflow:hidden;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#0f7a34,#084d20);
+  color:#fff;font-weight:900;font-size:18px;
+  box-shadow:0 3px 10px rgba(0,0,0,.1);
+}
+.dpc-avatar img{width:100%;height:100%;object-fit:cover;}
+.dpc-avatar .dpc-dot{
+  position:absolute;bottom:0;right:0;
+  width:14px;height:14px;border-radius:50%;
+  border:2.5px solid var(--sf);background:var(--tm);
+}
+.dpc-avatar .dpc-dot.online{background:var(--ok);box-shadow:0 0 0 2px rgba(22,163,74,.22);}
+
+.dpc-body{flex:1;min-width:0;}
+.dpc-name{font-size:14.5px;font-weight:900;color:var(--td);letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.dpc-meta{font-size:11px;color:var(--tl);font-weight:600;margin-top:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.dpc-vehicle-chip{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:var(--r-p);background:var(--sf2);color:var(--tb);font-weight:800;font-size:9.5px;text-transform:uppercase;letter-spacing:.03em;}
+.dpc-availability{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:var(--r-p);font-weight:800;font-size:9.5px;text-transform:uppercase;letter-spacing:.03em;}
+.dpc-availability.online{background:#d1fae5;color:#065f46;}
+.dpc-availability.offline{background:#f1f5f9;color:#475569;}
+[data-theme="dark"] .dpc-availability.online{background:#064e3b;color:#34d399;}
+[data-theme="dark"] .dpc-availability.offline{background:#1e293b;color:#cbd5e1;}
+
+.dpc-call-btn{
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(145deg,#22c55e,#15803d);color:#fff;
+  box-shadow:0 6px 16px -4px rgba(34,197,94,.5);
+  transition:transform .2s var(--e);text-decoration:none;
+}
+.dpc-call-btn:active{transform:scale(.9);}
+.dpc-call-btn svg{width:18px;height:18px;fill:#fff;}
+.dpc-call-btn.disabled{background:var(--sf2);color:var(--tm);box-shadow:none;pointer-events:none;}
+.dpc-call-btn.disabled svg{fill:var(--tm);}
+
+.delivery-detail-hero{
+  margin:0 18px 16px;padding:26px 22px 22px;border-radius:var(--r-2xl);
+  background:linear-gradient(135deg,#0f7a34 0%,#084d20 100%);
+  color:#fff;text-align:center;position:relative;overflow:hidden;
+  box-shadow:var(--sh-brand-lg);
+}
+[data-theme="dark"] .delivery-detail-hero{background:linear-gradient(135deg,#064e3b 0%,#022c22 100%);}
+.delivery-detail-hero::before{content:'';position:absolute;top:-50px;right:-30px;width:180px;height:180px;background:radial-gradient(circle,rgba(255,255,255,.2) 0%,transparent 65%);border-radius:50%;pointer-events:none;}
+.ddh-avatar{width:88px;height:88px;border-radius:50%;margin:0 auto 14px;background:rgba(255,255,255,.22);border:3px solid #fff;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;position:relative;z-index:1;}
+.ddh-avatar img{width:100%;height:100%;object-fit:cover;}
+.ddh-name{font-size:20px;font-weight:900;letter-spacing:-.03em;position:relative;z-index:1;}
+.ddh-role{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;opacity:.85;margin-top:4px;position:relative;z-index:1;}
+.ddh-status{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:5px 14px;border-radius:var(--r-p);margin-top:10px;position:relative;z-index:1;}
+.ddh-status.online{background:rgba(255,255,255,.95);color:#065f46;}
+.ddh-status.offline{background:rgba(0,0,0,.28);color:#fff;}
+.ddh-call-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:280px;margin:16px auto 0;padding:14px 20px;border-radius:var(--r-p);background:#fff;color:var(--p-d);font-size:14px;font-weight:900;letter-spacing:.02em;text-decoration:none;box-shadow:0 8px 22px -8px rgba(0,0,0,.3);position:relative;z-index:1;transition:transform .2s var(--e);}
+.ddh-call-btn:active{transform:scale(.97);}
+.ddh-call-btn svg{width:18px;height:18px;fill:var(--p-d);}
+
+.delivery-note{margin:0 18px 14px;padding:14px 16px;border-radius:var(--r-lg);background:var(--warn-soft);border:1px solid rgba(180,83,9,.22);display:flex;align-items:flex-start;gap:10px;}
+.delivery-note svg{width:18px;height:18px;fill:var(--warn);flex-shrink:0;margin-top:2px;}
+.delivery-note .dn-tx{font-size:12px;color:#78350f;font-weight:600;line-height:1.5;}
+[data-theme="dark"] .delivery-note{background:#422006;border-color:rgba(251,191,36,.3);}
+[data-theme="dark"] .delivery-note svg{fill:#fbbf24;}
+[data-theme="dark"] .delivery-note .dn-tx{color:#fcd34d;}
+
+.delivery-gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 18px 14px;}
+.delivery-gallery.single{grid-template-columns:1fr;max-width:280px;margin:0 auto 14px;}
+.delivery-photo-item{position:relative;aspect-ratio:1/1;border-radius:var(--r-lg);overflow:hidden;background:var(--sf2);box-shadow:var(--sh-sm);border:1px solid var(--bd);}
+.delivery-photo-item img{width:100%;height:100%;object-fit:cover;}
+.delivery-photo-item .dpi-label{position:absolute;bottom:0;left:0;right:0;padding:8px 12px;background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.75) 100%);color:#fff;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;}
+
+.delivery-empty{padding:48px 24px;text-align:center;color:var(--tl);}
+.delivery-empty .de-em{font-size:56px;margin-bottom:14px;opacity:.5;line-height:1;}
+.delivery-empty h3{font-size:15px;font-weight:800;color:var(--td);margin-bottom:6px;}
+.delivery-empty p{font-size:12.5px;line-height:1.5;max-width:300px;margin:0 auto;}
+
+/* MARKET ANALYSIS HEADER */
+.analysis-hero{
+  margin:0 18px 14px;padding:20px;border-radius:var(--r-xl);
+  background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);
+  color:#fff;box-shadow:var(--sh-xl);position:relative;overflow:hidden;
+}
+.analysis-hero::before{content:'';position:absolute;top:-40px;right:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(124,58,237,.3) 0%,transparent 70%);border-radius:50%;}
+.analysis-hero h2{font-size:19px;font-weight:900;letter-spacing:-.02em;position:relative;z-index:1;}
+.analysis-hero p{font-size:12px;font-weight:600;opacity:.85;margin-top:4px;position:relative;z-index:1;line-height:1.5;}
+.analysis-hero .ah-loc{
+  display:inline-flex;align-items:center;gap:6px;margin-top:10px;
+  padding:5px 12px;border-radius:var(--r-p);
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);
+  font-size:11px;font-weight:800;letter-spacing:.03em;
+  position:relative;z-index:1;
+}
+
+/* STATS */
+.analysis-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 18px 14px;}
+.astat{padding:14px 10px;border-radius:var(--r-lg);background:var(--sf);border:1px solid var(--bd);box-shadow:var(--sh-sm);text-align:center;}
+.astat .n{font-size:22px;font-weight:900;letter-spacing:-.03em;color:var(--td);line-height:1;}
+.astat .l{font-size:9.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-top:5px;}
+
+/* PROFILE */
+.prof-hero{margin:0 18px 16px;padding:22px;border-radius:var(--r-2xl);background:linear-gradient(135deg,#7c3aed 0%,#4c1d95 100%);color:#fff;text-align:center;position:relative;overflow:hidden;box-shadow:0 20px 50px -10px rgba(124,58,237,.4);}
+.prof-hero::before{content:'';position:absolute;top:-50px;right:-30px;width:180px;height:180px;background:radial-gradient(circle,rgba(255,255,255,.2) 0%,transparent 65%);border-radius:50%;}
+.p-av{width:82px;height:82px;border-radius:50%;margin:0 auto 14px;background:rgba(255,255,255,.22);border:3px solid #fff;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;position:relative;z-index:1;}
+.p-av img{width:100%;height:100%;object-fit:cover;}
+.prof-hero h2{font-size:20px;font-weight:900;letter-spacing:-.03em;position:relative;z-index:1;}
+.p-ver{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:var(--r-p);margin-top:6px;position:relative;z-index:1;}
+.p-loc{font-size:12px;font-weight:600;opacity:.92;margin-top:8px;position:relative;z-index:1;}
+.prof-stats{display:flex;justify-content:space-around;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.16);position:relative;z-index:1;}
+.prof-stats>div{text-align:center;flex:1;}
+.ps-n{font-size:20px;font-weight:900;letter-spacing:-.03em;}
+.ps-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.85;margin-top:2px;}
+
+.theme-switch-wrap{margin:0 18px 16px;padding:6px;background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r-lg);display:flex;gap:6px;}
+.theme-opt{flex:1;padding:12px 10px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:800;color:var(--tb);border:1.5px solid transparent;transition:all .25s var(--e);}
+.theme-opt .ti{font-size:17px;}
+.theme-opt.active{background:linear-gradient(180deg,#12903e 0%,var(--p) 100%);color:#fff;border-color:var(--p);box-shadow:0 6px 16px -6px var(--p-glow);}
+
+.menu-list{padding:0 18px 18px;}
+.menu-item{display:flex;align-items:center;gap:12px;padding:15px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);margin-bottom:8px;cursor:pointer;transition:all .2s var(--e);box-shadow:var(--sh-xs);}
+.menu-item:active{background:var(--p-l);border-color:var(--p);transform:scale(.985);}
+.mi-ic{width:38px;height:38px;border-radius:50%;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.mi-tx{flex:1;min-width:0;}
+.mi-tt{font-size:13.5px;font-weight:800;color:var(--td);}
+.mi-sb{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px;}
+.mi-ar svg{width:16px;height:16px;fill:var(--tm);}
+
+/* NAV */
+.bnav{position:absolute;bottom:0;left:0;right:0;height:var(--nav-h);background:rgba(255,255,255,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-around;padding:0 8px;padding-bottom:var(--safe-b);z-index:20;border-radius:var(--r-xl) var(--r-xl) 0 0;box-shadow:0 -4px 20px rgba(15,23,42,.06);}
+[data-theme="dark"] .bnav{background:rgba(15,23,42,.96);box-shadow:0 -4px 20px rgba(0,0,0,.5);}
+.bn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 0;border-radius:var(--r);transition:all .2s var(--e);position:relative;color:var(--tm);background:none;border:none;}
+.bn:active{transform:scale(.9);}
+.bn.active{color:var(--p);}
+.bn svg{width:22px;height:22px;fill:currentColor;transition:transform .2s var(--e);}
+.bn.active svg{transform:translateY(-2px);}
+.bn-lb{font-size:9.5px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;}
+.bn.active .bn-lb{font-weight:900;}
+.bn-badge{position:absolute;top:4px;right:calc(50% - 18px);min-width:16px;height:16px;background:var(--danger);color:#fff;font-size:9px;font-weight:800;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 4px;border:1.5px solid var(--sf);}
+
+/* MODAL / TOAST / SHEET */
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;z-index:500;animation:fadeIn .22s ease;}
+.modal.open{display:flex;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-card{background:var(--sf);border-radius:var(--r-2xl);width:100%;max-width:420px;padding:26px;text-align:center;box-shadow:var(--sh-xl);animation:modalIn .32s cubic-bezier(.34,1.4,.64,1);max-height:85vh;overflow-y:auto;color:var(--td);}
+@keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(14px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-card h3{font-size:17px;font-weight:900;color:var(--td);margin-bottom:8px;letter-spacing:-.02em;}
+.modal-card p{font-size:13px;color:var(--tl);line-height:1.55;margin-bottom:16px;}
+.modal-card .mc-actions{display:flex;gap:8px;margin-top:14px;}
+.modal-card .mc-actions .btn{flex:1;}
+
+.toast{position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 20px);left:50%;transform:translate(-50%,30px);background:rgba(15,23,42,.94);color:#fff;padding:12px 22px;border-radius:var(--r-p);font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:all .3s var(--e);z-index:600;box-shadow:0 12px 30px -8px rgba(0,0,0,.4);max-width:calc(100vw - 40px);text-align:center;}
+.toast.show{opacity:1;transform:translate(-50%,0);}
+
+.empty{padding:40px 24px;text-align:center;color:var(--tl);}
+.empty .e-ic{font-size:56px;margin-bottom:12px;opacity:.5;}
+.empty h3{font-size:15px;font-weight:800;color:var(--td);margin-bottom:6px;}
+.empty p{font-size:12.5px;line-height:1.5;}
+
+/* LOADER */
+.loader-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:20px;}
+.spinner{width:52px;height:52px;border-radius:50%;border:4px solid var(--bd);border-top-color:var(--p);animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.hidden{display:none !important;}
+
+@media(max-width:380px){
+  .qa-row{grid-template-columns:repeat(4,1fr);gap:6px}
+  .qa-lb{font-size:8.5px}
+  .delivery-filter-pill .dfp-lb{font-size:8px}
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="screen-wrap">
+    <div class="screen active" id="splash">
+      <img src="farmer.png" alt="AgriCare" onerror="this.style.display='none'">
+      <div class="brand-overlay">
+        <div class="brand-top">
+          <div class="leaf">🏪</div>
+          <h1>AgriCare</h1>
+          <p>Agro Dealer · Supplier</p>
+        </div>
+        <div class="brand-bottom">
+          <h2>Stock the right products.<br>At the right time.</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal"><div class="modal-card" id="modalCard"></div></div>
+<div class="modal" id="loaderModal">
+  <div class="modal-card" style="max-width:300px;padding:36px 24px">
+    <div class="loader-wrap">
+      <div class="spinner"></div>
+      <div style="font-size:15px;font-weight:800;color:var(--td)" id="loaderText">Preparing…</div>
+      <div style="font-size:12px;color:var(--tl);font-weight:600" id="loaderSub">Please wait</div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+/* ============================================================
+   IMPORTS
+   ============================================================ */
+import { initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getDatabase, ref, get, set, update, push, onValue, remove } from "firebase/database";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDye0P37QYNjtRRKh2_At84QCkKCqjceAQ",
+  authDomain: "reaper-7b33d.firebaseapp.com",
+  databaseURL: "https://reaper-7b33d-default-rtdb.firebaseio.com",
+  projectId: "reaper-7b33d",
+  storageBucket: "reaper-7b33d.firebasestorage.app",
+  messagingSenderId: "1023523985110",
+  appId: "1:1023523985110:web:889e2200fad1fa5b98db77"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+const CLOUD_NAME = 'dd3lcymrk';
+const UPLOAD_PRESET = 'h3eyhc2o';
+
+/* ============================================================
+   GLOBAL STATE
+   ============================================================ */
+const S = {
+  user: null,
+  profile: null,
+  screen: 'splash',
+  screenData: {},
+  theme: 'light',
+  weatherCity: '',
+  userLocation: 'Lusaka',
+  myProducts: [],
+  allAgroProducts: [],
+  allBatches: [],
+  allUsers: {},
+  allDeliveryPartners: [],
+  productsUnsub: null,
+  agroProductsUnsub: null,
+  batchesUnsub: null,
+  usersUnsub: null,
+  deliveryPartnersUnsub: null,
+  productFilter: 'all',
+  productSearch: '',
+  farmerCity: '',
+  farmerStageFilter: 'all',
+  deliveryVehicleFilter: 'all',
+  editingProductId: null,
+  tempProductPhoto: '',
+  _finishing: false
+};
+
+const $modal = document.getElementById('modal');
+const $modalCard = document.getElementById('modalCard');
+const $toast = document.getElementById('toast');
+const $loaderModal = document.getElementById('loaderModal');
+const $loaderText = document.getElementById('loaderText');
+const $loaderSub = document.getElementById('loaderSub');
+
+/* ============================================================
+   CONSTANTS
+   ============================================================ */
+const PRODUCT_CATEGORIES = [
+  { key: 'Pesticide', em: '🐛', db: 'Pesticide' },
+  { key: 'Herbicide', em: '🌿', db: 'Herbicide' },
+  { key: 'Fungicide', em: '🍄', db: 'Fungicide' },
+  { key: 'Insecticide', em: '🐜', db: 'Insecticide' },
+  { key: 'Fertilizer', em: '💧', db: 'Fertilizer' },
+  { key: 'Seeds', em: '🌱', db: 'Seeds' },
+  { key: 'Tools', em: '🔧', db: 'Tools' },
+  { key: 'Feed', em: '🌾', db: 'Feed' },
+  { key: 'Veterinary', em: '💉', db: 'Veterinary' },
+  { key: 'Packaging', em: '📦', db: 'Packaging' },
+  { key: 'Other', em: '🏷️', db: 'Other' }
+];
+
+const STAGE_ORDER = ['harvesting', 'fruiting', 'flowering', 'growing', 'planted'];
+const STAGE_LABEL = { planted:'Planted', growing:'Growing', flowering:'Flowering', fruiting:'Fruiting', harvesting:'Harvesting', harvested:'Harvested' };
+const STAGE_EMOJI = { planted:'🌱', growing:'🌿', flowering:'🌸', fruiting:'🍅', harvesting:'🌾', harvested:'✅' };
+const STAGE_WEIGHT = { harvesting: 100, fruiting: 60, flowering: 20, growing: 5, planted: 2 };
+
+const VEHICLE_TYPES = [
+  { key: 'all',     em: '🚚', lb: 'All' },
+  { key: 'bicycle', em: '🚲', lb: 'Bicycle' },
+  { key: 'bike',    em: '🏍️', lb: 'Bike' },
+  { key: 'car',     em: '🚗', lb: 'Car' },
+  { key: 'truck',   em: '🚚', lb: 'Truck' }
+];
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function toast(msg, ms = 2400) {
+  $toast.textContent = msg;
+  $toast.classList.add('show');
+  clearTimeout($toast._t);
+  $toast._t = setTimeout(() => $toast.classList.remove('show'), ms);
+}
+function modal(html, noDismiss = false) {
+  $modalCard.innerHTML = html;
+  $modalCard.classList.toggle('no-dismiss', !!noDismiss);
+  $modal.classList.add('open');
+}
+function closeModal() {
+  $modal.classList.remove('open');
+  $modalCard.classList.remove('no-dismiss');
+}
+window.closeModal = closeModal;
+$modal.addEventListener('click', e => {
+  if (e.target === $modal) {
+    if ($modalCard.classList.contains('no-dismiss')) return;
+    closeModal();
+  }
+});
+function showLoader(text = 'Preparing…', sub = 'Please wait') {
+  $loaderText.textContent = text;
+  $loaderSub.textContent = sub;
+  $loaderModal.classList.add('open');
+}
+function hideLoader() { $loaderModal.classList.remove('open'); }
+
+function esc(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function initials(name) {
+  if (!name) return '?';
+  return name.trim().split(/\s+/).map(w => w[0]).slice(0,2).join('').toUpperCase();
+}
+function fmtZMK(n) {
+  if (n == null || isNaN(n)) return '—';
+  return 'ZMK ' + Number(n).toLocaleString('en-ZM');
+}
+function timeAgo(ts) {
+  if (!ts) return 'just now';
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s/60) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  if (s < 604800) return Math.floor(s/86400) + 'd ago';
+  return new Date(ts).toLocaleDateString();
+}
+function haversine(lat1, lon1, lat2, lon2) {
+  const R = 6371000;
+  const p1 = lat1 * Math.PI / 180, p2 = lat2 * Math.PI / 180;
+  const dp = (lat2 - lat1) * Math.PI / 180;
+  const dl = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dp/2)**2 + Math.cos(p1) * Math.cos(p2) * Math.sin(dl/2)**2;
+  return 2 * R * Math.asin(Math.min(1, Math.sqrt(a)));
+}
+function pickIcon(name) {
+  if (!name) return '🌿';
+  const n = String(name).toLowerCase();
+  if (n.includes('tomato')) return '🍅';
+  if (n.includes('maize')||n.includes('corn')) return '🌽';
+  if (n.includes('onion')) return '🧅';
+  if (n.includes('wheat')||n.includes('sorghum')||n.includes('millet')) return '🌾';
+  if (n.includes('rice')) return '🍚';
+  if (n.includes('pea')||n.includes('bean')||n.includes('soy')) return '🫛';
+  if (n.includes('groundnut')||n.includes('peanut')) return '🥜';
+  if (n.includes('carrot')) return '🥕';
+  if (n.includes('cabbage')||n.includes('kale')||n.includes('rape')||n.includes('spinach')||n.includes('lettuce')) return '🥬';
+  if (n.includes('potato')) return '🥔';
+  if (n.includes('chilli')||n.includes('chili')) return '🌶️';
+  if (n.includes('pepper')) return '🫑';
+  if (n.includes('eggplant')||n.includes('aubergine')) return '🍆';
+  if (n.includes('banana')||n.includes('plantain')) return '🍌';
+  if (n.includes('mango')) return '🥭';
+  if (n.includes('avocado')) return '🥑';
+  if (n.includes('orange')||n.includes('citrus')) return '🍊';
+  if (n.includes('goat')) return '🐐';
+  if (n.includes('sheep')) return '🐑';
+  if (n.includes('pig')) return '🐖';
+  if (n.includes('cow')||n.includes('cattle')) return '🐄';
+  if (n.includes('chicken')||n.includes('poultry')||n.includes('broiler')||n.includes('hen')||n.includes('layer')) return '🐔';
+  if (n.includes('fish')||n.includes('tilapia')||n.includes('catfish')) return '🐟';
+  return '🌿';
+}
+function vehicleLabel(v) {
+  if (v === 'bicycle') return 'Bicycle';
+  if (v === 'bike' || v === 'rider' || v === 'motorbike') return 'Bike';
+  if (v === 'car') return 'Car';
+  if (v === 'truck') return 'Truck';
+  return 'Vehicle';
+}
+function vehicleEmoji(v) {
+  if (v === 'bicycle') return '🚲';
+  if (v === 'bike' || v === 'rider' || v === 'motorbike') return '🏍️';
+  if (v === 'car') return '🚗';
+  if (v === 'truck') return '🚚';
+  return '🚚';
+}
+
+/* ============================================================
+   THEME
+   ============================================================ */
+function detectInitialTheme() {
+  try {
+    const saved = localStorage.getItem('agricare_theme');
+    if (saved === 'dark' || saved === 'light') return saved;
+  } catch(e){}
+  return 'light';
+}
+S.theme = detectInitialTheme();
+function applyTheme(t) {
+  S.theme = t;
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem('agricare_theme', t); } catch(e){}
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', t === 'dark' ? '#0f172a' : '#0f7a34');
+}
+applyTheme(S.theme);
+window.setTheme = (t) => {
+  applyTheme(t);
+  if (S.screen === 'profile') route();
+  toast(t === 'dark' ? '🌙 Dark theme' : '☀️ Light theme', 1200);
+};
+
+/* ============================================================
+   ROUTER
+   ============================================================ */
+let activeScreenEl = null;
+let _suppressContentAnim = false;
+
+function buildScreen(id) {
+  const wrap = document.querySelector('.screen-wrap');
+  let el = document.getElementById('screen-' + id);
+  if (!el) {
+    el = document.createElement('div');
+    el.className = 'screen';
+    el.id = 'screen-' + id;
+    wrap.appendChild(el);
+  }
+  return el;
+}
+
+function showScreen(id, data = {}, pushHistory = true) {
+  S.screenData = data || {};
+  const target = buildScreen(id);
+  if (activeScreenEl && activeScreenEl !== target) activeScreenEl.classList.remove('active');
+  void target.offsetWidth;
+  target.classList.add('active');
+  activeScreenEl = target;
+  S.screen = id;
+  _suppressContentAnim = true;
+  route();
+  _suppressContentAnim = false;
+  if (pushHistory) {
+    try { history.pushState({ screen:id, data }, '', '#' + id); } catch (e) {}
+  } else {
+    try { history.replaceState({ screen:id, data }, '', '#' + id); } catch (e) {}
+  }
+  const sc = target.querySelector('.scroll');
+  if (sc) sc.scrollTop = 0;
+}
+window.showScreen = showScreen;
+window.navTo = (id, data) => showScreen(id, data);
+
+window.addEventListener('popstate', e => {
+  if ($modal.classList.contains('open')) {
+    if (!$modalCard.classList.contains('no-dismiss')) closeModal();
+    return;
+  }
+  const st = e.state || {};
+  const id = st.screen || 'home';
+  if (!document.getElementById('screen-' + id)) { showScreen('home', {}, false); return; }
+  showScreen(id, st.data || {}, false);
+});
+
+function updateNav(id) {
+  const nav = document.getElementById('bnav');
+  if (!nav) return;
+  const map = {
+    home: 'home',
+    products: 'products',
+    'add-product': 'products',
+    'edit-product': 'products',
+    market: 'market',
+    delivery: 'delivery',
+    'delivery-detail': 'delivery',
+    farmers: 'farmers',
+    profile: 'profile'
+  };
+  const key = map[id] || id;
+  nav.querySelectorAll('.bn').forEach(b => b.classList.toggle('active', key === b.dataset.nav));
+}
+
+/* ============================================================
+   BOTTOM NAV
+   ============================================================ */
+function bottomNavHTML() {
+  const lowStock = (S.myProducts || []).filter(p => p.available !== false && Number(p.stock) > 0 && Number(p.stock) < 10).length;
+  return `
+  <nav class="bnav" id="bnav">
+    <button class="bn" data-nav="home" onclick="goHome()">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span class="bn-lb">Home</span>
+    </button>
+    <button class="bn" data-nav="products" onclick="goProducts()">
+      <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      <span class="bn-lb">Products</span>
+      ${lowStock ? `<span class="bn-badge">${lowStock}</span>` : ''}
+    </button>
+    <button class="bn" data-nav="market" onclick="goMarket()">
+      <svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5V9.2zM10.6 5h2.8v14h-2.8V5zm5.6 8H19v6h-2.8v-6z"/></svg>
+      <span class="bn-lb">Market</span>
+    </button>
+    <button class="bn" data-nav="farmers" onclick="goFarmers()">
+      <svg viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg>
+      <span class="bn-lb">Farmers</span>
+    </button>
+    <button class="bn" data-nav="delivery" onclick="goDelivery()">
+      <svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+      <span class="bn-lb">Delivery</span>
+    </button>
+    <button class="bn" data-nav="profile" onclick="goProfile()">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <span class="bn-lb">Profile</span>
+    </button>
+  </nav>`;
+}
+
+window.goHome = () => showScreen('home');
+window.goProducts = () => showScreen('products');
+window.goMarket = () => showScreen('market');
+window.goFarmers = () => showScreen('farmers');
+window.goDelivery = () => showScreen('delivery');
+window.goProfile = () => showScreen('profile');
+window.goBack = () => { try { history.back(); } catch (e) { showScreen('home'); } };
+
+/* ============================================================
+   ROUTE DISPATCHER
+   ============================================================ */
+function route() {
+  const id = S.screen;
+  const el = document.getElementById('screen-' + id);
+  if (!el) return;
+
+  switch (id) {
+    case 'home': el.innerHTML = renderHome(); break;
+    case 'products': el.innerHTML = renderProducts(); break;
+    case 'add-product': el.innerHTML = renderProductForm(null); break;
+    case 'edit-product': el.innerHTML = renderProductForm(S.screenData.id); break;
+    case 'market': el.innerHTML = renderMarket(); break;
+    case 'farmers': el.innerHTML = renderFarmers(); break;
+    case 'delivery': el.innerHTML = renderDelivery(); break;
+    case 'delivery-detail': el.innerHTML = renderDeliveryDetail(S.screenData.id); break;
+    case 'profile': el.innerHTML = renderProfile(); break;
+    default: el.innerHTML = renderHome();
+  }
+  updateNav(id);
+
+  if (!_suppressContentAnim) {
+    const sc = el.querySelector('.scroll');
+    if (sc) {
+      sc.style.animation = 'none';
+      void sc.offsetWidth;
+      sc.style.animation = 'pageSlideIn 0.38s cubic-bezier(.22,1,.36,1)';
+    }
+  }
+}
+
+/* ============================================================
+   INSIGHTS ENGINE
+   ============================================================ */
+function computeAgroInsights() {
+  const city = (S.weatherCity || S.userLocation || 'Lusaka').trim();
+  const cityBatches = (S.allBatches || []).filter(b => {
+    if (!b) return false;
+    if (b.stage === 'harvested') return false;
+    const bCity = (b.town || b.ownerCity || '').trim();
+    return bCity.toLowerCase() === city.toLowerCase();
+  });
+
+  const stageCounts = { planted: 0, growing: 0, flowering: 0, fruiting: 0, harvesting: 0 };
+  const byCrop = {};
+
+  cityBatches.forEach(b => {
+    const stage = b.stage || 'planted';
+    if (stageCounts[stage] !== undefined) stageCounts[stage]++;
+
+    const crop = b.cropName || 'Other';
+    if (!byCrop[crop]) {
+      byCrop[crop] = { count: 0, boxes: 0, stages: {}, farmers: new Set() };
+    }
+    byCrop[crop].count++;
+    byCrop[crop].boxes += Number(b.estimatedBoxes || 0);
+    byCrop[crop].stages[stage] = (byCrop[crop].stages[stage] || 0) + 1;
+    if (b.ownerId) byCrop[crop].farmers.add(b.ownerId);
+  });
+
+  const topCrops = Object.entries(byCrop)
+    .sort((a, b) => b[1].count - a[1].count);
+
+  // My product categories & tags
+  const myProducts = S.myProducts || [];
+  const myCategories = new Set();
+  myProducts.forEach(p => {
+    if (p.category) myCategories.add(p.category);
+  });
+
+  // Recommendations based on stages
+  const recommendations = [];
+
+  if (stageCounts.harvesting > 0) {
+    const crops = Object.entries(byCrop)
+      .filter(([_, d]) => d.stages.harvesting > 0)
+      .map(([c]) => c)
+      .slice(0, 3);
+    recommendations.push({
+      icon: '🌾',
+      title: 'Harvest supplies needed now',
+      desc: `${stageCounts.harvesting} farmer${stageCounts.harvesting === 1 ? '' : 's'} harvesting${crops.length ? ' (' + crops.join(', ') + ')' : ''} — they need sacks, boxes, packing and transport.`,
+      category: 'Packaging',
+      priority: 'high'
+    });
+  }
+
+  if (stageCounts.fruiting + stageCounts.flowering > 0) {
+    recommendations.push({
+      icon: '🐛',
+      title: 'Pest & disease control peak',
+      desc: `${stageCounts.fruiting + stageCounts.flowering} farm${stageCounts.fruiting + stageCounts.flowering === 1 ? '' : 's'} in flowering/fruiting — pesticides, fungicides and foliar feeds are selling fast.`,
+      category: 'Pesticide',
+      priority: 'high'
+    });
+  }
+
+  if (stageCounts.growing > 0) {
+    recommendations.push({
+      icon: '💧',
+      title: 'Fertilizer & herbicide demand',
+      desc: `${stageCounts.growing} farmer${stageCounts.growing === 1 ? '' : 's'} in growing stage — top dressing fertilizer and herbicides are needed.`,
+      category: 'Fertilizer',
+      priority: 'medium'
+    });
+  }
+
+  if (stageCounts.planted > 0) {
+    recommendations.push({
+      icon: '🌱',
+      title: 'Seed & starter pack season',
+      desc: `${stageCounts.planted} farmer${stageCounts.planted === 1 ? '' : 's'} just planted — recommend seeds, soil amendments and starter fertilizer.`,
+      category: 'Seeds',
+      priority: 'low'
+    });
+  }
+
+  // Stocked crops (based on product names matching crop names)
+  const productNameLower = myProducts.map(p => String(p.name || '').toLowerCase());
+  const topCropAnalysis = topCrops.slice(0, 8).map(([crop, data]) => {
+    const lower = crop.toLowerCase();
+    const stocked = productNameLower.some(n => n.includes(lower)) || data.count < 2;
+    return {
+      crop,
+      count: data.count,
+      boxes: Math.round(data.boxes),
+      farmers: data.farmers.size,
+      stocked,
+      stages: data.stages
+    };
+  });
+
+  return {
+    city,
+    stageCounts,
+    topCrops: topCropAnalysis,
+    recommendations,
+    totalFarmers: new Set(cityBatches.map(b => b.ownerId).filter(Boolean)).size,
+    totalBatches: cityBatches.length,
+    categories: myCategories,
+    gapCount: topCropAnalysis.filter(c => !c.stocked).length
+  };
+}
+
+/* ============================================================
+   HOME
+   ============================================================ */
+function renderHome() {
+  const p = S.profile || {};
+  const businessName = p.businessName || ((p.firstName || '') + ' ' + (p.lastName || '')).trim() || 'Agro Dealer';
+  const initial = initials(businessName);
+  const city = S.weatherCity || S.userLocation || 'Lusaka';
+  const ins = computeAgroInsights();
+
+  const totalProducts = (S.myProducts || []).length;
+  const availableProducts = (S.myProducts || []).filter(x => x.available !== false).length;
+  const lowStock = (S.myProducts || []).filter(x => x.available !== false && Number(x.stock) > 0 && Number(x.stock) < 10).length;
+
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+
+  const topRecs = ins.recommendations.slice(0, 3);
+
+  return `
+  <div class="scroll">
+    <div class="topbar"><div class="tb-title">Dashboard</div></div>
+
+    <div class="hero">
+      <div class="hero-head">
+        <div class="hero-profile-pic">
+          ${p.logoUrl ? `<img src="${esc(p.logoUrl)}" alt="">` : initial}
+        </div>
+        <div style="flex:1;min-width:0">
+          <div class="hero-greeting">${greeting},</div>
+          <div class="hero-name">${esc(businessName)} <span>👋</span></div>
+          <div class="hero-loc">📍 ${esc(city)}</div>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="n">${totalProducts}</div>
+          <div class="l">Products</div>
+        </div>
+        <div class="hero-stat">
+          <div class="n">${availableProducts}</div>
+          <div class="l">Available</div>
+        </div>
+        <div class="hero-stat">
+          <div class="n">${ins.totalFarmers}</div>
+          <div class="l">Farmers</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa-row">
+      <button class="qa" onclick="navTo('add-product')">
+        <div class="qa-ic c1">➕</div>
+        <div class="qa-lb">Add Product</div>
+      </button>
+      <button class="qa" onclick="goProducts()">
+        <div class="qa-ic c2">📦</div>
+        <div class="qa-lb">Inventory</div>
+      </button>
+      <button class="qa" onclick="goFarmers()">
+        <div class="qa-ic c3">🧑‍🌾</div>
+        <div class="qa-lb">Farmers</div>
+      </button>
+      <button class="qa" onclick="goMarket()">
+        <div class="qa-ic c4">📊</div>
+        <div class="qa-lb">Restock</div>
+      </button>
+    </div>
+
+    ${lowStock > 0 ? `
+      <div class="warn-banner">
+        <div class="ic">⚠️</div>
+        <div class="tx">${lowStock} product${lowStock === 1 ? ' is' : 's are'} running low on stock. <strong>Tap to review.</strong></div>
+      </div>
+    ` : ''}
+
+    <div class="sec-h">
+      <h3><span class="em">🎯</span> Restock Priorities</h3>
+      <button onclick="goMarket()">Full analysis ›</button>
+    </div>
+
+    ${topRecs.length ? topRecs.map(r => `
+      <div class="rec-card ${r.priority}" onclick="goMarket()">
+        <div class="rec-ic">${r.icon}</div>
+        <div class="rec-body">
+          <div class="rec-title">${esc(r.title)}</div>
+          <div class="rec-desc">${esc(r.desc)}</div>
+          <div class="rec-tag">${esc(r.category)}</div>
+        </div>
+      </div>
+    `).join('') : `
+      <div class="empty" style="padding:24px">
+        <div class="e-ic">🌱</div>
+        <h3>No farmers active yet</h3>
+        <p>Farmers in ${esc(city)} will appear here once they plant crops.</p>
+      </div>
+    `}
+
+    <div class="sec-h">
+      <h3><span class="em">📦</span> Your top products</h3>
+      <button onclick="goProducts()">View all ›</button>
+    </div>
+
+    ${(S.myProducts || []).slice(0, 3).map(prod => renderProductCard(prod, true)).join('') || `
+      <div class="empty" style="padding:24px">
+        <div class="e-ic">📦</div>
+        <h3>No products listed yet</h3>
+        <p>Add your first product so farmers can find you.</p>
+        <button class="btn btn-p" style="max-width:220px;margin:14px auto 0" onclick="navTo('add-product')">+ Add Product</button>
+      </div>
+    `}
+
+    <div class="sec-h">
+      <h3><span class="em">⚡</span> Quick links</h3>
+    </div>
+    <div class="menu-list" style="padding-top:0">
+      <div class="menu-item" onclick="goDelivery()">
+        <div class="mi-ic">🚚</div>
+        <div class="mi-tx"><div class="mi-tt">Book a delivery</div><div class="mi-sb">Transporter to move your stock</div></div>
+        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+      <div class="menu-item" onclick="goFarmers()">
+        <div class="mi-ic">🧑‍🌾</div>
+        <div class="mi-tx"><div class="mi-tt">Farmers in ${esc(city)}</div><div class="mi-sb">${ins.totalFarmers} active · call to offer products</div></div>
+        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   PRODUCTS
+   ============================================================ */
+function renderProductCard(prod, compact = false) {
+  if (!prod) return '';
+  const available = prod.available !== false;
+  const stock = Number(prod.stock);
+  const stockNum = isFinite(stock) ? stock : null;
+  const lowStock = stockNum !== null && stockNum > 0 && stockNum < 10;
+  const outOfStock = stockNum === 0;
+
+  let stockInfo = '';
+  if (outOfStock) {
+    stockInfo = `<div class="prod-stock-info out">● Out of stock</div>`;
+  } else if (lowStock) {
+    stockInfo = `<div class="prod-stock-info low">⚠ Low stock · ${stockNum} left</div>`;
+  } else if (stockNum !== null) {
+    stockInfo = `<div class="prod-stock-info">📦 ${stockNum} in stock</div>`;
+  }
+
+  const badge = outOfStock || !available
+    ? `<span class="badge soldout">Sold out</span>`
+    : lowStock
+      ? `<span class="badge low">Low</span>`
+      : `<span class="badge">In stock</span>`;
+
+  return `
+    <div class="prod-card ${!available ? 'soldout' : ''}">
+      <div class="prod-photo">
+        ${prod.photoUrl ? `<img src="${esc(prod.photoUrl)}" alt="">` : (PRODUCT_CATEGORIES.find(c => c.key === prod.category)?.em || '📦')}
+        ${badge}
+      </div>
+      <div class="prod-body">
+        <div>
+          <div class="prod-name">${esc(prod.name || 'Product')}</div>
+          <div class="prod-cat">${esc(prod.category || 'Other')}${prod.cropTag ? ' · ' + esc(prod.cropTag) : ''}</div>
+          ${prod.description ? `<div class="prod-desc">${esc(prod.description)}</div>` : ''}
+          <div class="prod-price-row">
+            <span class="prod-price">${fmtZMK(prod.price)}</span>
+            <span class="prod-unit">/ ${esc(prod.unit || 'unit')}</span>
+          </div>
+          ${stockInfo}
+        </div>
+      </div>
+      <div class="prod-actions">
+        <button class="prod-avail-toggle ${available ? 'on' : 'off'}" onclick="event.stopPropagation();toggleProductAvailable('${esc(prod.id)}')">
+          ${available ? '✓ On' : '○ Off'}
+        </button>
+        <button class="prod-menu-btn" onclick="event.stopPropagation();openProductMenu('${esc(prod.id)}')">⋯</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderProducts() {
+  const filter = S.productFilter || 'all';
+  const search = (S.productSearch || '').toLowerCase().trim();
+
+  let prods = (S.myProducts || []).slice();
+
+  if (search) {
+    prods = prods.filter(p =>
+      String(p.name || '').toLowerCase().includes(search) ||
+      String(p.category || '').toLowerCase().includes(search) ||
+      String(p.cropTag || '').toLowerCase().includes(search) ||
+      String(p.description || '').toLowerCase().includes(search)
+    );
+  }
+
+  if (filter === 'available') prods = prods.filter(p => p.available !== false);
+  else if (filter === 'soldout') prods = prods.filter(p => p.available === false);
+  else if (filter === 'low') prods = prods.filter(p => Number(p.stock) > 0 && Number(p.stock) < 10 && p.available !== false);
+  else if (filter !== 'all') prods = prods.filter(p => p.category === filter);
+
+  // Category counts
+  const counts = { all: (S.myProducts || []).length, available: 0, soldout: 0, low: 0 };
+  (S.myProducts || []).forEach(p => {
+    if (p.available !== false) counts.available++;
+    else counts.soldout++;
+    if (Number(p.stock) > 0 && Number(p.stock) < 10 && p.available !== false) counts.low++;
+  });
+
+  const filterChips = [
+    { key: 'all', label: 'All', cnt: counts.all },
+    { key: 'available', label: '✓ Available', cnt: counts.available },
+    { key: 'soldout', label: '○ Sold out', cnt: counts.soldout },
+    { key: 'low', label: '⚠ Low stock', cnt: counts.low }
+  ];
+
+  const catChips = PRODUCT_CATEGORIES
+    .filter(cat => (S.myProducts || []).some(p => p.category === cat.key))
+    .map(cat => ({
+      key: cat.key,
+      label: `${cat.em} ${cat.key}`,
+      cnt: (S.myProducts || []).filter(p => p.category === cat.key).length
+    }));
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <div class="tb-title">My Products</div>
+      <div class="tb-actions">
+        <button class="tb-btn" onclick="navTo('add-product')" title="Add product">
+          <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="prod-search">
+      <input type="text" placeholder="Search products…" value="${esc(S.productSearch || '')}" oninput="onProductSearch(this.value)">
+    </div>
+
+    <div class="prod-filter-row">
+      ${filterChips.map(c => `
+        <button class="prod-chip ${filter === c.key ? 'active' : ''}" onclick="setProductFilter('${c.key}')">
+          ${esc(c.label)}
+          <span class="cnt">${c.cnt}</span>
+        </button>
+      `).join('')}
+    </div>
+
+    ${catChips.length ? `
+      <div class="prod-filter-row" style="padding-bottom:14px">
+        ${catChips.map(c => `
+          <button class="prod-chip ${filter === c.key ? 'active' : ''}" onclick="setProductFilter('${c.key}')">
+            ${esc(c.label)}
+            <span class="cnt">${c.cnt}</span>
+          </button>
+        `).join('')}
+      </div>
+    ` : ''}
+
+    ${prods.length ? prods.map(prod => renderProductCard(prod)).join('') : `
+      <div class="prod-empty">
+        <div class="em">${search ? '🔍' : '📦'}</div>
+        <h3>${search ? 'No products match' : 'No products yet'}</h3>
+        <p>${search ? 'Try a different search term.' : 'Add your first product so farmers can find you.'}</p>
+        ${!search ? `<button class="btn btn-p" style="max-width:240px;margin:16px auto 0" onclick="navTo('add-product')">+ Add Product</button>` : ''}
+      </div>
+    `}
+
+    <div style="padding:14px 18px 24px">
+      <button class="btn btn-p" onclick="navTo('add-product')">+ Add New Product</button>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+window.onProductSearch = (v) => {
+  S.productSearch = v;
+  // Debounce
+  clearTimeout(window._searchTimer);
+  window._searchTimer = setTimeout(() => route(), 180);
+};
+
+window.setProductFilter = (key) => {
+  S.productFilter = key;
+  route();
+};
+
+/* ============================================================
+   PRODUCT FORM (ADD / EDIT)
+   ============================================================ */
+function renderProductForm(productId) {
+  const isEdit = !!productId;
+  const prod = isEdit ? (S.myProducts || []).find(p => p.id === productId) : null;
+  if (isEdit && !prod) {
+    return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goProducts()">←</button><div class="tb-title">Not found</div></div></div>`;
+  }
+
+  S.tempProductPhoto = prod?.photoUrl || '';
+  S.editingProductId = productId || null;
+
+  const catOptions = PRODUCT_CATEGORIES.map(c => `<option value="${esc(c.key)}" ${prod?.category === c.key ? 'selected' : ''}>${c.em} ${esc(c.key)}</option>`).join('');
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goProducts()">
+        <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="tb-title">${isEdit ? 'Edit Product' : 'New Product'}</div>
+    </div>
+
+    <div class="photo-upload ${S.tempProductPhoto ? 'has-image' : ''}" id="prodPhotoBox" onclick="openProductPhotoUpload()">
+      ${S.tempProductPhoto ? `<img src="${esc(S.tempProductPhoto)}" alt="">` : ''}
+      ${!S.tempProductPhoto ? `
+        <div class="icon">📷</div>
+        <div class="label">Add product photo</div>
+        <div class="hint">Tap to upload</div>
+      ` : `
+        <div class="change-badge">Change</div>
+      `}
+    </div>
+
+    <div class="prod-form">
+      <div class="fld">
+        <label>Product Name *</label>
+        <input id="pf-name" class="inp" placeholder="e.g. Roundup Herbicide 1L" value="${esc(prod?.name || '')}">
+      </div>
+
+      <div class="fld">
+        <label>Category *</label>
+        <select id="pf-cat" class="inp">
+          <option value="">Select category…</option>
+          ${catOptions}
+        </select>
+      </div>
+
+      <div class="fld">
+        <label>Crop Tag (optional)</label>
+        <input id="pf-crop" class="inp" placeholder="e.g. maize, tomato, cabbage" value="${esc(prod?.cropTag || '')}">
+        <div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:6px;line-height:1.4">Helps match your product to what farmers are growing</div>
+      </div>
+
+      <div class="fld">
+        <label>Description (optional)</label>
+        <textarea id="pf-desc" class="inp" placeholder="Short details about what this product does…" rows="2">${esc(prod?.description || '')}</textarea>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="fld">
+          <label>Price (ZMK) *</label>
+          <input id="pf-price" class="inp" type="number" min="0" step="0.01" placeholder="0" value="${prod?.price || ''}">
+        </div>
+        <div class="fld">
+          <label>Unit *</label>
+          <input id="pf-unit" class="inp" placeholder="e.g. 1L, 1kg, 500ml" value="${esc(prod?.unit || '')}">
+        </div>
+      </div>
+
+      <div class="fld">
+        <label>Stock Quantity (optional)</label>
+        <input id="pf-stock" class="inp" type="number" min="0" step="1" placeholder="e.g. 50" value="${prod?.stock ?? ''}">
+      </div>
+    </div>
+
+    <div class="toggle-wrap">
+      <div class="toggle-wrap-tx">
+        <div class="toggle-wrap-title">Mark as Available</div>
+        <div class="toggle-wrap-sub">Farmers can see and call you about this product</div>
+      </div>
+      <div class="toggle ${prod?.available !== false ? 'on' : ''}" id="pf-avail-toggle" onclick="toggleFormAvail()"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-s" onclick="goProducts()">Cancel</button>
+      <button class="btn btn-p" onclick="saveProduct()">${isEdit ? 'Save Changes ✓' : 'Publish Product ✓'}</button>
+    </div>
+
+    ${isEdit ? `
+      <div style="padding:0 18px 24px">
+        <button class="btn btn-danger" onclick="confirmDeleteProduct('${esc(prod.id)}')">🗑 Delete Product</button>
+      </div>
+    ` : ''}
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+let _formAvail = true;
+window.toggleFormAvail = () => {
+  _formAvail = !_formAvail;
+  const t = document.getElementById('pf-avail-toggle');
+  if (t) t.classList.toggle('on', _formAvail);
+};
+
+window.openProductPhotoUpload = () => {
+  if (!window.cloudinary || !window.cloudinary.createUploadWidget) {
+    toast('Upload widget not loaded');
+    return;
+  }
+  try {
+    const widget = window.cloudinary.createUploadWidget({
+      cloudName: CLOUD_NAME,
+      uploadPreset: UPLOAD_PRESET,
+      sources: ['local', 'camera', 'url'],
+      multiple: false,
+      maxFiles: 1,
+      cropping: true,
+      croppingAspectRatio: 1,
+      folder: 'agricare/agro-products',
+      resourceType: 'image',
+      clientAllowedFormats: ['jpg','jpeg','png','webp'],
+      maxFileSize: 8000000
+    }, (error, result) => {
+      if (error) { console.warn('upload', error); toast('Upload failed'); return; }
+      if (result && result.event === 'success') {
+        S.tempProductPhoto = result.info.secure_url;
+        const box = document.getElementById('prodPhotoBox');
+        if (box) {
+          box.classList.add('has-image');
+          box.innerHTML = `<img src="${esc(S.tempProductPhoto)}" alt=""><div class="change-badge">Change</div>`;
+        }
+        toast('Photo added ✓');
+      }
+    });
+    widget.open();
+  } catch (e) { console.warn('upload init', e); toast('Upload unavailable'); }
+};
+
+window.saveProduct = async () => {
+  if (S._finishing) return;
+  const isEdit = !!S.editingProductId;
+
+  const name = (document.getElementById('pf-name')?.value || '').trim();
+  const category = document.getElementById('pf-cat')?.value || '';
+  const cropTag = (document.getElementById('pf-crop')?.value || '').trim();
+  const description = (document.getElementById('pf-desc')?.value || '').trim();
+  const price = parseFloat(document.getElementById('pf-price')?.value) || 0;
+  const unit = (document.getElementById('pf-unit')?.value || '').trim();
+  const stockRaw = document.getElementById('pf-stock')?.value;
+  const stock = stockRaw === '' ? null : (parseInt(stockRaw, 10) || 0);
+
+  if (!name) { toast('Enter product name'); return; }
+  if (!category) { toast('Select a category'); return; }
+  if (!price || price <= 0) { toast('Enter a valid price'); return; }
+  if (!unit) { toast('Enter unit (e.g. 1L, 1kg)'); return; }
+
+  S._finishing = true;
+  showLoader(isEdit ? 'Saving…' : 'Publishing…', 'Please wait');
+
+  try {
+    const p = S.profile || {};
+    const sellerName = p.businessName || ((p.firstName || '') + ' ' + (p.lastName || '')).trim() || 'Agro Dealer';
+
+    const data = {
+      sellerId: S.user.uid,
+      sellerName,
+      sellerPhone: p.phone || p.phoneNumber || '',
+      sellerLogo: p.logoUrl || '',
+      name,
+      category,
+      cropTag,
+      description,
+      price,
+      unit,
+      stock,
+      available: _formAvail,
+      photoUrl: S.tempProductPhoto || '',
+      city: S.weatherCity || S.userLocation || 'Lusaka',
+      updatedAt: Date.now()
+    };
+
+    if (isEdit) {
+      await update(ref(db, 'agroProducts/' + S.editingProductId), data);
+      toast('Product updated ✓');
+    } else {
+      data.createdAt = Date.now();
+      const newRef = push(ref(db, 'agroProducts'));
+      await set(newRef, data);
+      toast('Product published ✓');
+    }
+
+    hideLoader();
+    S.tempProductPhoto = '';
+    S.editingProductId = null;
+    setTimeout(() => goProducts(), 400);
+  } catch (e) {
+    hideLoader();
+    toast('Failed: ' + (e.message || e));
+  } finally {
+    S._finishing = false;
+  }
+};
+
+window.toggleProductAvailable = async (productId) => {
+  const prod = (S.myProducts || []).find(p => p.id === productId);
+  if (!prod) return;
+  const newVal = prod.available === false;
+  try {
+    await update(ref(db, 'agroProducts/' + productId), {
+      available: newVal,
+      updatedAt: Date.now()
+    });
+    toast(newVal ? '✓ Marked available' : '○ Marked sold out');
+  } catch (e) {
+    toast('Failed: ' + (e.message || e));
+  }
+};
+
+window.openProductMenu = (productId) => {
+  const prod = (S.myProducts || []).find(p => p.id === productId);
+  if (!prod) return;
+  modal(`
+    <h3>${esc(prod.name || 'Product')}</h3>
+    <p>${esc(prod.category || '')}${prod.cropTag ? ' · ' + esc(prod.cropTag) : ''}</p>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+      <button class="btn btn-p" onclick="closeModal();navTo('edit-product',{id:'${esc(prod.id)}'})">✏️ Edit Product</button>
+      <button class="btn btn-s" onclick="closeModal();toggleProductAvailable('${esc(prod.id)}')">${prod.available !== false ? '○ Mark Sold Out' : '✓ Mark Available'}</button>
+      <button class="btn btn-s" onclick="closeModal();">Close</button>
+    </div>
+  `);
+};
+
+window.confirmDeleteProduct = (productId) => {
+  modal(`
+    <h3 style="color:var(--danger)">Delete this product?</h3>
+    <p>This will permanently remove the product from the market. Farmers will no longer be able to see it.</p>
+    <div class="mc-actions">
+      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="deleteProduct('${esc(productId)}')">Delete</button>
+    </div>
+  `);
+};
+
+window.deleteProduct = async (productId) => {
+  try {
+    await remove(ref(db, 'agroProducts/' + productId));
+    closeModal();
+    toast('Product deleted');
+    setTimeout(() => goProducts(), 300);
+  } catch (e) {
+    toast('Failed: ' + (e.message || e));
+  }
+};
+
+/* ============================================================
+   MARKET (SMART ANALYSIS)
+   ============================================================ */
+function renderMarket() {
+  const ins = computeAgroInsights();
+  const city = ins.city;
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered"><div class="tb-title">Market Intelligence</div></div>
+
+    <div class="analysis-hero">
+      <h2>📊 Restock Intelligence</h2>
+      <p>Based on what's being farmed in your area right now — know what to stock, when to stock it.</p>
+      <div class="ah-loc">📍 ${esc(city)}</div>
+    </div>
+
+    <div class="analysis-stats">
+      <div class="astat">
+        <div class="n">${ins.totalFarmers}</div>
+        <div class="l">Farmers</div>
+      </div>
+      <div class="astat">
+        <div class="n">${ins.totalBatches}</div>
+        <div class="l">Batches</div>
+      </div>
+      <div class="astat">
+        <div class="n">${ins.topCrops.length}</div>
+        <div class="l">Crops</div>
+      </div>
+    </div>
+
+    <div class="sec-h">
+      <h3><span class="em">🎯</span> Restock priorities</h3>
+    </div>
+
+    ${ins.recommendations.length ? ins.recommendations.map(r => `
+      <div class="rec-card ${r.priority}">
+        <div class="rec-ic">${r.icon}</div>
+        <div class="rec-body">
+          <div class="rec-title">${esc(r.title)}</div>
+          <div class="rec-desc">${esc(r.desc)}</div>
+          <div class="rec-tag">Recommended: ${esc(r.category)}</div>
+        </div>
+      </div>
+    `).join('') : `
+      <div class="empty" style="padding:24px">
+        <div class="e-ic">🌱</div>
+        <h3>No farming activity yet</h3>
+        <p>Farmers in ${esc(city)} haven't planted crops yet. Check back soon for restock recommendations.</p>
+      </div>
+    `}
+
+    ${ins.topCrops.length ? `
+      <div class="sec-h">
+        <h3><span class="em">📈</span> Top crops in your area</h3>
+      </div>
+
+      ${ins.topCrops.map(c => `
+        <div class="crop-row ${c.stocked ? 'stocked' : 'gap'}">
+          <div class="crop-em">${pickIcon(c.crop)}</div>
+          <div class="crop-body">
+            <div class="crop-name">${esc(c.crop)}</div>
+            <div class="crop-meta">${c.count} farmer${c.count === 1 ? '' : 's'} · ${c.boxes.toLocaleString()} boxes expected</div>
+          </div>
+          <div class="crop-badge ${c.stocked ? 'stocked' : 'gap'}">
+            ${c.stocked ? '✓ Stocked' : '⚠ Gap'}
+          </div>
+        </div>
+      `).join('')}
+    ` : ''}
+
+    ${ins.topCrops.filter(c => !c.stocked).length ? `
+      <div class="sec-h">
+        <h3><span class="em">⚠️</span> Product gaps</h3>
+        <button onclick="goProducts()">Add product ›</button>
+      </div>
+
+      ${ins.topCrops.filter(c => !c.stocked).slice(0, 4).map(c => `
+        <div class="gap-card">
+          <div class="gap-head">
+            <div class="gap-em">${pickIcon(c.crop)}</div>
+            <div style="flex:1">
+              <div class="gap-title">${esc(c.crop)}</div>
+              <div class="gap-count">${c.count} farmer${c.count === 1 ? '' : 's'} growing</div>
+            </div>
+          </div>
+          <div class="gap-sugg-label">Suggested products to add:</div>
+          <div class="gap-sugg">
+            ${suggestProductsForCrop(c.crop).map(s => `<span class="gap-sugg-item">${esc(s)}</span>`).join('')}
+          </div>
+        </div>
+      `).join('')}
+    ` : ''}
+
+    ${!ins.topCrops.length ? `
+      <div class="empty" style="padding:32px">
+        <div class="e-ic">📊</div>
+        <h3>Waiting for data</h3>
+        <p>Once farmers in ${esc(city)} start planting, you'll see detailed restock suggestions here.</p>
+      </div>
+    ` : ''}
+
+    <div class="sec-h">
+      <h3><span class="em">💡</span> How this works</h3>
+    </div>
+    <div class="menu-list" style="padding-top:0">
+      <div class="menu-item">
+        <div class="mi-ic">🌾</div>
+        <div class="mi-tx">
+          <div class="mi-tt">Stage-based signals</div>
+          <div class="mi-sb">When farmers harvest, they need bags & transport — when flowering, they need pesticides</div>
+        </div>
+      </div>
+      <div class="menu-item">
+        <div class="mi-ic">📈</div>
+        <div class="mi-tx">
+          <div class="mi-tt">Crop volume matters</div>
+          <div class="mi-sb">Crops farmed the most in your city need the most seed, chemicals and fertilizer</div>
+        </div>
+      </div>
+      <div class="menu-item">
+        <div class="mi-ic">⚠️</div>
+        <div class="mi-tx">
+          <div class="mi-tt">Gaps = opportunity</div>
+          <div class="mi-sb">Crops farmed but unstocked are your biggest revenue gap — add matching products</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+function suggestProductsForCrop(crop) {
+  const n = String(crop || '').toLowerCase();
+  if (n.includes('tomato')) return ['Tomato seeds', 'Blight fungicide', 'Tomato fertilizer', 'Stakes/trellis'];
+  if (n.includes('maize') || n.includes('corn')) return ['Hybrid maize seed', 'Compound D fertilizer', 'Urea top dressing', 'Fall armyworm pesticide'];
+  if (n.includes('cabbage') || n.includes('kale') || n.includes('rape')) return ['Cabbage seed', 'Diamondback moth pesticide', 'Nitrogen fertilizer'];
+  if (n.includes('onion')) return ['Onion seed', 'Thrips pesticide', 'Phosphorus fertilizer'];
+  if (n.includes('bean') || n.includes('pea') || n.includes('soy')) return ['Bean seed', 'Inoculant', 'Aphid pesticide'];
+  if (n.includes('potato')) return ['Certified seed potato', 'Blight fungicide', 'Potassium fertilizer'];
+  if (n.includes('groundnut') || n.includes('peanut')) return ['Groundnut seed', 'Calcium fertilizer', 'Leaf spot fungicide'];
+  if (n.includes('banana') || n.includes('plantain')) return ['Suckers', 'Banana weevil control', 'Potassium fertilizer'];
+  if (n.includes('mango')) return ['Fruit fly traps', 'Mango fertilizer', 'Anthracnose fungicide'];
+  return [`${crop} seeds`, `${crop} fertilizer`, `${crop} pesticide`];
+}
+
+/* ============================================================
+   FARMERS
+   ============================================================ */
+function computeFarmerList() {
+  const city = (S.farmerCity || S.weatherCity || S.userLocation || 'Lusaka').trim();
+
+  const batchesInCity = (S.allBatches || []).filter(b => {
+    if (!b) return false;
+    const bCity = (b.town || b.ownerCity || '').trim();
+    return bCity.toLowerCase() === city.toLowerCase();
+  });
+
+  const grouped = {};
+  batchesInCity.forEach(b => {
+    if (b.stage === 'harvested') return;
+    const ownerId = b.ownerId;
+    if (!ownerId) return;
+
+    if (!grouped[ownerId]) {
+      const u = S.allUsers[ownerId] || {};
+      const farms = u.farms ? Object.entries(u.farms).map(([id, v]) => ({ id, ...(v||{}) })) : [];
+      const farmPhoto = farms.find(f => f.photoUrl)?.photoUrl || '';
+      grouped[ownerId] = {
+        id: ownerId,
+        name: (b.ownerName || '').trim() || ((u.firstName||'')+' '+(u.lastName||'')).trim() || 'Farmer',
+        phone: u.phone || u.phoneNumber || '',
+        city: b.town || b.ownerCity || city,
+        photo: farmPhoto || u.profileUrl || '',
+        farms,
+        batches: [],
+        stageCounts: { planting: 0, growing: 0, flowering: 0, fruiting: 0, harvesting: 0 },
+        priorityStage: null
+      };
+    }
+    const f = grouped[ownerId];
+    f.batches.push(b);
+    const st = b.stage || 'planted';
+    if (st in f.stageCounts) f.stageCounts[st]++;
+  });
+
+  const farmers = Object.values(grouped);
+  farmers.forEach(f => {
+    f.priorityStage = STAGE_ORDER.find(s => f.stageCounts[s] > 0) || 'planted';
+    f.score = 0;
+    for (const st of STAGE_ORDER) {
+      f.score += (f.stageCounts[st] || 0) * STAGE_WEIGHT[st];
+    }
+  });
+  farmers.sort((a, b) => b.score - a.score);
+  return farmers;
+}
+
+function renderFarmers() {
+  const city = (S.farmerCity || S.weatherCity || S.userLocation || 'Lusaka').trim();
+  const farmers = computeFarmerList();
+  const stageFilter = S.farmerStageFilter || 'all';
+
+  const filtered = stageFilter === 'all'
+    ? farmers
+    : farmers.filter(f => (f.stageCounts[stageFilter] || 0) > 0);
+
+  // Stage counts
+  const stageStats = { all: farmers.length, planted: 0, growing: 0, flowering: 0, fruiting: 0, harvesting: 0 };
+  farmers.forEach(f => {
+    for (const st of ['planted','growing','flowering','fruiting','harvesting']) {
+      if ((f.stageCounts[st] || 0) > 0) stageStats[st]++;
+    }
+  });
+
+  const stageChips = [
+    { key: 'all', label: '👥 All', cnt: stageStats.all },
+    { key: 'harvesting', label: '🌾 Harvesting', cnt: stageStats.harvesting },
+    { key: 'fruiting', label: '🍅 Fruiting', cnt: stageStats.fruiting },
+    { key: 'flowering', label: '🌸 Flowering', cnt: stageStats.flowering },
+    { key: 'growing', label: '🌿 Growing', cnt: stageStats.growing },
+    { key: 'planted', label: '🌱 Planted', cnt: stageStats.planted }
+  ];
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered"><div class="tb-title">Farmers · ${esc(city)}</div></div>
+
+    <div class="info-banner">
+      <div class="ic">💡</div>
+      <div class="tx">Farmers in your area, sorted by activity. Call them to offer seeds, fertilizer, chemicals and tools for what they're growing.</div>
+    </div>
+
+    <div class="sec-h">
+      <h3><span class="em">🎯</span> Filter by stage</h3>
+    </div>
+    <div class="prod-filter-row">
+      ${stageChips.filter(c => c.key === 'all' || c.cnt > 0).map(c => `
+        <button class="prod-chip ${stageFilter === c.key ? 'active' : ''}" onclick="setFarmerStage('${c.key}')">
+          ${c.label}
+          <span class="cnt">${c.cnt}</span>
+        </button>
+      `).join('')}
+    </div>
+
+    ${filtered.length ? filtered.map(f => renderFarmerCard(f)).join('') : `
+      <div class="empty" style="padding:40px 24px">
+        <div class="e-ic">🧑‍🌾</div>
+        <h3>No farmers in ${esc(city)} yet</h3>
+        <p>Farmers will appear once they start planting in your area.</p>
+      </div>
+    `}
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+function renderFarmerCard(f) {
+  const isUrgent = f.priorityStage === 'harvesting';
+  const isHot = f.priorityStage === 'fruiting';
+  const cropChips = Object.entries(f.stageCounts)
+    .filter(([st, cnt]) => cnt > 0)
+    .sort((a, b) => STAGE_ORDER.indexOf(a[0]) - STAGE_ORDER.indexOf(b[0]))
+    .slice(0, 3)
+    .map(([st, cnt]) => `<span class="farmer-crop-chip ${st}">${STAGE_EMOJI[st]} ${cnt}</span>`)
+    .join('');
+
+  // Unique crops
+  const crops = [...new Set(f.batches.map(b => b.cropName).filter(Boolean))].slice(0, 3);
+  const cropsLine = crops.join(', ');
+
+  const callBtn = f.phone
+    ? `<button class="farmer-call-btn" onclick="event.stopPropagation();callFarmer('${esc(f.phone)}','${esc(f.name)}')" aria-label="Call">
+         <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+       </button>`
+    : '';
+
+  return `
+    <div class="farmer-card ${isUrgent ? 'urgent' : isHot ? 'hot' : ''}">
+      <div class="farmer-photo" style="${f.photo ? '' : 'background:' + gradFor(f.name)}">
+        ${f.photo ? `<img src="${esc(f.photo)}" alt="">` : initials(f.name)}
+      </div>
+      <div class="farmer-body">
+        <div class="farmer-name">${esc(f.name)}</div>
+        <div class="farmer-meta">📍 ${esc(f.city)}${cropsLine ? ' · ' + esc(cropsLine) : ''}</div>
+        <div class="farmer-crops">${cropChips}</div>
+      </div>
+      ${callBtn}
+    </div>
+  `;
+}
+
+window.setFarmerStage = (stage) => {
+  S.farmerStageFilter = stage;
+  route();
+};
+
+window.callFarmer = (phone, name) => {
+  if (!phone) { toast('No phone number on file'); return; }
+  const clean = String(phone).replace(/[^\d+]/g, '');
+  modal(`
+    <h3>📞 Call ${esc(name || 'Farmer')}?</h3>
+    <p style="font-size:16px;font-weight:900;color:var(--td);margin:8px 0">${esc(phone)}</p>
+    <p style="font-size:12px;color:var(--tl)">Call to offer them seeds, fertilizer, chemicals or tools for what they're growing.</p>
+    <div class="mc-actions">
+      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+      <a class="btn btn-p" href="tel:${esc(clean)}" onclick="setTimeout(closeModal,300)" style="text-decoration:none">📞 Call Now</a>
+    </div>
+  `);
+};
+
+/* Gradient helper */
+const GRADS = [
+  'linear-gradient(145deg,#d1fae5,#10b981)',
+  'linear-gradient(145deg,#fef3c7,#f59e0b)',
+  'linear-gradient(145deg,#fee2e2,#dc2626)',
+  'linear-gradient(145deg,#dbeafe,#2563eb)',
+  'linear-gradient(145deg,#fce7f3,#db2777)',
+  'linear-gradient(145deg,#ede9fe,#7c3aed)',
+  'linear-gradient(145deg,#ffedd5,#ea580c)',
+  'linear-gradient(145deg,#ccfbf1,#0d9488)'
+];
+function gradFor(str) {
+  let h = 0;
+  for (let i = 0; i < (str||'').length; i++) h = (h*31 + str.charCodeAt(i)) >>> 0;
+  return GRADS[h % GRADS.length];
+}
+
+/* ============================================================
+   DELIVERY (BOOK A TRANSPORTER)
+   ============================================================ */
+function partnerDisplayName(p) {
+  const fn = (p.firstName || '').trim();
+  const ln = (p.lastName || '').trim();
+  const full = (fn + ' ' + ln).trim();
+  return full || p.name || 'Delivery Partner';
+}
+function partnerPhone(p) { return p.phone || p.phoneNumber || ''; }
+function partnerIsAvailable(p) {
+  const flag = p.available === true || p.online === true;
+  if (!flag) return false;
+  const ts = p.availableChangedAt || p.onlineChangedAt || p.updatedAt;
+  if (ts) {
+    const age = Date.now() - ts;
+    if (age > 90 * 60 * 1000) return false;
+  }
+  return true;
+}
+function partnerCity(p) {
+  return String(p.city || p.town || '').trim();
+}
+function partnerMatchesCity(p, targetCity, myCoords) {
+  const pc = partnerCity(p);
+  if (pc && targetCity && pc.toLowerCase() === targetCity.toLowerCase()) return true;
+  if (p.location && isFinite(p.location.lat) && isFinite(p.location.lng) && myCoords && isFinite(myCoords.lat)) {
+    const dist = haversine(myCoords.lat, myCoords.lng, p.location.lat, p.location.lng);
+    return dist <= 40000;
+  }
+  if (!pc && !(p.location && p.location.lat)) return true;
+  return false;
+}
+function partnerVehiclePhotos(p) {
+  const type = p.vehicleType || '';
+  const photos = [];
+  if (type === 'bicycle') {
+    if (p.vehiclePhoto) photos.push({ label: 'Bicycle', url: p.vehiclePhoto });
+    if (p.profileUrl)    photos.push({ label: 'Partner', url: p.profileUrl });
+  } else if (type === 'bike') {
+    if (p.vehiclePhoto)  photos.push({ label: 'Bike', url: p.vehiclePhoto });
+    if (p.licenseUrl)    photos.push({ label: 'Licence', url: p.licenseUrl });
+    if (p.profileUrl)    photos.push({ label: 'Partner', url: p.profileUrl });
+  } else if (type === 'car') {
+    if (p.vehicleFront)  photos.push({ label: 'Car · Front', url: p.vehicleFront });
+    if (p.vehicleBack)   photos.push({ label: 'Car · Back', url: p.vehicleBack });
+    if (p.licenseUrl)    photos.push({ label: 'Licence', url: p.licenseUrl });
+  } else if (type === 'truck') {
+    if (p.vehicleFront)  photos.push({ label: 'Truck · Front', url: p.vehicleFront });
+    if (p.vehicleBack)   photos.push({ label: 'Truck · Back', url: p.vehicleBack });
+    if (p.licenseUrl)    photos.push({ label: 'Licence', url: p.licenseUrl });
+  }
+  return photos;
+}
+
+window.setDeliveryVehicleFilter = (type) => {
+  S.deliveryVehicleFilter = type;
+  route();
+};
+window.openDeliveryPartner = (id) => {
+  showScreen('delivery-detail', { id });
+};
+
+function renderDelivery() {
+  const city = S.weatherCity || S.userLocation || 'Lusaka';
+  const coords = null;
+  const filter = S.deliveryVehicleFilter || 'all';
+  const all = S.allDeliveryPartners || [];
+
+  const inCity = all.filter(p => partnerMatchesCity(p, city, coords));
+  const pool = filter === 'all' ? inCity : inCity.filter(p => p.vehicleType === filter);
+  const available = pool.filter(p => partnerIsAvailable(p));
+  const unavailable = pool.filter(p => !partnerIsAvailable(p));
+
+  available.sort((a, b) => partnerDisplayName(a).localeCompare(partnerDisplayName(b)));
+  unavailable.sort((a, b) => partnerDisplayName(a).localeCompare(partnerDisplayName(b)));
+
+  const pillDefs = VEHICLE_TYPES.map(v => ({
+    ...v,
+    count: inCity.filter(p => v.key === 'all' || p.vehicleType === v.key).length
+  }));
+
+  const pillHTML = pillDefs.map(p => `
+    <button class="delivery-filter-pill ${filter === p.key ? 'active' : ''}" onclick="setDeliveryVehicleFilter('${p.key}')">
+      <span class="dfp-em">${p.em}</span>
+      <span class="dfp-lb">${p.lb}</span>
+      <span class="dfp-cnt ${p.count === 0 ? 'zero' : ''}">${p.count}</span>
+    </button>
+  `).join('');
+
+  const renderPartnerCard = (p) => {
+    const avail = partnerIsAvailable(p);
+    const name = partnerDisplayName(p);
+    const phone = partnerPhone(p);
+    const photo = p.profileUrl || p.vehiclePhoto || '';
+    const vehicle = vehicleLabel(p.vehicleType);
+    const vEmoji = vehicleEmoji(p.vehicleType);
+    const initials_ = initials(name);
+
+    const callBtn = avail && phone
+      ? `<a class="dpc-call-btn" href="tel:${esc(phone)}" onclick="event.stopPropagation()" aria-label="Call">
+           <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+         </a>`
+      : `<span class="dpc-call-btn disabled">
+           <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+         </span>`;
+
+    return `
+      <div class="delivery-partner-card ${avail ? 'available' : 'unavailable'}" onclick="openDeliveryPartner('${esc(p.id)}')">
+        <div class="dpc-avatar">
+          ${photo ? `<img src="${esc(photo)}" alt="">` : initials_}
+          <span class="dpc-dot ${avail ? 'online' : ''}"></span>
+        </div>
+        <div class="dpc-body">
+          <div class="dpc-name">${esc(name)}</div>
+          <div class="dpc-meta">
+            <span class="dpc-vehicle-chip">${vEmoji} ${esc(vehicle)}</span>
+            <span class="dpc-availability ${avail ? 'online' : 'offline'}">${avail ? '● Available' : '○ Offline'}</span>
+          </div>
+        </div>
+        ${callBtn}
+      </div>`;
+  };
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered"><div class="tb-title">Book a Transporter</div></div>
+
+    <div class="delivery-intro">
+      <h2>🚚 Delivery Vehicles</h2>
+      <p>Need to move stock to your shop, market or a customer? Call a delivery partner in your area.</p>
+      <div class="di-city">📍 ${esc(city)}</div>
+    </div>
+
+    <div class="delivery-filter-row">${pillHTML}</div>
+
+    ${!inCity.length ? `
+      <div class="delivery-empty">
+        <div class="de-em">🚚</div>
+        <h3>No vehicles near ${esc(city)}</h3>
+        <p>Delivery partners will appear here once they register in your area. Try checking again later.</p>
+      </div>
+    ` : `
+      ${available.length ? `
+        <div class="delivery-section-label available">
+          <span class="dsl-dot"></span>
+          <span>Available now</span>
+          <span class="dsl-cnt">${available.length}</span>
+        </div>
+        ${available.map(renderPartnerCard).join('')}
+      ` : `
+        <div style="padding:8px 18px 12px">
+          <div class="delivery-note">
+            <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg>
+            <div class="dn-tx">No ${filter === 'all' ? '' : vehicleLabel(filter).toLowerCase() + ' '}vehicles available right now. You can still see registered partners below.</div>
+          </div>
+        </div>
+      `}
+
+      ${unavailable.length ? `
+        <div class="delivery-section-label unavailable">
+          <span class="dsl-dot"></span>
+          <span>Currently offline</span>
+          <span class="dsl-cnt">${unavailable.length}</span>
+        </div>
+        ${unavailable.map(renderPartnerCard).join('')}
+      ` : ''}
+    `}
+
+    <div style="height:8px"></div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+function renderDeliveryDetail(id) {
+  const partner = (S.allDeliveryPartners || []).find(p => p.id === id);
+  if (!partner) {
+    return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goDelivery()">←</button></div><div class="empty"><h3>Partner not found</h3></div></div>`;
+  }
+
+  const avail = partnerIsAvailable(partner);
+  const name = partnerDisplayName(partner);
+  const phone = partnerPhone(partner);
+  const photo = partner.profileUrl || partner.vehiclePhoto || '';
+  const vehicle = vehicleLabel(partner.vehicleType);
+  const vEmoji = vehicleEmoji(partner.vehicleType);
+  const initials_ = initials(name);
+  const city = partnerCity(partner) || '—';
+  const photos = partnerVehiclePhotos(partner);
+
+  const callBtnHTML = avail && phone ? `
+    <a class="ddh-call-btn" href="tel:${esc(phone)}">
+      <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+      Call ${esc(name.split(' ')[0])} now
+    </a>
+  ` : '';
+
+  const noteHTML = !avail ? `
+    <div class="delivery-note">
+      <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg>
+      <div class="dn-tx">This driver is currently <strong>offline</strong>. They may be available again soon.</div>
+    </div>
+  ` : '';
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goDelivery()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+      <div class="tb-title">Delivery Partner</div>
+    </div>
+
+    <div class="delivery-detail-hero">
+      <div class="ddh-avatar">
+        ${photo ? `<img src="${esc(photo)}" alt="">` : initials_}
+      </div>
+      <div class="ddh-name">${esc(name)}</div>
+      <div class="ddh-role">${vEmoji} ${esc(vehicle)} · 📍 ${esc(city)}</div>
+      <div class="ddh-status ${avail ? 'online' : 'offline'}">
+        ${avail ? '● Available now' : '○ Currently offline'}
+      </div>
+      ${callBtnHTML}
+    </div>
+
+    ${noteHTML}
+
+    <div style="padding:0 18px">
+      <div class="d-section" style="margin-bottom:16px">
+        <h3 style="font-size:12.5px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--td);margin-bottom:8px;display:flex;align-items:center;gap:8px">Contact</h3>
+        <div style="background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-xs)">
+          <div style="display:flex;justify-content:space-between;padding:12px 15px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Name</span><span style="color:var(--td);font-weight:800">${esc(name)}</span></div>
+          <div style="display:flex;justify-content:space-between;padding:12px 15px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Phone</span><span style="color:var(--td);font-weight:800">${esc(phone || '—')}</span></div>
+          <div style="display:flex;justify-content:space-between;padding:12px 15px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">Vehicle</span><span style="color:var(--td);font-weight:800">${vEmoji} ${esc(vehicle)}</span></div>
+          <div style="display:flex;justify-content:space-between;padding:12px 15px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">City</span><span style="color:var(--td);font-weight:800">${esc(city)}</span></div>
+          <div style="display:flex;justify-content:space-between;padding:12px 15px;font-size:12.5px"><span style="color:var(--tl);font-weight:700">Status</span><span style="color:${avail ? 'var(--p-d)' : 'var(--tl)'};font-weight:800">${avail ? 'Available' : 'Offline'}</span></div>
+        </div>
+      </div>
+
+      ${photos.length ? `
+        <div class="d-section" style="margin-bottom:16px">
+          <h3 style="font-size:12.5px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--td);margin-bottom:8px;display:flex;align-items:center;gap:8px">Vehicle & Documents</h3>
+          <div class="delivery-gallery ${photos.length === 1 ? 'single' : ''}">
+            ${photos.map(p => `
+              <div class="delivery-photo-item">
+                <img src="${esc(p.url)}" alt="${esc(p.label)}">
+                <div class="dpi-label">${esc(p.label)}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      <div class="info-banner" style="margin-bottom:24px">
+        <div class="ic">💡</div>
+        <div class="tx"><strong>Tip:</strong> Confirm the pickup, delivery location, and price before the driver arrives.</div>
+      </div>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+/* ============================================================
+   PROFILE
+   ============================================================ */
+function renderProfile() {
+  const p = S.profile || {};
+  const businessName = p.businessName || ((p.firstName || '') + ' ' + (p.lastName || '')).trim() || 'Agro Dealer';
+  const initial = initials(businessName);
+  const isDark = S.theme === 'dark';
+  const city = S.weatherCity || S.userLocation || 'Lusaka';
+
+  const totalProducts = (S.myProducts || []).length;
+  const totalCategories = new Set((S.myProducts || []).map(x => x.category).filter(Boolean)).size;
+
+  return `
+  <div class="scroll">
+    <div class="topbar"><div class="tb-title">Profile</div></div>
+
+    <div class="prof-hero">
+      <div class="p-av">${p.logoUrl ? `<img src="${esc(p.logoUrl)}" alt="">` : initial}</div>
+      <h2>${esc(businessName)}</h2>
+      <div class="p-ver">✓ Verified Dealer</div>
+      <div class="p-loc">📍 ${esc(city)}</div>
+      <div class="prof-stats">
+        <div><div class="ps-n">${totalProducts}</div><div class="ps-l">Products</div></div>
+        <div><div class="ps-n">${totalCategories}</div><div class="ps-l">Categories</div></div>
+        <div><div class="ps-n">${S.allBatches.length > 0 ? 'Active' : '—'}</div><div class="ps-l">Market</div></div>
+      </div>
+    </div>
+
+    <div style="padding:0 18px 14px">
+      <div style="font-size:11.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Appearance</div>
+      <div class="theme-switch-wrap">
+        <button class="theme-opt ${!isDark ? 'active' : ''}" onclick="setTheme('light')">
+          <span class="ti">☀️</span> Light
+        </button>
+        <button class="theme-opt ${isDark ? 'active' : ''}" onclick="setTheme('dark')">
+          <span class="ti">🌙</span> Dark
+        </button>
+      </div>
+    </div>
+
+    <div class="menu-list">
+      <div class="menu-item" onclick="goProducts()">
+        <div class="mi-ic">📦</div>
+        <div class="mi-tx"><div class="mi-tt">My Products</div><div class="mi-sb">${totalProducts} product${totalProducts === 1 ? '' : 's'} · ${totalCategories} categor${totalCategories === 1 ? 'y' : 'ies'}</div></div>
+        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+      <div class="menu-item" onclick="goMarket()">
+        <div class="mi-ic">📊</div>
+        <div class="mi-tx"><div class="mi-tt">Market Intelligence</div><div class="mi-sb">Restock recommendations</div></div>
+        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+      <div class="menu-item" onclick="goFarmers()">
+        <div class="mi-ic">🧑‍🌾</div>
+        <div class="mi-tx"><div class="mi-tt">Farmers in ${esc(city)}</div><div class="mi-sb">See what they're growing</div></div>
+        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+      <div class="menu-item" onclick="goDelivery()">
+        <div class="mi-ic">🚚</div>
+        <div class="mi-tx"><div class="mi-tt">Book Transport</div><div class="mi-sb">Move your stock around</div></div>
+        <div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+      </div>
+      <div class="menu-item" onclick="doLogout()">
+        <div class="mi-ic" style="background:var(--danger-soft)">🚪</div>
+        <div class="mi-tx"><div class="mi-tt" style="color:var(--danger)">Sign Out</div></div>
+      </div>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+window.doLogout = () => {
+  modal(`
+    <h3>Sign out?</h3>
+    <p>You'll need to log in again.</p>
+    <div class="mc-actions">
+      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmLogout()">Sign Out</button>
+    </div>
+  `);
+};
+
+window.confirmLogout = async () => {
+  try { await signOut(auth); } catch (e) {}
+  window.location.href = 'index.html';
+};
+
+/* ============================================================
+   DATA LISTENERS
+   ============================================================ */
+function startAgroProductsListener() {
+  if (S.agroProductsUnsub) S.agroProductsUnsub();
+  S.agroProductsUnsub = onValue(ref(db, 'agroProducts'), (snap) => {
+    const data = snap.val() || {};
+    const arr = Object.entries(data).map(([id, v]) => ({ id, ...v })).filter(x => x);
+    arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    S.allAgroProducts = arr;
+    if (S.user) {
+      S.myProducts = arr.filter(p => p.sellerId === S.user.uid);
+    }
+    if (['home', 'products', 'market', 'profile', 'add-product', 'edit-product'].includes(S.screen)) route();
+  }, err => console.warn('agro products listener', err));
+}
+
+function startBatchesListener() {
+  if (S.batchesUnsub) S.batchesUnsub();
+  S.batchesUnsub = onValue(ref(db, 'batches'), (snap) => {
+    const data = snap.val() || {};
+    const arr = Object.entries(data).map(([id, v]) => ({ id, ...v })).filter(x => x);
+    arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    S.allBatches = arr;
+    if (['home', 'market', 'farmers'].includes(S.screen)) route();
+  }, err => console.warn('batches listener', err));
+}
+
+function startUsersListener() {
+  if (S.usersUnsub) S.usersUnsub();
+  S.usersUnsub = onValue(ref(db, 'users'), (snap) => {
+    const data = snap.val() || {};
+    S.allUsers = data;
+
+    // Extract delivery partners
+    const partners = [];
+    for (const uid in data) {
+      const u = data[uid];
+      if (!u || u.role !== 'delivery') continue;
+      if (u.status !== 'approved') continue;
+      if (u.banned) continue;
+      partners.push({ id: uid, ...u });
+    }
+    S.allDeliveryPartners = partners;
+
+    if (['home', 'market', 'farmers', 'delivery', 'delivery-detail'].includes(S.screen)) route();
+  }, err => console.warn('users listener', err));
+}
+
+/* ============================================================
+   BOOTSTRAP
+   ============================================================ */
+async function startApp() {
+  const splash = document.getElementById('splash');
+  requestAnimationFrame(() => splash.classList.add('show'));
+
+  onAuthStateChanged(auth, async (user) => {
+    await new Promise(r => setTimeout(r, 2500));
+    if (!user) { window.location.href = 'index.html'; return; }
+
+    S.user = user;
+
+    // Load user profile
+    try {
+      const snap = await get(ref(db, 'users/' + user.uid));
+      if (snap.exists()) S.profile = snap.val();
+    } catch (e) { S.profile = {}; }
+
+    // Check role — must be supplier or admin
+    const role = S.profile?.role || '';
+    if (!['supplier', 'agro-dealer', 'admin'].includes(role)) {
+      await new Promise(r => setTimeout(r, 800));
+      document.body.innerHTML = `
+        <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;background:#f4f7f5;font-family:-apple-system,sans-serif">
+          <div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(145deg,#ef4444,#b91c1c);display:flex;align-items:center;justify-content:center;font-size:40px;color:#fff;margin-bottom:20px;box-shadow:0 20px 40px -12px rgba(220,38,38,.45)">✕</div>
+          <h1 style="font-size:22px;font-weight:900;color:#0f172a;margin-bottom:10px">Wrong Account Type</h1>
+          <p style="font-size:14px;color:#64748b;max-width:340px;line-height:1.55;margin-bottom:20px">This app is for agro dealers and suppliers. Please log in with your supplier account.</p>
+          <a href="index.html" style="padding:14px 28px;border-radius:999px;background:linear-gradient(180deg,#12903e,#0f7a34);color:#fff;text-decoration:none;font-weight:700;font-size:14px">← Back to Login</a>
+        </div>
+      `;
+      return;
+    }
+
+    // Check approval status
+    const status = S.profile?.status || 'pending';
+    if (status === 'pending') {
+      await new Promise(r => setTimeout(r, 800));
+      document.body.innerHTML = `
+        <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;background:#f4f7f5;font-family:-apple-system,sans-serif">
+          <div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(145deg,#f59e0b,#b45309);display:flex;align-items:center;justify-content:center;font-size:40px;color:#fff;margin-bottom:20px;box-shadow:0 20px 40px -12px rgba(180,83,9,.45)">⏳</div>
+          <h1 style="font-size:22px;font-weight:900;color:#0f172a;margin-bottom:10px">Approval Pending</h1>
+          <p style="font-size:14px;color:#64748b;max-width:340px;line-height:1.55;margin-bottom:20px">Your agro dealer application is being reviewed by our team. You'll be able to log in once an admin approves your account.</p>
+          <a href="index.html" style="padding:14px 28px;border-radius:999px;background:#f8fafc;color:#0f172a;border:1.5px solid #e2e8f0;text-decoration:none;font-weight:700;font-size:14px">← Back to Login</a>
+        </div>
+      `;
+      return;
+    }
+
+    if (status === 'rejected' || status === 'banned') {
+      await new Promise(r => setTimeout(r, 800));
+      document.body.innerHTML = `
+        <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;background:#f4f7f5;font-family:-apple-system,sans-serif">
+          <div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(145deg,#ef4444,#b91c1c);display:flex;align-items:center;justify-content:center;font-size:40px;color:#fff;margin-bottom:20px;box-shadow:0 20px 40px -12px rgba(220,38,38,.45)">✕</div>
+          <h1 style="font-size:22px;font-weight:900;color:#0f172a;margin-bottom:10px">Account ${status === 'banned' ? 'Banned' : 'Not Approved'}</h1>
+          <p style="font-size:14px;color:#64748b;max-width:340px;line-height:1.55;margin-bottom:20px">${status === 'banned' ? 'Your account has been banned. Contact support for more information.' : 'Your application was not approved. Contact support for more information.'}</p>
+          <a href="index.html" style="padding:14px 28px;border-radius:999px;background:#f8fafc;color:#0f172a;border:1.5px solid #e2e8f0;text-decoration:none;font-weight:700;font-size:14px">← Back to Login</a>
+        </div>
+      `;
+      return;
+    }
+
+    // Load city from profile
+    if (S.profile?.location) S.userLocation = S.profile.location;
+    if (S.profile?.city) S.weatherCity = S.profile.city;
+
+    // Start listeners
+    startAgroProductsListener();
+    startBatchesListener();
+    startUsersListener();
+
+    // Build app shell
+    const app = document.getElementById('app');
+    app.innerHTML = `<div class="screen-wrap"></div>`;
+    const wrap = app.querySelector('.screen-wrap');
+    const home = document.createElement('div');
+    home.className = 'screen';
+    home.id = 'screen-home';
+    wrap.appendChild(home);
+    activeScreenEl = home;
+    S.screen = 'home';
+    home.classList.add('active');
+    route();
+    try { history.replaceState({ screen:'home' }, '', '#home'); } catch (e) {}
+
+    // Try to detect city via geolocation
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        try {
+          const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json&zoom=12&accept-language=en`, { headers: { 'Accept': 'application/json' } });
+          if (r.ok) {
+            const j = await r.json();
+            const a = j.address || {};
+            const c = a.city || a.town || a.village || a.municipality || a.county || '';
+            if (c && !S.weatherCity) {
+              S.weatherCity = c;
+              S.userLocation = c;
+              if (S.screen === 'home' || S.screen === 'market' || S.screen === 'farmers') route();
+            }
+          }
+        } catch (e) {}
+      }, () => {}, { timeout: 8000, maximumAge: 300000 });
+    }
+
+    // Initial defaults
+    _formAvail = true;
+  });
+}
+
+startApp();
+
+setTimeout(() => {
+  const splash = document.getElementById('splash');
+  if (splash && splash.parentNode) {
+    setTimeout(() => {
+      splash.classList.remove('show');
+      setTimeout(() => { if (splash.parentNode) splash.parentNode.removeChild(splash); }, 1000);
+    }, 300);
+  }
+}, 2700);
+
+window.addEventListener('unhandledrejection', e => console.warn('Unhandled:', e.reason));
+</script>
+
+</body>
+</html>
