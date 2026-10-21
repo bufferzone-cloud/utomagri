@@ -1175,6 +1175,277 @@ a{color:inherit;text-decoration:none;}
 [data-theme="dark"] .planting-banner .pb-txt{color:#86efac;}
 
 .hidden{display:none !important;}
+
+/* ============================================================
+   DELIVERY VEHICLES — NEW
+   ============================================================ */
+.delivery-intro{
+  margin:0 18px 14px;padding:18px;border-radius:var(--r-xl);
+  background:linear-gradient(135deg,#0f7a34 0%,#084d20 100%);
+  color:#fff;position:relative;overflow:hidden;
+  box-shadow:var(--sh-brand-lg);
+}
+[data-theme="dark"] .delivery-intro{background:linear-gradient(135deg,#064e3b,#022c22);}
+.delivery-intro::before{content:'';position:absolute;top:-30px;right:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,255,255,.18) 0%,transparent 65%);border-radius:50%;pointer-events:none;}
+.delivery-intro h2{font-size:19px;font-weight:900;letter-spacing:-.02em;position:relative;z-index:1;display:flex;align-items:center;gap:8px;}
+.delivery-intro p{font-size:12px;font-weight:600;opacity:.92;margin-top:6px;line-height:1.5;position:relative;z-index:1;}
+.delivery-intro .di-city{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:10px;padding:5px 12px;border-radius:var(--r-p);
+  background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.24);
+  font-size:11px;font-weight:800;letter-spacing:.03em;
+  position:relative;z-index:1;
+}
+
+.delivery-filter-row{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:6px;
+  padding:0 18px 14px;
+}
+.delivery-filter-pill{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:10px 4px 8px;
+  border-radius:14px;
+  background:var(--sf);
+  border:1.5px solid var(--bd);
+  transition:all .2s var(--e);
+  cursor:pointer;
+  position:relative;
+}
+.delivery-filter-pill:active{transform:scale(.94);}
+.delivery-filter-pill.active{
+  background:var(--p);
+  border-color:var(--p);
+  color:#fff;
+  box-shadow:0 6px 16px -4px var(--p-glow);
+}
+.delivery-filter-pill .dfp-em{font-size:22px;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.1));}
+.delivery-filter-pill .dfp-lb{
+  font-size:9px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.02em;color:var(--td);
+  text-align:center;line-height:1.1;
+}
+.delivery-filter-pill.active .dfp-lb{color:#fff;}
+.delivery-filter-pill .dfp-cnt{
+  position:absolute;top:-3px;right:-3px;
+  min-width:18px;height:18px;padding:0 5px;
+  border-radius:9px;background:var(--sf2);
+  border:1.5px solid var(--sf);
+  color:var(--p-d);font-size:9px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+}
+.delivery-filter-pill.active .dfp-cnt{
+  background:#fff;color:var(--p-d);border-color:var(--p);
+}
+.delivery-filter-pill .dfp-cnt.zero{display:none;}
+
+.delivery-section-label{
+  padding:8px 18px 8px;
+  display:flex;align-items:center;gap:8px;
+  font-size:11.5px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--tl);
+}
+.delivery-section-label .dsl-dot{
+  width:8px;height:8px;border-radius:50%;
+}
+.delivery-section-label.available{color:#065f46;}
+.delivery-section-label.available .dsl-dot{background:var(--ok);box-shadow:0 0 0 3px rgba(22,163,74,.18);}
+.delivery-section-label.unavailable{color:var(--tl);}
+.delivery-section-label.unavailable .dsl-dot{background:var(--tm);}
+.delivery-section-label .dsl-cnt{
+  margin-left:auto;padding:2px 8px;border-radius:var(--r-p);
+  background:var(--sf2);color:var(--tb);
+  font-size:10px;font-weight:900;
+}
+.delivery-section-label.available .dsl-cnt{background:var(--ok-soft);color:#065f46;}
+
+.delivery-partner-card{
+  margin:0 18px 10px;
+  padding:14px;
+  background:var(--sf);
+  border:1.5px solid var(--bd);
+  border-radius:var(--r-xl);
+  display:flex;align-items:center;gap:12px;
+  box-shadow:var(--sh-sm);
+  cursor:pointer;
+  transition:all .2s var(--e);
+  position:relative;
+}
+.delivery-partner-card:active{transform:scale(.985);box-shadow:var(--sh-md);}
+.delivery-partner-card.available{border-color:rgba(22,163,74,.28);background:linear-gradient(135deg,var(--sf) 0%,#f0fdf4 100%);}
+[data-theme="dark"] .delivery-partner-card.available{background:linear-gradient(135deg,var(--sf) 0%,#052e1b 100%);}
+.delivery-partner-card.unavailable{opacity:.75;background:var(--sf2);}
+.delivery-partner-card.unavailable:active{opacity:.85;}
+
+.dpc-avatar{
+  width:52px;height:52px;border-radius:50%;flex-shrink:0;
+  overflow:hidden;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#0f7a34,#084d20);
+  color:#fff;font-weight:900;font-size:18px;
+  box-shadow:0 3px 10px rgba(0,0,0,.1);
+}
+.dpc-avatar img{width:100%;height:100%;object-fit:cover;}
+.dpc-avatar .dpc-dot{
+  position:absolute;bottom:0;right:0;
+  width:14px;height:14px;border-radius:50%;
+  border:2.5px solid var(--sf);
+  background:var(--tm);
+}
+.dpc-avatar .dpc-dot.online{background:var(--ok);box-shadow:0 0 0 2px rgba(22,163,74,.22);}
+
+.dpc-body{flex:1;min-width:0;}
+.dpc-name{
+  font-size:14.5px;font-weight:900;color:var(--td);
+  letter-spacing:-.01em;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.dpc-meta{
+  font-size:11px;color:var(--tl);font-weight:600;
+  margin-top:3px;
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+}
+.dpc-vehicle-chip{
+  display:inline-flex;align-items:center;gap:3px;
+  padding:2px 7px;border-radius:var(--r-p);
+  background:var(--sf2);color:var(--tb);
+  font-weight:800;font-size:9.5px;
+  text-transform:uppercase;letter-spacing:.03em;
+}
+.dpc-availability{
+  display:inline-flex;align-items:center;gap:3px;
+  padding:2px 7px;border-radius:var(--r-p);
+  font-weight:800;font-size:9.5px;
+  text-transform:uppercase;letter-spacing:.03em;
+}
+.dpc-availability.online{background:#d1fae5;color:#065f46;}
+.dpc-availability.offline{background:#f1f5f9;color:#475569;}
+[data-theme="dark"] .dpc-availability.online{background:#064e3b;color:#34d399;}
+[data-theme="dark"] .dpc-availability.offline{background:#1e293b;color:#cbd5e1;}
+
+.dpc-call-btn{
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(145deg,#22c55e,#15803d);
+  color:#fff;
+  box-shadow:0 6px 16px -4px rgba(34,197,94,.5);
+  transition:transform .2s var(--e);
+  text-decoration:none;
+}
+.dpc-call-btn:active{transform:scale(.9);}
+.dpc-call-btn svg{width:18px;height:18px;fill:#fff;}
+.dpc-call-btn.disabled{
+  background:var(--sf2);color:var(--tm);box-shadow:none;
+  pointer-events:none;
+}
+.dpc-call-btn.disabled svg{fill:var(--tm);}
+
+/* Delivery Detail Page */
+.delivery-detail-hero{
+  margin:0 18px 16px;padding:26px 22px 22px;
+  border-radius:var(--r-2xl);
+  background:linear-gradient(135deg,#0f7a34 0%,#084d20 100%);
+  color:#fff;text-align:center;
+  position:relative;overflow:hidden;
+  box-shadow:var(--sh-brand-lg);
+}
+[data-theme="dark"] .delivery-detail-hero{background:linear-gradient(135deg,#064e3b 0%,#022c22 100%);}
+.delivery-detail-hero::before{content:'';position:absolute;top:-50px;right:-30px;width:180px;height:180px;background:radial-gradient(circle,rgba(255,255,255,.2) 0%,transparent 65%);border-radius:50%;pointer-events:none;}
+.ddh-avatar{
+  width:88px;height:88px;border-radius:50%;margin:0 auto 14px;
+  background:rgba(255,255,255,.22);border:3px solid #fff;
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;font-weight:900;
+  position:relative;z-index:1;
+}
+.ddh-avatar img{width:100%;height:100%;object-fit:cover;}
+.ddh-name{
+  font-size:20px;font-weight:900;letter-spacing:-.03em;
+  position:relative;z-index:1;
+}
+.ddh-role{
+  font-size:10.5px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.05em;opacity:.85;margin-top:4px;
+  position:relative;z-index:1;
+}
+.ddh-status{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.05em;
+  padding:5px 14px;border-radius:var(--r-p);
+  margin-top:10px;
+  position:relative;z-index:1;
+}
+.ddh-status.online{background:rgba(255,255,255,.95);color:#065f46;}
+.ddh-status.offline{background:rgba(0,0,0,.28);color:#fff;}
+
+.ddh-call-btn{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;max-width:280px;
+  margin:16px auto 0;
+  padding:14px 20px;
+  border-radius:var(--r-p);
+  background:#fff;color:var(--p-d);
+  font-size:14px;font-weight:900;
+  letter-spacing:.02em;text-decoration:none;
+  box-shadow:0 8px 22px -8px rgba(0,0,0,.3);
+  position:relative;z-index:1;
+  transition:transform .2s var(--e);
+}
+.ddh-call-btn:active{transform:scale(.97);}
+.ddh-call-btn svg{width:18px;height:18px;fill:var(--p-d);}
+
+.delivery-note{
+  margin:0 18px 14px;padding:14px 16px;
+  border-radius:var(--r-lg);
+  background:var(--warn-soft);
+  border:1px solid rgba(180,83,9,.22);
+  display:flex;align-items:flex-start;gap:10px;
+}
+.delivery-note svg{width:18px;height:18px;fill:var(--warn);flex-shrink:0;margin-top:2px;}
+.delivery-note .dn-tx{font-size:12px;color:#78350f;font-weight:600;line-height:1.5;}
+[data-theme="dark"] .delivery-note{background:#422006;border-color:rgba(251,191,36,.3);}
+[data-theme="dark"] .delivery-note svg{fill:#fbbf24;}
+[data-theme="dark"] .delivery-note .dn-tx{color:#fcd34d;}
+
+.delivery-gallery{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  padding:0 18px 14px;
+}
+.delivery-gallery.single{
+  grid-template-columns:1fr;
+  max-width:280px;
+  margin:0 auto 14px;
+}
+.delivery-photo-item{
+  position:relative;
+  aspect-ratio:1/1;
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  background:var(--sf2);
+  box-shadow:var(--sh-sm);
+  border:1px solid var(--bd);
+}
+.delivery-photo-item img{width:100%;height:100%;object-fit:cover;}
+.delivery-photo-item .dpi-label{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:8px 12px;
+  background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.75) 100%);
+  color:#fff;
+  font-size:10px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.04em;
+}
+
+.delivery-empty{
+  padding:48px 24px;text-align:center;color:var(--tl);
+}
+.delivery-empty .de-em{font-size:56px;margin-bottom:14px;opacity:.5;line-height:1;}
+.delivery-empty h3{font-size:15px;font-weight:800;color:var(--td);margin-bottom:6px;}
+.delivery-empty p{font-size:12.5px;line-height:1.5;max-width:300px;margin:0 auto;}
 </style>
 </head>
 <body>
@@ -1323,7 +1594,11 @@ const S = {
   previewYear: null,
   previewCity: null,
   previewMarket: null,
-  previewCrop: null
+  previewCrop: null,
+  /* NEW: delivery vehicles */
+  allDeliveryPartners: [],
+  deliveryPartnersUnsub: null,
+  deliveryVehicleFilter: 'all'
 };
 
 const $modal = document.getElementById('modal');
@@ -1455,6 +1730,14 @@ function timeUntil(ts) {
   const h = Math.floor(diff/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000);
   return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
 }
+function haversine(lat1, lon1, lat2, lon2) {
+  const R = 6371000;
+  const p1 = lat1 * Math.PI / 180, p2 = lat2 * Math.PI / 180;
+  const dp = (lat2 - lat1) * Math.PI / 180;
+  const dl = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dp/2)**2 + Math.cos(p1) * Math.cos(p2) * Math.sin(dl/2)**2;
+  return 2 * R * Math.asin(Math.min(1, Math.sqrt(a)));
+}
 const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 window.toggleDetails = (btn, contentId) => {
@@ -1478,6 +1761,84 @@ function getAllListingsForBatch(batchId) {
 function currentFarmBatches() {
   if (!S.currentFarmId) return S.myBatches;
   return S.myBatches.filter(b => b.farmId === S.currentFarmId);
+}
+
+/* ============================================================
+   DELIVERY PARTNER HELPERS (NEW)
+   ============================================================ */
+const VEHICLE_TYPES = [
+  { key: 'all',     em: '🚚', lb: 'All',     db: 'all' },
+  { key: 'bicycle', em: '🚲', lb: 'Bicycle', db: 'bicycle' },
+  { key: 'bike',    em: '🏍️', lb: 'Bike',    db: 'bike' },
+  { key: 'car',     em: '🚗', lb: 'Car',     db: 'car' },
+  { key: 'truck',   em: '🚚', lb: 'Truck',   db: 'truck' }
+];
+function vehicleLabel(v) {
+  if (v === 'bicycle') return 'Bicycle';
+  if (v === 'bike' || v === 'rider' || v === 'motorbike') return 'Bike';
+  if (v === 'car') return 'Car';
+  if (v === 'truck') return 'Truck';
+  return 'Vehicle';
+}
+function vehicleEmoji(v) {
+  if (v === 'bicycle') return '🚲';
+  if (v === 'bike' || v === 'rider' || v === 'motorbike') return '🏍️';
+  if (v === 'car') return '🚗';
+  if (v === 'truck') return '🚚';
+  return '🚚';
+}
+function partnerDisplayName(p) {
+  const fn = (p.firstName || '').trim();
+  const ln = (p.lastName || '').trim();
+  const full = (fn + ' ' + ln).trim();
+  return full || p.name || p.businessName || 'Delivery Partner';
+}
+function partnerPhone(p) {
+  return p.phone || p.phoneNumber || '';
+}
+function partnerIsAvailable(p) {
+  const flag = p.available === true || p.online === true;
+  if (!flag) return false;
+  const ts = p.availableChangedAt || p.onlineChangedAt || p.updatedAt;
+  if (ts) {
+    const age = Date.now() - ts;
+    if (age > 90 * 60 * 1000) return false;
+  }
+  return true;
+}
+function partnerCity(p) {
+  return String(p.city || p.town || '').trim();
+}
+function partnerMatchesCity(p, targetCity, farmerCoords) {
+  const pc = partnerCity(p);
+  if (pc && targetCity && pc.toLowerCase() === targetCity.toLowerCase()) return true;
+  if (p.location && isFinite(p.location.lat) && isFinite(p.location.lng) && farmerCoords && isFinite(farmerCoords.lat)) {
+    const dist = haversine(farmerCoords.lat, farmerCoords.lng, p.location.lat, p.location.lng);
+    return dist <= 40000;
+  }
+  if (!pc && !(p.location && p.location.lat)) return true;
+  return false;
+}
+function partnerVehiclePhotos(p) {
+  const type = p.vehicleType || '';
+  const photos = [];
+  if (type === 'bicycle') {
+    if (p.vehiclePhoto) photos.push({ label: 'Bicycle', url: p.vehiclePhoto });
+    if (p.profileUrl)    photos.push({ label: 'Partner', url: p.profileUrl });
+  } else if (type === 'bike') {
+    if (p.vehiclePhoto)  photos.push({ label: 'Bike', url: p.vehiclePhoto });
+    if (p.licenseUrl)    photos.push({ label: 'Licence', url: p.licenseUrl });
+    if (p.profileUrl)    photos.push({ label: 'Partner', url: p.profileUrl });
+  } else if (type === 'car') {
+    if (p.vehicleFront)  photos.push({ label: 'Car · Front', url: p.vehicleFront });
+    if (p.vehicleBack)   photos.push({ label: 'Car · Back', url: p.vehicleBack });
+    if (p.licenseUrl)    photos.push({ label: 'Licence', url: p.licenseUrl });
+  } else if (type === 'truck') {
+    if (p.vehicleFront)  photos.push({ label: 'Truck · Front', url: p.vehicleFront });
+    if (p.vehicleBack)   photos.push({ label: 'Truck · Back', url: p.vehicleBack });
+    if (p.licenseUrl)    photos.push({ label: 'Licence', url: p.licenseUrl });
+  }
+  return photos;
 }
 
 /* ============================================================
@@ -2095,11 +2456,13 @@ async function detectUserCityAndWeather(force) {
       if (place && place.city) { S.weatherCity = place.city; S.userLocation = place.city; }
       S.weather = await loadWeatherByCoords(lat, lng);
       if (S.screen === 'home') route();
+      if (S.screen === 'delivery') route();
       resolve();
     }, async () => {
       S.weather = await loadWeatherByCoords(-15.4167, 28.2833);
       S.weatherCity = S.userLocation;
       if (S.screen === 'home') route();
+      if (S.screen === 'delivery') route();
       resolve();
     }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 300000 });
   });
@@ -2193,7 +2556,7 @@ function updateNav(id) {
   let key = id;
   if (['plant-loader','plant-step-1','plant-step-3','plant-step-4','plant-confirm','plant-success','batch-detail','harvest-record','post-harvest-goods','selected-crop-analysis','farm-picker'].includes(id)) key = 'farm';
   if (['marketplace','product-detail','buy-supplies','supplier-cart','supplier-checkout','edit-listing','preview-market'].includes(id)) key = 'market';
-  if (['delivery-history','request-delivery'].includes(id)) key = 'delivery';
+  if (['delivery-history','request-delivery','delivery-detail'].includes(id)) key = 'delivery';
   if (['profile','weather','analysis','government','follow-ups','my-posts','explore','catalogue-detail','market-analysis','weather-detail','farm-analysis','farmers-by-city','agro-dealers'].includes(id)) key = 'profile';
   nav.querySelectorAll('.bn').forEach(b => b.classList.toggle('active', map[key] === b.dataset.nav));
 }
@@ -2287,6 +2650,26 @@ function startNotificationsListener() {
     S.notifications = arr;
     S.unreadNotifCount = arr.filter(n => !n.read).length;
   });
+}
+
+/* ============================================================
+   DELIVERY PARTNERS LISTENER (NEW)
+   ============================================================ */
+function startDeliveryPartnersListener() {
+  if (S.deliveryPartnersUnsub) S.deliveryPartnersUnsub();
+  S.deliveryPartnersUnsub = onValue(ref(db, 'users'), (snap) => {
+    const data = snap.val() || {};
+    const partners = [];
+    for (const uid in data) {
+      const u = data[uid];
+      if (!u || u.role !== 'delivery') continue;
+      if (u.status !== 'approved') continue;
+      if (u.banned || u.status === 'banned') continue;
+      partners.push({ id: uid, ...u });
+    }
+    S.allDeliveryPartners = partners;
+    if (S.screen === 'delivery' || S.screen === 'delivery-detail') route();
+  }, err => console.warn('delivery partners listener', err));
 }
 
 /* ============================================================
@@ -2447,6 +2830,7 @@ function route() {
     case 'my-posts': el.innerHTML = renderMyPosts(); break;
     case 'agro-dealers': el.innerHTML = renderAgroDealers(); break;
     case 'delivery': el.innerHTML = renderDelivery(); break;
+    case 'delivery-detail': el.innerHTML = renderDeliveryDetail(S.screenData.id); break;
     case 'profile': el.innerHTML = renderProfile(); break;
     case 'weather-detail': el.innerHTML = renderWeatherDetail(); break;
     case 'market-analysis': el.innerHTML = renderMarketAnalysis(); break;
@@ -3441,11 +3825,6 @@ function renderBatchDetail(id, tab) {
   const unit = unitForBatch(b);
   const unitNote = getHarvestUnit(b.cropName, b.category).note;
 
-  /* Tab mode resolution:
-     - 'plant'   : view-only from Plant tab (no harvest tracking, no farm setup)
-     - 'manage'  : from Manage tab (no harvest tracking, farm setup only)
-     - 'harvest' : from Harvest tab (harvest tracking only)
-     - 'harvested' : from Harvest tab finished batches (harvest tracking only) */
   const isPlantTab = tab === 'plant';
   const isManageTab = !tab || tab === 'manage';
   const isHarvestTab = tab === 'harvest' || tab === 'harvested';
@@ -3527,7 +3906,6 @@ function renderBatchDetail(id, tab) {
     </div>`;
   }
 
-  /* Impressive Farm Setup UI (only in Manage tab) */
   const farmSetupHTML = isManageTab ? `
     <div class="d-section">
       <h3>⚙️ Farm Setup</h3>
@@ -4082,10 +4460,6 @@ function renderPostHarvestGoods(batchId) {
 
   if (!S.draftImages[batchId]) S.draftImages[batchId] = [];
 
-  /* NOTE: using <div class="frm"> instead of <form onsubmit=...> to prevent native
-     browser validation from blocking clicks on the submit button. All validation
-     is handled inside submitMarketPost with clear toast messages. The buttons are
-     explicit type="button" with inline onclick so they always fire. */
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -5104,7 +5478,7 @@ window.contactSeller = (sellerId) => {
 };
 
 /* ============================================================
-   MARKET ANALYSIS — Year filter, prices & towns only (no quantities)
+   MARKET ANALYSIS
    ============================================================ */
 window.setAnalysisMarket = (v) => { S.analysisMarket = v; route(); };
 window.setAnalysisCrop = (v) => { S.analysisCrop = v; route(); };
@@ -5279,7 +5653,7 @@ function renderMarketAnalysis() {
 }
 
 /* ============================================================
-   PREVIEW MARKET — with year, city, market & crop filters
+   PREVIEW MARKET
    ============================================================ */
 window.setPreviewYear = (v) => { S.previewYear = v === 'all' ? null : v; route(); };
 window.setPreviewCity = (v) => { S.previewCity = v === 'all' ? null : v; route(); };
@@ -5405,76 +5779,268 @@ function renderPreviewMarket() {
 }
 
 /* ============================================================
-   AGRO DEALERS
+   DELIVERY VEHICLES (NEW PAGE)
    ============================================================ */
-window.setAgroTab = (tab) => { S.agroTab = tab; route(); };
-function renderAgroDealers() {
-  const products = S.agroProducts || [];
-  const categories = [...new Set(products.map(p => p.category || 'Other').filter(Boolean))].sort();
-  const tab = S.agroTab || 'all';
-  const filtered = tab === 'all' ? products : products.filter(p => (p.category || 'Other') === tab);
+window.setDeliveryVehicleFilter = (type) => {
+  S.deliveryVehicleFilter = type;
+  route();
+};
+
+window.openDeliveryPartner = (id) => {
+  showScreen('delivery-detail', { id });
+};
+
+function renderDelivery() {
+  const farmerCity = S.weatherCity || S.userLocation || 'Lusaka';
+  const farmerCoords = S.userCoords;
+  const filter = S.deliveryVehicleFilter || 'all';
+
+  const allPartners = S.allDeliveryPartners || [];
+
+  // All partners in city (across all vehicle types)
+  const inCityAll = allPartners.filter(p => partnerMatchesCity(p, farmerCity, farmerCoords));
+
+  // Partners filtered by vehicle type
+  const pool = filter === 'all'
+    ? inCityAll
+    : inCityAll.filter(p => p.vehicleType === filter);
+
+  const available = pool.filter(p => partnerIsAvailable(p));
+  const unavailable = pool.filter(p => !partnerIsAvailable(p));
+
+  available.sort((a,b) => partnerDisplayName(a).localeCompare(partnerDisplayName(b)));
+  unavailable.sort((a,b) => partnerDisplayName(a).localeCompare(partnerDisplayName(b)));
+
+  // Filter pill counts (of in-city partners, per type)
+  const pillDefs = [
+    { key: 'all',     em: '🚚', lb: 'All',     count: inCityAll.length },
+    { key: 'bicycle', em: '🚲', lb: 'Bicycle', count: inCityAll.filter(p => p.vehicleType === 'bicycle').length },
+    { key: 'bike',    em: '🏍️', lb: 'Bike',    count: inCityAll.filter(p => p.vehicleType === 'bike').length },
+    { key: 'car',     em: '🚗', lb: 'Car',     count: inCityAll.filter(p => p.vehicleType === 'car').length },
+    { key: 'truck',   em: '🚚', lb: 'Truck',   count: inCityAll.filter(p => p.vehicleType === 'truck').length }
+  ];
+
+  const pillHTML = pillDefs.map(p => `
+    <button class="delivery-filter-pill ${filter === p.key ? 'active' : ''}" onclick="setDeliveryVehicleFilter('${p.key}')">
+      <span class="dfp-em">${p.em}</span>
+      <span class="dfp-lb">${p.lb}</span>
+      <span class="dfp-cnt ${p.count === 0 ? 'zero' : ''}">${p.count}</span>
+    </button>
+  `).join('');
+
+  const renderPartnerCard = (p) => {
+    const avail = partnerIsAvailable(p);
+    const name = partnerDisplayName(p);
+    const phone = partnerPhone(p);
+    const photo = p.profileUrl || p.vehiclePhoto || '';
+    const vehicle = vehicleLabel(p.vehicleType);
+    const vEmoji = vehicleEmoji(p.vehicleType);
+    const initials_ = initials(name);
+
+    const callBtn = avail && phone
+      ? `<a class="dpc-call-btn" href="tel:${esc(phone)}" onclick="event.stopPropagation()" aria-label="Call">
+           <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+         </a>`
+      : `<span class="dpc-call-btn disabled">
+           <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+         </span>`;
+
+    return `
+      <div class="delivery-partner-card ${avail ? 'available' : 'unavailable'}" onclick="openDeliveryPartner('${esc(p.id)}')">
+        <div class="dpc-avatar">
+          ${photo ? `<img src="${esc(photo)}" alt="">` : initials_}
+          <span class="dpc-dot ${avail ? 'online' : ''}"></span>
+        </div>
+        <div class="dpc-body">
+          <div class="dpc-name">${esc(name)}</div>
+          <div class="dpc-meta">
+            <span class="dpc-vehicle-chip">${vEmoji} ${esc(vehicle)}</span>
+            <span class="dpc-availability ${avail ? 'online' : 'offline'}">${avail ? '● Available' : '○ Offline'}</span>
+          </div>
+        </div>
+        ${callBtn}
+      </div>`;
+  };
+
+  const availableHTML = available.length
+    ? available.map(renderPartnerCard).join('')
+    : '';
+
+  const unavailableHTML = unavailable.length
+    ? unavailable.map(renderPartnerCard).join('')
+    : '';
+
+  const hasAnyInCity = inCityAll.length > 0;
 
   return `
   <div class="scroll">
-    <div class="topbar bordered">
-      <button class="tb-back" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
-      <div class="tb-title">Agro Dealers</div>
+    <div class="topbar bordered"><div class="tb-title">Hire a Transporter</div></div>
+
+    <div class="delivery-intro">
+      <h2>🚚 Delivery Vehicles</h2>
+      <p>Call a delivery partner to come pick up your produce. Only available partners can be called directly.</p>
+      <div class="di-city">📍 ${esc(farmerCity)}</div>
     </div>
-    <div class="agro-hero">
-      <h2>🏪 Agro Dealers</h2>
-      <p>Pesticides, tools, seeds, fertilizers and more — from dealers near you.</p>
-    </div>
-    ${categories.length ? `
-    <div class="market-tabs">
-      <button class="market-tab ${tab === 'all' ? 'active' : ''}" onclick="setAgroTab('all')">All</button>
-      ${categories.map(c => `<button class="market-tab ${tab === c ? 'active' : ''}" onclick="setAgroTab('${esc(c)}')">${esc(c)}</button>`).join('')}
-    </div>` : ''}
-    ${filtered.length ? `
-      <div class="agro-grid">
-        ${filtered.map(p => `
-          <div class="agro-card" onclick="viewAgroProduct('${esc(p.id)}')">
-            <div class="agro-img">${p.photoUrl ? `<img src="${esc(p.photoUrl)}" alt="">` : pickIcon(p.name || p.category)}</div>
-            <div class="agro-name">${esc(p.name || 'Product')}</div>
-            <div class="agro-price">${p.price ? fmtZMK(p.price) : 'Negotiable'}${p.unit ? `<small>/ ${esc(p.unit)}</small>` : ''}</div>
-            ${p.category ? `<span class="agro-cat">${esc(p.category)}</span>` : ''}
-          </div>`).join('')}
+
+    <div class="delivery-filter-row">${pillHTML}</div>
+
+    ${!hasAnyInCity ? `
+      <div class="delivery-empty">
+        <div class="de-em">🚚</div>
+        <h3>No vehicles near ${esc(farmerCity)} yet</h3>
+        <p>Delivery partners will appear here once they register in your area. Try checking again later.</p>
       </div>
-    ` : `<div class="empty" style="padding-top:40px"><div class="e-ic">🏪</div><h3>No products yet</h3><p>Agro dealers haven't listed any products yet.</p></div>`}
+    ` : `
+      ${available.length ? `
+        <div class="delivery-section-label available">
+          <span class="dsl-dot"></span>
+          <span>Available now</span>
+          <span class="dsl-cnt">${available.length}</span>
+        </div>
+        ${availableHTML}
+      ` : `
+        <div style="padding:8px 18px 12px">
+          <div class="delivery-note">
+            <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg>
+            <div class="dn-tx">No ${filter === 'all' ? '' : vehicleLabel(filter).toLowerCase() + ' '}vehicles are available right now. You can still see registered partners below.</div>
+          </div>
+        </div>
+      `}
+
+      ${unavailable.length ? `
+        <div class="delivery-section-label unavailable">
+          <span class="dsl-dot"></span>
+          <span>Currently offline</span>
+          <span class="dsl-cnt">${unavailable.length}</span>
+        </div>
+        ${unavailableHTML}
+      ` : ''}
+
+      ${!available.length && !unavailable.length ? `
+        <div class="delivery-empty">
+          <div class="de-em">🔍</div>
+          <h3>No ${filter === 'all' ? '' : vehicleLabel(filter).toLowerCase() + ' '}partners</h3>
+          <p>Try a different vehicle type above.</p>
+        </div>
+      ` : ''}
+    `}
+
     <div style="height:8px"></div>
   </div>
   ${bottomNavHTML()}`;
 }
-window.viewAgroProduct = (id) => {
-  const p = (S.agroProducts || []).find(x => x.id === id);
-  if (!p) return;
-  const priceText = p.price ? fmtZMK(p.price) + (p.unit ? ' / ' + p.unit : '') : 'Negotiable';
-  const stockText = p.stock != null ? `${p.stock} ${p.unit || 'units'} in stock` : 'Stock unknown';
-  modal(`
-    <h3>${esc(p.name || 'Product')}</h3>
-    <p>${esc(p.category || 'Other')}${p.sellerName ? ' · ' + esc(p.sellerName) : ''}</p>
-    ${p.photoUrl ? `<img src="${esc(p.photoUrl)}" style="width:100%;max-height:180px;object-fit:cover;border-radius:14px;margin-bottom:12px">` : ''}
-    <div class="info-table" style="text-align:left;margin-bottom:14px">
-      <div class="info-row"><span class="ir-k">Price</span><span class="ir-v">${esc(priceText)}</span></div>
-      <div class="info-row"><span class="ir-k">Stock</span><span class="ir-v">${esc(stockText)}</span></div>
-      ${p.sellerName ? `<div class="info-row"><span class="ir-k">Dealer</span><span class="ir-v">${esc(p.sellerName)}</span></div>` : ''}
-      ${p.sellerPhone ? `<div class="info-row"><span class="ir-k">Phone</span><span class="ir-v">${esc(p.sellerPhone)}</span></div>` : ''}
-      ${p.city ? `<div class="info-row"><span class="ir-k">Location</span><span class="ir-v">${esc(p.city)}</span></div>` : ''}
-    </div>
-    <button class="btn btn-p" onclick="closeModal()">Close</button>
-  `);
-};
 
-/* ============================================================
-   TRANSPORTER
-   ============================================================ */
-function renderDelivery() {
+function renderDeliveryDetail(id) {
+  const partner = (S.allDeliveryPartners || []).find(p => p.id === id);
+  if (!partner) {
+    return `
+    <div class="scroll">
+      <div class="topbar bordered">
+        <button class="tb-back" onclick="goDelivery()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+        <div class="tb-title">Delivery Partner</div>
+      </div>
+      <div class="empty" style="padding:40px 24px">
+        <div class="e-ic">🚚</div>
+        <h3>Partner not found</h3>
+        <p>This delivery partner is no longer available.</p>
+      </div>
+    </div>
+    ${bottomNavHTML()}`;
+  }
+
+  const avail = partnerIsAvailable(partner);
+  const name = partnerDisplayName(partner);
+  const phone = partnerPhone(partner);
+  const photo = partner.profileUrl || partner.vehiclePhoto || '';
+  const vehicle = vehicleLabel(partner.vehicleType);
+  const vEmoji = vehicleEmoji(partner.vehicleType);
+  const initials_ = initials(name);
+  const city = partnerCity(partner) || (S.weatherCity || S.userLocation);
+  const photos = partnerVehiclePhotos(partner);
+
+  const callBtnHTML = avail && phone ? `
+    <a class="ddh-call-btn" href="tel:${esc(phone)}" onclick="trackDeliveryCall('${esc(partner.id)}')">
+      <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+      Call ${esc(name.split(' ')[0])} now
+    </a>
+  ` : '';
+
+  const noteHTML = !avail ? `
+    <div class="delivery-note">
+      <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg>
+      <div class="dn-tx">This driver is currently <strong>offline</strong>. You can't call them right now, but they may be available again soon.</div>
+    </div>
+  ` : '';
+
   return `
   <div class="scroll">
-    <div class="topbar bordered"><div class="tb-title">Transporter</div></div>
-    <div class="empty"><div class="e-ic">🚚</div><h3>Transport your goods</h3><p>Connect with transporters across Zambia.</p></div>
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="goDelivery()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+      <div class="tb-title">Delivery Partner</div>
+    </div>
+
+    <div class="delivery-detail-hero">
+      <div class="ddh-avatar">
+        ${photo ? `<img src="${esc(photo)}" alt="">` : initials_}
+      </div>
+      <div class="ddh-name">${esc(name)}</div>
+      <div class="ddh-role">${vEmoji} ${esc(vehicle)} · 📍 ${esc(city)}</div>
+      <div class="ddh-status ${avail ? 'online' : 'offline'}">
+        ${avail ? '● Available now' : '○ Currently offline'}
+      </div>
+      ${callBtnHTML}
+    </div>
+
+    ${noteHTML}
+
+    <div class="d-section" style="padding:0 18px">
+      <h3>Contact</h3>
+      <div class="info-table">
+        <div class="info-row"><span class="ir-k">Name</span><span class="ir-v">${esc(name)}</span></div>
+        <div class="info-row"><span class="ir-k">Phone</span><span class="ir-v">${esc(phone || '—')}</span></div>
+        <div class="info-row"><span class="ir-k">Vehicle</span><span class="ir-v">${vEmoji} ${esc(vehicle)}</span></div>
+        <div class="info-row"><span class="ir-k">City</span><span class="ir-v">${esc(city)}</span></div>
+        <div class="info-row"><span class="ir-k">Status</span><span class="ir-v" style="color:${avail ? 'var(--p-d)' : 'var(--tl)'}">${avail ? 'Available' : 'Offline'}</span></div>
+      </div>
+    </div>
+
+    ${photos.length ? `
+      <div class="d-section" style="padding:0 18px;margin-top:16px">
+        <h3>Vehicle & Documents</h3>
+        <div class="delivery-gallery ${photos.length === 1 ? 'single' : ''}">
+          ${photos.map(p => `
+            <div class="delivery-photo-item">
+              <img src="${esc(p.url)}" alt="${esc(p.label)}">
+              <div class="dpi-label">${esc(p.label)}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    ` : `
+      <div class="d-section" style="padding:0 18px;margin-top:16px">
+        <h3>Vehicle & Documents</h3>
+        <div class="empty" style="padding:20px;border-radius:var(--r-lg);background:var(--sf2)">
+          <div style="font-size:32px;margin-bottom:6px;opacity:.6">📷</div>
+          <p style="font-size:12px;color:var(--tl);font-weight:600;margin:0">No photos uploaded yet.</p>
+        </div>
+      </div>
+    `}
+
+    <div style="padding:18px 18px 8px">
+      <div class="info-block">
+        💡 <strong>Tip:</strong> Only call when you have produce ready. Ask the driver about pricing and capacity before they arrive.
+      </div>
+    </div>
+
+    <div style="height:8px"></div>
   </div>
   ${bottomNavHTML()}`;
 }
+
+window.trackDeliveryCall = (partnerId) => {
+  // Placeholder for telemetry — not required but useful
+  try { console.log('[AgriCare] call_delivery_partner', partnerId); } catch (e) {}
+};
 
 /* ============================================================
    PROFILE
@@ -5928,6 +6494,7 @@ async function startApp() {
     startMarketplaceListener();
     startAgroProductsListener();
     startFarmsListener();
+    startDeliveryPartnersListener();
 
     const app = document.getElementById('app');
     app.innerHTML = `<div class="screen-wrap"></div>`;
