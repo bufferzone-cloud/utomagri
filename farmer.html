@@ -1382,6 +1382,7 @@ function closeModal() {
   $modal.classList.remove('open');
   $modalCard.classList.remove('no-dismiss');
 }
+window.closeModal = closeModal;
 $modal.addEventListener('click', e => {
   if (e.target === $modal) {
     if ($modalCard.classList.contains('no-dismiss')) return;
