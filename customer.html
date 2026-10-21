@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0f7a34">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>U-AGRI · Customer</title>
+
+<script type="importmap">
+{
+  "imports": {
+    "firebase/app": "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js",
+    "firebase/auth": "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js",
+    "firebase/database": "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js"
+  }
+}
+</script>
+
+<style>
+:root{
+  --p:#0f7a34;--p-h:#0b5f28;--p-d:#084d20;--p-l:#e6f5eb;--p-ll:#f1faf4;--p-glow:rgba(15,122,52,.28);
+  --acc:#16a34a;--amber:#fbbf24;--amber-d:#d97706;--amber-l:#fef3c7;
+  --td:#0f172a;--tb:#334155;--tl:#64748b;--tm:#94a3b8;
+  --bd:#e2e8f0;--sf:#ffffff;--sf2:#f8fafc;--bg:#f6f8f5;
+  --danger:#dc2626;--danger-soft:#fee2e2;
+  --warn:#b45309;--warn-soft:#fef3c7;
+  --ok:#16a34a;--ok-soft:#d1fae5;
+  --info:#2563eb;--info-soft:#dbeafe;
+  --r-sm:10px;--r:14px;--r-lg:18px;--r-xl:24px;--r-2xl:30px;--r-p:999px;
+  --e:cubic-bezier(.22,1,.36,1);
+  --sh-xs:0 1px 2px rgba(15,23,42,.05);
+  --sh-sm:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04);
+  --sh:0 4px 12px rgba(15,23,42,.07),0 2px 4px rgba(15,23,42,.04);
+  --sh-md:0 8px 22px rgba(15,23,42,.09),0 3px 8px rgba(15,23,42,.05);
+  --sh-lg:0 14px 34px rgba(15,23,42,.11);
+  --sh-brand:0 10px 26px -8px var(--p-glow);
+  --nav-h:66px;
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--tb);height:100dvh;overflow:hidden;-webkit-font-smoothing:antialiased;overscroll-behavior:none;user-select:none;-webkit-user-select:none}
+button,input,select{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+img{display:block;max-width:100%}
+
+#app{position:fixed;inset:0;overflow:hidden;display:flex;justify-content:center}
+.screen-wrap{width:100%;max-width:720px;height:100%;position:relative;display:flex;flex-direction:column;background:var(--bg);box-shadow:0 0 60px rgba(15,23,42,.06)}
+@media(min-width:721px){body{background:linear-gradient(135deg,#f7f3e8 0%,#eaf5ec 50%,#e0efe4 100%)}.screen-wrap{margin:0 auto;height:100dvh}}
+
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);opacity:0;transform:translateY(14px);transition:opacity .35s var(--e),transform .4s var(--e);pointer-events:none}
+.screen.active{opacity:1;transform:translateY(0);pointer-events:auto;z-index:5}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:calc(var(--nav-h) + var(--safe-b) + 20px);scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+
+/* Splash */
+#splash{background:#0a1a0e;z-index:100;display:flex;align-items:center;justify-content:center;opacity:1;transform:none;pointer-events:auto}
+#splash .splash-inner{display:flex;flex-direction:column;align-items:center;gap:16px;padding:32px;text-align:center}
+#splash .splash-mark{width:96px;height:96px;border-radius:28px;background:linear-gradient(145deg,#fbbf24 0%,#d97706 100%);display:flex;align-items:center;justify-content:center;font-size:52px;box-shadow:0 24px 60px -12px rgba(251,191,36,.5);animation:splashBounce 1.4s ease-in-out infinite}
+@keyframes splashBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+#splash h1{font-size:36px;font-weight:900;letter-spacing:-.03em;color:#fbbf24;text-shadow:0 4px 20px rgba(251,191,36,.35)}
+#splash .splash-sub{font-size:12px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:#d1fae5;opacity:.9}
+#splash .splash-tag{margin-top:24px;font-size:15px;font-weight:700;color:#f0fdf4;opacity:.85;line-height:1.5;max-width:280px}
+
+/* Top bar */
+.topbar{padding:calc(var(--safe-t) + 16px) 20px 12px;display:flex;align-items:center;gap:12px;background:transparent;flex-shrink:0}
+.topbar.dark{background:transparent}
+.tb-back{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.85);border:1px solid rgba(15,23,42,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s var(--e)}
+.tb-back:active{transform:scale(.92);background:#fff}
+.tb-back svg{width:18px;height:18px;fill:var(--td)}
+.topbar.dark .tb-back{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2)}
+.topbar.dark .tb-back svg{fill:#fff}
+.tb-title{flex:1;font-size:18px;font-weight:900;letter-spacing:-.02em;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topbar.dark .tb-title{color:#f0fdf4}
+
+/* ============================================================
+   CUSTOMER DASHBOARD — LIGHT, WARM, UNIQUE
+   ============================================================ */
+.welcome-row{padding:0 20px 4px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.welcome-txt{flex:1;min-width:0}
+.welcome-hello{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--tl)}
+.welcome-name{font-size:24px;font-weight:900;letter-spacing:-.03em;color:var(--td);line-height:1.15;margin-top:4px}
+.welcome-name span{color:var(--p)}
+.city-chip{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:var(--r-p);background:#fff;border:1.5px solid var(--bd);font-size:11.5px;font-weight:800;color:var(--td);box-shadow:var(--sh-xs);flex-shrink:0;margin-top:2px}
+.city-chip .dot{width:7px;height:7px;border-radius:50%;background:var(--p);box-shadow:0 0 0 3px rgba(15,122,52,.18)}
+
+.dash-hero{
+  margin:14px 18px 18px;padding:22px 20px 20px;border-radius:var(--r-2xl);
+  background:linear-gradient(135deg,#fef3c7 0%,#fde68a 45%,#bbf7d0 100%);
+  position:relative;overflow:hidden;
+  box-shadow:0 14px 32px -14px rgba(217,119,6,.35);
+}
+.dash-hero::before{content:'';position:absolute;top:-30px;right:-30px;width:180px;height:180px;background:radial-gradient(circle,rgba(255,255,255,.75) 0%,transparent 65%);border-radius:50%;pointer-events:none}
+.dash-hero::after{content:'';position:absolute;bottom:-40px;left:-20px;width:140px;height:140px;background:radial-gradient(circle,rgba(15,122,52,.18) 0%,transparent 65%);border-radius:50%;pointer-events:none}
+.dash-hero-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1;gap:10px}
+.dash-hero-ic{width:52px;height:52px;border-radius:16px;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 6px 16px rgba(217,119,6,.22);flex-shrink:0}
+.dash-hero-weather{text-align:right}
+.dash-hero-temp{font-size:26px;font-weight:900;color:#78350f;line-height:1;letter-spacing:-.03em}
+.dash-hero-desc{font-size:11px;font-weight:800;color:#92400e;margin-top:3px;letter-spacing:.02em;text-transform:uppercase}
+.dash-hero-count{font-size:38px;font-weight:900;letter-spacing:-.04em;color:#065f46;line-height:1;margin-top:12px;position:relative;z-index:1}
+.dash-hero-lb{font-size:13px;font-weight:700;color:#047857;margin-top:6px;position:relative;z-index:1;line-height:1.35}
+.dash-hero-pills{display:flex;gap:6px;margin-top:14px;position:relative;z-index:1;flex-wrap:wrap}
+.dash-hero-pill{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;padding:5px 10px;border-radius:var(--r-p);background:rgba(255,255,255,.85);color:#78350f;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.dash-hero-pill.green{background:rgba(15,122,52,.9);color:#fff}
+
+.section-head{padding:8px 20px 10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.section-head h3{font-size:16px;font-weight:900;letter-spacing:-.02em;color:var(--td);display:flex;align-items:center;gap:6px}
+.section-head h3 .em{font-size:18px;line-height:1}
+.section-head .see-all{font-size:11.5px;font-weight:800;color:var(--p);padding:5px 10px;border-radius:var(--r-p);background:var(--p-l);transition:all .2s var(--e)}
+.section-head .see-all:active{transform:scale(.95)}
+
+/* Category strip */
+.cat-strip{display:flex;gap:8px;padding:0 18px 16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.cat-strip::-webkit-scrollbar{display:none}
+.cat-pill{
+  flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:12px 14px 10px;min-width:82px;
+  background:#fff;border:1.5px solid var(--bd);border-radius:var(--r-lg);
+  box-shadow:var(--sh-xs);transition:all .2s var(--e);cursor:pointer;
+}
+.cat-pill:active{transform:scale(.94);background:var(--p-l);border-color:var(--p)}
+.cat-pill.selected{background:linear-gradient(145deg,#fef3c7,#fde68a);border-color:var(--amber-d);box-shadow:0 6px 16px -6px rgba(217,119,6,.35)}
+.cat-pill .em{font-size:26px;line-height:1}
+.cat-pill .lb{font-size:10px;font-weight:900;color:var(--td);text-transform:uppercase;letter-spacing:.03em;text-align:center;line-height:1.1}
+
+/* Fresh picks horizontal cards */
+.fresh-strip{display:flex;gap:12px;padding:0 18px 20px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.fresh-strip::-webkit-scrollbar{display:none}
+.fresh-card{
+  flex:0 0 178px;scroll-snap-align:start;
+  background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);
+  overflow:hidden;box-shadow:var(--sh-sm);transition:all .22s var(--e);cursor:pointer;
+}
+.fresh-card:active{transform:scale(.97);box-shadow:var(--sh-md)}
+.fresh-card-hero{
+  height:104px;position:relative;overflow:hidden;
+  background:linear-gradient(145deg,#d1fae5,#10b981);
+  display:flex;align-items:center;justify-content:center;font-size:56px;
+}
+.fresh-card-hero img{width:100%;height:100%;object-fit:cover}
+.fresh-card-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.35) 100%);pointer-events:none}
+.fresh-chip{position:absolute;top:8px;left:8px;z-index:2;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;padding:3px 8px;border-radius:var(--r-p);background:rgba(255,255,255,.94);color:var(--p-d);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.fresh-chip.hot{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff}
+.fresh-chip.best{background:linear-gradient(135deg,#fbbf24,#d97706);color:#000}
+.fresh-card-body{padding:10px 12px 12px}
+.fresh-card-name{font-size:13.5px;font-weight:900;letter-spacing:-.01em;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fresh-card-variety{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--p);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fresh-card-meta{font-size:10.5px;font-weight:600;color:var(--tl);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fresh-card-price{display:flex;align-items:baseline;gap:4px;margin-top:8px}
+.fresh-card-price strong{font-size:15px;font-weight:900;color:var(--p-d);letter-spacing:-.02em}
+.fresh-card-price small{font-size:9.5px;font-weight:800;color:var(--tl);text-transform:uppercase}
+
+/* Best prices list */
+.price-list{padding:0 18px 14px}
+.price-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;background:#fff;border:1px solid var(--bd);
+  border-radius:var(--r-lg);box-shadow:var(--sh-xs);
+  margin-bottom:8px;transition:all .2s var(--e);cursor:pointer;
+}
+.price-row:active{transform:scale(.985);background:var(--p-ll);border-color:var(--p)}
+.price-row-rank{width:30px;height:30px;border-radius:10px;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--p-d);flex-shrink:0}
+.price-row-rank.gold{background:linear-gradient(145deg,#fef3c7,#fde68a);color:#92400e}
+.price-row-rank.silver{background:linear-gradient(145deg,#f1f5f9,#e2e8f0);color:#475569}
+.price-row-rank.bronze{background:linear-gradient(145deg,#ffedd5,#fed7aa);color:#9a3412}
+.price-row-em{font-size:22px;flex-shrink:0}
+.price-row-body{flex:1;min-width:0}
+.price-row-name{font-size:13px;font-weight:900;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.price-row-market{font-size:10.5px;font-weight:700;color:var(--tl);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.price-row-price{text-align:right;flex-shrink:0}
+.price-row-price strong{display:block;font-size:15px;font-weight:900;color:var(--p-d);letter-spacing:-.02em}
+.price-row-price small{display:block;font-size:9px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.03em;margin-top:1px}
+
+/* Local markets list */
+.market-list{padding:0 18px 14px}
+.market-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;background:#fff;border:1px solid var(--bd);
+  border-radius:var(--r-lg);box-shadow:var(--sh-xs);
+  margin-bottom:8px;transition:all .2s var(--e);cursor:pointer;
+}
+.market-row:active{transform:scale(.985);background:var(--p-ll);border-color:var(--p)}
+.market-row-ic{width:40px;height:40px;border-radius:12px;background:linear-gradient(145deg,#d1fae5,#10b981);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.market-row-body{flex:1;min-width:0}
+.market-row-name{font-size:13px;font-weight:900;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.market-row-sub{font-size:11px;font-weight:600;color:var(--tl);margin-top:2px}
+.market-row-count{font-size:13px;font-weight:900;color:var(--p-d);flex-shrink:0;background:var(--p-l);padding:4px 10px;border-radius:var(--r-p)}
+
+/* Analysis teaser */
+.analysis-teaser{
+  margin:0 18px 18px;padding:20px;border-radius:var(--r-2xl);
+  background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);
+  color:#fff;position:relative;overflow:hidden;cursor:pointer;
+  box-shadow:0 16px 34px -14px rgba(15,23,42,.5);
+  transition:all .22s var(--e);
+}
+.analysis-teaser:active{transform:scale(.985)}
+.analysis-teaser::before{content:'';position:absolute;top:-40px;right:-30px;width:180px;height:180px;background:radial-gradient(circle,rgba(251,191,36,.22) 0%,transparent 65%);border-radius:50%;pointer-events:none}
+.analysis-teaser .at-ic{font-size:22px;margin-bottom:8px;position:relative;z-index:1}
+.analysis-teaser h3{font-size:16px;font-weight:900;letter-spacing:-.02em;position:relative;z-index:1}
+.analysis-teaser p{font-size:11.5px;font-weight:600;opacity:.8;margin-top:4px;line-height:1.5;position:relative;z-index:1}
+.analysis-teaser .at-arrow{position:absolute;top:20px;right:20px;font-size:20px;color:#fbbf24;z-index:1}
+
+/* ============================================================
+   MARKET BOARD — DARK, PREMIUM, ADVANCED
+   ============================================================ */
+.board-page{
+  background:
+    radial-gradient(circle at top right, rgba(251,191,36,.14) 0%, transparent 55%),
+    radial-gradient(circle at 20% 90%, rgba(34,197,94,.12) 0%, transparent 55%),
+    linear-gradient(160deg,#0a1e13 0%,#061410 55%,#020a06 100%);
+  min-height:100%;position:relative;overflow:hidden;
+}
+.board-page::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg, transparent 0 2px, rgba(255,255,255,.015) 2px 3px);z-index:0}
+
+.board-head{padding:4px 20px 20px;position:relative;z-index:1;text-align:center}
+.board-kicker{font-size:10.5px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:#fbbf24;opacity:.9;margin-bottom:6px}
+.board-title{font-size:26px;font-weight:900;letter-spacing:-.03em;color:#fbbf24;text-shadow:0 2px 12px rgba(251,191,36,.35);line-height:1.05}
+.board-loc{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:6px 14px;border-radius:var(--r-p);background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.32);font-size:11.5px;font-weight:800;color:#fbbf24;letter-spacing:.03em}
+.board-date{margin-top:10px;font-size:11px;font-weight:700;color:#d1fae5;opacity:.75;letter-spacing:.03em}
+
+/* Pulse strip */
+.pulse-strip{
+  display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding:0 20px 16px;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  position:relative;z-index:1;
+}
+.pulse-strip::-webkit-scrollbar{display:none}
+.pulse-chip{
+  flex-shrink:0;scroll-snap-align:start;
+  display:flex;align-items:center;gap:8px;
+  padding:9px 12px;border-radius:var(--r-lg);
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(251,191,36,.18);
+  backdrop-filter:blur(10px);
+}
+.pulse-chip .p-em{font-size:18px;line-height:1;flex-shrink:0}
+.pulse-chip .p-body{min-width:0}
+.pulse-chip .p-name{font-size:10px;font-weight:800;color:#d1fae5;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pulse-chip .p-price{font-size:13px;font-weight:900;color:#fbbf24;letter-spacing:-.01em;line-height:1;margin-top:2px}
+
+/* Filter row */
+.board-filters{padding:0 20px 14px;position:relative;z-index:2}
+.board-chip-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.board-chip-row::-webkit-scrollbar{display:none}
+.board-chip{
+  flex-shrink:0;padding:8px 14px;border-radius:var(--r-p);
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+  font-size:11.5px;font-weight:800;color:#d1fae5;
+  transition:all .2s var(--e);white-space:nowrap;display:flex;align-items:center;gap:5px;
+}
+.board-chip:active{transform:scale(.95)}
+.board-chip.active{background:linear-gradient(135deg,#fbbf24,#d97706);color:#000;border-color:transparent;box-shadow:0 6px 16px -4px rgba(251,191,36,.4)}
+
+.board-scope-toggle{display:flex;gap:4px;padding:3px;border-radius:var(--r-p);background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.08);margin-top:6px}
+.board-scope{flex:1;padding:8px 6px;border-radius:calc(var(--r-p) - 2px);font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:#a7f3d0;text-align:center;transition:all .2s var(--e);border:none;background:transparent}
+.board-scope.active{background:#fbbf24;color:#000}
+
+.board-count{padding:6px 20px 12px;font-size:11px;font-weight:800;color:#a7f3d0;position:relative;z-index:1;display:flex;align-items:center;gap:6px}
+.board-count strong{color:#fbbf24}
+
+/* Listing cards on dark board */
+.board-list{padding:0 18px 18px;position:relative;z-index:1;display:flex;flex-direction:column;gap:12px}
+.board-card{
+  display:flex;gap:12px;padding:12px;
+  background:linear-gradient(145deg,rgba(255,255,255,.06) 0%,rgba(255,255,255,.02) 100%);
+  border:1px solid rgba(251,191,36,.14);
+  border-radius:var(--r-xl);
+  backdrop-filter:blur(10px);
+  transition:all .22s var(--e);cursor:pointer;
+}
+.board-card:active{transform:scale(.985);border-color:rgba(251,191,36,.4);background:rgba(255,255,255,.08)}
+.board-card-thumb{
+  width:88px;height:88px;border-radius:var(--r-lg);flex-shrink:0;
+  overflow:hidden;position:relative;
+  display:flex;align-items:center;justify-content:center;font-size:42px;
+  background:linear-gradient(145deg,#065f46,#022c22);
+  box-shadow:inset 0 0 0 1px rgba(251,191,36,.16);
+}
+.board-card-thumb img{width:100%;height:100%;object-fit:cover}
+.board-card-thumb .bdg{position:absolute;top:5px;left:5px;font-size:8.5px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;padding:2px 6px;border-radius:var(--r-p);background:linear-gradient(135deg,#fbbf24,#d97706);color:#000;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+
+.board-card-body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:space-between}
+.board-card-name{font-size:14.5px;font-weight:900;letter-spacing:-.01em;color:#f0fdf4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.board-card-variety{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#fbbf24;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.board-card-market{font-size:10.5px;font-weight:700;color:#a7f3d0;margin-top:4px;display:flex;align-items:center;gap:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.board-card-market .pin{font-size:11px}
+
+.board-card-bottom{display:flex;align-items:flex-end;justify-content:space-between;margin-top:8px;gap:8px}
+.board-card-price{min-width:0}
+.board-card-price strong{font-size:18px;font-weight:900;color:#fbbf24;letter-spacing:-.03em;line-height:1;display:block}
+.board-card-price small{font-size:9px;font-weight:800;color:#a7f3d0;text-transform:uppercase;letter-spacing:.05em;margin-top:2px;display:block;opacity:.85}
+.board-card-qty{font-size:10px;font-weight:800;color:#d1fae5;background:rgba(34,197,94,.18);padding:3px 8px;border-radius:var(--r-p);display:inline-block;margin-top:4px}
+
+.board-card-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+.board-call{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(145deg,#22c55e,#15803d);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 16px -4px rgba(34,197,94,.55);
+  transition:all .2s var(--e);
+}
+.board-call:active{transform:scale(.9)}
+.board-call svg{width:17px;height:17px;fill:#fff}
+.board-time{font-size:9px;font-weight:700;color:#94a3b8;letter-spacing:.02em;white-space:nowrap}
+
+.board-empty{
+  text-align:center;padding:48px 24px;
+  color:#a7f3d0;position:relative;z-index:1;
+}
+.board-empty .em{font-size:56px;margin-bottom:14px;opacity:.6}
+.board-empty h3{font-size:16px;font-weight:900;color:#f0fdf4;margin-bottom:8px}
+.board-empty p{font-size:12.5px;font-weight:600;line-height:1.55;opacity:.8}
+
+/* ============================================================
+   ANALYSIS SCREEN — DARK, CHART-LIKE
+   ============================================================ */
+.analysis-page{
+  background:
+    radial-gradient(circle at top right, rgba(251,191,36,.14) 0%, transparent 55%),
+    radial-gradient(circle at bottom left, rgba(34,197,94,.12) 0%, transparent 55%),
+    linear-gradient(160deg,#0a1e13 0%,#061410 55%,#020a06 100%);
+  min-height:100%;position:relative;overflow:hidden;
+}
+.analysis-page::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg, transparent 0 2px, rgba(255,255,255,.015) 2px 3px);z-index:0}
+
+.ana-head{padding:4px 20px 20px;position:relative;z-index:1}
+.ana-kicker{font-size:10.5px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:#fbbf24;opacity:.9;margin-bottom:6px}
+.ana-title{font-size:24px;font-weight:900;letter-spacing:-.03em;color:#f0fdf4;line-height:1.05}
+.ana-sub{font-size:12px;font-weight:600;color:#a7f3d0;opacity:.8;margin-top:8px;line-height:1.5}
+.ana-loc{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:6px 14px;border-radius:var(--r-p);background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.32);font-size:11.5px;font-weight:800;color:#fbbf24;letter-spacing:.03em}
+
+.ana-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 20px 18px;position:relative;z-index:1}
+.ana-stat{padding:14px 10px;border-radius:var(--r-lg);background:rgba(255,255,255,.05);border:1px solid rgba(251,191,36,.16);backdrop-filter:blur(8px);text-align:center}
+.ana-stat .n{font-size:24px;font-weight:900;letter-spacing:-.03em;color:#fbbf24;line-height:1}
+.ana-stat .l{font-size:9px;font-weight:800;color:#a7f3d0;text-transform:uppercase;letter-spacing:.05em;margin-top:5px}
+
+.ana-section{padding:0 20px 20px;position:relative;z-index:1}
+.ana-section-title{font-size:12px;font-weight:900;color:#fbbf24;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.ana-section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(251,191,36,.3),transparent)}
+
+.ana-card{
+  padding:14px;border-radius:var(--r-lg);
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.09);
+  backdrop-filter:blur(8px);
+  margin-bottom:10px;
+}
+.ana-card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.ana-card-crop{font-size:14px;font-weight:900;color:#f0fdf4;display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ana-card-crop .em{font-size:20px;flex-shrink:0}
+.ana-card-badge{font-size:9.5px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;padding:3px 8px;border-radius:var(--r-p);flex-shrink:0}
+.ana-card-badge.best{background:linear-gradient(135deg,#fbbf24,#d97706);color:#000}
+.ana-card-badge.tight{background:rgba(34,197,94,.25);color:#86efac;border:1px solid rgba(34,197,94,.35)}
+.ana-card-badge.oversupply{background:rgba(248,113,113,.2);color:#fecaca;border:1px solid rgba(248,113,113,.3)}
+
+.ana-price-range{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.ana-price-range .min{font-size:15px;font-weight:900;color:#22c55e;letter-spacing:-.02em;white-space:nowrap}
+.ana-price-range .bar{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.08);position:relative;overflow:hidden}
+.ana-price-range .bar-fill{position:absolute;inset:0;border-radius:3px;background:linear-gradient(90deg,#22c55e,#fbbf24,#d97706)}
+.ana-price-range .max{font-size:15px;font-weight:900;color:#fbbf24;letter-spacing:-.02em;white-space:nowrap}
+
+.ana-rows{display:flex;flex-direction:column;gap:6px}
+.ana-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,.06);font-size:11.5px}
+.ana-row:first-child{padding-top:0;border-top:none}
+.ana-row .k{color:#a7f3d0;font-weight:700;display:flex;align-items:center;gap:5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ana-row .v{color:#f0fdf4;font-weight:800;text-align:right;flex-shrink:0}
+
+.ana-cheapest{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:var(--r-lg);background:linear-gradient(135deg,rgba(251,191,36,.14),rgba(217,119,6,.08));border:1px solid rgba(251,191,36,.28);margin-bottom:10px;cursor:pointer;transition:all .2s var(--e)}
+.ana-cheapest:active{transform:scale(.985)}
+.ana-cheapest-em{font-size:28px;flex-shrink:0}
+.ana-cheapest-body{flex:1;min-width:0}
+.ana-cheapest-name{font-size:13.5px;font-weight:900;color:#f0fdf4}
+.ana-cheapest-market{font-size:10.5px;font-weight:700;color:#fbbf24;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ana-cheapest-price{text-align:right;flex-shrink:0}
+.ana-cheapest-price strong{display:block;font-size:16px;font-weight:900;color:#fbbf24;letter-spacing:-.02em;line-height:1}
+.ana-cheapest-price small{display:block;font-size:9px;font-weight:800;color:#a7f3d0;text-transform:uppercase;letter-spacing:.04em;margin-top:2px;opacity:.85}
+
+.ana-filter-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 20px 18px;position:relative;z-index:1}
+.ana-filter{
+  padding:10px 12px;border-radius:var(--r-lg);
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);
+  position:relative;cursor:pointer;
+}
+.ana-filter label{display:block;font-size:9px;font-weight:900;color:#fbbf24;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.ana-filter .val{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;font-weight:800;color:#f0fdf4}
+.ana-filter .val .arr{font-size:9px;color:#fbbf24;opacity:.7}
+.ana-filter select{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+/* ============================================================
+   PROFILE
+   ============================================================ */
+.prof-hero{margin:0 18px 16px;padding:24px 22px;border-radius:var(--r-2xl);background:linear-gradient(135deg,#0f7a34 0%,#0b5f28 100%);color:#fff;text-align:center;position:relative;overflow:hidden;box-shadow:0 20px 44px -12px rgba(15,122,52,.4)}
+.prof-hero::before{content:'';position:absolute;top:-50px;right:-30px;width:180px;height:180px;background:radial-gradient(circle,rgba(255,255,255,.2) 0%,transparent 65%);border-radius:50%}
+.p-av{width:82px;height:82px;border-radius:50%;margin:0 auto 14px;background:rgba(255,255,255,.22);border:3px solid #fff;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;background-size:cover;background-position:center;position:relative;z-index:1}
+.p-av img{width:100%;height:100%;object-fit:cover}
+.prof-hero h2{font-size:20px;font-weight:900;letter-spacing:-.03em;position:relative;z-index:1}
+.p-ver{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;background:rgba(251,191,36,.9);color:#78350f;padding:4px 12px;border-radius:var(--r-p);margin-top:8px;position:relative;z-index:1}
+.p-loc{font-size:12px;font-weight:700;opacity:.92;margin-top:10px;position:relative;z-index:1}
+
+.menu-list{padding:0 18px 18px}
+.menu-item{display:flex;align-items:center;gap:12px;padding:15px;background:#fff;border:1px solid var(--bd);border-radius:var(--r-lg);margin-bottom:8px;cursor:pointer;transition:all .2s var(--e);box-shadow:var(--sh-xs)}
+.menu-item:active{background:var(--p-l);border-color:var(--p);transform:scale(.985)}
+.mi-ic{width:40px;height:40px;border-radius:12px;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.mi-tx{flex:1;min-width:0}
+.mi-tt{font-size:13.5px;font-weight:800;color:var(--td)}
+.mi-sb{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px}
+.mi-ar svg{width:16px;height:16px;fill:var(--tm)}
+
+/* ============================================================
+   MODALS & MISC
+   ============================================================ */
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;z-index:500}
+.modal.open{display:flex}
+.modal-card{background:#fff;border-radius:var(--r-2xl);width:100%;max-width:420px;padding:22px;text-align:center;box-shadow:0 24px 60px -12px rgba(0,0,0,.35);max-height:85vh;overflow-y:auto;position:relative}
+.modal-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;background:var(--sf2);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:var(--tl);z-index:2}
+.modal-close:active{transform:scale(.9);background:var(--bd)}
+
+.toast{position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 20px);left:50%;transform:translate(-50%,30px);background:rgba(15,23,42,.95);color:#fff;padding:12px 22px;border-radius:var(--r-p);font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:all .3s var(--e);z-index:600;box-shadow:0 12px 30px -8px rgba(0,0,0,.4);max-width:calc(100vw - 40px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* Bottom nav */
+.bnav{position:absolute;bottom:0;left:0;right:0;height:var(--nav-h);background:rgba(255,255,255,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-around;padding:0 8px;padding-bottom:var(--safe-b);z-index:20;border-radius:22px 22px 0 0;box-shadow:0 -4px 24px rgba(15,23,42,.08)}
+.bnav.on-dark{background:rgba(6,20,16,.95);border-top-color:rgba(251,191,36,.15);box-shadow:0 -4px 24px rgba(0,0,0,.4)}
+.bn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 0;border-radius:var(--r);transition:all .2s var(--e);color:var(--tm)}
+.bn:active{transform:scale(.9)}
+.bn.active{color:var(--p)}
+.bnav.on-dark .bn{color:#6b7280}
+.bnav.on-dark .bn.active{color:#fbbf24}
+.bn svg{width:22px;height:22px;fill:currentColor;transition:transform .2s var(--e)}
+.bn.active svg{transform:translateY(-2px)}
+.bn-lb{font-size:9.5px;font-weight:800;letter-spacing:.02em;text-transform:uppercase}
+.bn.active .bn-lb{font-weight:900}
+
+@media(max-width:400px){
+  .fresh-card{flex-basis:162px}
+  .board-card-thumb{width:76px;height:76px;font-size:36px}
+  .ana-stats{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="screen-wrap">
+    <div class="screen active" id="splash">
+      <div class="splash-inner">
+        <div class="splash-mark">🍅</div>
+        <h1>U-AGRI</h1>
+        <div class="splash-sub">Customer · Fresh · Local</div>
+        <div class="splash-tag">Fresh produce from farmers around you.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal"><div class="modal-card" id="modalCard"></div></div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getDatabase, ref, get, onValue } from "firebase/database";
+
+/* ============================================================
+   FIREBASE
+   ============================================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyDye0P37QYNjtRRKh2_At84QCkKCqjceAQ",
+  authDomain: "reaper-7b33d.firebaseapp.com",
+  databaseURL: "https://reaper-7b33d-default-rtdb.firebaseio.com",
+  projectId: "reaper-7b33d",
+  storageBucket: "reaper-7b33d.firebasestorage.app",
+  messagingSenderId: "1023523985110",
+  appId: "1:1023523985110:web:889e2200fad1fa5b98db77"
+};
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getDatabase(app);
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const S = {
+  user: null,
+  profile: null,
+  usersById: {},
+  batches: [],
+  listings: [],
+  weather: null,
+  weatherCity: '',
+  userLocation: 'Lusaka',
+  userCoords: null,
+  screen: 'home',
+  screenData: {},
+  homeCrop: 'all',
+  marketScope: 'my-city',      // 'my-city' | 'nearby' | 'all'
+  marketCrop: 'all',
+  anaPeriod: '30d',            // '7d' | '30d' | 'all'
+  anaCrop: 'all',
+  countdownTimer: null,
+  listingsUnsub: null,
+  batchesUnsub: null
+};
+
+const $modal = document.getElementById('modal');
+const $modalCard = document.getElementById('modalCard');
+const $toast = document.getElementById('toast');
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function toast(msg, ms=2400){ $toast.textContent = msg; $toast.classList.add('show'); clearTimeout($toast._t); $toast._t = setTimeout(()=>$toast.classList.remove('show'), ms); }
+function modal(html){ $modalCard.innerHTML = html; $modal.classList.add('open'); }
+function closeModal(){ $modal.classList.remove('open'); }
+$modal.addEventListener('click', e => { if (e.target === $modal) closeModal(); });
+function esc(s){ if(s==null) return ''; return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function initials(n){ if(!n) return '?'; return n.trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
+function timeAgo(ts){ if(!ts) return 'just now'; const s=Math.floor((Date.now()-ts)/1000); if(s<60) return 'just now'; if(s<3600) return Math.floor(s/60)+'m ago'; if(s<86400) return Math.floor(s/3600)+'h ago'; if(s<604800) return Math.floor(s/86400)+'d ago'; return new Date(ts).toLocaleDateString(); }
+function fmtZMK(n){ if(n==null||isNaN(n)) return '—'; return 'ZMK ' + Number(n).toLocaleString('en-ZM'); }
+function fmtZMKshort(n){ if(n==null||isNaN(n)) return '—'; return 'K' + Number(n).toLocaleString('en-ZM'); }
+function pad2(n){ return String(n).padStart(2,'0'); }
+function timeUntil(ts){ const diff = ts - Date.now(); if(diff<=0) return 'Ready'; const h=Math.floor(diff/3600000); const m=Math.floor((diff%3600000)/60000); const s=Math.floor((diff%60000)/1000); return `${pad2(h)}:${pad2(m)}:${pad2(s)}`; }
+function singularUnit(u){
+  const sing = { boxes:'box', bags:'bag', sacks:'sack', crates:'crate', bunches:'bunch', heads:'head', pieces:'piece', bundles:'bundle', trays:'tray', birds:'bird', tonnes:'tonne', bales:'bale' };
+  return sing[u] || u;
+}
+function pluralUnit(u, qty){ return qty === 1 ? singularUnit(u) : u; }
+
+/* ============================================================
+   ICONS & GRADIENTS
+   ============================================================ */
+function pickIcon(name){
+  if(!name) return '🌿';
+  const n = String(name).toLowerCase();
+  if(n.includes('tomato')) return '🍅';
+  if(n.includes('maize')||n.includes('corn')) return '🌽';
+  if(n.includes('onion')) return '🧅';
+  if(n.includes('wheat')||n.includes('sorghum')||n.includes('millet')) return '🌾';
+  if(n.includes('rice')) return '🍚';
+  if(n.includes('pea')||n.includes('bean')||n.includes('soy')) return '🫛';
+  if(n.includes('groundnut')||n.includes('peanut')) return '🥜';
+  if(n.includes('carrot')) return '🥕';
+  if(n.includes('cabbage')||n.includes('kale')||n.includes('rape')||n.includes('spinach')||n.includes('lettuce')||n.includes('amaranth')) return '🥬';
+  if(n.includes('potato')) return '🥔';
+  if(n.includes('chilli')||n.includes('chili')) return '🌶️';
+  if(n.includes('pepper')) return '🫑';
+  if(n.includes('eggplant')||n.includes('aubergine')) return '🍆';
+  if(n.includes('okra')) return '🥒';
+  if(n.includes('mushroom')) return '🍄';
+  if(n.includes('banana')||n.includes('plantain')) return '🍌';
+  if(n.includes('mango')) return '🥭';
+  if(n.includes('avocado')) return '🥑';
+  if(n.includes('orange')||n.includes('citrus')||n.includes('lemon')||n.includes('lime')) return '🍊';
+  if(n.includes('papaya')||n.includes('pawpaw')) return '🍈';
+  if(n.includes('fish')||n.includes('tilapia')||n.includes('catfish')) return '🐟';
+  return '🌿';
+}
+function cropGroup(name){
+  const n = String(name||'').toLowerCase();
+  if(n.includes('tomato')) return 'tomatoes';
+  if(n.includes('onion')) return 'onions';
+  if(n.includes('maize')||n.includes('corn')||n.includes('wheat')||n.includes('rice')||n.includes('sorghum')||n.includes('millet')) return 'grains';
+  if(n.includes('cabbage')||n.includes('kale')||n.includes('rape')||n.includes('spinach')||n.includes('lettuce')||n.includes('amaranth')) return 'greens';
+  if(n.includes('carrot')||n.includes('potato')||n.includes('beet')) return 'roots';
+  if(n.includes('bean')||n.includes('pea')||n.includes('soy')||n.includes('groundnut')||n.includes('peanut')) return 'legumes';
+  if(n.includes('mango')||n.includes('banana')||n.includes('orange')||n.includes('avocado')||n.includes('papaya')||n.includes('watermelon')||n.includes('pineapple')) return 'fruits';
+  if(n.includes('chilli')||n.includes('pepper')||n.includes('eggplant')||n.includes('okra')||n.includes('cucumber')) return 'veg';
+  return 'other';
+}
+const CATEGORIES = [
+  { key: 'all', label: 'All', em: '🌿' },
+  { key: 'tomatoes', label: 'Tomatoes', em: '🍅' },
+  { key: 'grains', label: 'Grains', em: '🌽' },
+  { key: 'greens', label: 'Greens', em: '🥬' },
+  { key: 'onions', label: 'Onions', em: '🧅' },
+  { key: 'roots', label: 'Roots', em: '🥕' },
+  { key: 'legumes', label: 'Legumes', em: '🫛' },
+  { key: 'fruits', label: 'Fruits', em: '🥭' },
+  { key: 'veg', label: 'Veg', em: '🌶️' }
+];
+const GRADS = ['linear-gradient(145deg,#d1fae5,#10b981)','linear-gradient(145deg,#fef3c7,#f59e0b)','linear-gradient(145deg,#fee2e2,#dc2626)','linear-gradient(145deg,#dbeafe,#2563eb)','linear-gradient(145deg,#fce7f3,#db2777)','linear-gradient(145deg,#ede9fe,#7c3aed)','linear-gradient(145deg,#ffedd5,#ea580c)','linear-gradient(145deg,#ccfbf1,#0d9488)'];
+function gradFor(str){ let h=0; for(let i=0;i<(str||'').length;i++) h=(h*31+str.charCodeAt(i))>>>0; return GRADS[h%GRADS.length]; }
+
+/* ============================================================
+   CITY + MARKETS
+   ============================================================ */
+const CITY_REGIONS = {
+  'Lusaka Province': ['Lusaka','Kafue','Chilanga','Chongwe','Mumbwa'],
+  'Copperbelt': ['Kitwe','Ndola','Chingola','Mufulira','Luanshya','Kalulushi','Chililabombwe','Masaiti'],
+  'Southern Province': ['Livingstone','Choma','Mazabuka','Monze','Kalomo','Namwala'],
+  'Central Province': ['Kabwe','Kapiri Mposhi','Mkushi','Serenje','Chibombo'],
+  'Eastern Province': ['Chipata','Petauke','Katete','Lundazi','Nyimba','Chadiza'],
+  'Northern Province': ['Kasama','Mbala','Mpika','Nakonde','Mporokoso','Luwingu'],
+  'Western Province': ['Mongu','Kaoma','Senanga','Sesheke','Kalabo'],
+  'North-Western Province': ['Solwezi','Mwinilunga','Kasempa','Zambezi'],
+  'Luapula Province': ['Mansa','Samfya','Kawambwa','Nchelenge','Mwense']
+};
+const CITY_MARKETS = {
+  Lusaka: ['Soweto Market','City Market','Mtendere Market','Chilenje Market','Matero Market','Kabwata Market','Northmead Market','Chelston Market','Kalingalinga Market'],
+  Kitwe: ['Chisokone Market','Buchi Market','Chamboli Market','Wusakile Market','Nkana East Market'],
+  Ndola: ['Masala Market','Chifubu Market','Kansenshi Market','Twapia Market','Dola Hill Market'],
+  Kabwe: ['Kabwe Main Market','Kasanda Market','Bwacha Market','Makululu Market'],
+  Chipata: ['Chipata Main Market','Kapata Market','Mchini Market','Mtendere Market'],
+  Livingstone: ['Mukuni Market','Maramba Market','Town Centre Market'],
+  Chingola: ['Chingola Main Market','Kabundi Market','Nchanga Market'],
+  Mufulira: ['Mufulira Main Market','Kankoyo Market','Butondo Market'],
+  Luanshya: ['Luanshya Main Market','Roan Market','Mpatamatu Market'],
+  Kasama: ['Kasama Main Market','Chiba Market','New Town Market'],
+  Mongu: ['Mongu Main Market','Sefula Market','Lealui Market'],
+  Solwezi: ['Solwezi Main Market','Kansanshi Market','St Francis Market'],
+  Mansa: ['Mansa Main Market','Chembe Market','Senama Market'],
+  Choma: ['Choma Main Market','Mbabala Market','Batoka Market'],
+  Mazabuka: ['Mazabuka Main Market','Nakambala Market','Magoye Market'],
+  Kafue: ['Kafue Main Market','Nangongwe Market','Chilanga Market'],
+  default: ['Main Market','Town Centre Market','Local Farmers Market']
+};
+function normalizeCity(c){ return String(c||'').trim(); }
+function regionOf(city){
+  const c = normalizeCity(city);
+  for(const [region, list] of Object.entries(CITY_REGIONS)) if(list.includes(c)) return region;
+  return null;
+}
+function nearbyCities(city){
+  const region = regionOf(city);
+  if(!region) return [];
+  return CITY_REGIONS[region].filter(c => c !== normalizeCity(city));
+}
+function detectedCity(){ return normalizeCity(S.weatherCity || S.userLocation); }
+function listingCity(l){ return normalizeCity(l.city||''); }
+
+/* ============================================================
+   WEATHER
+   ============================================================ */
+async function loadWeatherByCoords(lat, lng){
+  try{
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,is_day&timezone=auto`;
+    const r = await fetch(url); const j = await r.json();
+    return { temp: Math.round(j.current.temperature_2m), code: j.current.weather_code, isDay: j.current.is_day === 1 };
+  }catch(e){ return null; }
+}
+function weatherIconFor(code, isDay){
+  if(code===0) return isDay ? '☀️' : '🌙';
+  if(code===1) return isDay ? '🌤️' : '🌙';
+  if(code===2) return isDay ? '⛅' : '☁️';
+  if(code===3) return '☁️';
+  if(code<=48) return '🌫️';
+  if(code<=55) return '🌦️';
+  if(code<=65) return '🌧️';
+  return '⛈️';
+}
+async function reverseGeocodeCity(lat, lng){
+  try{
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&zoom=12&accept-language=en`;
+    const r = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    if(!r.ok) return null;
+    const j = await r.json(); const a = j.address || {};
+    return { city: a.city || a.town || a.village || a.municipality || a.county || '' };
+  }catch(e){ return null; }
+}
+async function detectCity(){
+  if(!navigator.geolocation){ S.weather = await loadWeatherByCoords(-15.4167, 28.2833); return; }
+  return new Promise(resolve => {
+    navigator.geolocation.getCurrentPosition(async pos => {
+      const lat = pos.coords.latitude, lng = pos.coords.longitude;
+      S.userCoords = { lat, lng };
+      const place = await reverseGeocodeCity(lat, lng);
+      if(place && place.city){ S.weatherCity = place.city; S.userLocation = place.city; }
+      S.weather = await loadWeatherByCoords(lat, lng);
+      route(); resolve();
+    }, async () => {
+      S.weather = await loadWeatherByCoords(-15.4167, 28.2833);
+      route(); resolve();
+    }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 300000 });
+  });
+}
+
+/* ============================================================
+   ROUTER
+   ============================================================ */
+let activeScreenEl = null;
+function buildScreen(id){
+  const wrap = document.querySelector('.screen-wrap');
+  let el = document.getElementById('screen-' + id);
+  if(!el){ el = document.createElement('div'); el.className = 'screen'; el.id = 'screen-' + id; wrap.appendChild(el); }
+  return el;
+}
+function showScreen(id, data={}, push=true){
+  S.screenData = data || {};
+  const target = buildScreen(id);
+  if(activeScreenEl && activeScreenEl !== target) activeScreenEl.classList.remove('active');
+  void target.offsetWidth;
+  target.classList.add('active');
+  activeScreenEl = target;
+  S.screen = id;
+  route();
+  if(push){ try{ history.pushState({ screen: id, data }, '', '#' + id); }catch(e){} }
+  const sc = target.querySelector('.scroll');
+  if(sc) sc.scrollTop = 0;
+}
+window.addEventListener('popstate', e => {
+  if($modal.classList.contains('open')){ closeModal(); return; }
+  const st = e.state || {};
+  const id = st.screen || 'home';
+  if(!document.getElementById('screen-' + id)){ showScreen('home', {}, false); return; }
+  showScreen(id, st.data || {}, false);
+});
+
+function route(){
+  const id = S.screen;
+  const el = document.getElementById('screen-' + id);
+  if(!el) return;
+  switch(id){
+    case 'home': el.innerHTML = renderHome(); break;
+    case 'market': el.innerHTML = renderMarket(); break;
+    case 'analysis': el.innerHTML = renderAnalysis(); break;
+    case 'profile': el.innerHTML = renderProfile(); break;
+    default: el.innerHTML = renderHome();
+  }
+}
+
+/* ============================================================
+   BOTTOM NAV
+   ============================================================ */
+function bottomNavHTML(){
+  const isDark = S.screen === 'market' || S.screen === 'analysis';
+  const map = { home:'home', market:'market', analysis:'analysis', profile:'profile' };
+  const key = map[S.screen] || 'home';
+  return `
+  <nav class="bnav ${isDark?'on-dark':''}">
+    <button class="bn ${key==='home'?'active':''}" onclick="goHome()">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span class="bn-lb">Home</span>
+    </button>
+    <button class="bn ${key==='market'?'active':''}" onclick="goMarket()">
+      <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+      <span class="bn-lb">Market</span>
+    </button>
+    <button class="bn ${key==='analysis'?'active':''}" onclick="goAnalysis()">
+      <svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5V9.2zM10.6 5h2.8v14h-2.8V5zm5.6 8H19v6h-2.8v-6z"/></svg>
+      <span class="bn-lb">Analysis</span>
+    </button>
+    <button class="bn ${key==='profile'?'active':''}" onclick="goProfile()">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <span class="bn-lb">Profile</span>
+    </button>
+  </nav>`;
+}
+window.goHome = () => showScreen('home');
+window.goMarket = () => showScreen('market');
+window.goAnalysis = () => showScreen('analysis');
+window.goProfile = () => showScreen('profile');
+window.goBack = () => { try{ history.back(); }catch(e){ showScreen('home'); } };
+
+/* ============================================================
+   LISTING HELPERS
+   ============================================================ */
+function isLive(l){ return l && l.status !== 'removed' && l.availabilityStatus !== 'removed'; }
+function isAvailable(l){ return isLive(l) && l.availabilityStatus === 'available'; }
+function isPending(l){ return isLive(l) && l.availabilityStatus === 'pending'; }
+function getCropName(l){ return l.productName || l.title || 'Produce'; }
+function listingPhoto(l){ return (l.photoUrls && l.photoUrls[0]) ? l.photoUrls[0] : null; }
+function pricePerUnit(l){
+  if(l.priceMode === 'total' && l.quantity) return (parseFloat(l.priceAmount) || 0) / l.quantity;
+  return parseFloat(l.pricePerBox || l.priceAmount || 0);
+}
+function isFresh(l){ return l.createdAt && (Date.now() - l.createdAt) < 6 * 3600000; }
+
+/* Listings in the user's city (strictly) */
+function listingsInMyCity(){
+  const city = detectedCity();
+  return S.listings.filter(l => isLive(l) && listingCity(l) === city);
+}
+function listingsNearby(){
+  const city = detectedCity();
+  const nearby = nearbyCities(city);
+  return S.listings.filter(l => isLive(l) && (listingCity(l) === city || nearby.includes(listingCity(l))));
+}
+
+/* Compute best price per crop (in current scope) */
+function bestPriceMap(listings){
+  const map = {};
+  listings.forEach(l => {
+    if(!isAvailable(l)) return;
+    const crop = getCropName(l);
+    const ppu = pricePerUnit(l);
+    if(ppu <= 0) return;
+    if(!map[crop] || ppu < map[crop].ppu){
+      map[crop] = { ppu, listing: l };
+    }
+  });
+  return map;
+}
+
+/* ============================================================
+   HOME
+   ============================================================ */
+function renderHome(){
+  const p = S.profile || {};
+  const fullName = ((p.firstName||'') + ' ' + (p.lastName||'')).trim() || p.displayName || 'Friend';
+  const city = detectedCity();
+  const w = S.weather;
+
+  const cityListings = listingsInMyCity().filter(isAvailable);
+  const bestMap = bestPriceMap(cityListings);
+
+  // Category filter state
+  const activeCat = S.homeCrop || 'all';
+  const filtered = activeCat === 'all'
+    ? cityListings
+    : cityListings.filter(l => cropGroup(getCropName(l)) === activeCat);
+
+  // Top fresh picks (most recent in scope)
+  const freshPicks = filtered.slice().sort((a,b) => (b.createdAt||0)-(a.createdAt||0)).slice(0, 8);
+
+  // Best prices (cheapest 5 crops in city)
+  const bestPrices = Object.values(bestMap)
+    .sort((a,b) => a.ppu - b.ppu)
+    .slice(0, 5);
+
+  // Markets with listings
+  const marketCounts = {};
+  cityListings.forEach(l => {
+    if(l.marketName) marketCounts[l.marketName] = (marketCounts[l.marketName] || 0) + 1;
+  });
+  const markets = Object.entries(marketCounts).sort((a,b) => b[1]-a[1]).slice(0, 5);
+
+  const greeting = (() => {
+    const h = new Date().getHours();
+    if(h < 12) return 'Good morning';
+    if(h < 17) return 'Good afternoon';
+    return 'Good evening';
+  })();
+
+  const catStrip = CATEGORIES.map(c => {
+    const count = c.key === 'all'
+      ? cityListings.length
+      : cityListings.filter(l => cropGroup(getCropName(l)) === c.key).length;
+    return `
+      <button class="cat-pill ${activeCat===c.key?'selected':''}" onclick="setHomeCrop('${c.key}')">
+        <span class="em">${c.em}</span>
+        <span class="lb">${c.label}</span>
+      </button>`;
+  }).join('');
+
+  const freshHTML = freshPicks.length ? freshPicks.map(l => renderFreshCard(l, bestMap)).join('') : `
+    <div style="padding:24px 18px;text-align:center;color:var(--tl);font-size:12.5px;font-weight:600;width:100%">
+      Nothing fresh in ${esc(city)} right now — check Market for nearby.
+    </div>`;
+
+  const bestHTML = bestPrices.length ? bestPrices.map((b, i) => {
+    const l = b.listing;
+    const rankCls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+    const unit = singularUnit(l.unit || 'box');
+    return `
+      <div class="price-row" onclick="viewListing('${esc(l.id)}')">
+        <div class="price-row-rank ${rankCls}">${i+1}</div>
+        <div class="price-row-em">${pickIcon(getCropName(l))}</div>
+        <div class="price-row-body">
+          <div class="price-row-name">${esc(getCropName(l))}${l.varietyName ? ' · ' + esc(l.varietyName) : ''}</div>
+          <div class="price-row-market">📍 ${esc(l.marketName||'')}</div>
+        </div>
+        <div class="price-row-price">
+          <strong>${fmtZMKshort(b.ppu)}</strong>
+          <small>/ ${esc(unit)}</small>
+        </div>
+      </div>`;
+  }).join('') : `<div style="padding:20px 14px;text-align:center;color:var(--tl);font-size:12px;font-weight:600">No live prices in ${esc(city)} yet.</div>`;
+
+  const marketsHTML = markets.length ? markets.map(([name, count]) => `
+    <div class="market-row" onclick="goMarket()">
+      <div class="market-row-ic">🏪</div>
+      <div class="market-row-body">
+        <div class="market-row-name">${esc(name)}</div>
+        <div class="market-row-sub">${esc(city)}</div>
+      </div>
+      <div class="market-row-count">${count}</div>
+    </div>
+  `).join('') : `<div style="padding:20px 14px;text-align:center;color:var(--tl);font-size:12px;font-weight:600">No markets with listings yet.</div>`;
+
+  return `
+  <div class="scroll">
+    <div class="topbar" style="padding-bottom:0">
+      <div style="flex:1"></div>
+      <button class="tb-back" onclick="goProfile()" style="background:rgba(255,255,255,.9)">
+        ${p.profileUrl ? `<img src="${esc(p.profileUrl)}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">` : `<span style="font-weight:900;font-size:13px;color:var(--p)">${initials(fullName)}</span>`}
+      </button>
+    </div>
+
+    <div class="welcome-row">
+      <div class="welcome-txt">
+        <div class="welcome-hello">${greeting}</div>
+        <div class="welcome-name">Hi, <span>${esc(fullName.split(' ')[0])}</span> 👋</div>
+      </div>
+      <div class="city-chip">
+        <span class="dot"></span>
+        ${esc(city)}
+      </div>
+    </div>
+
+    <div class="dash-hero">
+      <div class="dash-hero-top">
+        <div class="dash-hero-ic">${w ? weatherIconFor(w.code, w.isDay) : '🌤️'}</div>
+        <div class="dash-hero-weather">
+          <div class="dash-hero-temp">${w ? w.temp + '°' : '—°'}</div>
+          <div class="dash-hero-desc">${w ? (w.code===0?'Clear':w.code<=2?'Cloudy':w.code<=55?'Drizzle':w.code<=65?'Rain':'Storm') : 'Loading'}</div>
+        </div>
+      </div>
+      <div class="dash-hero-count">${cityListings.length}</div>
+      <div class="dash-hero-lb">fresh ${cityListings.length===1?'crop':'crops'} available from farmers near you today</div>
+      <div class="dash-hero-pills">
+        <span class="dash-hero-pill">🏪 ${markets.length} market${markets.length===1?'':'s'}</span>
+        <span class="dash-hero-pill">🌾 ${Object.keys(bestMap).length} crop${Object.keys(bestMap).length===1?'':'s'}</span>
+        <span class="dash-hero-pill green">📍 ${esc(city)}</span>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <h3><span class="em">🛒</span> Browse by type</h3>
+      <button class="see-all" onclick="goMarket()">See all ›</button>
+    </div>
+    <div class="cat-strip">${catStrip}</div>
+
+    <div class="section-head">
+      <h3><span class="em">✨</span> Fresh in ${esc(city)}</h3>
+      <button class="see-all" onclick="goMarket()">View ›</button>
+    </div>
+    <div class="fresh-strip">${freshHTML}</div>
+
+    <div class="section-head">
+      <h3><span class="em">💰</span> Best prices today</h3>
+      <button class="see-all" onclick="goAnalysis()">Analyse ›</button>
+    </div>
+    <div class="price-list">${bestHTML}</div>
+
+    <div class="section-head">
+      <h3><span class="em">🏪</span> Your local markets</h3>
+      <button class="see-all" onclick="goMarket()">Browse ›</button>
+    </div>
+    <div class="market-list">${marketsHTML}</div>
+
+    <div class="analysis-teaser" onclick="goAnalysis()">
+      <div class="at-arrow">→</div>
+      <div class="at-ic">📊</div>
+      <h3>Market analysis</h3>
+      <p>See price ranges, cheapest markets and trends for produce around you.</p>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+function renderFreshCard(l, bestMap){
+  const photo = listingPhoto(l);
+  const crop = getCropName(l);
+  const best = bestMap[crop] && bestMap[crop].listing.id === l.id;
+  const fresh = isFresh(l);
+  const unit = singularUnit(l.unit || 'box');
+  const ppu = pricePerUnit(l);
+  return `
+  <div class="fresh-card" onclick="viewListing('${esc(l.id)}')">
+    <div class="fresh-card-hero">
+      ${photo ? `<img src="${esc(photo)}" alt="">` : pickIcon(crop)}
+      ${fresh ? `<div class="fresh-chip hot">🔥 Fresh</div>` : (best ? `<div class="fresh-chip best">💰 Best</div>` : '')}
+    </div>
+    <div class="fresh-card-body">
+      <div class="fresh-card-name">${esc(crop)}</div>
+      ${l.varietyName ? `<div class="fresh-card-variety">${esc(l.varietyName)}</div>` : ''}
+      <div class="fresh-card-meta">${esc(l.marketName||'')} · ${esc(l.quantity)} ${pluralUnit(unit, l.quantity)}</div>
+      <div class="fresh-card-price">
+        <strong>${fmtZMKshort(ppu)}</strong>
+        <small>/ ${esc(unit)}</small>
+      </div>
+    </div>
+  </div>`;
+}
+
+window.setHomeCrop = (c) => { S.homeCrop = c; route(); };
+
+/* ============================================================
+   MARKET BOARD
+   ============================================================ */
+function renderMarket(){
+  const city = detectedCity();
+  const scope = S.marketScope || 'my-city';
+  const cropFilter = S.marketCrop || 'all';
+
+  let pool = scope === 'my-city' ? listingsInMyCity() : scope === 'nearby' ? listingsNearby() : S.listings.filter(isLive);
+  // only available by default; pending users won't want to see
+  pool = pool.filter(isAvailable);
+  if(cropFilter !== 'all') pool = pool.filter(l => cropGroup(getCropName(l)) === cropFilter);
+  pool = pool.sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
+
+  const bestMap = bestPriceMap(scope === 'my-city' ? listingsInMyCity() : scope === 'nearby' ? listingsNearby() : S.listings.filter(isLive));
+
+  // Pulse: cheapest crops in current scope
+  const pulseRows = Object.entries(bestMap).map(([crop, v]) => ({ crop, ppu: v.ppu, unit: v.listing.unit || 'box' }))
+    .sort((a,b) => a.ppu - b.ppu).slice(0, 6);
+
+  const dateStr = new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+
+  const cropChips = CATEGORIES.map(c => `
+    <button class="board-chip ${cropFilter===c.key?'active':''}" onclick="setMarketCrop('${c.key}')">
+      <span>${c.em}</span><span>${c.label}</span>
+    </button>
+  `).join('');
+
+  const pulseHTML = pulseRows.length ? pulseRows.map(r => `
+    <div class="pulse-chip">
+      <div class="p-em">${pickIcon(r.crop)}</div>
+      <div class="p-body">
+        <div class="p-name">${esc(r.crop)}</div>
+        <div class="p-price">${fmtZMKshort(r.ppu)}<span style="font-size:9px;font-weight:700;opacity:.75;margin-left:2px">/${esc(singularUnit(r.unit))}</span></div>
+      </div>
+    </div>
+  `).join('') : '';
+
+  const cardsHTML = pool.length ? pool.map(l => renderBoardCard(l, bestMap)).join('') : `
+    <div class="board-empty">
+      <div class="em">🌾</div>
+      <h3>Nothing here yet</h3>
+      <p>${scope === 'my-city'
+        ? `No available listings in ${esc(city)} right now.<br>Try widening your scope to <strong>Nearby</strong>.`
+        : `No available listings match this filter.<br>Try another scope or crop.`}</p>
+    </div>`;
+
+  return `
+  <div class="scroll board-page">
+    <div class="topbar dark" style="padding-bottom:6px">
+      <div style="flex:1"></div>
+      <button class="tb-back" onclick="goProfile()" style="width:38px;height:38px">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      </button>
+    </div>
+
+    <div class="board-head">
+      <div class="board-kicker">Live · Fresh · Local</div>
+      <div class="board-title">MARKET BOARD</div>
+      <div class="board-loc">📍 ${scope === 'my-city' ? esc(city).toUpperCase() : scope === 'nearby' ? 'NEARBY CITIES' : 'ALL ZAMBIA'}</div>
+      <div class="board-date">${esc(dateStr)} · ${pool.length} listings</div>
+    </div>
+
+    ${pulseHTML ? `<div class="pulse-strip">${pulseHTML}</div>` : ''}
+
+    <div class="board-filters">
+      <div class="board-chip-row">${cropChips}</div>
+      <div class="board-scope-toggle">
+        <button class="board-scope ${scope==='my-city'?'active':''}" onclick="setMarketScope('my-city')">📍 ${esc(city)}</button>
+        <button class="board-scope ${scope==='nearby'?'active':''}" onclick="setMarketScope('nearby')">🗺️ Nearby</button>
+        <button class="board-scope ${scope==='all'?'active':''}" onclick="setMarketScope('all')">🇿🇲 All</button>
+      </div>
+    </div>
+
+    <div class="board-count">
+      <strong>${pool.length}</strong> listing${pool.length===1?'':'s'} · tap a card to view details
+    </div>
+
+    <div class="board-list">${cardsHTML}</div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+function renderBoardCard(l, bestMap){
+  const photo = listingPhoto(l);
+  const crop = getCropName(l);
+  const unit = l.unit || 'box';
+  const ppu = pricePerUnit(l);
+  const isBest = bestMap[crop] && bestMap[crop].listing.id === l.id;
+  return `
+  <div class="board-card" onclick="viewListing('${esc(l.id)}')">
+    <div class="board-card-thumb">
+      ${photo ? `<img src="${esc(photo)}" alt="">` : pickIcon(crop)}
+      ${isBest ? `<div class="bdg">💰 Best</div>` : ''}
+    </div>
+    <div class="board-card-body">
+      <div>
+        <div class="board-card-name">${esc(crop)}</div>
+        ${l.varietyName ? `<div class="board-card-variety">${esc(l.varietyName)}</div>` : ''}
+        <div class="board-card-market"><span class="pin">📍</span> ${esc(l.marketName||'')} · ${esc(l.city||'')}</div>
+      </div>
+      <div class="board-card-bottom">
+        <div class="board-card-price">
+          <strong>${fmtZMKshort(ppu)}</strong>
+          <small>per ${esc(singularUnit(unit))}</small>
+          <div class="board-card-qty">${esc(l.quantity)} ${pluralUnit(unit, l.quantity)}</div>
+        </div>
+        <div class="board-card-actions">
+          ${l.sellerPhone ? `<button class="board-call" onclick="event.stopPropagation();callFarmer('${esc(l.sellerPhone)}','${esc(l.sellerName||'Farmer')}')" aria-label="Call">
+            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          </button>` : ''}
+          <div class="board-time">${timeAgo(l.createdAt)}</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+window.setMarketCrop = (c) => { S.marketCrop = c; route(); };
+window.setMarketScope = (s) => { S.marketScope = s; route(); };
+
+/* ============================================================
+   ANALYSIS
+   ============================================================ */
+function renderAnalysis(){
+  const city = detectedCity();
+  const nearby = nearbyCities(city);
+  const period = S.anaPeriod || '30d';
+  const cropFilter = S.anaCrop || 'all';
+
+  const cutoff = period === '7d' ? Date.now() - 7*86400000
+              : period === '30d' ? Date.now() - 30*86400000
+              : 0;
+
+  let pool = S.listings.filter(l => isLive(l) && (listingCity(l) === city || nearby.includes(listingCity(l))));
+  if(cutoff) pool = pool.filter(l => (l.createdAt || 0) >= cutoff);
+
+  const available = pool.filter(isAvailable);
+
+  // Group by crop
+  const byCrop = {};
+  available.forEach(l => {
+    const crop = getCropName(l);
+    const ppu = pricePerUnit(l);
+    if(ppu <= 0) return;
+    if(!byCrop[crop]){
+      byCrop[crop] = { min: ppu, max: ppu, count: 0, unit: l.unit || 'box', markets: new Set(), cheapest: l };
+    }
+    byCrop[crop].min = Math.min(byCrop[crop].min, ppu);
+    byCrop[crop].max = Math.max(byCrop[crop].max, ppu);
+    byCrop[crop].count++;
+    if(l.marketName) byCrop[crop].markets.add(l.marketName);
+    if(ppu < pricePerUnit(byCrop[crop].cheapest)) byCrop[crop].cheapest = l;
+  });
+
+  const cropRows = Object.entries(byCrop)
+    .sort((a,b) => b[1].count - a[1].count)
+    .filter(([name]) => cropFilter === 'all' || cropGroup(name) === cropFilter);
+
+  // Stats
+  const totalAvailableQty = available.reduce((s,l) => s + (l.quantity||0), 0);
+  const marketSet = new Set(available.map(l => l.marketName).filter(Boolean));
+  const farmerSet = new Set(available.map(l => l.seller_id).filter(Boolean));
+
+  // Cheapest overall
+  const cheapest = available.reduce((best, l) => {
+    const ppu = pricePerUnit(l);
+    if(ppu <= 0) return best;
+    if(!best || ppu < pricePerUnit(best)) return l;
+    return best;
+  }, null);
+
+  const cheapestHTML = cheapest ? `
+    <div class="ana-cheapest" onclick="viewListing('${esc(cheapest.id)}')">
+      <div class="ana-cheapest-em">${pickIcon(getCropName(cheapest))}</div>
+      <div class="ana-cheapest-body">
+        <div class="ana-cheapest-name">${esc(getCropName(cheapest))}${cheapest.varietyName ? ' · ' + esc(cheapest.varietyName) : ''}</div>
+        <div class="ana-cheapest-market">📍 ${esc(cheapest.marketName||'')} · ${esc(cheapest.city||'')}</div>
+      </div>
+      <div class="ana-cheapest-price">
+        <strong>${fmtZMKshort(pricePerUnit(cheapest))}</strong>
+        <small>cheapest</small>
+      </div>
+    </div>` : '';
+
+  const cardsHTML = cropRows.length ? cropRows.map(([crop, data]) => {
+    const unit = singularUnit(data.unit);
+    const markets = [...data.markets];
+    const badge = data.count >= 4
+      ? `<span class="ana-card-badge tight">Popular</span>`
+      : data.count === 1
+        ? `<span class="ana-card-badge oversupply">Rare</span>`
+        : '';
+    const rangeSpread = data.max > data.min ? Math.round(((data.max - data.min) / data.min) * 100) : 0;
+    return `
+      <div class="ana-card">
+        <div class="ana-card-head">
+          <div class="ana-card-crop"><span class="em">${pickIcon(crop)}</span> ${esc(crop)}</div>
+          ${badge}
+        </div>
+        <div class="ana-price-range">
+          <div class="min">${fmtZMKshort(data.min)}</div>
+          <div class="bar"><div class="bar-fill" style="width:${Math.min(100, Math.max(20, rangeSpread))}%;left:${Math.min(60, 100-Math.max(20, rangeSpread))}%"></div></div>
+          <div class="max">${fmtZMKshort(data.max)}</div>
+        </div>
+        <div class="ana-rows">
+          <div class="ana-row">
+            <div class="k">💰 Lowest</div>
+            <div class="v">${esc(data.cheapest.marketName||'—')}</div>
+          </div>
+          <div class="ana-row">
+            <div class="k">📍 Markets</div>
+            <div class="v">${markets.length ? esc(markets.slice(0,2).join(', ')) : '—'}</div>
+          </div>
+          <div class="ana-row">
+            <div class="k">📦 Listed</div>
+            <div class="v">${data.count} · / ${esc(unit)}</div>
+          </div>
+        </div>
+      </div>`;
+  }).join('') : `
+    <div class="board-empty" style="padding:32px 20px">
+      <div class="em">📊</div>
+      <h3>No price data</h3>
+      <p>Try a wider scope or longer period.</p>
+    </div>`;
+
+  const cropChips = CATEGORIES.map(c => `
+    <button class="board-chip ${cropFilter===c.key?'active':''}" onclick="setAnaCrop('${c.key}')">
+      <span>${c.em}</span><span>${c.label}</span>
+    </button>
+  `).join('');
+
+  return `
+  <div class="scroll analysis-page">
+    <div class="topbar dark" style="padding-bottom:6px">
+      <div style="flex:1"></div>
+      <button class="tb-back" onclick="goProfile()" style="width:38px;height:38px">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      </button>
+    </div>
+
+    <div class="ana-head">
+      <div class="ana-kicker">Insights · Prices · Trends</div>
+      <div class="ana-title">Market Analysis</div>
+      <div class="ana-sub">What's fresh, what's cheap, and where to buy it around you.</div>
+      <div class="ana-loc">📍 ${esc(city)}${nearby.length ? ` · ${nearby.length} nearby` : ''}</div>
+    </div>
+
+    <div class="ana-stats">
+      <div class="ana-stat"><div class="n">${available.length}</div><div class="l">Listings</div></div>
+      <div class="ana-stat"><div class="n">${farmerSet.size}</div><div class="l">Farmers</div></div>
+      <div class="ana-stat"><div class="n">${marketSet.size}</div><div class="l">Markets</div></div>
+    </div>
+
+    <div class="ana-filter-row">
+      <div class="ana-filter">
+        <label>Period</label>
+        <div class="val"><span>${period === '7d' ? '📅 Last 7 days' : period === '30d' ? '📅 Last 30 days' : '📅 All time'}</span><span class="arr">▼</span></div>
+        <select onchange="setAnaPeriod(this.value)">
+          <option value="7d" ${period==='7d'?'selected':''}>Last 7 days</option>
+          <option value="30d" ${period==='30d'?'selected':''}>Last 30 days</option>
+          <option value="all" ${period==='all'?'selected':''}>All time</option>
+        </select>
+      </div>
+      <div class="ana-filter">
+        <label>Crop type</label>
+        <div class="val"><span>${cropFilter === 'all' ? '🌿 All crops' : (CATEGORIES.find(c=>c.key===cropFilter)?.em || '🌿') + ' ' + (CATEGORIES.find(c=>c.key===cropFilter)?.label || 'All')}</span><span class="arr">▼</span></div>
+        <select onchange="setAnaCrop(this.value)">
+          ${CATEGORIES.map(c => `<option value="${c.key}" ${cropFilter===c.key?'selected':''}>${c.em} ${c.label}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+
+    ${cheapestHTML ? `
+      <div class="ana-section" style="padding-bottom:10px">
+        <div class="ana-section-title">💰 Cheapest today</div>
+        ${cheapestHTML}
+      </div>
+    ` : ''}
+
+    <div class="ana-section">
+      <div class="ana-section-title">📊 Prices by crop</div>
+      ${cardsHTML}
+    </div>
+
+    <div class="ana-section">
+      <div style="text-align:center;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#fbbf24;opacity:.7;padding:12px 0 20px;border-top:1px dashed rgba(251,191,36,.2)">
+        U-AGRI · Customer Insights
+      </div>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+window.setAnaPeriod = (p) => { S.anaPeriod = p; route(); };
+window.setAnaCrop = (c) => { S.anaCrop = c; route(); };
+
+/* ============================================================
+   PROFILE
+   ============================================================ */
+function renderProfile(){
+  const p = S.profile || {};
+  const fullName = ((p.firstName||'') + ' ' + (p.lastName||'')).trim() || p.displayName || 'Friend';
+  const initial = initials(fullName);
+  const city = detectedCity();
+  return `
+  <div class="scroll">
+    <div class="topbar" style="padding-bottom:0"><div class="tb-title">Profile</div></div>
+    <div class="prof-hero">
+      <div class="p-av">${p.profileUrl ? `<img src="${esc(p.profileUrl)}" alt="">` : initial}</div>
+      <h2>${esc(fullName)}</h2>
+      <div class="p-ver">🛒 Customer</div>
+      <div class="p-loc">📍 ${esc(city)}</div>
+    </div>
+    <div class="menu-list">
+      <div class="menu-item" onclick="goMarket()"><div class="mi-ic">🛒</div><div class="mi-tx"><div class="mi-tt">Local Market</div><div class="mi-sb">Fresh produce around you</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="goAnalysis()"><div class="mi-ic">📊</div><div class="mi-tx"><div class="mi-tt">Market Analysis</div><div class="mi-sb">Prices and best deals</div></div><div class="mi-ar"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+      <div class="menu-item" onclick="doLogout()"><div class="mi-ic" style="background:var(--danger-soft)">🚪</div><div class="mi-tx"><div class="mi-tt" style="color:var(--danger)">Sign Out</div></div></div>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+window.doLogout = () => {
+  modal(`
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3>Sign out?</h3>
+    <p style="margin-top:6px">You'll need to log in again.</p>
+    <div class="mc-actions" style="display:flex;gap:8px;margin-top:16px">
+      <button class="btn" style="flex:1;padding:14px;border-radius:999px;background:var(--sf2);border:1.5px solid var(--bd);font-weight:800;font-size:14px" onclick="closeModal()">Cancel</button>
+      <button class="btn" style="flex:1;padding:14px;border-radius:999px;background:linear-gradient(180deg,#ef4444,#991b1b);color:#fff;font-weight:800;font-size:14px" onclick="confirmLogout()">Sign Out</button>
+    </div>
+  `);
+};
+window.confirmLogout = async () => {
+  try{ await signOut(auth); }catch(e){}
+  window.location.href = 'index.html';
+};
+
+/* ============================================================
+   LISTING DETAIL MODAL
+   ============================================================ */
+window.viewListing = (id) => {
+  const l = S.listings.find(x => x.id === id);
+  if(!l) return;
+  const avail = isAvailable(l);
+  const pend = isPending(l);
+  const unit = l.unit || 'box';
+  const ppu = pricePerUnit(l);
+  const photos = (l.photoUrls && l.photoUrls.length) ? l.photoUrls : [];
+
+  const statusPill = avail
+    ? `<span style="color:#16a34a;background:#d1fae5;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:800">✅ Available now</span>`
+    : pend
+      ? `<span style="color:#92400e;background:#fef3c7;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:800">⏳ Availability pending · ${timeUntil(l.availableAt||0)}</span>`
+      : '';
+
+  const galleryHTML = photos.length ? `
+    <div style="display:grid;grid-template-columns:repeat(${Math.min(photos.length,2)},1fr);gap:6px;margin-bottom:14px">
+      ${photos.map(u => `<img src="${esc(u)}" alt="" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;background:#000">`).join('')}
+    </div>` : '';
+
+  const callBlock = avail && l.sellerPhone ? `
+    <div style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1px solid rgba(22,163,74,.22);padding:14px 16px;border-radius:16px;margin-bottom:14px;text-align:left">
+      <div style="font-size:10.5px;color:#065f46;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Contact Farmer</div>
+      <div style="font-size:14.5px;font-weight:900;color:#064e3b">${esc(l.sellerName||'Farmer')}</div>
+      <div style="font-size:13px;font-weight:800;color:#065f46;margin-top:3px">📞 ${esc(l.sellerPhone)}</div>
+      <div style="font-size:11px;color:#065f46;font-weight:600;margin-top:3px">📍 ${esc(l.marketName||'')} · ${esc(l.city||'')}</div>
+    </div>` : '';
+
+  const actionButtons = avail && l.sellerPhone ? `
+    <div style="display:flex;gap:8px;margin-top:6px">
+      <button class="btn" style="flex:1;padding:14px;border-radius:999px;background:var(--sf2);border:1.5px solid var(--bd);font-weight:800;font-size:14px" onclick="closeModal()">Close</button>
+      <a class="btn" style="flex:1;padding:14px;border-radius:999px;background:linear-gradient(180deg,#12903e,#0f7a34);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none" href="tel:${esc(String(l.sellerPhone).replace(/[^\d+]/g,''))}" onclick="setTimeout(closeModal,300)">📞 Call</a>
+    </div>` : `
+    <div style="margin-top:6px">
+      <button class="btn" style="width:100%;padding:14px;border-radius:999px;background:var(--sf2);border:1.5px solid var(--bd);font-weight:800;font-size:14px" onclick="closeModal()">Close</button>
+    </div>`;
+
+  const infoRow = (k,v) => `<div style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--bd);font-size:12.5px"><span style="color:var(--tl);font-weight:700">${k}</span><span style="font-weight:800;color:var(--td);text-align:right;max-width:60%;">${v}</span></div>`;
+
+  modal(`
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3 style="font-size:17px;padding:0 24px">${pickIcon(getCropName(l))} ${esc(getCropName(l))}</h3>
+    <p style="font-size:12px;margin-top:4px;color:var(--tl)">${esc(l.sellerName||'')} · ${esc(l.city||'')}</p>
+    <div style="margin:12px 0">${statusPill}</div>
+    ${galleryHTML}
+    ${callBlock}
+    <div style="text-align:left;background:var(--sf2);border:1px solid var(--bd);border-radius:14px;overflow:hidden;margin-bottom:14px">
+      ${l.varietyName ? infoRow('Variety', esc(l.varietyName)) : ''}
+      ${infoRow('Price', `${fmtZMKshort(ppu)} / ${esc(singularUnit(unit))}`)}
+      ${infoRow('Quantity', `${esc(l.quantity)} ${pluralUnit(unit, l.quantity)}`)}
+      ${infoRow('Market', esc(l.marketName||'—'))}
+      ${infoRow('Posted', timeAgo(l.createdAt))}
+    </div>
+    ${actionButtons}
+  `);
+};
+
+/* ============================================================
+   CALL FARMER
+   ============================================================ */
+window.callFarmer = (phone, name) => {
+  if(!phone){ toast('No phone number on file'); return; }
+  const clean = String(phone).replace(/[^\d+]/g, '');
+  modal(`
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3>📞 Call ${esc(name || 'Farmer')}</h3>
+    <p style="font-size:20px;font-weight:900;color:var(--td);margin:8px 0 4px">${esc(phone)}</p>
+    <p style="font-size:12px">Tap Call Now to open your dialer.</p>
+    <div style="display:flex;gap:8px;margin-top:16px">
+      <button class="btn" style="flex:1;padding:14px;border-radius:999px;background:var(--sf2);border:1.5px solid var(--bd);font-weight:800;font-size:14px" onclick="closeModal()">Cancel</button>
+      <a class="btn" style="flex:1;padding:14px;border-radius:999px;background:linear-gradient(180deg,#12903e,#0f7a34);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;text-decoration:none" href="tel:${esc(clean)}" onclick="setTimeout(closeModal,300)">📞 Call Now</a>
+    </div>
+  `);
+};
+
+/* ============================================================
+   DATA LISTENERS
+   ============================================================ */
+async function loadAllUsers(){
+  try{
+    const snap = await get(ref(db, 'users'));
+    S.usersById = snap.val() || {};
+  }catch(e){ console.warn('users', e); }
+}
+
+function startListingsListener(){
+  if(S.listingsUnsub) S.listingsUnsub();
+  S.listingsUnsub = onValue(ref(db, 'marketListings'), snap => {
+    const data = snap.val() || {};
+    const arr = Object.entries(data).map(([id, v]) => ({ id, ...v })).filter(l => l);
+    arr.sort((a, b) => (b.createdAt||0) - (a.createdAt||0));
+    S.listings = arr;
+    if(['home','market','analysis'].includes(S.screen)) route();
+  });
+}
+
+function startBatchesListener(){
+  if(S.batchesUnsub) S.batchesUnsub();
+  S.batchesUnsub = onValue(ref(db, 'batches'), snap => {
+    const data = snap.val() || {};
+    const arr = Object.entries(data).map(([id, v]) => ({ id, ...v })).filter(b => b);
+    S.batches = arr;
+  });
+}
+
+/* ============================================================
+   BOOTSTRAP
+   ============================================================ */
+async function startApp(){
+  const splash = document.getElementById('splash');
+  requestAnimationFrame(() => splash.classList.add('show'));
+
+  onAuthStateChanged(auth, async user => {
+    await new Promise(r => setTimeout(r, 1800));
+    if(!user){ window.location.href = 'index.html'; return; }
+
+    S.user = user;
+
+    try{
+      const p = await get(ref(db, 'users/' + user.uid));
+      if(p.exists()) S.profile = p.val();
+    }catch(e){ S.profile = {}; }
+
+    if(S.profile?.location) S.userLocation = S.profile.location;
+    if(S.profile?.city) S.weatherCity = S.profile.city;
+
+    await loadAllUsers();
+    startListingsListener();
+    startBatchesListener();
+
+    const app = document.getElementById('app');
+    app.innerHTML = `<div class="screen-wrap"></div>`;
+    const wrap = app.querySelector('.screen-wrap');
+    const home = document.createElement('div');
+    home.className = 'screen';
+    home.id = 'screen-home';
+    wrap.appendChild(home);
+    activeScreenEl = home;
+    S.screen = 'home';
+    home.classList.add('active');
+    route();
+    try{ history.replaceState({ screen: 'home' }, '', '#home'); }catch(e){}
+
+    await detectCity();
+  });
+}
+
+startApp();
+
+setTimeout(() => {
+  const splash = document.getElementById('splash');
+  if(splash && splash.parentNode){
+    setTimeout(() => {
+      splash.classList.remove('show');
+      setTimeout(() => { if(splash.parentNode) splash.parentNode.removeChild(splash); }, 800);
+    }, 200);
+  }
+}, 2000);
+
+window.addEventListener('unhandledrejection', e => console.warn('Unhandled:', e.reason));
+</script>
+
+</body>
+</html>
