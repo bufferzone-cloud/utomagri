@@ -687,6 +687,90 @@ a{color:inherit;text-decoration:none;}
 .info-card .ic-arrow{width:24px;height:24px;color:var(--tm);display:flex;align-items:center;justify-content:center;}
 .info-card .ic-arrow svg{width:16px;height:16px;fill:currentColor;}
 
+/* ============================================================
+   IMPRESSIVE FARM SETUP UI
+   ============================================================ */
+.farm-setup-card{
+  background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%);
+  border:1.5px solid rgba(15,122,52,.2);
+  border-radius:var(--r-xl);
+  padding:16px;
+  box-shadow:0 12px 28px -12px rgba(15,122,52,.3);
+}
+[data-theme="dark"] .farm-setup-card{
+  background:linear-gradient(135deg,#022c22 0%,#064e3b 100%);
+  border-color:rgba(34,197,94,.3);
+  box-shadow:0 12px 28px -12px rgba(0,0,0,.5);
+}
+.farm-setup-head{
+  display:flex;align-items:center;gap:12px;
+  padding-bottom:14px;margin-bottom:12px;
+  border-bottom:1px dashed rgba(15,122,52,.25);
+}
+[data-theme="dark"] .farm-setup-head{border-bottom-color:rgba(34,197,94,.25);}
+.farm-setup-head-ic{
+  width:46px;height:46px;border-radius:14px;
+  background:linear-gradient(145deg,#d1fae5,#10b981);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;
+  box-shadow:0 4px 12px -2px rgba(16,185,129,.5);
+}
+.farm-setup-title{font-size:14.5px;font-weight:900;color:var(--p-d);letter-spacing:-.01em;}
+[data-theme="dark"] .farm-setup-title{color:#86efac;}
+.farm-setup-subtitle{font-size:11px;color:var(--tl);font-weight:600;margin-top:3px;}
+[data-theme="dark"] .farm-setup-subtitle{color:#4ade80;}
+
+.setup-option{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;
+  background:var(--sf);
+  border:1px solid rgba(15,122,52,.15);
+  border-radius:var(--r);
+  margin-bottom:8px;
+  cursor:pointer;
+  transition:all .2s var(--e);
+  box-shadow:0 2px 6px rgba(15,122,52,.06);
+}
+.setup-option:active{
+  transform:scale(.98);
+  background:var(--p-ll);
+  border-color:var(--p);
+  box-shadow:0 4px 14px -2px rgba(15,122,52,.2);
+}
+[data-theme="dark"] .setup-option{
+  background:var(--sf2);
+  border-color:var(--bd);
+  box-shadow:none;
+}
+.setup-option-ic{
+  width:42px;height:42px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:0 3px 8px rgba(0,0,0,.14);
+}
+.setup-option-tx{flex:1;min-width:0;}
+.setup-option-title{
+  font-size:10.5px;font-weight:800;color:var(--tl);
+  text-transform:uppercase;letter-spacing:.05em;
+  margin-bottom:3px;
+}
+.setup-option-value{
+  font-size:13.5px;font-weight:900;color:var(--td);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  line-height:1.2;
+}
+.setup-option-value.empty{
+  color:var(--tm);font-weight:600;font-style:italic;
+  font-size:12.5px;
+}
+.setup-option-arrow{
+  font-size:22px;color:var(--tm);font-weight:700;
+  flex-shrink:0;line-height:1;
+}
+
+/* ============================================================
+   SUN ARC / WINDMILL / HUMIDITY
+   ============================================================ */
 .sun-arc-wrap{margin:0 18px 14px;padding:20px;border-radius:var(--r-xl);background:linear-gradient(135deg,#fff7ed 0%,#ffedd5 100%);border:1.5px solid rgba(234,88,12,.18);box-shadow:var(--sh-md);position:relative;overflow:hidden;}
 [data-theme="dark"] .sun-arc-wrap{background:linear-gradient(135deg,#1e293b,#0f172a);border-color:rgba(148,163,184,.2);}
 .sun-arc-title{font-size:11.5px;font-weight:800;color:#9a3412;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
@@ -1196,7 +1280,6 @@ const S = {
   following: {},
   myBatches: [],
   allFarmersBatches: [],
-  /* FARMS */
   farms: [],
   currentFarmId: null,
   farmsUnsub: null,
@@ -1232,17 +1315,11 @@ const S = {
   stageNotified: {},
   stageAdvancementTimer: null,
   readyToListOpen: false,
-  /* THEME */
   theme: 'light',
-  /* IMAGE DRAFTS keyed by batchId */
   draftImages: {},
-  /* NEW: planting flow mode — when true, the next selectFarm forces Plant tab */
   plantingFlowMode: false,
-  /* NEW: temp farm photo during create/edit */
   tempFarmPhoto: '',
-  /* NEW: guard so finishPlanting can't double-fire */
   _finishing: false,
-  /* NEW: preview market filters */
   previewYear: null,
   previewCity: null,
   previewMarket: null,
@@ -2309,7 +2386,7 @@ function startAllBatchesListener() {
     arr.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
     S.allFarmersBatches = arr;
     if (S.user) S.myBatches = arr.filter(b => b.ownerId === S.user.uid);
-    if (['marketplace','market-analysis','farmers-by-city','selected-crop-analysis','preview-market','farm-analysis','farm-picker'].includes(S.screen)) route();
+    if (['marketplace','market-analysis','farmers-by-city','selected-crop-analysis','preview-market','farm-analysis','farm-picker','farm','batch-detail'].includes(S.screen)) route();
   });
 }
 
@@ -2328,7 +2405,7 @@ function startMarketplaceListener() {
         l.availabilityStatus !== 'sold'
       );
     }
-    if (['marketplace','my-posts','preview-market','market-analysis'].includes(S.screen)) route();
+    if (['marketplace','my-posts','preview-market','market-analysis','batch-detail'].includes(S.screen)) route();
   });
 }
 
@@ -2381,7 +2458,6 @@ function route() {
   }
   updateNav(id);
 
-  /* Content transition — fade/slide for same-screen re-renders (tabs, filters, etc.) */
   if (!_suppressContentAnim) {
     const sc = el.querySelector('.scroll');
     if (sc) {
@@ -2734,7 +2810,7 @@ function renderFarmPlant() {
       ${finishedCount ? `<span style="font-weight:600;text-transform:none;letter-spacing:0;color:var(--tm);font-size:11px">· ${finishedCount} finished</span>` : ''}
     </div>
 
-    ${activeBatches.length ? activeBatches.map(b => renderBatchCard(b)).join('') : `
+    ${activeBatches.length ? activeBatches.map(b => renderBatchCard(b, 'plant')).join('') : `
       <div class="empty">
         <div class="e-ic">🌱</div>
         <h3>Nothing growing here yet</h3>
@@ -3363,7 +3439,15 @@ function renderBatchDetail(id, tab) {
   const dailyHarvests = b.dailyHarvests || [];
   const unit = unitForBatch(b);
   const unitNote = getHarvestUnit(b.cropName, b.category).note;
-  const isManageTab = (tab || 'manage') === 'manage';
+
+  /* Tab mode resolution:
+     - 'plant'   : view-only from Plant tab (no harvest tracking, no farm setup)
+     - 'manage'  : from Manage tab (no harvest tracking, farm setup only)
+     - 'harvest' : from Harvest tab (harvest tracking only)
+     - 'harvested' : from Harvest tab finished batches (harvest tracking only) */
+  const isPlantTab = tab === 'plant';
+  const isManageTab = !tab || tab === 'manage';
+  const isHarvestTab = tab === 'harvest' || tab === 'harvested';
 
   const stageChips = STAGE_ORDER.map((s, i) => {
     const isCurrent = s === (b.stage || 'planted');
@@ -3400,7 +3484,7 @@ function renderBatchDetail(id, tab) {
   }
 
   let harvestTrackingHTML = '';
-  if (b.stage === 'harvesting' || b.stage === 'harvested') {
+  if ((b.stage === 'harvesting' || b.stage === 'harvested') && isHarvestTab) {
     const logRows = dailyHarvests.length
       ? dailyHarvests.slice().sort((a,b) => (b.date || 0) - (a.date || 0)).map(h => `
         <div class="harvest-log-row">
@@ -3442,6 +3526,54 @@ function renderBatchDetail(id, tab) {
     </div>`;
   }
 
+  /* Impressive Farm Setup UI (only in Manage tab) */
+  const farmSetupHTML = isManageTab ? `
+    <div class="d-section">
+      <h3>⚙️ Farm Setup</h3>
+      <div class="farm-setup-card">
+        <div class="farm-setup-head">
+          <div class="farm-setup-head-ic">🌱</div>
+          <div style="flex:1;min-width:0">
+            <div class="farm-setup-title">Growing Conditions</div>
+            <div class="farm-setup-subtitle">Configure your crop environment</div>
+          </div>
+        </div>
+        ${!isFisheries ? `
+        <div class="setup-option" onclick="showSoilInfo()">
+          <div class="setup-option-ic" style="background:linear-gradient(145deg,#fef3c7,#d97706)">🪨</div>
+          <div class="setup-option-tx">
+            <div class="setup-option-title">Soil Type</div>
+            <div class="setup-option-value ${b.soilType ? '' : 'empty'}">${b.soilType ? esc(b.soilType) : 'Not set yet'}</div>
+          </div>
+          <div class="setup-option-arrow">›</div>
+        </div>
+        ` : ''}
+        <div class="setup-option" onclick="showIrrigationInfo()">
+          <div class="setup-option-ic" style="background:linear-gradient(145deg,#dbeafe,#2563eb)">💦</div>
+          <div class="setup-option-tx">
+            <div class="setup-option-title">Irrigation Type</div>
+            <div class="setup-option-value ${b.irrigationType ? '' : 'empty'}">${b.irrigationType ? esc(b.irrigationType) : 'Not set yet'}</div>
+          </div>
+          <div class="setup-option-arrow">›</div>
+        </div>
+        ${isCrop ? `
+        <div class="setup-option" onclick="showSpacingInfo()">
+          <div class="setup-option-ic" style="background:linear-gradient(145deg,#ede9fe,#7c3aed)">📏</div>
+          <div class="setup-option-tx">
+            <div class="setup-option-title">Crop Spacing</div>
+            <div class="setup-option-value ${b.spacingSystem ? '' : 'empty'}">${b.spacingSystem ? esc(b.spacingSystem) : 'Not set yet'}</div>
+          </div>
+          <div class="setup-option-arrow">›</div>
+        </div>
+        ` : ''}
+        <button class="btn btn-p" onclick="saveBatchSetup('${esc(b.id)}')" style="margin-top:12px">💾 Save Farm Setup</button>
+        <input type="hidden" id="bs-soil" value="${esc(b.soilType || '')}">
+        <input type="hidden" id="bs-irr" value="${esc(b.irrigationType || '')}">
+        <input type="hidden" id="bs-space" value="${esc(b.spacingSystem || '')}">
+      </div>
+    </div>
+  ` : '';
+
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -3474,32 +3606,7 @@ function renderBatchDetail(id, tab) {
 
       ${harvestTrackingHTML}
 
-      ${isManageTab ? `
-      <div class="d-section">
-        <h3>Farm Setup</h3>
-        ${!isFisheries ? `
-        <div class="info-card" onclick="showSoilInfo()">
-          <div class="ic-ico">🪨</div>
-          <div class="ic-tx"><div class="ic-title">Soil Type</div><div class="ic-sub">${b.soilType ? esc(b.soilType) : 'Tap to choose'}</div></div>
-          <div class="ic-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-        </div>` : ''}
-        <div class="info-card" onclick="showIrrigationInfo()">
-          <div class="ic-ico">💦</div>
-          <div class="ic-tx"><div class="ic-title">Irrigation Type</div><div class="ic-sub">${b.irrigationType ? esc(b.irrigationType) : 'Tap to choose'}</div></div>
-          <div class="ic-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-        </div>
-        ${isCrop ? `
-        <div class="info-card" onclick="showSpacingInfo()">
-          <div class="ic-ico">📏</div>
-          <div class="ic-tx"><div class="ic-title">Crop Spacing</div><div class="ic-sub">${b.spacingSystem ? esc(b.spacingSystem) : 'Tap to set spacing'}</div></div>
-          <div class="ic-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
-        </div>` : ''}
-        <button class="btn btn-p" onclick="saveBatchSetup('${esc(b.id)}')" style="margin-top:4px">Save Farm Setup</button>
-        <input type="hidden" id="bs-soil" value="${esc(b.soilType || '')}">
-        <input type="hidden" id="bs-irr" value="${esc(b.irrigationType || '')}">
-        <input type="hidden" id="bs-space" value="${esc(b.spacingSystem || '')}">
-      </div>
-      ` : ''}
+      ${farmSetupHTML}
 
       <div class="d-section">
         <h3>Field Summary</h3>
@@ -3631,7 +3738,6 @@ window.saveDailyHarvest = async (batchId) => {
       closeModal();
       toast(`+${boxes} ${unit} ✓`);
       route();
-      /* NEW: Prompt to list for sale immediately after recording a harvest */
       setTimeout(() => {
         modal(`
           <h3>🌾 Harvest Recorded!</h3>
@@ -3903,7 +4009,7 @@ function renderHarvestRecord(id) {
   return `
   <div class="scroll">
     <div class="topbar bordered">
-      <button class="tb-back" onclick="showScreen('batch-detail',{id:'${esc(b.id)}',tab:'manage'})"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+      <button class="tb-back" onclick="showScreen('batch-detail',{id:'${esc(b.id)}',tab:'harvest'})"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
       <div class="tb-title">Record Harvest</div>
     </div>
     <div style="padding:16px 18px 0">
@@ -3934,7 +4040,7 @@ function renderHarvestRecord(id) {
       `).join('') : `<div style="text-align:center;padding:24px;color:var(--tl);font-weight:600;font-size:12px">No entries yet.</div>`}
     </div>
     <div class="btn-row" style="padding-top:6px">
-      <button class="btn btn-s" onclick="showScreen('batch-detail',{id:'${esc(b.id)}',tab:'manage'})">Back</button>
+      <button class="btn btn-s" onclick="showScreen('batch-detail',{id:'${esc(b.id)}',tab:'harvest'})">Back</button>
       <button class="btn btn-p" onclick="openAddHarvest('${esc(b.id)}')">+ Add Harvest</button>
     </div>
   </div>
@@ -3975,6 +4081,10 @@ function renderPostHarvestGoods(batchId) {
 
   if (!S.draftImages[batchId]) S.draftImages[batchId] = [];
 
+  /* NOTE: using <div class="frm"> instead of <form onsubmit=...> to prevent native
+     browser validation from blocking clicks on the submit button. All validation
+     is handled inside submitMarketPost with clear toast messages. The buttons are
+     explicit type="button" with inline onclick so they always fire. */
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -3995,20 +4105,20 @@ function renderPostHarvestGoods(batchId) {
       </div>
     </div>
 
-    <form class="frm" onsubmit="submitMarketPost(event,'${esc(b.id)}')">
+    <div class="frm">
       <div class="fld"><label>Your Name</label><input id="ph-name" class="inp" value="${esc(fullName)}" readonly style="background:var(--sf2)"></div>
-      <div class="fld"><label>Phone Number</label><input id="ph-phone" class="inp" type="tel" value="${esc(phone)}" placeholder="e.g. 0977 123 456" required></div>
+      <div class="fld"><label>Phone Number</label><input id="ph-phone" class="inp" type="tel" value="${esc(phone)}" placeholder="e.g. 0977 123 456"></div>
 
       <div class="fld">
         <label>Variety</label>
         <input id="ph-variety" class="inp" value="${esc(b.varietyName || '')}" placeholder="e.g. Roma VF">
       </div>
 
-      <div class="fld"><label>Number of ${esc(pluralUnit(unit, 2).charAt(0).toUpperCase() + pluralUnit(unit, 2).slice(1))}</label><input id="ph-qty" class="inp" type="number" min="1" step="1" value="${currentQty || 1}" required></div>
+      <div class="fld"><label>Number of ${esc(pluralUnit(unit, 2).charAt(0).toUpperCase() + pluralUnit(unit, 2).slice(1))}</label><input id="ph-qty" class="inp" type="number" min="1" step="1" value="${currentQty || 1}"></div>
 
       <div class="fld">
         <label>Market (in ${esc(city)})</label>
-        <select id="ph-market" class="inp" onchange="onMarketChange(this.value)" required>
+        <select id="ph-market" class="inp" onchange="onMarketChange(this.value)">
           <option value="">Select market…</option>
           ${markets.map(m => `<option value="${esc(m)}">${esc(m)}</option>`).join('')}
           <option value="__other">Other (type manually)</option>
@@ -4022,10 +4132,10 @@ function renderPostHarvestGoods(batchId) {
           <button type="button" id="ph-mode-perbox" class="price-mode-btn active" onclick="setPriceMode('per_box')">💰 Per ${esc(unit.charAt(0).toUpperCase() + unit.slice(1))}</button>
           <button type="button" id="ph-mode-total" class="price-mode-btn" onclick="setPriceMode('total')">📦 All ${esc(pluralUnit(unit, 2).charAt(0).toUpperCase() + pluralUnit(unit, 2).slice(1))}</button>
         </div>
-        <input id="ph-price" class="inp" type="number" min="0" step="0.01" placeholder="Price in ZMK" required>
+        <input id="ph-price" class="inp" type="number" min="0" step="0.01" placeholder="Price in ZMK">
       </div>
 
-      <div class="fld"><label>Available On Market From</label><input id="ph-avail-at" class="inp" type="datetime-local" value="${toDatetimeLocal(defaultAvail)}" required></div>
+      <div class="fld"><label>Available On Market From</label><input id="ph-avail-at" class="inp" type="datetime-local" value="${toDatetimeLocal(defaultAvail)}"></div>
 
       <div class="fld"><label>Description (optional)</label><textarea id="ph-desc" class="inp" rows="2">Fresh ${esc(b.cropName)} (${esc(b.varietyName)}). ${currentQty} ${esc(pluralUnit(unit, currentQty))} available.</textarea></div>
 
@@ -4039,9 +4149,9 @@ function renderPostHarvestGoods(batchId) {
         </div>
       </div>
 
-      <button type="submit" class="btn btn-p" id="ph-submit">💰 List for Sale</button>
+      <button type="button" class="btn btn-p" id="ph-submit" onclick="submitMarketPost(event,'${esc(b.id)}')">💰 List for Sale</button>
       <button type="button" class="btn btn-s" onclick="cancelPostHarvest('${esc(b.id)}')" style="margin-top:8px">Cancel</button>
-    </form>
+    </div>
   </div>
   ${bottomNavHTML()}`;
 }
@@ -4049,7 +4159,6 @@ function renderPostHarvestGoods(batchId) {
 function renderDraftImageGrid(batchId) {
   const imgs = (S.draftImages[batchId] || []);
   const slots = [];
-  /* Only 2 photo slots now */
   for (let i = 0; i < 2; i++) {
     if (imgs[i]) {
       slots.push(`
@@ -4141,13 +4250,14 @@ window.setPriceMode = (mode) => {
 };
 
 window.submitMarketPost = async (ev, batchId) => {
-  ev.preventDefault();
+  if (ev && ev.preventDefault) ev.preventDefault();
   const b = S.myBatches.find(x => x.id === batchId);
-  if (!b) return;
+  if (!b) { toast('Batch not found'); return; }
   if (getActiveListingForBatch(batchId)) { toast('This batch is already on the market'); return; }
 
   const btn = document.getElementById('ph-submit');
-  btn.disabled = true; btn.textContent = 'Listing…';
+  if (btn) { btn.disabled = true; btn.textContent = 'Listing…'; }
+  const restore = () => { if (btn) { btn.disabled = false; btn.textContent = '💰 List for Sale'; } };
 
   try {
     const name = document.getElementById('ph-name').value.trim();
@@ -4162,17 +4272,17 @@ window.submitMarketPost = async (ev, batchId) => {
     const desc = document.getElementById('ph-desc').value.trim();
     const photoUrls = (S.draftImages[batchId] || []).slice(0, 2);
 
-    if (!name) { toast('Name required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
-    if (!phone) { toast('Phone required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
-    if (!qty || qty < 1) { toast('Quantity required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
-    if (!marketName) { toast('Market required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
-    if (!priceAmount || priceAmount <= 0) { toast('Price required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
-    if (!availAtStr) { toast('Availability time required'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
-    if (photoUrls.length < 2) { toast('Please upload 2 photos'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
+    if (!name) { toast('Please enter your name'); restore(); return; }
+    if (!phone) { toast('Please enter a phone number'); restore(); return; }
+    if (!qty || qty < 1) { toast('Please enter quantity'); restore(); return; }
+    if (!marketName) { toast('Please select a market'); restore(); return; }
+    if (!priceAmount || priceAmount <= 0) { toast('Please enter a valid price'); restore(); return; }
+    if (!availAtStr) { toast('Please set availability time'); restore(); return; }
+    if (photoUrls.length < 2) { toast('Please upload 2 photos of your produce'); restore(); return; }
 
     const availAt = new Date(availAtStr).getTime();
-    if (!availAt || isNaN(availAt)) { toast('Invalid date/time'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
-    if (availAt <= Date.now() - 60000) { toast('Please set a future time'); btn.disabled = false; btn.textContent = '💰 List for Sale'; return; }
+    if (!availAt || isNaN(availAt)) { toast('Invalid date/time'); restore(); return; }
+    if (availAt <= Date.now() - 60000) { toast('Please set a future time'); restore(); return; }
 
     const priceMode = S.priceMode || 'per_box';
     const totalPrice = priceMode === 'total' ? priceAmount : priceAmount * qty;
@@ -4211,7 +4321,7 @@ window.submitMarketPost = async (ev, batchId) => {
     setTimeout(() => navTo('marketplace'), 600);
   } catch (e) {
     toast('Failed: ' + (e.message || e));
-    btn.disabled = false; btn.textContent = '💰 List for Sale';
+    restore();
   }
 };
 
@@ -4243,19 +4353,19 @@ function renderEditListing(id) {
       <div class="tb-title">Edit Listing</div>
     </div>
 
-    <form class="frm" style="padding-top:14px" onsubmit="saveEditedListing(event,'${esc(l.id)}')">
-      <div class="fld"><label>Phone Number</label><input id="el-phone" class="inp" type="tel" value="${esc(l.sellerPhone || '')}" required></div>
+    <div class="frm" style="padding-top:14px">
+      <div class="fld"><label>Phone Number</label><input id="el-phone" class="inp" type="tel" value="${esc(l.sellerPhone || '')}"></div>
 
       <div class="fld">
         <label>Variety</label>
         <input id="el-variety" class="inp" value="${esc(l.varietyName || '')}" placeholder="e.g. Roma VF">
       </div>
 
-      <div class="fld"><label>Number of ${esc(pluralUnit(unit, 2).charAt(0).toUpperCase() + pluralUnit(unit, 2).slice(1))}</label><input id="el-qty" class="inp" type="number" min="1" step="1" value="${l.quantity || 1}" required></div>
+      <div class="fld"><label>Number of ${esc(pluralUnit(unit, 2).charAt(0).toUpperCase() + pluralUnit(unit, 2).slice(1))}</label><input id="el-qty" class="inp" type="number" min="1" step="1" value="${l.quantity || 1}"></div>
 
       <div class="fld">
         <label>Market</label>
-        <select id="el-market" class="inp" onchange="onEditMarketChange(this.value)" required>
+        <select id="el-market" class="inp" onchange="onEditMarketChange(this.value)">
           <option value="">Select market…</option>
           ${markets.map(m => `<option value="${esc(m)}" ${m === l.marketName ? 'selected' : ''}>${esc(m)}</option>`).join('')}
           <option value="__other" ${hasCustomMarket ? 'selected' : ''}>Other (type manually)</option>
@@ -4272,19 +4382,19 @@ function renderEditListing(id) {
           <button type="button" id="el-mode-perbox" class="price-mode-btn ${S.priceMode === 'per_box' ? 'active' : ''}" onclick="setEditPriceMode('per_box')">💰 Per ${esc(unit.charAt(0).toUpperCase() + unit.slice(1))}</button>
           <button type="button" id="el-mode-total" class="price-mode-btn ${S.priceMode === 'total' ? 'active' : ''}" onclick="setEditPriceMode('total')">📦 All ${esc(pluralUnit(unit, 2).charAt(0).toUpperCase() + pluralUnit(unit, 2).slice(1))}</button>
         </div>
-        <input id="el-price" class="inp" type="number" min="0" step="0.01" value="${l.priceAmount || 0}" required>
+        <input id="el-price" class="inp" type="number" min="0" step="0.01" value="${l.priceAmount || 0}">
       </div>
 
       <div class="fld">
         <label>Available On Market From</label>
-        <input id="el-avail-at" class="inp" type="datetime-local" value="${toDatetimeLocal(l.availableAt || Date.now() + 3600000)}" required>
+        <input id="el-avail-at" class="inp" type="datetime-local" value="${toDatetimeLocal(l.availableAt || Date.now() + 3600000)}">
       </div>
 
       <div class="fld"><label>Description (optional)</label><textarea id="el-desc" class="inp" rows="2">${esc(l.description || '')}</textarea></div>
 
-      <button type="submit" class="btn btn-p" id="el-submit">💾 Save Changes</button>
+      <button type="button" class="btn btn-p" id="el-submit" onclick="saveEditedListing(event,'${esc(l.id)}')">💾 Save Changes</button>
       <button type="button" class="btn btn-s" onclick="cancelEditListing()" style="margin-top:8px">Cancel</button>
-    </form>
+    </div>
   </div>`;
 }
 
@@ -4304,12 +4414,13 @@ window.setEditPriceMode = (mode) => {
 };
 
 window.saveEditedListing = async (ev, id) => {
-  ev.preventDefault();
+  if (ev && ev.preventDefault) ev.preventDefault();
   const l = S.marketplace.find(x => x.id === id);
   if (!l || l.seller_id !== S.user?.uid) { toast('Cannot edit'); return; }
 
   const btn = document.getElementById('el-submit');
-  btn.disabled = true; btn.textContent = 'Saving…';
+  if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+  const restore = () => { if (btn) { btn.disabled = false; btn.textContent = '💾 Save Changes'; } };
 
   try {
     const phone = document.getElementById('el-phone').value.trim();
@@ -4322,10 +4433,10 @@ window.saveEditedListing = async (ev, id) => {
     const availAtStr = document.getElementById('el-avail-at').value;
     const desc = document.getElementById('el-desc').value.trim();
 
-    if (!phone) { toast('Phone required'); btn.disabled = false; btn.textContent = '💾 Save Changes'; return; }
-    if (!qty || qty < 1) { toast('Quantity required'); btn.disabled = false; btn.textContent = '💾 Save Changes'; return; }
-    if (!marketName) { toast('Market required'); btn.disabled = false; btn.textContent = '💾 Save Changes'; return; }
-    if (!priceAmount || priceAmount <= 0) { toast('Price required'); btn.disabled = false; btn.textContent = '💾 Save Changes'; return; }
+    if (!phone) { toast('Phone required'); restore(); return; }
+    if (!qty || qty < 1) { toast('Quantity required'); restore(); return; }
+    if (!marketName) { toast('Market required'); restore(); return; }
+    if (!priceAmount || priceAmount <= 0) { toast('Price required'); restore(); return; }
 
     const priceMode = S.priceMode || 'per_box';
     const totalPrice = priceMode === 'total' ? priceAmount : priceAmount * qty;
@@ -4350,7 +4461,7 @@ window.saveEditedListing = async (ev, id) => {
     setTimeout(() => navTo('marketplace'), 500);
   } catch (e) {
     toast('Failed: ' + (e.message || e));
-    btn.disabled = false; btn.textContent = '💾 Save Changes';
+    restore();
   }
 };
 
