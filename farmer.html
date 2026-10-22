@@ -926,21 +926,6 @@ a{color:inherit;text-decoration:none;}
 .celestial-time-labels{display:flex;justify-content:space-between;margin-top:10px;font-size:10.5px;font-weight:800;color:#cbd5e1;letter-spacing:.02em;}
 .celestial-note{margin-top:12px;padding-top:12px;border-top:1px dashed rgba(148,163,184,.25);font-size:11.5px;color:#cbd5e1;font-weight:600;text-align:center;line-height:1.5;}
 
-.agro-hero{margin:0 18px 14px;padding:20px;border-radius:var(--r-xl);background:linear-gradient(135deg,#7c3aed 0%,#5b21b6 100%);color:#fff;box-shadow:0 20px 50px -10px rgba(124,58,237,.4);position:relative;overflow:hidden;}
-.agro-hero::before{content:'';position:absolute;top:-40px;right:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,255,255,.15) 0%,transparent 70%);border-radius:50%;}
-.agro-hero h2{font-size:20px;font-weight:900;letter-spacing:-.02em;position:relative;z-index:1;}
-.agro-hero p{font-size:12.5px;font-weight:600;opacity:.9;margin-top:4px;position:relative;z-index:1;line-height:1.5;}
-
-.agro-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 18px 18px;}
-.agro-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);padding:12px;box-shadow:var(--sh-xs);cursor:pointer;transition:all .2s var(--e);display:flex;flex-direction:column;}
-.agro-card:active{transform:scale(.97);box-shadow:var(--sh-md);}
-.agro-img{width:100%;height:90px;background:var(--sf2);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:42px;overflow:hidden;margin-bottom:8px;}
-.agro-img img{width:100%;height:100%;object-fit:cover;}
-.agro-name{font-size:12.5px;font-weight:900;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.agro-price{font-size:14px;font-weight:900;color:var(--p-d);margin-top:4px;letter-spacing:-.01em;}
-.agro-price small{font-size:10px;font-weight:700;color:var(--tl);letter-spacing:.03em;margin-left:3px;}
-.agro-cat{font-size:9.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-top:6px;padding:2px 6px;background:var(--sf2);border-radius:var(--r-p);align-self:flex-start;}
-
 .notice-banner{margin:0 18px 12px;padding:12px 14px;border-radius:var(--r-lg);background:#fef3c7;border:1px solid rgba(180,83,9,.22);display:flex;align-items:center;gap:10px;}
 [data-theme="dark"] .notice-banner{background:#422006;border-color:rgba(251,191,36,.3);}
 .notice-banner .nb-ic{font-size:20px;flex-shrink:0;}
@@ -1007,11 +992,6 @@ a{color:inherit;text-decoration:none;}
 .bn-lb{font-size:9.5px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;}
 .bn.active .bn-lb{font-weight:900;}
 .bn-badge{position:absolute;top:4px;right:calc(50% - 18px);min-width:16px;height:16px;background:var(--danger);color:#fff;font-size:9px;font-weight:800;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 4px;border:1.5px solid var(--sf);}
-
-.cart-float{position:fixed;right:16px;bottom:calc(var(--nav-h) + var(--safe-b) + 16px);z-index:30;padding:12px 18px;border-radius:var(--r-p);background:linear-gradient(180deg,#12903e 0%,var(--p) 100%);color:#fff;font-size:13px;font-weight:800;display:none;align-items:center;gap:8px;box-shadow:0 12px 30px -8px var(--p-glow),0 0 0 4px rgba(255,255,255,.9);animation:cartIn .35s var(--e);}
-.cart-float.show{display:flex;}
-@keyframes cartIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.cf-count{background:#fff;color:var(--p);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;}
 
 .notif-panel{position:fixed;top:0;right:0;bottom:0;z-index:400;width:min(420px,92vw);background:var(--sf);transform:translateX(100%);transition:transform .38s var(--e);box-shadow:-16px 0 40px rgba(15,23,42,.18);display:flex;flex-direction:column;}
 .notif-panel.open{transform:translateX(0);}
@@ -1177,7 +1157,7 @@ a{color:inherit;text-decoration:none;}
 .hidden{display:none !important;}
 
 /* ============================================================
-   DELIVERY VEHICLES — NEW
+   DELIVERY VEHICLES
    ============================================================ */
 .delivery-intro{
   margin:0 18px 14px;padding:18px;border-radius:var(--r-xl);
@@ -1445,6 +1425,310 @@ a{color:inherit;text-decoration:none;}
 .delivery-empty .de-em{font-size:56px;margin-bottom:14px;opacity:.5;line-height:1;}
 .delivery-empty h3{font-size:15px;font-weight:800;color:var(--td);margin-bottom:6px;}
 .delivery-empty p{font-size:12.5px;line-height:1.5;max-width:300px;margin:0 auto;}
+
+/* ============================================================
+   AGRO DEALERS — REDESIGNED
+   ============================================================ */
+.agro-hero{
+  margin:0 18px 14px;padding:20px;border-radius:var(--r-xl);
+  background:linear-gradient(135deg,#7c3aed 0%,#5b21b6 100%);
+  color:#fff;box-shadow:0 20px 50px -10px rgba(124,58,237,.4);
+  position:relative;overflow:hidden;
+}
+.agro-hero::before{
+  content:'';position:absolute;top:-40px;right:-30px;
+  width:160px;height:160px;
+  background:radial-gradient(circle,rgba(255,255,255,.15) 0%,transparent 70%);
+  border-radius:50%;
+}
+.agro-hero h2{
+  font-size:20px;font-weight:900;letter-spacing:-.02em;
+  position:relative;z-index:1;display:flex;align-items:center;gap:8px;
+}
+.agro-hero p{
+  font-size:12.5px;font-weight:600;opacity:.9;
+  margin-top:4px;position:relative;z-index:1;line-height:1.5;
+}
+.agro-hero .ah-stats{
+  display:flex;gap:16px;margin-top:14px;position:relative;z-index:1;
+  padding-top:12px;border-top:1px solid rgba(255,255,255,.2);
+}
+.agro-hero .ah-stat{flex:1;text-align:center;}
+.agro-hero .ah-stat-n{font-size:18px;font-weight:900;letter-spacing:-.03em;}
+.agro-hero .ah-stat-l{font-size:9.5px;font-weight:800;opacity:.85;text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
+
+.agro-search-wrap{padding:0 18px 12px;position:relative;}
+.agro-search-input{
+  width:100%;padding:14px 16px 14px 44px;
+  border:1.5px solid var(--bd);border-radius:var(--r-lg);
+  background:var(--sf);font-size:14px;font-weight:600;
+  color:var(--td);outline:none;transition:all .2s var(--e);
+  box-shadow:var(--sh-xs);
+}
+.agro-search-input:focus{border-color:#7c3aed;box-shadow:0 0 0 4px rgba(124,58,237,.14);}
+.agro-search-icon{
+  position:absolute;left:30px;top:50%;transform:translateY(-50%);
+  font-size:16px;color:var(--tm);pointer-events:none;
+}
+.agro-search-clear{
+  position:absolute;right:30px;top:50%;transform:translateY(-50%);
+  width:24px;height:24px;border-radius:50%;
+  background:var(--sf2);color:var(--tl);
+  font-size:11px;font-weight:900;
+  display:none;align-items:center;justify-content:center;
+}
+.agro-search-clear.show{display:flex;}
+
+.agro-view-toggle{
+  display:flex;gap:6px;
+  margin:0 18px 12px;padding:5px;
+  background:var(--sf2);border:1px solid var(--bd);
+  border-radius:var(--r-lg);
+}
+.avt-btn{
+  flex:1;padding:11px 10px;border-radius:10px;
+  font-size:12px;font-weight:800;color:var(--tb);
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:all .2s var(--e);
+}
+.avt-btn .avt-ic{font-size:14px;}
+.avt-btn.active{
+  background:linear-gradient(180deg,#9333ea 0%,#7c3aed 100%);
+  color:#fff;
+  box-shadow:0 6px 16px -6px rgba(124,58,237,.5);
+}
+
+.agro-section-label{
+  padding:6px 18px 8px;
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--tl);
+}
+.agro-section-label .asl-cnt{
+  margin-left:auto;
+  padding:2px 8px;border-radius:var(--r-p);
+  background:var(--sf2);color:var(--tb);
+  font-size:10px;font-weight:900;
+}
+
+.business-card{
+  margin:0 18px 10px;
+  background:var(--sf);
+  border:1.5px solid var(--bd);
+  border-radius:var(--r-xl);
+  overflow:hidden;
+  box-shadow:var(--sh-sm);
+  cursor:pointer;
+  transition:all .2s var(--e);
+}
+.business-card:active{transform:scale(.985);box-shadow:var(--sh-md);}
+.biz-card-hero{
+  position:relative;height:110px;
+  background:linear-gradient(135deg,#7c3aed 0%,#4c1d95 100%);
+  overflow:hidden;
+  display:flex;align-items:flex-end;
+  padding:14px;
+}
+.biz-card-hero::before{
+  content:'';position:absolute;top:-40px;right:-30px;
+  width:140px;height:140px;
+  background:radial-gradient(circle,rgba(255,255,255,.2) 0%,transparent 70%);
+  border-radius:50%;
+}
+.biz-card-logo{
+  position:absolute;top:14px;left:14px;
+  width:56px;height:56px;border-radius:16px;
+  background:rgba(255,255,255,.95);
+  border:2px solid rgba(255,255,255,.4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:900;color:#5b21b6;
+  overflow:hidden;z-index:2;
+  box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+.biz-card-logo img{width:100%;height:100%;object-fit:cover;}
+.biz-card-info{
+  position:relative;z-index:1;
+  padding-left:70px;
+}
+.biz-card-name{
+  font-size:16px;font-weight:900;color:#fff;
+  text-shadow:0 2px 8px rgba(0,0,0,.4);
+  line-height:1.2;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.biz-card-city{
+  font-size:11.5px;color:rgba(255,255,255,.92);
+  font-weight:700;margin-top:3px;
+  text-shadow:0 1px 4px rgba(0,0,0,.4);
+  display:flex;align-items:center;gap:3px;
+}
+.biz-card-body{
+  padding:14px;
+  display:flex;align-items:center;gap:10px;
+}
+.biz-card-stat{flex:1;text-align:center;}
+.bcs-num{
+  font-size:18px;font-weight:900;letter-spacing:-.03em;
+  color:var(--td);line-height:1;
+}
+.bcs-lb{
+  font-size:9.5px;font-weight:800;color:var(--tl);
+  text-transform:uppercase;letter-spacing:.05em;
+  margin-top:4px;
+}
+.biz-card-call{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(145deg,#22c55e,#15803d);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  box-shadow:0 6px 16px -4px rgba(34,197,94,.5);
+  transition:transform .2s var(--e);
+  text-decoration:none;
+}
+.biz-card-call:active{transform:scale(.9);}
+.biz-card-call svg{width:18px;height:18px;fill:#fff;}
+.biz-card-call.disabled{
+  background:var(--sf2);box-shadow:none;
+}
+.biz-card-call.disabled svg{fill:var(--tm);}
+
+.biz-cta-arrow{
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(124,58,237,.12);
+  display:flex;align-items:center;justify-content:center;
+  color:#7c3aed;flex-shrink:0;
+}
+.biz-cta-arrow svg{width:16px;height:16px;fill:currentColor;}
+
+/* Business Detail */
+.business-detail-hero{
+  margin:0 18px 16px;
+  padding:26px 22px 22px;
+  border-radius:var(--r-2xl);
+  background:linear-gradient(135deg,#7c3aed 0%,#5b21b6 100%);
+  color:#fff;text-align:center;
+  position:relative;overflow:hidden;
+  box-shadow:0 20px 50px -10px rgba(124,58,237,.4);
+}
+.business-detail-hero::before{
+  content:'';position:absolute;top:-50px;right:-30px;
+  width:180px;height:180px;
+  background:radial-gradient(circle,rgba(255,255,255,.2) 0%,transparent 65%);
+  border-radius:50%;pointer-events:none;
+}
+.bdh-logo{
+  width:88px;height:88px;border-radius:50%;margin:0 auto 14px;
+  background:rgba(255,255,255,.22);border:3px solid #fff;
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;font-weight:900;
+  position:relative;z-index:1;
+}
+.bdh-logo img{width:100%;height:100%;object-fit:cover;}
+.bdh-name{
+  font-size:20px;font-weight:900;letter-spacing:-.03em;
+  position:relative;z-index:1;
+}
+.bdh-city{
+  font-size:11.5px;font-weight:700;opacity:.9;
+  margin-top:6px;position:relative;z-index:1;
+  display:inline-flex;align-items:center;gap:4px;
+}
+.bdh-stats{
+  display:flex;justify-content:space-around;
+  margin-top:16px;padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.18);
+  position:relative;z-index:1;
+}
+.bdh-stats > div{text-align:center;flex:1;}
+.bdh-stat-n{font-size:20px;font-weight:900;letter-spacing:-.03em;}
+.bdh-stat-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.85;margin-top:2px;}
+.bdh-call-btn{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;max-width:280px;
+  margin:16px auto 0;
+  padding:14px 20px;
+  border-radius:var(--r-p);
+  background:#fff;color:#5b21b6;
+  font-size:14px;font-weight:900;
+  letter-spacing:.02em;text-decoration:none;
+  box-shadow:0 8px 22px -8px rgba(0,0,0,.3);
+  position:relative;z-index:1;
+  transition:transform .2s var(--e);
+}
+.bdh-call-btn:active{transform:scale(.97);}
+.bdh-call-btn svg{width:18px;height:18px;fill:#5b21b6;}
+
+.biz-filters{
+  display:flex;gap:6px;
+  padding:0 18px 12px;
+  overflow-x:auto;scrollbar-width:none;
+}
+.biz-filters::-webkit-scrollbar{display:none;}
+.biz-filter{
+  flex-shrink:0;
+  padding:7px 12px;border-radius:var(--r-p);
+  background:var(--sf);border:1.5px solid var(--bd);
+  font-size:11px;font-weight:800;color:var(--tb);
+  display:flex;align-items:center;gap:5px;
+  transition:all .2s var(--e);white-space:nowrap;
+}
+.biz-filter.active{
+  background:#7c3aed;color:#fff;border-color:#7c3aed;
+  box-shadow:0 4px 12px -4px rgba(124,58,237,.5);
+}
+.biz-filter .bf-cnt{
+  padding:1px 6px;border-radius:var(--r-p);
+  background:rgba(0,0,0,.06);font-size:9.5px;font-weight:900;
+}
+.biz-filter.active .bf-cnt{background:rgba(255,255,255,.22);}
+
+.product-detail-biz{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;
+  background:linear-gradient(135deg,var(--p-l),var(--p-ll));
+  border:1px solid rgba(15,122,52,.2);
+  border-radius:var(--r-lg);
+  margin-bottom:14px;
+  cursor:pointer;
+  transition:all .2s var(--e);
+}
+.product-detail-biz:active{transform:scale(.985);}
+.product-detail-biz-logo{
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(145deg,#d1fae5,#10b981);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:900;color:#fff;
+  flex-shrink:0;overflow:hidden;
+}
+.product-detail-biz-logo img{width:100%;height:100%;object-fit:cover;}
+.product-detail-biz-info{flex:1;min-width:0;}
+.product-detail-biz-label{
+  font-size:10px;font-weight:800;color:var(--p);
+  text-transform:uppercase;letter-spacing:.04em;
+}
+.product-detail-biz-name{
+  font-size:14px;font-weight:900;color:var(--p-d);
+  line-height:1.2;margin-top:1px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.product-detail-biz-city{
+  font-size:11px;color:var(--p);font-weight:600;margin-top:2px;
+}
+.product-detail-biz-cta{
+  font-size:10.5px;font-weight:800;color:#fff;
+  background:#7c3aed;padding:7px 12px;
+  border-radius:var(--r-p);flex-shrink:0;
+  display:flex;align-items:center;gap:4px;
+}
+.product-detail-biz-cta svg{width:12px;height:12px;fill:#fff;}
+
+.biz-empty{
+  padding:48px 24px;text-align:center;color:var(--tl);
+}
+.biz-empty .be-em{font-size:56px;margin-bottom:14px;opacity:.5;line-height:1;}
+.biz-empty h3{font-size:15px;font-weight:800;color:var(--td);margin-bottom:6px;}
+.biz-empty p{font-size:12.5px;line-height:1.5;max-width:300px;margin:0 auto;}
 </style>
 </head>
 <body>
@@ -1480,10 +1764,6 @@ a{color:inherit;text-decoration:none;}
     </div>
   </div>
 </aside>
-
-<button class="cart-float" id="cartFloat" onclick="openSupplierCart()">
-  🛒 <span>View Cart</span> <span class="cf-count" id="cartCount">0</span>
-</button>
 
 <div class="modal" id="modal"><div class="modal-card" id="modalCard"></div></div>
 <div class="modal" id="loaderModal">
@@ -1537,7 +1817,6 @@ const S = {
   myActivities: [],
   myListings: [],
   marketplace: [],
-  cart: [],
   weather: null,
   weatherCity: '',
   userCoords: null,
@@ -1577,6 +1856,8 @@ const S = {
   agroProducts: [],
   agroProductsUnsub: null,
   agroTab: 'all',
+  agroCity: 'all',
+  agroView: 'products',
   agroSearch: '',
   countdownTimer: null,
   pendingCheckTimer: null,
@@ -1604,8 +1885,6 @@ const S = {
 const $modal = document.getElementById('modal');
 const $modalCard = document.getElementById('modalCard');
 const $toast = document.getElementById('toast');
-const $cartFloat = document.getElementById('cartFloat');
-const $cartCount = document.getElementById('cartCount');
 const $notifPanel = document.getElementById('notifPanel');
 const $notifOverlay = document.getElementById('notifOverlay');
 const $notifBody = document.getElementById('notifBody');
@@ -1839,6 +2118,34 @@ function partnerVehiclePhotos(p) {
     if (p.licenseUrl)    photos.push({ label: 'Licence', url: p.licenseUrl });
   }
   return photos;
+}
+
+/* ============================================================
+   AGRO DEALER / BUSINESS HELPERS
+   ============================================================ */
+function getBusinessesFromProducts() {
+  const map = {};
+  (S.agroProducts || []).forEach(p => {
+    if (p.available === false) return;
+    const sid = p.sellerId || ('name_' + String(p.sellerName || 'unknown').toLowerCase());
+    if (!map[sid]) {
+      map[sid] = {
+        id: sid,
+        name: p.sellerName || 'Agro Dealer',
+        phone: p.sellerPhone || '',
+        logo: p.sellerLogo || '',
+        city: p.city || '',
+        products: []
+      };
+    }
+    map[sid].products.push(p);
+    if (!map[sid].phone && p.sellerPhone) map[sid].phone = p.sellerPhone;
+    if (!map[sid].logo && p.sellerLogo) map[sid].logo = p.sellerLogo;
+    if (!map[sid].city && p.city) map[sid].city = p.city;
+  });
+  const arr = Object.values(map);
+  arr.sort((a, b) => b.products.length - a.products.length);
+  return arr;
 }
 
 /* ============================================================
@@ -2532,7 +2839,6 @@ function showScreen(id, data = {}, pushHistory = true) {
   }
   const sc = target.querySelector('.scroll');
   if (sc) sc.scrollTop = 0;
-  updateCartFloat();
   if (id === 'weather-detail') startWeatherClock();
   if (id === 'marketplace' || id === 'my-posts') startCountdownTicker();
 }
@@ -2555,7 +2861,7 @@ function updateNav(id) {
   const map = { home:'home', farm:'farm', market:'market', delivery:'delivery', profile:'profile' };
   let key = id;
   if (['plant-loader','plant-step-1','plant-step-3','plant-step-4','plant-confirm','plant-success','batch-detail','harvest-record','post-harvest-goods','selected-crop-analysis','farm-picker'].includes(id)) key = 'farm';
-  if (['marketplace','product-detail','buy-supplies','supplier-cart','supplier-checkout','edit-listing','preview-market','agro-dealers'].includes(id)) key = 'market';
+  if (['marketplace','product-detail','business-detail','edit-listing','preview-market','agro-dealers'].includes(id)) key = 'market';
   if (['delivery-history','request-delivery','delivery-detail'].includes(id)) key = 'delivery';
   if (['profile','weather','analysis','government','follow-ups','my-posts','explore','catalogue-detail','market-analysis','weather-detail','farm-analysis','farmers-by-city'].includes(id)) key = 'profile';
   nav.querySelectorAll('.bn').forEach(b => b.classList.toggle('active', map[key] === b.dataset.nav));
@@ -2617,20 +2923,6 @@ window.goBack = () => { try { history.back(); } catch (e) { navTo('home'); } };
 window.openPlantRaiseFlow = () => {
   S.plantingFlowMode = true;
   navTo('farm-picker');
-};
-
-/* ============================================================
-   CART
-   ============================================================ */
-function updateCartFloat() {
-  const count = S.cart.reduce((s,c) => s + c.qty, 0);
-  $cartCount.textContent = count;
-  if (count > 0 && S.screen !== 'supplier-cart' && S.screen !== 'supplier-checkout') $cartFloat.classList.add('show');
-  else $cartFloat.classList.remove('show');
-}
-window.openSupplierCart = () => {
-  if (S.cart.length === 0) { toast('Cart is empty'); return; }
-  navTo('supplier-cart');
 };
 
 /* ============================================================
@@ -2800,7 +3092,7 @@ function startAgroProductsListener() {
     const arr = Object.entries(data).map(([id,v]) => ({ id, ...v }));
     arr.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
     S.agroProducts = arr;
-    if (['agro-dealers', 'product-detail', 'supplier-cart', 'supplier-checkout'].includes(S.screen)) route();
+    if (['agro-dealers', 'product-detail', 'business-detail'].includes(S.screen)) route();
   });
 }
 
@@ -2830,8 +3122,7 @@ function route() {
     case 'my-posts': el.innerHTML = renderMyPosts(); break;
     case 'agro-dealers': el.innerHTML = renderAgroDealers(); break;
     case 'product-detail': el.innerHTML = renderProductDetail(); break;
-    case 'supplier-cart': el.innerHTML = renderSupplierCart(); break;
-    case 'supplier-checkout': el.innerHTML = renderSupplierCheckout(); break;
+    case 'business-detail': el.innerHTML = renderBusinessDetail(); break;
     case 'delivery': el.innerHTML = renderDelivery(); break;
     case 'delivery-detail': el.innerHTML = renderDeliveryDetail(S.screenData.id); break;
     case 'profile': el.innerHTML = renderProfile(); break;
@@ -5480,9 +5771,11 @@ window.contactSeller = (sellerId) => {
 };
 
 /* ============================================================
-   AGRO DEALERS (FARMER VIEW) — NEW
+   AGRO DEALERS (REDESIGNED — NO CART, FILTERS, BUSINESS VIEWS)
    ============================================================ */
 window.setAgroTab = (tab) => { S.agroTab = tab; route(); };
+window.setAgroCity = (city) => { S.agroCity = city; route(); };
+window.setAgroView = (view) => { S.agroView = view; route(); };
 window.onAgroSearch = (v) => {
   S.agroSearch = v;
   clearTimeout(window._agroSearchTimer);
@@ -5492,38 +5785,20 @@ window.onAgroSearch = (v) => {
     if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
   }, 220);
 };
+window.clearAgroSearch = () => {
+  S.agroSearch = '';
+  route();
+};
 window.openAgroProduct = (id) => showScreen('product-detail', { id });
+window.openBusiness = (id) => showScreen('business-detail', { id });
 
-window.addToCart = (productId) => {
-  const p = (S.agroProducts || []).find(x => x.id === productId);
-  if (!p) { toast('Product not found'); return; }
-  if (p.available === false) { toast('Product unavailable'); return; }
-  if (p.stock != null && Number(p.stock) === 0) { toast('Out of stock'); return; }
-
-  const existing = S.cart.find(it => it.product.id === productId);
-  if (existing) existing.qty++;
-  else S.cart.push({ product: p, qty: 1 });
-
-  updateCartFloat();
-  toast(`✓ Added ${p.name}`);
-};
-
-window.updateCartQty = (productId, delta) => {
-  const idx = S.cart.findIndex(it => it.product.id === productId);
-  if (idx < 0) return;
-  S.cart[idx].qty += delta;
-  if (S.cart[idx].qty <= 0) S.cart.splice(idx, 1);
-  updateCartFloat();
-  if (S.screen === 'supplier-cart') route();
-};
-
-window.callSeller = (phone, name) => {
+window.callAgroBusiness = (phone, name) => {
   if (!phone) { toast('No phone number'); return; }
   const clean = String(phone).replace(/[^\d+]/g, '');
   modal(`
     <h3>📞 Call ${esc(name || 'Dealer')}?</h3>
     <p style="font-size:16px;font-weight:900;color:var(--td);margin:8px 0">${esc(phone)}</p>
-    <p style="font-size:12px;color:var(--tl)">Call the dealer to ask about this product.</p>
+    <p style="font-size:12px;color:var(--tl)">Call the dealer to ask about their products.</p>
     <div class="mc-actions">
       <button class="btn btn-s" onclick="closeModal()">Cancel</button>
       <a class="btn btn-p" href="tel:${esc(clean)}" onclick="setTimeout(closeModal,300)" style="text-decoration:none">📞 Call Now</a>
@@ -5531,83 +5806,44 @@ window.callSeller = (phone, name) => {
   `);
 };
 
-window.submitOrder = async () => {
-  if (S._submittingOrder) return;
-  const btn = document.getElementById('co-submit');
-  if (btn) { btn.disabled = true; btn.textContent = 'Placing…'; }
-  const restore = () => { if (btn) { btn.disabled = false; btn.textContent = 'Place Order ✓'; } };
-
-  try {
-    const name = (document.getElementById('co-name')?.value || '').trim();
-    const phone = (document.getElementById('co-phone')?.value || '').trim();
-    const notes = (document.getElementById('co-notes')?.value || '').trim();
-
-    if (!name) { toast('Enter your name'); restore(); return; }
-    if (!phone) { toast('Enter phone'); restore(); return; }
-    if (!S.cart.length) { toast('Cart is empty'); navTo('agro-dealers'); return; }
-
-    S._submittingOrder = true;
-
-    const items = S.cart.map(it => ({
-      productId: it.product.id,
-      productName: it.product.name,
-      sellerId: it.product.sellerId,
-      sellerName: it.product.sellerName,
-      price: it.product.price,
-      unit: it.product.unit,
-      qty: it.qty,
-      subtotal: Number(it.product.price) * it.qty
-    }));
-    const total = items.reduce((s, i) => s + i.subtotal, 0);
-
-    const newRef = push(ref(db, 'orders'));
-    await set(newRef, {
-      buyerId: S.user.uid,
-      buyerName: name,
-      buyerPhone: phone,
-      buyerCity: S.weatherCity || S.userLocation,
-      notes,
-      items,
-      total,
-      status: 'pending',
-      createdAt: nowMs()
-    });
-
-    S.cart = [];
-    updateCartFloat();
-    modal(`
-      <h3>✅ Order Placed!</h3>
-      <p>Your order has been sent to the dealer${items.length > 1 ? 's' : ''}. They'll contact you on <strong>${esc(phone)}</strong> to confirm delivery.</p>
-      <div class="mc-actions">
-        <button class="btn btn-p" onclick="closeModal();navTo('agro-dealers')">Keep Shopping</button>
-      </div>
-    `);
-  } catch (e) {
-    toast('Failed: ' + (e.message || e));
-    restore();
-  } finally {
-    S._submittingOrder = false;
-  }
-};
-
 function renderAgroDealers() {
-  const all = S.agroProducts || [];
-  const products = all.filter(p => p.available !== false);
+  const all = (S.agroProducts || []).filter(p => p.available !== false);
+  const businesses = getBusinessesFromProducts();
+
   const search = (S.agroSearch || '').toLowerCase().trim();
   const tab = S.agroTab || 'all';
+  const city = S.agroCity || 'all';
+  const view = S.agroView || 'products';
 
-  let filtered = products.slice();
+  const categories = [...new Set(all.map(p => p.category).filter(Boolean))].sort();
+  const cities = [...new Set(all.map(p => p.city).filter(Boolean))].sort();
+
+  let filteredProducts = all.slice();
   if (search) {
-    filtered = filtered.filter(p =>
+    filteredProducts = filteredProducts.filter(p =>
       String(p.name || '').toLowerCase().includes(search) ||
       String(p.sellerName || '').toLowerCase().includes(search) ||
-      String(p.cropTag || '').toLowerCase().includes(search) ||
-      String(p.category || '').toLowerCase().includes(search)
+      String(p.category || '').toLowerCase().includes(search) ||
+      String(p.cropTag || '').toLowerCase().includes(search)
     );
   }
-  if (tab !== 'all') filtered = filtered.filter(p => p.category === tab);
+  if (tab !== 'all') filteredProducts = filteredProducts.filter(p => p.category === tab);
+  if (city !== 'all') filteredProducts = filteredProducts.filter(p => p.city === city);
 
-  const categories = [...new Set(products.map(p => p.category).filter(Boolean))].sort();
+  let filteredBusinesses = businesses.slice();
+  if (search) {
+    filteredBusinesses = filteredBusinesses.filter(b =>
+      String(b.name || '').toLowerCase().includes(search)
+    );
+  }
+  if (city !== 'all') filteredBusinesses = filteredBusinesses.filter(b => b.city === city);
+  if (tab !== 'all') {
+    filteredBusinesses = filteredBusinesses.filter(b =>
+      b.products.some(p => p.category === tab)
+    );
+  }
+
+  const showClear = search.length > 0;
 
   return `
   <div class="scroll">
@@ -5616,22 +5852,79 @@ function renderAgroDealers() {
       <div class="tb-title">Agro Dealers</div>
     </div>
 
-    <div style="padding:0 18px 12px">
-      <input id="agro-search" class="inp" style="width:100%" placeholder="🔍 Search products or dealers…" value="${esc(S.agroSearch || '')}" oninput="onAgroSearch(this.value)">
-    </div>
-
-    <div class="chips-row">
-      <button class="chip ${tab === 'all' ? 'active' : ''}" onclick="setAgroTab('all')">All</button>
-      ${categories.map(c => `<button class="chip ${tab === c ? 'active' : ''}" onclick="setAgroTab('${esc(c)}')">${esc(c)}</button>`).join('')}
-    </div>
-
-    ${filtered.length ? filtered.map(p => renderAgroProductCard(p)).join('') : `
-      <div class="empty">
-        <div class="e-ic">🏪</div>
-        <h3>No products found</h3>
-        <p>${search || tab !== 'all' ? 'Try a different search or category.' : 'Agro dealers will show their products here.'}</p>
+    <div class="agro-hero">
+      <h2>🏪 Agro Dealers</h2>
+      <p>Browse products and businesses near you. Call the dealer directly — no cart needed.</p>
+      <div class="ah-stats">
+        <div class="ah-stat">
+          <div class="ah-stat-n">${businesses.length}</div>
+          <div class="ah-stat-l">Businesses</div>
+        </div>
+        <div class="ah-stat">
+          <div class="ah-stat-n">${all.length}</div>
+          <div class="ah-stat-l">Products</div>
+        </div>
+        <div class="ah-stat">
+          <div class="ah-stat-n">${cities.length}</div>
+          <div class="ah-stat-l">Cities</div>
+        </div>
       </div>
+    </div>
+
+    <div class="agro-search-wrap">
+      <span class="agro-search-icon">🔍</span>
+      <input id="agro-search" class="agro-search-input" placeholder="Search products, businesses, categories…" value="${esc(S.agroSearch || '')}" oninput="onAgroSearch(this.value)">
+      <button class="agro-search-clear ${showClear ? 'show' : ''}" onclick="clearAgroSearch()">✕</button>
+    </div>
+
+    <div class="agro-view-toggle">
+      <button class="avt-btn ${view === 'products' ? 'active' : ''}" onclick="setAgroView('products')">
+        <span class="avt-ic">📦</span> Products
+      </button>
+      <button class="avt-btn ${view === 'businesses' ? 'active' : ''}" onclick="setAgroView('businesses')">
+        <span class="avt-ic">🏪</span> Businesses
+      </button>
+    </div>
+
+    <div class="biz-filters">
+      <button class="biz-filter ${tab === 'all' ? 'active' : ''}" onclick="setAgroTab('all')">All categories</button>
+      ${categories.map(c => `<button class="biz-filter ${tab === c ? 'active' : ''}" onclick="setAgroTab('${esc(c)}')">${esc(c)}</button>`).join('')}
+    </div>
+
+    ${cities.length > 1 ? `
+    <div class="biz-filters">
+      <button class="biz-filter ${city === 'all' ? 'active' : ''}" onclick="setAgroCity('all')">📍 All cities</button>
+      ${cities.map(c => `<button class="biz-filter ${city === c ? 'active' : ''}" onclick="setAgroCity('${esc(c)}')">📍 ${esc(c)}</button>`).join('')}
+    </div>
+    ` : ''}
+
+    ${view === 'products' ? `
+      <div class="agro-section-label">
+        <span>📦 Products</span>
+        <span class="asl-cnt">${filteredProducts.length}</span>
+      </div>
+      ${filteredProducts.length ? filteredProducts.map(p => renderAgroProductCard(p)).join('') : `
+        <div class="biz-empty">
+          <div class="be-em">📦</div>
+          <h3>No products found</h3>
+          <p>${search || tab !== 'all' || city !== 'all' ? 'Try a different search, category or city.' : 'Agro dealers will show their products here.'}</p>
+        </div>
+      `}
+    ` : `
+      <div class="agro-section-label">
+        <span>🏪 Businesses</span>
+        <span class="asl-cnt">${filteredBusinesses.length}</span>
+      </div>
+      ${filteredBusinesses.length ? filteredBusinesses.map(b => renderBusinessCard(b)).join('') : `
+        <div class="biz-empty">
+          <div class="be-em">🏪</div>
+          <h3>No businesses found</h3>
+          <p>${search || tab !== 'all' || city !== 'all' ? 'Try a different search, category or city.' : 'Agro dealers will appear here once they add products.'}</p>
+        </div>
+      `}
     `}
+
+    <div style="height:8px"></div>
   </div>
   ${bottomNavHTML()}`;
 }
@@ -5652,15 +5945,156 @@ function renderAgroProductCard(p) {
         🏪 ${esc(p.sellerName || 'Dealer')}
       </div>
       <div class="mc-title">${esc(p.name)}</div>
-      <div class="mc-meta">${esc(p.category || '')}${p.cropTag ? ' · ' + esc(p.cropTag) : ''}</div>
+      <div class="mc-meta">${esc(p.category || '')}${p.cropTag ? ' · ' + esc(p.cropTag) : ''}${p.city ? ' · ' + esc(p.city) : ''}</div>
       <div class="mc-price"><strong>${fmtZMK(p.price)}</strong><small>/ ${esc(p.unit || 'unit')}</small></div>
       ${outOfStock ? `<div style="font-size:10.5px;color:var(--danger);font-weight:800;margin-top:4px">● Out of stock</div>` : ''}
       ${lowStock ? `<div style="font-size:10.5px;color:var(--warn);font-weight:800;margin-top:4px">⚠ Only ${stockNum} left</div>` : ''}
     </div>
     <div class="mc-side">
-      ${!outOfStock
-        ? `<button class="lr-btn edit" style="background:var(--p);color:#fff;border-color:var(--p);width:36px;height:36px" onclick="event.stopPropagation();addToCart('${esc(p.id)}')" title="Add to cart">+</button>`
+      ${p.sellerPhone
+        ? `<a class="biz-card-call" href="tel:${esc(String(p.sellerPhone).replace(/[^\d+]/g,''))}" onclick="event.stopPropagation()" aria-label="Call">
+             <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+           </a>`
         : ''}
+    </div>
+  </div>`;
+}
+
+function renderBusinessCard(b) {
+  const photoCount = b.products.length;
+  const categories = [...new Set(b.products.map(p => p.category).filter(Boolean))];
+  const cheapest = b.products.reduce((min, p) => {
+    const price = Number(p.price);
+    if (isNaN(price) || price <= 0) return min;
+    return min === null || price < min ? price : min;
+  }, null);
+  return `
+  <div class="business-card" onclick="openBusiness('${esc(b.id)}')">
+    <div class="biz-card-hero">
+      <div class="biz-card-logo">
+        ${b.logo ? `<img src="${esc(b.logo)}" alt="">` : initials(b.name)}
+      </div>
+      <div class="biz-card-info">
+        <div class="biz-card-name">${esc(b.name)}</div>
+        <div class="biz-card-city">📍 ${esc(b.city || 'Unknown')}</div>
+      </div>
+    </div>
+    <div class="biz-card-body">
+      <div class="biz-card-stat">
+        <div class="bcs-num">${photoCount}</div>
+        <div class="bcs-lb">Products</div>
+      </div>
+      <div class="biz-card-stat">
+        <div class="bcs-num">${categories.length}</div>
+        <div class="bcs-lb">Categories</div>
+      </div>
+      <div class="biz-card-stat">
+        <div class="bcs-num" style="font-size:13px">${cheapest != null ? fmtZMK(cheapest) : '—'}</div>
+        <div class="bcs-lb">From</div>
+      </div>
+      ${b.phone
+        ? `<a class="biz-card-call" href="tel:${esc(String(b.phone).replace(/[^\d+]/g,''))}" onclick="event.stopPropagation()" aria-label="Call">
+             <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+           </a>`
+        : `<div class="biz-cta-arrow">
+             <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+           </div>`}
+    </div>
+  </div>`;
+}
+
+function renderBusinessDetail() {
+  const bizId = S.screenData.id;
+  const businesses = getBusinessesFromProducts();
+  const biz = businesses.find(b => b.id === bizId);
+  if (!biz) {
+    return `
+    <div class="scroll">
+      <div class="topbar bordered">
+        <button class="tb-back" onclick="navTo('agro-dealers')"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+        <div class="tb-title">Business</div>
+      </div>
+      <div class="biz-empty">
+        <div class="be-em">🏪</div>
+        <h3>Business not found</h3>
+        <p>This agro dealer is no longer available.</p>
+        <button class="btn btn-p" style="max-width:240px;margin:14px auto 0" onclick="navTo('agro-dealers')">Browse Agro Dealers</button>
+      </div>
+    </div>
+    ${bottomNavHTML()}`;
+  }
+
+  const products = biz.products;
+  const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
+
+  return `
+  <div class="scroll">
+    <div class="topbar bordered">
+      <button class="tb-back" onclick="navTo('agro-dealers')"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+      <div class="tb-title">Business Profile</div>
+    </div>
+
+    <div class="business-detail-hero">
+      <div class="bdh-logo">
+        ${biz.logo ? `<img src="${esc(biz.logo)}" alt="">` : initials(biz.name)}
+      </div>
+      <div class="bdh-name">${esc(biz.name)}</div>
+      <div class="bdh-city">📍 ${esc(biz.city || 'Unknown')}</div>
+      <div class="bdh-stats">
+        <div>
+          <div class="bdh-stat-n">${products.length}</div>
+          <div class="bdh-stat-l">Products</div>
+        </div>
+        <div>
+          <div class="bdh-stat-n">${categories.length}</div>
+          <div class="bdh-stat-l">Categories</div>
+        </div>
+      </div>
+      ${biz.phone ? `
+      <a class="bdh-call-btn" href="tel:${esc(String(biz.phone).replace(/[^\d+]/g,''))}">
+        <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        Call ${esc(biz.name.split(' ')[0])}
+      </a>
+      ` : ''}
+    </div>
+
+    <div class="d-section" style="padding:0 18px">
+      <h3>Products (${products.length})</h3>
+      ${products.length ? products.map(p => renderBusinessProductRow(p)).join('') : `
+        <div class="biz-empty" style="padding:24px">
+          <div class="be-em" style="font-size:36px">📦</div>
+          <h3>No products yet</h3>
+          <p>This business hasn't added products.</p>
+        </div>
+      `}
+    </div>
+
+    <div style="padding:18px 18px 24px">
+      <div class="info-block">
+        💡 <strong>Tip:</strong> Call the business directly to confirm stock, negotiate prices and arrange pickup or delivery.
+      </div>
+    </div>
+  </div>
+  ${bottomNavHTML()}`;
+}
+
+function renderBusinessProductRow(p) {
+  const outOfStock = p.stock != null && Number(p.stock) === 0;
+  return `
+  <div class="market-card" onclick="openAgroProduct('${esc(p.id)}')" style="margin:0 0 8px">
+    <div class="mc-thumb" style="width:56px;height:56px">
+      ${p.photoUrl ? `<img src="${esc(p.photoUrl)}" style="width:100%;height:100%;object-fit:cover;border-radius:16px">` : pickIcon(p.name)}
+    </div>
+    <div class="mc-body">
+      <div class="mc-title" style="font-size:13px">${esc(p.name)}</div>
+      <div class="mc-meta">${esc(p.category || '')}${p.cropTag ? ' · ' + esc(p.cropTag) : ''}</div>
+      <div class="mc-price" style="margin-top:4px"><strong style="font-size:14px">${fmtZMK(p.price)}</strong><small>/ ${esc(p.unit || 'unit')}</small></div>
+      ${outOfStock ? `<div style="font-size:10px;color:var(--danger);font-weight:800;margin-top:2px">● Out of stock</div>` : ''}
+    </div>
+    <div class="mc-side">
+      <span class="biz-cta-arrow">
+        <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+      </span>
     </div>
   </div>`;
 }
@@ -5679,6 +6113,8 @@ function renderProductDetail() {
   const outOfStock = stockNum === 0;
   const lowStock = stockNum != null && stockNum > 0 && stockNum < 10;
 
+  const biz = getBusinessesFromProducts().find(b => b.id === (p.sellerId || ('name_' + String(p.sellerName || 'unknown').toLowerCase())));
+
   return `
   <div class="scroll">
     <div class="topbar bordered">
@@ -5691,19 +6127,22 @@ function renderProductDetail() {
     </div>
 
     <div style="padding:18px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:10px 14px;background:linear-gradient(135deg,var(--p-l),var(--p-ll));border:1px solid rgba(15,122,52,.2);border-radius:var(--r-lg)">
-        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(145deg,#d1fae5,#10b981);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;flex-shrink:0;overflow:hidden">
-          ${p.sellerLogo ? `<img src="${esc(p.sellerLogo)}" style="width:100%;height:100%;object-fit:cover">` : initials(p.sellerName || 'Dealer')}
+      ${biz ? `
+      <div class="product-detail-biz" onclick="openBusiness('${esc(biz.id)}')">
+        <div class="product-detail-biz-logo">
+          ${biz.logo ? `<img src="${esc(biz.logo)}" alt="">` : initials(biz.name)}
         </div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:10px;font-weight:800;color:var(--p);text-transform:uppercase;letter-spacing:.04em">Sold by</div>
-          <div style="font-size:14px;font-weight:900;color:var(--p-d);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.sellerName || 'Agro Dealer')}</div>
-          <div style="font-size:11px;color:var(--p);font-weight:600;margin-top:1px">📍 ${esc(p.city || '—')}</div>
+        <div class="product-detail-biz-info">
+          <div class="product-detail-biz-label">Sold by</div>
+          <div class="product-detail-biz-name">${esc(biz.name)}</div>
+          <div class="product-detail-biz-city">📍 ${esc(biz.city || '—')}</div>
         </div>
-        ${p.sellerPhone ? `<a href="tel:${esc(p.sellerPhone)}" onclick="event.stopPropagation()" style="width:38px;height:38px;border-radius:50%;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;text-decoration:none">
-          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-        </a>` : ''}
+        <div class="product-detail-biz-cta">
+          View
+          <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+        </div>
       </div>
+      ` : ''}
 
       <h1 style="font-size:22px;font-weight:900;letter-spacing:-.03em;color:var(--td);margin-bottom:6px">${esc(p.name)}</h1>
       <div style="font-size:12px;color:var(--tl);font-weight:700;margin-bottom:14px">${esc(p.category || '')}${p.cropTag ? ' · ' + esc(p.cropTag) : ''}</div>
@@ -5717,108 +6156,22 @@ function renderProductDetail() {
 
       ${p.description ? `<div class="info-block" style="margin-bottom:14px"><strong>Details:</strong> ${esc(p.description)}</div>` : ''}
 
-      <div style="display:flex;gap:8px;margin-bottom:8px">
-        <button class="btn btn-s" style="flex:1" onclick="callSeller('${esc(p.sellerPhone || '')}','${esc(p.sellerName || '')}')">📞 Call Dealer</button>
-        <button class="btn btn-p" style="flex:1" ${outOfStock ? 'disabled style="opacity:.5"' : ''} onclick="addToCart('${esc(p.id)}')">+ Add to Cart</button>
-      </div>
+      ${p.sellerPhone ? `
+      <a class="btn btn-p" href="tel:${esc(String(p.sellerPhone).replace(/[^\d+]/g,''))}" style="margin-bottom:10px;text-decoration:none">
+        📞 Call ${esc(p.sellerName || 'Dealer')}
+      </a>
+      ` : ''}
+
+      ${biz ? `
+      <button class="btn btn-s" onclick="openBusiness('${esc(biz.id)}')">
+        🏪 View All Products from this Business
+      </button>
+      ` : ''}
 
       <div style="height:8px"></div>
     </div>
   </div>
   ${bottomNavHTML()}`;
-}
-
-function renderSupplierCart() {
-  const items = S.cart || [];
-
-  if (!items.length) {
-    return `<div class="scroll">
-      <div class="topbar bordered">
-        <button class="tb-back" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
-        <div class="tb-title">Cart</div>
-      </div>
-      <div class="empty">
-        <div class="e-ic">🛒</div>
-        <h3>Your cart is empty</h3>
-        <p>Browse agro dealers to add products.</p>
-        <button class="btn btn-p" style="max-width:240px;margin:14px auto 0" onclick="navTo('agro-dealers')">Browse Agro Dealers</button>
-      </div>
-    </div>${bottomNavHTML()}`;
-  }
-
-  const total = items.reduce((s, it) => s + (Number(it.product.price) * it.qty), 0);
-
-  return `<div class="scroll">
-    <div class="topbar bordered">
-      <button class="tb-back" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
-      <div class="tb-title">Cart (${items.length})</div>
-    </div>
-
-    <div style="padding:14px 18px">
-      ${items.map(it => {
-        const p = it.product;
-        return `
-        <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);margin-bottom:10px;box-shadow:var(--sh-xs)">
-          <div style="width:56px;height:56px;border-radius:12px;background:var(--sf2);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;overflow:hidden">
-            ${p.photoUrl ? `<img src="${esc(p.photoUrl)}" style="width:100%;height:100%;object-fit:cover">` : pickIcon(p.name)}
-          </div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:10px;font-weight:800;color:var(--p);text-transform:uppercase;letter-spacing:.04em">🏪 ${esc(p.sellerName || 'Dealer')}</div>
-            <div style="font-size:13px;font-weight:800;color:var(--td);line-height:1.2;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.name)}</div>
-            <div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:2px">${fmtZMK(p.price)} / ${esc(p.unit || 'unit')}</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
-            <button onclick="updateCartQty('${esc(p.id)}',-1)" style="width:28px;height:28px;border-radius:50%;background:var(--sf2);border:1px solid var(--bd);font-weight:900;font-size:14px;color:var(--td)">−</button>
-            <span style="min-width:24px;text-align:center;font-weight:900;font-size:14px;color:var(--td)">${it.qty}</span>
-            <button onclick="updateCartQty('${esc(p.id)}',1)" style="width:28px;height:28px;border-radius:50%;background:var(--sf2);border:1px solid var(--bd);font-weight:900;font-size:14px;color:var(--td)">+</button>
-          </div>
-        </div>`;
-      }).join('')}
-    </div>
-
-    <div style="padding:0 18px 18px">
-      <div style="display:flex;justify-content:space-between;padding:14px 0;border-top:1px solid var(--bd);font-size:16px;font-weight:900;color:var(--td);margin-bottom:14px">
-        <span>Total</span>
-        <span style="color:var(--p-d)">${fmtZMK(total)}</span>
-      </div>
-      <button class="btn btn-p" onclick="navTo('supplier-checkout')">Checkout →</button>
-      <button class="btn btn-s" style="margin-top:8px" onclick="navTo('agro-dealers')">Continue Shopping</button>
-    </div>
-  </div>${bottomNavHTML()}`;
-}
-
-function renderSupplierCheckout() {
-  const items = S.cart || [];
-  if (!items.length) {
-    setTimeout(() => navTo('supplier-cart'), 100);
-    return `<div class="scroll"><div class="topbar bordered"><button class="tb-back" onclick="goBack()">←</button><div class="tb-title">Checkout</div></div></div>`;
-  }
-
-  const total = items.reduce((s, it) => s + (Number(it.product.price) * it.qty), 0);
-  const p = S.profile || {};
-  const name = ((p.firstName || '') + ' ' + (p.lastName || '')).trim();
-  const phone = p.phone || p.phoneNumber || '';
-
-  return `<div class="scroll">
-    <div class="topbar bordered">
-      <button class="tb-back" onclick="goBack()"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
-      <div class="tb-title">Checkout</div>
-    </div>
-
-    <div class="frm" style="padding-top:14px">
-      <div class="fld"><label>Your Name</label><input id="co-name" class="inp" value="${esc(name)}" placeholder="Full name"></div>
-      <div class="fld"><label>Phone Number</label><input id="co-phone" class="inp" type="tel" value="${esc(phone)}" placeholder="e.g. 0977 123 456"></div>
-      <div class="fld"><label>Delivery Address / Notes</label><textarea id="co-notes" class="inp" rows="2" placeholder="Where should the dealer deliver? Any special instructions?"></textarea></div>
-
-      <div style="background:var(--sf2);border-radius:var(--r-lg);padding:14px">
-        <div style="font-size:11px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Order Summary</div>
-        ${items.map(it => `<div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;gap:8px"><span style="color:var(--tb);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(it.product.name)} <span style="color:var(--tl)">× ${it.qty}</span></span><span style="font-weight:800;color:var(--td);white-space:nowrap">${fmtZMK(Number(it.product.price) * it.qty)}</span></div>`).join('')}
-        <div style="display:flex;justify-content:space-between;font-size:15px;padding-top:10px;margin-top:8px;border-top:1px solid var(--bd);font-weight:900"><span>Total</span><span style="color:var(--p-d)">${fmtZMK(total)}</span></div>
-      </div>
-
-      <button class="btn btn-p" id="co-submit" onclick="submitOrder()">Place Order ✓</button>
-    </div>
-  </div>${bottomNavHTML()}`;
 }
 
 /* ============================================================
