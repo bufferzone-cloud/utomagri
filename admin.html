@@ -36,7 +36,7 @@
   --sh-lg:0 20px 40px rgba(15,23,42,.13);
   --sh-brand:0 10px 26px -8px var(--p-glow);
   --ring:0 0 0 4px rgba(15,122,52,.14);
-  --sidebar-w:260px;
+  --sidebar-w:270px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
@@ -50,10 +50,9 @@ button{cursor:pointer;border:none;background:none}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 
-/* ---- LOGIN ---- */
+/* ---------- LOGIN ---------- */
 #loginGate{
-  position:fixed;inset:0;z-index:9000;
-  background:linear-gradient(135deg,#0f7a34 0%,#084d20 60%,#052e14 100%);
+  position:fixed;inset:0;z-index:9000;background:linear-gradient(135deg,#0f7a34 0%,#084d20 60%,#052e14 100%);
   display:flex;align-items:center;justify-content:center;padding:20px;
 }
 #loginGate.hidden{display:none}
@@ -62,98 +61,75 @@ a{color:inherit;text-decoration:none}
   width:100%;max-width:400px;box-shadow:0 40px 80px -20px rgba(0,0,0,.5);
 }
 .login-card .lc-logo{
-  width:64px;height:64px;border-radius:18px;
-  background:linear-gradient(145deg,#12903e,#084d20);
-  display:flex;align-items:center;justify-content:center;
-  font-size:30px;margin:0 auto 18px;
-  box-shadow:0 12px 28px -8px rgba(15,122,52,.5);
+  width:64px;height:64px;border-radius:18px;background:linear-gradient(145deg,#12903e,#084d20);
+  display:flex;align-items:center;justify-content:center;font-size:30px;
+  margin:0 auto 18px;box-shadow:0 12px 28px -8px rgba(15,122,52,.5);
 }
 .login-card h1{font-size:22px;font-weight:900;color:var(--td);text-align:center;letter-spacing:-.03em;margin-bottom:6px}
 .login-card p{text-align:center;font-size:13px;color:var(--tl);font-weight:600;margin-bottom:24px;line-height:1.5}
-.login-field{margin-bottom:12px;position:relative}
+.login-field{margin-bottom:12px}
 .login-field input{
   width:100%;padding:14px 16px;border:1.5px solid var(--bd);border-radius:14px;
   font-size:15px;outline:none;transition:all .2s var(--e);background:var(--sf);
 }
 .login-field input:focus{border-color:var(--p);box-shadow:var(--ring)}
 .login-btn{
-  width:100%;padding:15px;border-radius:999px;
-  background:linear-gradient(180deg,#12903e,#0f7a34);color:#fff;
-  font-weight:800;font-size:15px;margin-top:8px;
+  width:100%;padding:15px;border-radius:999px;background:linear-gradient(180deg,#12903e,#0f7a34);
+  color:#fff;font-weight:800;font-size:15px;margin-top:8px;
   box-shadow:0 12px 28px -8px var(--p-glow);transition:transform .2s var(--e);
 }
 .login-btn:active{transform:scale(.97)}
 .login-btn:disabled{opacity:.5}
 .login-error{
-  background:var(--danger-soft);color:var(--danger);
-  padding:12px 16px;border-radius:12px;font-size:13px;font-weight:600;
-  margin-top:14px;display:none;
+  background:var(--danger-soft);color:var(--danger);padding:12px 16px;border-radius:12px;
+  font-size:13px;font-weight:600;margin-top:14px;display:none;
 }
 .login-error.show{display:block}
 
-/* ---- APP LAYOUT ---- */
-#appLayout{
-  position:fixed;inset:0;display:flex;background:var(--bg);
-}
+/* ---------- APP ---------- */
+#appLayout{position:fixed;inset:0;display:flex;background:var(--bg)}
 #appLayout.hidden{display:none}
 
-/* Sidebar */
 .sidebar{
   width:var(--sidebar-w);flex-shrink:0;
   background:linear-gradient(180deg,#0a2417 0%,#041a0e 100%);
-  color:#fff;display:flex;flex-direction:column;
-  transition:transform .35s var(--e);z-index:100;
+  color:#fff;display:flex;flex-direction:column;transition:transform .35s var(--e);z-index:100;
 }
-.sidebar-head{
-  padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,.08);
-}
-.sidebar-head .sb-brand{
-  display:flex;align-items:center;gap:10px;margin-bottom:4px;
-}
-.sidebar-head .sb-brand-mark{
-  width:36px;height:36px;border-radius:10px;
-  background:linear-gradient(145deg,#22c55e,#0f7a34);
+.sidebar-head{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-brand{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.sb-brand-mark{
+  width:36px;height:36px;border-radius:10px;background:linear-gradient(145deg,#22c55e,#0f7a34);
   display:flex;align-items:center;justify-content:center;font-size:18px;
   box-shadow:0 6px 16px -6px rgba(34,197,94,.5);
 }
-.sidebar-head .sb-brand-text{font-size:16px;font-weight:900;letter-spacing:-.02em}
-.sidebar-head .sb-sub{font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#86efac;opacity:.7;margin-top:2px;padding-left:46px}
+.sb-brand-text{font-size:16px;font-weight:900;letter-spacing:-.02em}
+.sb-sub{font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#86efac;opacity:.7;margin-top:2px;padding-left:46px}
 
-.sidebar-nav{flex:1;overflow-y:auto;padding:14px 10px;scrollbar-width:none}
-.sidebar-nav::-webkit-scrollbar{display:none}
-.sidebar-nav .group-label{
+.sidebar-nav{flex:1;overflow-y:auto;padding:12px 10px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.15) transparent}
+.sidebar-nav::-webkit-scrollbar{width:5px}
+.sidebar-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+.group-label{
   font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
   color:rgba(255,255,255,.32);padding:14px 12px 6px;
 }
-.sidebar-nav .nav-btn{
+.nav-btn{
   display:flex;align-items:center;gap:12px;width:100%;
-  padding:11px 14px;border-radius:11px;
-  color:rgba(255,255,255,.7);font-size:13.5px;font-weight:600;
-  transition:all .2s var(--e);text-align:left;margin-bottom:2px;
-  position:relative;
+  padding:10px 14px;border-radius:11px;color:rgba(255,255,255,.7);
+  font-size:13.5px;font-weight:600;transition:all .2s var(--e);text-align:left;
+  margin-bottom:2px;position:relative;
 }
-.sidebar-nav .nav-btn:hover{background:rgba(255,255,255,.07);color:#fff}
-.sidebar-nav .nav-btn.active{
-  background:linear-gradient(135deg,#12903e,#0f7a34);color:#fff;
-  box-shadow:0 8px 18px -6px rgba(34,197,94,.4);
-}
-.sidebar-nav .nav-btn .nb-icon{
-  width:22px;text-align:center;font-size:15px;flex-shrink:0;
-}
-.sidebar-nav .nav-btn .nb-count{
+.nav-btn:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav-btn.active{background:linear-gradient(135deg,#12903e,#0f7a34);color:#fff;box-shadow:0 8px 18px -6px rgba(34,197,94,.4)}
+.nav-btn .nb-icon{width:22px;text-align:center;font-size:15px;flex-shrink:0}
+.nav-btn .nb-count{
   margin-left:auto;font-size:10px;font-weight:900;padding:2px 8px;
-  border-radius:999px;background:rgba(255,255,255,.15);color:#fff;
-  min-width:20px;text-align:center;
+  border-radius:999px;background:rgba(255,255,255,.15);color:#fff;min-width:20px;text-align:center;
 }
-.sidebar-nav .nav-btn.active .nb-count{background:rgba(255,255,255,.25)}
-.sidebar-nav .nav-btn .nb-count.alert{background:#dc2626;color:#fff}
+.nav-btn.active .nb-count{background:rgba(255,255,255,.25)}
+.nav-btn .nb-count.alert{background:#dc2626;color:#fff}
 
-.sidebar-foot{
-  padding:14px 14px 20px;border-top:1px solid rgba(255,255,255,.08);
-}
-.sb-user{
-  display:flex;align-items:center;gap:10px;padding:8px 10px 10px;
-}
+.sidebar-foot{padding:12px 14px 18px;border-top:1px solid rgba(255,255,255,.08)}
+.sb-user{display:flex;align-items:center;gap:10px;padding:8px 10px 10px}
 .sb-user-avatar{
   width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.14);
   display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;
@@ -164,86 +140,54 @@ a{color:inherit;text-decoration:none}
 .sb-user-info strong{display:block;font-size:12.5px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#fff}
 .sb-user-info span{display:block;font-size:10.5px;color:#86efac;opacity:.7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sb-logout{
-  width:100%;display:flex;align-items:center;gap:10px;padding:11px 14px;
-  border-radius:11px;color:#f87171;font-size:13px;font-weight:700;
-  transition:background .2s var(--e);
+  width:100%;display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:11px;
+  color:#f87171;font-size:13px;font-weight:700;transition:background .2s var(--e);
 }
 .sb-logout:hover{background:rgba(248,113,113,.1)}
-.sb-logout i{font-style:normal;font-size:15px}
 
-/* Main */
-.main-area{
-  flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;
-}
+.main-area{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
 .main-topbar{
   height:64px;flex-shrink:0;background:#fff;border-bottom:1px solid var(--bd);
-  display:flex;align-items:center;padding:0 24px;gap:16px;
-  box-shadow:0 1px 3px rgba(15,23,42,.04);
+  display:flex;align-items:center;padding:0 24px;gap:16px;box-shadow:0 1px 3px rgba(15,23,42,.04);
 }
-.mt-menu{
-  display:none;width:38px;height:38px;border-radius:10px;
-  background:var(--sf2);align-items:center;justify-content:center;
-  font-size:18px;color:var(--td);
-}
+.mt-menu{display:none;width:38px;height:38px;border-radius:10px;background:var(--sf2);align-items:center;justify-content:center;font-size:18px;color:var(--td)}
 .mt-title{font-size:18px;font-weight:900;color:var(--td);letter-spacing:-.02em;flex:1}
-.mt-title-sub{font-size:11px;color:var(--tl);font-weight:700;margin-top:2px;letter-spacing:.02em}
+.mt-title-sub{font-size:11px;color:var(--tl);font-weight:700;margin-top:2px}
 .mt-actions{display:flex;gap:8px;align-items:center}
 .mt-btn{
   width:38px;height:38px;border-radius:10px;background:var(--sf2);
-  display:flex;align-items:center;justify-content:center;
-  font-size:15px;color:var(--tb);transition:all .2s var(--e);position:relative;
+  display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--tb);
+  transition:all .2s var(--e);position:relative;
 }
 .mt-btn:hover{background:var(--p-l);color:var(--p-d)}
-.mt-badge{
-  position:absolute;top:6px;right:6px;
-  min-width:16px;height:16px;border-radius:8px;
-  background:var(--danger);color:#fff;font-size:9px;font-weight:900;
-  display:flex;align-items:center;justify-content:center;padding:0 4px;
-  border:1.5px solid #fff;
-}
 
 .content-scroll{
-  flex:1;overflow-y:auto;overflow-x:hidden;padding:24px;
-  scrollbar-width:thin;scrollbar-color:var(--bd-s) transparent;
+  flex:1;overflow-y:auto;overflow-x:hidden;padding:24px;scrollbar-width:thin;scrollbar-color:var(--bd-s) transparent;
 }
 .content-scroll::-webkit-scrollbar{width:8px}
 .content-scroll::-webkit-scrollbar-thumb{background:var(--bd-s);border-radius:4px}
 
-/* ---- COMPONENTS ---- */
+/* ---------- COMPONENTS ---------- */
 .page-section{display:none}
 .page-section.active{display:block;animation:fadeIn .28s var(--e)}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* Stat cards */
-.stat-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:16px;margin-bottom:24px;
-}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
 .stat-card{
-  background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);
-  padding:20px;box-shadow:var(--sh-xs);position:relative;overflow:hidden;
+  background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);padding:20px;
+  box-shadow:var(--sh-xs);position:relative;overflow:hidden;
 }
 .stat-card::before{
   content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;
-  border-radius:50%;background:radial-gradient(circle,var(--p-l) 0%,transparent 70%);
-  pointer-events:none;
+  border-radius:50%;background:radial-gradient(circle,var(--p-l) 0%,transparent 70%);pointer-events:none;
 }
 .stat-card .sc-emoji{
   width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;
   font-size:22px;margin-bottom:14px;position:relative;z-index:1;
 }
-.stat-card .sc-num{
-  font-size:28px;font-weight:900;letter-spacing:-.03em;color:var(--td);line-height:1;
-  position:relative;z-index:1;
-}
-.stat-card .sc-label{
-  font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;
-  color:var(--tl);margin-top:8px;position:relative;z-index:1;
-}
-.stat-card .sc-sub{
-  font-size:11.5px;font-weight:600;color:var(--tl);margin-top:6px;
-  position:relative;z-index:1;
-}
+.stat-card .sc-num{font-size:28px;font-weight:900;letter-spacing:-.03em;color:var(--td);line-height:1;position:relative;z-index:1}
+.stat-card .sc-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin-top:8px;position:relative;z-index:1}
+.stat-card .sc-sub{font-size:11.5px;font-weight:600;color:var(--tl);margin-top:6px;position:relative;z-index:1}
 .sc-emoji.green{background:linear-gradient(145deg,#d1fae5,#10b981)}
 .sc-emoji.blue{background:linear-gradient(145deg,#dbeafe,#2563eb)}
 .sc-emoji.orange{background:linear-gradient(145deg,#ffedd5,#ea580c)}
@@ -251,56 +195,39 @@ a{color:inherit;text-decoration:none}
 .sc-emoji.amber{background:linear-gradient(145deg,#fef3c7,#d97706)}
 .sc-emoji.red{background:linear-gradient(145deg,#fee2e2,#dc2626)}
 .sc-emoji.teal{background:linear-gradient(145deg,#ccfbf1,#0d9488)}
+.sc-emoji.pink{background:linear-gradient(145deg,#fce7f3,#db2777)}
 
-/* Toolbar */
-.toolbar{
-  display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;align-items:center;
-}
-.toolbar-search{
-  flex:1;min-width:220px;position:relative;
-}
+.toolbar{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;align-items:center}
+.toolbar-search{flex:1;min-width:220px;position:relative}
 .toolbar-search input{
-  width:100%;padding:11px 16px 11px 42px;
-  border:1.5px solid var(--bd);border-radius:12px;
+  width:100%;padding:11px 16px 11px 42px;border:1.5px solid var(--bd);border-radius:12px;
   font-size:14px;background:#fff;outline:none;transition:all .2s var(--e);
 }
 .toolbar-search input:focus{border-color:var(--p);box-shadow:var(--ring)}
-.toolbar-search::before{
-  content:'🔍';position:absolute;left:14px;top:50%;transform:translateY(-50%);
-  font-size:14px;pointer-events:none;opacity:.55;
-}
+.toolbar-search::before{content:'🔍';position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;opacity:.55}
 .toolbar-select{
-  padding:11px 36px 11px 14px;
-  border:1.5px solid var(--bd);border-radius:12px;
+  padding:11px 36px 11px 14px;border:1.5px solid var(--bd);border-radius:12px;
   font-size:13px;font-weight:700;background:#fff;cursor:pointer;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 12px center;
   -webkit-appearance:none;appearance:none;outline:none;
 }
 .toolbar-btn{
-  padding:11px 18px;border-radius:12px;
-  background:linear-gradient(180deg,#12903e,var(--p));color:#fff;
+  padding:11px 18px;border-radius:12px;background:linear-gradient(180deg,#12903e,var(--p));color:#fff;
   font-size:13px;font-weight:800;display:inline-flex;align-items:center;gap:6px;
   box-shadow:0 6px 16px -6px var(--p-glow);transition:transform .2s var(--e);
 }
 .toolbar-btn:active{transform:scale(.97)}
 
-/* Data table */
-.table-wrap{
-  background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);
-  overflow:hidden;box-shadow:var(--sh-xs);
-}
+.table-wrap{background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);overflow:hidden;box-shadow:var(--sh-xs)}
 .table-scroll{overflow-x:auto}
 table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
 table.data-table thead{background:var(--sf2)}
 table.data-table th{
-  text-align:left;padding:12px 16px;
-  font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;
-  color:var(--tl);white-space:nowrap;border-bottom:1px solid var(--bd);
+  text-align:left;padding:12px 16px;font-size:10.5px;font-weight:900;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--tl);white-space:nowrap;border-bottom:1px solid var(--bd);
 }
-table.data-table td{
-  padding:14px 16px;border-bottom:1px solid var(--bd);vertical-align:middle;
-}
+table.data-table td{padding:14px 16px;border-bottom:1px solid var(--bd);vertical-align:middle}
 table.data-table tbody tr:last-child td{border-bottom:none}
 table.data-table tbody tr:hover{background:var(--p-ll)}
 table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
@@ -317,9 +244,8 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
 .cell-sub{font-size:11.5px;color:var(--tl);font-weight:600;margin-top:2px}
 
 .badge{
-  display:inline-block;padding:3px 9px;border-radius:999px;
-  font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;
-  white-space:nowrap;
+  display:inline-block;padding:3px 9px;border-radius:999px;font-size:10px;
+  font-weight:900;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;
 }
 .badge.approved{background:var(--ok-soft);color:#065f46}
 .badge.pending{background:var(--warn-soft);color:#92400e}
@@ -328,6 +254,7 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
 .badge.active{background:var(--ok-soft);color:#065f46}
 .badge.removed{background:#f1f5f9;color:#475569}
 .badge.sold{background:var(--purple-soft);color:#5b21b6}
+.badge.available{background:var(--ok-soft);color:#065f46}
 .badge.role{background:var(--info-soft);color:#1e40af}
 .badge.role.farmer{background:var(--p-l);color:var(--p-d)}
 .badge.role.supplier{background:var(--purple-soft);color:#5b21b6}
@@ -344,8 +271,7 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
 
 .action-group{display:flex;gap:5px;justify-content:flex-end}
 .action-btn{
-  width:30px;height:30px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
   font-size:13px;transition:all .2s var(--e);border:1px solid transparent;
 }
 .action-btn:active{transform:scale(.88)}
@@ -357,38 +283,31 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
 .action-btn.edit{background:var(--p-l);color:var(--p-d)}
 .action-btn:hover{filter:brightness(.94)}
 
-.empty-state{
-  padding:60px 24px;text-align:center;color:var(--tl);
-}
+.empty-state{padding:60px 24px;text-align:center;color:var(--tl)}
 .empty-state .em{font-size:52px;margin-bottom:14px;opacity:.55;line-height:1}
 .empty-state h3{font-size:15px;font-weight:900;color:var(--td);margin-bottom:6px}
 .empty-state p{font-size:13px;line-height:1.55}
-
 .loader-row{
-  padding:50px 20px;text-align:center;color:var(--tl);
-  font-weight:600;font-size:13.5px;
+  padding:50px 20px;text-align:center;color:var(--tl);font-weight:600;font-size:13.5px;
   display:flex;align-items:center;justify-content:center;gap:10px;
 }
 .spinner{
-  width:16px;height:16px;border-radius:50%;
-  border:2px solid var(--bd-s);border-top-color:var(--p);
-  animation:spin .8s linear infinite;
+  width:16px;height:16px;border-radius:50%;border:2px solid var(--bd-s);
+  border-top-color:var(--p);animation:spin .8s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Modal */
+/* ---------- MODAL ---------- */
 .modal-overlay{
-  position:fixed;inset:0;z-index:1000;
-  background:rgba(15,23,42,.55);backdrop-filter:blur(6px);
-  display:none;align-items:center;justify-content:center;padding:20px;
+  position:fixed;inset:0;z-index:1000;background:rgba(15,23,42,.55);
+  backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;
   animation:fadeIn .22s var(--e);
 }
 .modal-overlay.open{display:flex}
 .modal-card{
-  background:#fff;border-radius:var(--r-xl);width:100%;max-width:560px;
-  max-height:90vh;overflow-y:auto;box-shadow:0 40px 80px -20px rgba(0,0,0,.4);
-  animation:modalIn .3s cubic-bezier(.34,1.4,.64,1);
-  scrollbar-width:thin;
+  background:#fff;border-radius:var(--r-xl);width:100%;max-width:600px;max-height:90vh;
+  overflow-y:auto;box-shadow:0 40px 80px -20px rgba(0,0,0,.4);
+  animation:modalIn .3s cubic-bezier(.34,1.4,.64,1);scrollbar-width:thin;
 }
 .modal-card::-webkit-scrollbar{width:6px}
 .modal-card::-webkit-scrollbar-thumb{background:var(--bd-s);border-radius:3px}
@@ -408,31 +327,29 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
 .modal-close:hover{background:var(--danger-soft);color:var(--danger)}
 .modal-body{padding:20px 22px 22px}
 .modal-foot{
-  padding:14px 22px 20px;border-top:1px solid var(--bd);
-  display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;
-  position:sticky;bottom:0;background:#fff;border-radius:0 0 var(--r-xl) var(--r-xl);
+  padding:14px 22px 20px;border-top:1px solid var(--bd);display:flex;gap:8px;
+  justify-content:flex-end;flex-wrap:wrap;position:sticky;bottom:0;background:#fff;
+  border-radius:0 0 var(--r-xl) var(--r-xl);
 }
 
 .form-field{margin-bottom:14px}
 .form-field label{
-  display:block;font-size:10.5px;font-weight:900;
-  text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin-bottom:6px;
+  display:block;font-size:10.5px;font-weight:900;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--tl);margin-bottom:6px;
 }
 .form-field input,.form-field select,.form-field textarea{
   width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:11px;
   font-size:14px;background:var(--sf);outline:none;transition:all .2s var(--e);
 }
-.form-field input:focus,.form-field select:focus,.form-field textarea:focus{
-  border-color:var(--p);box-shadow:var(--ring);
-}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--p);box-shadow:var(--ring)}
 .form-field textarea{resize:vertical;min-height:70px;line-height:1.5}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .form-note{font-size:11.5px;color:var(--tl);font-weight:600;margin-top:6px;line-height:1.5}
 
 .info-table{background:var(--sf2);border-radius:12px;overflow:hidden;margin-bottom:16px}
 .info-table .it-row{
-  display:flex;justify-content:space-between;gap:12px;
-  padding:11px 14px;border-bottom:1px solid var(--bd);font-size:13px;
+  display:flex;justify-content:space-between;gap:12px;padding:11px 14px;
+  border-bottom:1px solid var(--bd);font-size:13px;
 }
 .info-table .it-row:last-child{border-bottom:none}
 .info-table .it-k{color:var(--tl);font-weight:700;flex-shrink:0}
@@ -455,24 +372,265 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
 .btn-ok-soft{background:var(--ok-soft);color:#065f46;border:1.5px solid rgba(22,163,74,.2)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 
+/* ---------- FULLSCREEN OVERLAY PAGES ---------- */
+.overlay-page{
+  position:fixed;inset:0;z-index:800;background:var(--bg);
+  display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .38s var(--e);
+  pointer-events:none;
+}
+.overlay-page.open{transform:translateX(0);pointer-events:auto}
+.op-head{
+  height:64px;flex-shrink:0;background:#fff;border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;padding:0 20px;gap:14px;
+  box-shadow:0 1px 3px rgba(15,23,42,.04);
+}
+.op-back{
+  width:38px;height:38px;border-radius:50%;background:var(--sf2);
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  color:var(--td);flex-shrink:0;transition:all .2s var(--e);
+}
+.op-back:hover{background:var(--p-l);color:var(--p-d)}
+.op-title{font-size:17px;font-weight:900;color:var(--td);letter-spacing:-.02em;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.op-title-sub{font-size:11px;color:var(--tl);font-weight:700;margin-top:2px}
+.op-actions{display:flex;gap:6px;flex-shrink:0}
+.op-actions .action-btn{width:36px;height:36px;font-size:14px}
+.op-body{flex:1;overflow-y:auto;padding:20px;scrollbar-width:thin;scrollbar-color:var(--bd-s) transparent}
+.op-body::-webkit-scrollbar{width:8px}
+.op-body::-webkit-scrollbar-thumb{background:var(--bd-s);border-radius:4px}
+
+/* User detail specific */
+.ud-hero{
+  background:linear-gradient(135deg,#0f7a34 0%,#084d20 100%);
+  border-radius:var(--r-xl);padding:26px 22px;color:#fff;
+  text-align:center;position:relative;overflow:hidden;margin-bottom:20px;
+  box-shadow:0 20px 40px -12px rgba(15,122,52,.4);
+}
+.ud-hero::before{
+  content:'';position:absolute;top:-40px;right:-30px;width:160px;height:160px;
+  background:radial-gradient(circle,rgba(255,255,255,.2) 0%,transparent 70%);border-radius:50%;
+}
+.ud-avatar{
+  width:88px;height:88px;border-radius:50%;margin:0 auto 14px;
+  background:rgba(255,255,255,.22);border:3px solid #fff;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;
+  position:relative;z-index:1;
+}
+.ud-avatar img{width:100%;height:100%;object-fit:cover}
+.ud-name{font-size:22px;font-weight:900;letter-spacing:-.03em;position:relative;z-index:1}
+.ud-role-badge{
+  display:inline-flex;align-items:center;gap:5px;margin-top:8px;
+  font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;
+  padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.2);
+  position:relative;z-index:1;
+}
+.ud-status-line{
+  display:inline-flex;align-items:center;gap:6px;margin-top:8px;
+  padding:5px 14px;border-radius:999px;font-size:11px;font-weight:800;
+  position:relative;z-index:1;
+}
+.ud-status-line.approved{background:rgba(209,250,229,.9);color:#065f46}
+.ud-status-line.pending{background:rgba(254,243,199,.9);color:#92400e}
+.ud-status-line.rejected,.ud-status-line.banned{background:rgba(254,226,226,.9);color:#991b1b}
+.ud-stats{
+  display:flex;justify-content:space-around;margin-top:16px;padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.16);position:relative;z-index:1;
+}
+.ud-stat{text-align:center;flex:1}
+.ud-stat .n{font-size:20px;font-weight:900;letter-spacing:-.03em}
+.ud-stat .l{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.85;margin-top:2px}
+
+.ud-section{background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);padding:18px;margin-bottom:16px;box-shadow:var(--sh-xs)}
+.ud-section-title{
+  font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);
+  margin-bottom:14px;display:flex;align-items:center;gap:8px;
+}
+.ud-section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--bd),transparent)}
+
+.ud-doc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.ud-doc{
+  aspect-ratio:1;border-radius:12px;overflow:hidden;position:relative;
+  background:var(--sf2);border:1px solid var(--bd);cursor:pointer;
+  transition:all .2s var(--e);
+}
+.ud-doc:hover{transform:scale(1.02);box-shadow:var(--sh-md);border-color:var(--p)}
+.ud-doc img{width:100%;height:100%;object-fit:cover}
+.ud-doc .ud-doc-label{
+  position:absolute;bottom:0;left:0;right:0;padding:6px 10px;
+  background:linear-gradient(transparent,rgba(0,0,0,.8));
+  color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;
+}
+
+.ud-farm-item,.ud-batch-item,.ud-listing-item,.ud-product-item{
+  display:flex;gap:12px;padding:12px;background:var(--sf2);border-radius:12px;
+  margin-bottom:8px;cursor:pointer;transition:all .2s var(--e);
+}
+.ud-farm-item:hover,.ud-batch-item:hover,.ud-listing-item:hover,.ud-product-item:hover{background:var(--p-ll)}
+.ud-item-thumb{
+  width:52px;height:52px;border-radius:12px;flex-shrink:0;
+  background:linear-gradient(145deg,#d1fae5,#10b981);overflow:hidden;
+  display:flex;align-items:center;justify-content:center;font-size:24px;
+}
+.ud-item-thumb img{width:100%;height:100%;object-fit:cover}
+.ud-item-body{flex:1;min-width:0}
+.ud-item-name{font-size:13px;font-weight:800;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ud-item-sub{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ud-item-meta{font-size:11px;color:var(--p);font-weight:700;margin-top:4px}
+
+/* Market preview */
+.mp-role-chips{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.mp-role-chip{
+  padding:10px 16px;border-radius:999px;background:#fff;border:1.5px solid var(--bd);
+  font-size:12.5px;font-weight:800;color:var(--tb);cursor:pointer;
+  transition:all .2s var(--e);display:flex;align-items:center;gap:6px;
+}
+.mp-role-chip:hover{background:var(--p-ll);border-color:var(--p)}
+.mp-role-chip.active{background:linear-gradient(135deg,#12903e,#0f7a34);color:#fff;border-color:var(--p);box-shadow:0 8px 20px -6px var(--p-glow)}
+
+.mp-banner{
+  background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:var(--r-xl);
+  padding:20px;color:#fff;margin-bottom:18px;position:relative;overflow:hidden;
+}
+.mp-banner::before{
+  content:'';position:absolute;top:-30px;right:-30px;width:140px;height:140px;
+  background:radial-gradient(circle,rgba(251,191,36,.18) 0%,transparent 70%);border-radius:50%;
+}
+.mp-banner h2{font-size:18px;font-weight:900;letter-spacing:-.02em;position:relative;z-index:1}
+.mp-banner p{font-size:12.5px;font-weight:600;opacity:.85;margin-top:6px;line-height:1.5;position:relative;z-index:1}
+.mp-banner .mp-role-tag{
+  display:inline-flex;align-items:center;gap:5px;margin-top:10px;
+  padding:5px 12px;border-radius:999px;font-size:10.5px;font-weight:900;
+  background:rgba(251,191,36,.2);color:#fbbf24;text-transform:uppercase;letter-spacing:.06em;
+  position:relative;z-index:1;
+}
+
+.mp-list{display:flex;flex-direction:column;gap:10px}
+.mp-card{
+  display:flex;gap:12px;padding:14px;background:#fff;border:1px solid var(--bd);
+  border-radius:var(--r-lg);box-shadow:var(--sh-xs);cursor:pointer;
+  transition:all .2s var(--e);position:relative;
+}
+.mp-card:hover{transform:translateY(-1px);box-shadow:var(--sh-md)}
+.mp-thumb{
+  width:64px;height:64px;border-radius:14px;flex-shrink:0;
+  background:var(--sf2);overflow:hidden;display:flex;align-items:center;justify-content:center;
+  font-size:28px;
+}
+.mp-thumb img{width:100%;height:100%;object-fit:cover}
+.mp-body{flex:1;min-width:0}
+.mp-name{font-size:14px;font-weight:900;color:var(--td);letter-spacing:-.01em}
+.mp-variety{font-size:10.5px;color:var(--p);font-weight:800;text-transform:uppercase;margin-top:2px}
+.mp-meta{font-size:11.5px;color:var(--tl);font-weight:600;margin-top:3px;line-height:1.4}
+.mp-price-row{display:flex;align-items:baseline;gap:5px;margin-top:6px}
+.mp-price{font-size:16px;font-weight:900;color:var(--p-d);letter-spacing:-.02em}
+.mp-price-unit{font-size:10.5px;font-weight:700;color:var(--tl);text-transform:uppercase}
+.mp-side{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;flex-shrink:0;gap:6px}
+.mp-badge{
+  font-size:9.5px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;
+  padding:4px 9px;border-radius:999px;white-space:nowrap;
+}
+.mp-badge.available{background:var(--ok-soft);color:#065f46}
+.mp-badge.pending{background:var(--warn-soft);color:#92400e}
+.mp-badge.sold{background:var(--purple-soft);color:#5b21b6}
+.mp-badge.removed{background:#f1f5f9;color:#475569}
+.mp-badge.city{background:var(--info-soft);color:#1e40af}
+.mp-call{
+  width:34px;height:34px;border-radius:50%;background:linear-gradient(145deg,#22c55e,#15803d);
+  display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px -4px rgba(34,197,94,.5);
+}
+
+/* Weather */
+.weather-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.weather-card{
+  background:#fff;border:1px solid var(--bd);border-radius:var(--r-lg);
+  padding:18px;box-shadow:var(--sh-xs);position:relative;overflow:hidden;
+}
+.weather-card::before{
+  content:'';position:absolute;top:-25px;right:-25px;width:90px;height:90px;
+  background:radial-gradient(circle,var(--info-soft) 0%,transparent 70%);border-radius:50%;pointer-events:none;
+}
+.weather-city{font-size:13px;font-weight:900;color:var(--td);margin-bottom:2px;position:relative;z-index:1}
+.weather-coords{font-size:10.5px;color:var(--tm);font-weight:600;position:relative;z-index:1}
+.weather-icon{font-size:38px;margin:12px 0 6px;position:relative;z-index:1;line-height:1}
+.weather-temp{font-size:28px;font-weight:900;color:var(--td);letter-spacing:-.03em;line-height:1;position:relative;z-index:1}
+.weather-desc{font-size:11.5px;color:var(--tl);font-weight:700;margin-top:4px;position:relative;z-index:1}
+.weather-details{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;padding-top:12px;
+  border-top:1px dashed var(--bd);position:relative;z-index:1;
+}
+.weather-detail{text-align:center}
+.weather-detail .wd-val{font-size:14px;font-weight:900;color:var(--td)}
+.weather-detail .wd-lb{font-size:9.5px;font-weight:800;color:var(--tl);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+
+/* Knowledge */
+.know-category{
+  background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);padding:18px;
+  margin-bottom:16px;box-shadow:var(--sh-xs);
+}
+.know-cat-head{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;
+  padding-bottom:12px;border-bottom:1px solid var(--bd);
+}
+.know-cat-title{font-size:14px;font-weight:900;color:var(--td);display:flex;align-items:center;gap:8px}
+.know-cat-title .em{font-size:18px}
+.know-crop{
+  display:flex;gap:12px;padding:12px;border-radius:12px;background:var(--sf2);
+  margin-bottom:8px;cursor:pointer;transition:all .2s var(--e);align-items:center;
+}
+.know-crop:hover{background:var(--p-ll)}
+.know-crop-em{
+  width:44px;height:44px;border-radius:12px;background:var(--p-l);
+  display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;
+}
+.know-crop-body{flex:1;min-width:0}
+.know-crop-name{font-size:13px;font-weight:800;color:var(--td)}
+.know-crop-sub{font-size:11px;color:var(--tl);font-weight:600;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.know-crop-actions{display:flex;gap:5px;flex-shrink:0}
+
+/* Approval card */
+.approval-card{
+  background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);padding:18px;
+  margin-bottom:16px;box-shadow:var(--sh-xs);
+}
+.approval-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px}
+.approval-avatar{
+  width:60px;height:60px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(145deg,#d1fae5,#10b981);overflow:hidden;
+  display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;
+}
+.approval-avatar img{width:100%;height:100%;object-fit:cover}
+.approval-info{flex:1;min-width:0}
+.approval-name{font-size:16px;font-weight:900;color:var(--td);letter-spacing:-.02em}
+.approval-role{font-size:11.5px;font-weight:700;color:var(--tl);margin-top:3px}
+.approval-actions{display:flex;gap:8px;margin-top:16px}
+.approval-actions .btn{flex:1}
+
 /* Toast */
 #toast{
   position:fixed;bottom:28px;left:50%;transform:translate(-50%,20px);
-  background:rgba(15,23,42,.95);color:#fff;
-  padding:12px 22px;border-radius:999px;
-  font-size:13px;font-weight:700;
-  opacity:0;pointer-events:none;transition:all .3s var(--e);z-index:1100;
-  box-shadow:0 12px 30px -8px rgba(0,0,0,.4);
+  background:rgba(15,23,42,.95);color:#fff;padding:12px 22px;border-radius:999px;
+  font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:all .3s var(--e);
+  z-index:1100;box-shadow:0 12px 30px -8px rgba(0,0,0,.4);
   max-width:calc(100vw - 40px);text-align:center;
 }
 #toast.show{opacity:1;transform:translate(-50%,0)}
 
-/* Mobile */
+/* Lightbox */
+#lightbox{
+  position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.94);
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+#lightbox.open{display:flex}
+#lightbox img{max-width:100%;max-height:90vh;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+#lightbox .lb-close{
+  position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;
+  background:rgba(255,255,255,.15);color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:20px;cursor:pointer;
+}
+
+/* Responsive */
 @media(max-width:960px){
-  .sidebar{
-    position:fixed;top:0;left:0;bottom:0;transform:translateX(-100%);
-    box-shadow:14px 0 40px rgba(0,0,0,.3);
-  }
+  .sidebar{position:fixed;top:0;left:0;bottom:0;transform:translateX(-100%);box-shadow:14px 0 40px rgba(0,0,0,.3)}
   .sidebar.open{transform:translateX(0)}
   .mt-menu{display:flex}
   .content-scroll{padding:16px}
@@ -484,16 +642,15 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
   .stat-grid{grid-template-columns:1fr 1fr;gap:10px}
   .stat-card{padding:14px}
   .stat-card .sc-num{font-size:22px}
-  .toolbar{padding:0;gap:8px}
   .toolbar-search{min-width:0;flex-basis:100%}
-  .toolbar-select{flex:1}
-  .toolbar-btn{flex:1;justify-content:center}
+  .weather-grid{grid-template-columns:1fr}
+  .ud-doc-grid{grid-template-columns:repeat(2,1fr)}
 }
 </style>
 </head>
 <body>
 
-<!-- ============================== LOGIN ============================== -->
+<!-- LOGIN -->
 <div id="loginGate">
   <div class="login-card">
     <div class="lc-logo">🛡️</div>
@@ -512,9 +669,8 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
   </div>
 </div>
 
-<!-- ============================== APP ============================== -->
+<!-- APP -->
 <div id="appLayout" class="hidden">
-
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-head">
       <div class="sb-brand">
@@ -526,43 +682,36 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
 
     <nav class="sidebar-nav">
       <div class="group-label">Overview</div>
-      <button class="nav-btn active" data-page="dashboard">
-        <span class="nb-icon">📊</span> Dashboard
-      </button>
+      <button class="nav-btn active" data-page="dashboard"><span class="nb-icon">📊</span> Dashboard</button>
 
       <div class="group-label">People</div>
-      <button class="nav-btn" data-page="users">
-        <span class="nb-icon">👥</span> Users
-        <span class="nb-count" id="nbCountUsers">0</span>
-      </button>
+      <button class="nav-btn" data-page="approvals"><span class="nb-icon">⏳</span> Approvals <span class="nb-count alert" id="nbApprovals">0</span></button>
+      <button class="nav-btn" data-page="users" data-role="all"><span class="nb-icon">👥</span> All Users <span class="nb-count" id="nbUsersAll">0</span></button>
+      <button class="nav-btn" data-page="users" data-role="customer"><span class="nb-icon">🛒</span> Customers <span class="nb-count" id="nbCustomers">0</span></button>
+      <button class="nav-btn" data-page="users" data-role="farmer"><span class="nb-icon">🌾</span> Farmers <span class="nb-count" id="nbFarmers">0</span></button>
+      <button class="nav-btn" data-page="users" data-role="supplier"><span class="nb-icon">📦</span> Suppliers <span class="nb-count" id="nbSuppliers">0</span></button>
+      <button class="nav-btn" data-page="users" data-role="marketeer"><span class="nb-icon">🏪</span> Marketeers <span class="nb-count" id="nbMarketeers">0</span></button>
+      <button class="nav-btn" data-page="users" data-role="delivery"><span class="nb-icon">🚚</span> Delivery <span class="nb-count" id="nbDelivery">0</span></button>
+      <button class="nav-btn" data-page="users" data-role="admin"><span class="nb-icon">🛡️</span> Admins <span class="nb-count" id="nbAdmins">0</span></button>
 
-      <div class="group-label">Platform</div>
-      <button class="nav-btn" data-page="batches">
-        <span class="nb-icon">🌱</span> Batches
-        <span class="nb-count" id="nbCountBatches">0</span>
-      </button>
-      <button class="nav-btn" data-page="listings">
-        <span class="nb-icon">🛒</span> Market Listings
-        <span class="nb-count" id="nbCountListings">0</span>
-      </button>
-      <button class="nav-btn" data-page="products">
-        <span class="nb-icon">📦</span> Agro Products
-        <span class="nb-count" id="nbCountProducts">0</span>
-      </button>
-      <button class="nav-btn" data-page="deliveries">
-        <span class="nb-icon">🚚</span> Delivery Requests
-        <span class="nb-count" id="nbCountDeliveries">0</span>
-      </button>
+      <div class="group-label">Farm</div>
+      <button class="nav-btn" data-page="batches"><span class="nb-icon">🌱</span> Batches <span class="nb-count" id="nbBatches">0</span></button>
 
-      <div class="group-label">Communications</div>
-      <button class="nav-btn" data-page="notifications">
-        <span class="nb-icon">🔔</span> Notifications
-      </button>
+      <div class="group-label">Commerce</div>
+      <button class="nav-btn" data-page="listings"><span class="nb-icon">🛒</span> Market Listings <span class="nb-count" id="nbListings">0</span></button>
+      <button class="nav-btn" data-page="products"><span class="nb-icon">📦</span> Agro Products <span class="nb-count" id="nbProducts">0</span></button>
+      <button class="nav-btn" data-page="deliveries"><span class="nb-icon">🚚</span> Deliveries <span class="nb-count" id="nbDeliveries">0</span></button>
+      <button class="nav-btn" data-page="market-preview"><span class="nb-icon">👁️</span> Market Preview</button>
+
+      <div class="group-label">Insights</div>
+      <button class="nav-btn" data-page="weather"><span class="nb-icon">⛅</span> Weather · All Cities</button>
+
+      <div class="group-label">Content</div>
+      <button class="nav-btn" data-page="knowledge"><span class="nb-icon">📚</span> App Knowledge</button>
 
       <div class="group-label">System</div>
-      <button class="nav-btn" data-page="settings">
-        <span class="nb-icon">⚙️</span> Settings
-      </button>
+      <button class="nav-btn" data-page="notifications"><span class="nb-icon">🔔</span> Notifications</button>
+      <button class="nav-btn" data-page="settings"><span class="nb-icon">⚙️</span> Settings</button>
     </nav>
 
     <div class="sidebar-foot">
@@ -570,12 +719,10 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
         <div class="sb-user-avatar" id="adminAvatar">A</div>
         <div class="sb-user-info">
           <strong id="adminName">Admin</strong>
-          <span id="adminEmail">admin@utom.com</span>
+          <span id="adminEmail">—</span>
         </div>
       </div>
-      <button class="sb-logout" id="logoutBtn">
-        <i>🚪</i> Sign Out
-      </button>
+      <button class="sb-logout" id="logoutBtn">🚪 Sign Out</button>
     </div>
   </aside>
 
@@ -592,32 +739,22 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
     </div>
 
     <div class="content-scroll" id="contentScroll">
-
       <!-- Dashboard -->
       <section class="page-section active" data-section="dashboard">
-        <div class="stat-grid" id="dashStats">
-          <div class="loader-row"><span class="spinner"></span> Loading dashboard…</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="dashBreakdowns">
-        </div>
+        <div class="stat-grid" id="dashStats"><div class="loader-row"><span class="spinner"></span> Loading…</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="dashBreakdowns"></div>
         <div id="dashRecent" style="margin-top:16px"></div>
+      </section>
+
+      <!-- Approvals -->
+      <section class="page-section" data-section="approvals">
+        <div id="approvalsList"><div class="loader-row"><span class="spinner"></span> Loading pending…</div></div>
       </section>
 
       <!-- Users -->
       <section class="page-section" data-section="users">
         <div class="toolbar">
-          <div class="toolbar-search">
-            <input type="text" id="userSearch" placeholder="Search by name, email, phone…">
-          </div>
-          <select class="toolbar-select" id="userRoleFilter">
-            <option value="all">All Roles</option>
-            <option value="customer">Customers</option>
-            <option value="farmer">Farmers</option>
-            <option value="supplier">Suppliers</option>
-            <option value="marketeer">Marketeers</option>
-            <option value="delivery">Delivery</option>
-            <option value="admin">Admins</option>
-          </select>
+          <div class="toolbar-search"><input type="text" id="userSearch" placeholder="Search by name, email, phone…"></div>
           <select class="toolbar-select" id="userStatusFilter">
             <option value="all">All Status</option>
             <option value="approved">Approved</option>
@@ -625,24 +762,12 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
             <option value="rejected">Rejected</option>
             <option value="banned">Banned</option>
           </select>
-          <button class="toolbar-btn" id="btnSendBulk">🔔 Notify</button>
         </div>
         <div class="table-wrap">
           <div class="table-scroll">
             <table class="data-table">
-              <thead>
-                <tr>
-                  <th>User</th>
-                  <th>Role</th>
-                  <th>Status</th>
-                  <th>City</th>
-                  <th>Phone</th>
-                  <th style="text-align:right">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="usersTableBody">
-                <tr><td colspan="6"><div class="loader-row"><span class="spinner"></span> Loading users…</div></td></tr>
-              </tbody>
+              <thead><tr><th>User</th><th>Role</th><th>Status</th><th>City</th><th>Phone</th><th style="text-align:right">Actions</th></tr></thead>
+              <tbody id="usersTableBody"><tr><td colspan="6"><div class="loader-row"><span class="spinner"></span> Loading…</div></td></tr></tbody>
             </table>
           </div>
         </div>
@@ -651,9 +776,7 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
       <!-- Batches -->
       <section class="page-section" data-section="batches">
         <div class="toolbar">
-          <div class="toolbar-search">
-            <input type="text" id="batchSearch" placeholder="Search by crop, farmer, batch #…">
-          </div>
+          <div class="toolbar-search"><input type="text" id="batchSearch" placeholder="Search by crop, farmer, batch #…"></div>
           <select class="toolbar-select" id="batchStageFilter">
             <option value="all">All Stages</option>
             <option value="planted">Planted</option>
@@ -667,20 +790,8 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
         <div class="table-wrap">
           <div class="table-scroll">
             <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Crop</th>
-                  <th>Farmer</th>
-                  <th>City</th>
-                  <th>Stage</th>
-                  <th>Est. Boxes</th>
-                  <th>Actual</th>
-                  <th style="text-align:right">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="batchesTableBody">
-                <tr><td colspan="7"><div class="loader-row"><span class="spinner"></span> Loading batches…</div></td></tr>
-              </tbody>
+              <thead><tr><th>Crop</th><th>Farmer</th><th>City</th><th>Stage</th><th>Est.</th><th>Actual</th><th style="text-align:right">Actions</th></tr></thead>
+              <tbody id="batchesTableBody"><tr><td colspan="7"><div class="loader-row"><span class="spinner"></span> Loading…</div></td></tr></tbody>
             </table>
           </div>
         </div>
@@ -689,14 +800,11 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
       <!-- Listings -->
       <section class="page-section" data-section="listings">
         <div class="toolbar">
-          <div class="toolbar-search">
-            <input type="text" id="listingSearch" placeholder="Search by product, seller, market…">
-          </div>
+          <div class="toolbar-search"><input type="text" id="listingSearch" placeholder="Search by product, seller, market…"></div>
           <select class="toolbar-select" id="listingStatusFilter">
             <option value="all">All Status</option>
-            <option value="active">Active</option>
-            <option value="pending">Pending</option>
             <option value="available">Available</option>
+            <option value="pending">Pending</option>
             <option value="sold">Sold</option>
             <option value="removed">Removed</option>
           </select>
@@ -704,31 +812,17 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
         <div class="table-wrap">
           <div class="table-scroll">
             <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Product</th>
-                  <th>Seller</th>
-                  <th>Market / City</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                  <th>Status</th>
-                  <th style="text-align:right">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="listingsTableBody">
-                <tr><td colspan="7"><div class="loader-row"><span class="spinner"></span> Loading listings…</div></td></tr>
-              </tbody>
+              <thead><tr><th>Product</th><th>Seller</th><th>Market / City</th><th>Qty</th><th>Price</th><th>Age</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead>
+              <tbody id="listingsTableBody"><tr><td colspan="8"><div class="loader-row"><span class="spinner"></span> Loading…</div></td></tr></tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- Agro Products -->
+      <!-- Products -->
       <section class="page-section" data-section="products">
         <div class="toolbar">
-          <div class="toolbar-search">
-            <input type="text" id="productSearch" placeholder="Search by product, dealer, category…">
-          </div>
+          <div class="toolbar-search"><input type="text" id="productSearch" placeholder="Search products…"></div>
           <select class="toolbar-select" id="productCatFilter">
             <option value="all">All Categories</option>
             <option value="Pesticide">Pesticide</option>
@@ -746,31 +840,17 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
         <div class="table-wrap">
           <div class="table-scroll">
             <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Product</th>
-                  <th>Dealer</th>
-                  <th>Category</th>
-                  <th>Price</th>
-                  <th>Stock</th>
-                  <th>Status</th>
-                  <th style="text-align:right">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="productsTableBody">
-                <tr><td colspan="7"><div class="loader-row"><span class="spinner"></span> Loading products…</div></td></tr>
-              </tbody>
+              <thead><tr><th>Product</th><th>Dealer</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead>
+              <tbody id="productsTableBody"><tr><td colspan="7"><div class="loader-row"><span class="spinner"></span> Loading…</div></td></tr></tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- Delivery Requests -->
+      <!-- Deliveries -->
       <section class="page-section" data-section="deliveries">
         <div class="toolbar">
-          <div class="toolbar-search">
-            <input type="text" id="deliverySearch" placeholder="Search by route, customer, driver…">
-          </div>
+          <div class="toolbar-search"><input type="text" id="deliverySearch" placeholder="Search by route, customer, driver…"></div>
           <select class="toolbar-select" id="deliveryStatusFilter">
             <option value="all">All Status</option>
             <option value="searching">Searching</option>
@@ -784,39 +864,46 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
         <div class="table-wrap">
           <div class="table-scroll">
             <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Route</th>
-                  <th>Customer</th>
-                  <th>Driver</th>
-                  <th>Fare</th>
-                  <th>Status</th>
-                  <th style="text-align:right">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="deliveriesTableBody">
-                <tr><td colspan="6"><div class="loader-row"><span class="spinner"></span> Loading deliveries…</div></td></tr>
-              </tbody>
+              <thead><tr><th>Route</th><th>Customer</th><th>Driver</th><th>Fare</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead>
+              <tbody id="deliveriesTableBody"><tr><td colspan="6"><div class="loader-row"><span class="spinner"></span> Loading…</div></td></tr></tbody>
             </table>
           </div>
         </div>
       </section>
 
+      <!-- Market Preview -->
+      <section class="page-section" data-section="market-preview">
+        <div class="mp-role-chips" id="mpRoleChips"></div>
+        <div id="mpContent"><div class="loader-row"><span class="spinner"></span> Loading…</div></div>
+      </section>
+
+      <!-- Weather -->
+      <section class="page-section" data-section="weather">
+        <div class="toolbar">
+          <div style="flex:1;font-size:13px;color:var(--tl);font-weight:600">
+            Live weather conditions across all Zambian cities.
+          </div>
+          <button class="toolbar-btn" id="weatherRefresh">🔄 Refresh</button>
+        </div>
+        <div class="weather-grid" id="weatherGrid"><div class="loader-row"><span class="spinner"></span> Loading weather…</div></div>
+      </section>
+
+      <!-- Knowledge -->
+      <section class="page-section" data-section="knowledge">
+        <div class="toolbar">
+          <div style="flex:1;font-size:13px;color:var(--tl);font-weight:600">
+            Manage crops, livestock, fisheries and their varieties — this drives the farmer app.
+          </div>
+          <button class="toolbar-btn" id="addCropBtn">➕ Add Crop</button>
+        </div>
+        <div id="knowledgeList"><div class="loader-row"><span class="spinner"></span> Loading crops…</div></div>
+      </section>
+
       <!-- Notifications -->
       <section class="page-section" data-section="notifications">
         <div class="stat-grid" style="grid-template-columns:1fr 1fr">
-          <div class="stat-card">
-            <div class="sc-emoji purple">📢</div>
-            <div class="sc-num" id="notifTotalSent">0</div>
-            <div class="sc-label">Notifications Tracked</div>
-            <div class="sc-sub">This session</div>
-          </div>
-          <div class="stat-card">
-            <div class="sc-emoji orange">👥</div>
-            <div class="sc-num" id="notifReachable">0</div>
-            <div class="sc-label">Reachable Users</div>
-            <div class="sc-sub">Approved & unbanned</div>
-          </div>
+          <div class="stat-card"><div class="sc-emoji purple">📢</div><div class="sc-num" id="notifTotalSent">0</div><div class="sc-label">Sent This Session</div><div class="sc-sub">Notifications tracked</div></div>
+          <div class="stat-card"><div class="sc-emoji orange">👥</div><div class="sc-num" id="notifReachable">0</div><div class="sc-label">Reachable Users</div><div class="sc-sub">Approved & unbanned</div></div>
         </div>
 
         <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);padding:22px;box-shadow:var(--sh-xs);margin-bottom:16px">
@@ -831,7 +918,7 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
               <option value="marketeer">All marketeers</option>
               <option value="delivery">All delivery partners</option>
               <option value="pending">All pending approvals</option>
-              <option value="custom">Specific user (by UID or email)</option>
+              <option value="custom">Specific user (UID or email)</option>
             </select>
           </div>
           <div class="form-field" id="notifCustomWrap" style="display:none">
@@ -839,12 +926,8 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
             <input type="text" id="notifCustomTarget" placeholder="uid or user@example.com">
           </div>
           <div class="form-row">
-            <div class="form-field">
-              <label>Title</label>
-              <input type="text" id="notifTitle" placeholder="e.g. Platform update" maxlength="60">
-            </div>
-            <div class="form-field">
-              <label>Type</label>
+            <div class="form-field"><label>Title</label><input type="text" id="notifTitle" placeholder="e.g. Platform update" maxlength="60"></div>
+            <div class="form-field"><label>Type</label>
               <select id="notifType">
                 <option value="info">Info</option>
                 <option value="success">Success</option>
@@ -853,10 +936,7 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
               </select>
             </div>
           </div>
-          <div class="form-field">
-            <label>Message</label>
-            <textarea id="notifBody" placeholder="Write your message…" maxlength="400"></textarea>
-          </div>
+          <div class="form-field"><label>Message</label><textarea id="notifBody" placeholder="Write your message…" maxlength="400"></textarea></div>
           <div style="display:flex;gap:8px;justify-content:flex-end">
             <button class="btn btn-outline" id="notifClear">Clear</button>
             <button class="btn btn-primary" id="notifSend">📤 Send Notification</button>
@@ -871,7 +951,7 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
         <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);padding:22px;box-shadow:var(--sh-xs);margin-bottom:16px">
           <h3 style="font-size:15px;font-weight:900;color:var(--td);margin-bottom:14px">🛠️ System Maintenance</h3>
           <p style="font-size:13px;color:var(--tl);font-weight:600;margin-bottom:14px;line-height:1.5">
-            When enabled, all app users see a maintenance screen. Delivery partners see this check on app boot.
+            When enabled, all users see a maintenance screen on their next visit.
           </p>
           <div style="display:flex;align-items:center;gap:12px;padding:14px;background:var(--sf2);border-radius:12px;margin-bottom:14px">
             <div style="flex:1">
@@ -880,18 +960,13 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
             </div>
             <button class="btn btn-outline" id="maintToggleBtn">Toggle</button>
           </div>
-          <div class="form-field">
-            <label>Maintenance message</label>
-            <textarea id="maintMessage" placeholder="e.g. We'll be back shortly…"></textarea>
-          </div>
+          <div class="form-field"><label>Maintenance message</label><textarea id="maintMessage" placeholder="e.g. We'll be back shortly…"></textarea></div>
           <button class="btn btn-primary" id="maintSave">💾 Save Maintenance Settings</button>
         </div>
 
         <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);padding:22px;box-shadow:var(--sh-xs);margin-bottom:16px">
           <h3 style="font-size:15px;font-weight:900;color:var(--td);margin-bottom:14px">💾 Data Export</h3>
-          <p style="font-size:13px;color:var(--tl);font-weight:600;margin-bottom:14px;line-height:1.5">
-            Download a JSON snapshot of all platform data.
-          </p>
+          <p style="font-size:13px;color:var(--tl);font-weight:600;margin-bottom:14px;line-height:1.5">Download a JSON snapshot of platform data.</p>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button class="btn btn-outline" data-export="users">👥 Users</button>
             <button class="btn btn-outline" data-export="batches">🌱 Batches</button>
@@ -905,25 +980,47 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
           <h3 style="font-size:15px;font-weight:900;color:var(--td);margin-bottom:14px">ℹ️ System Info</h3>
           <div class="info-table">
             <div class="it-row"><span class="it-k">Project</span><span class="it-v">reaper-7b33d</span></div>
-            <div class="it-row"><span class="it-k">Admin</span><span class="it-v" id="sysAdminEmail">—</span></div>
+            <div class="it-row"><span class="it-k">Admin email</span><span class="it-v" id="sysAdminEmail">—</span></div>
             <div class="it-row"><span class="it-k">Signed in at</span><span class="it-v" id="sysSignedIn">—</span></div>
-            <div class="it-row"><span class="it-k">Session UID</span><span class="it-v" id="sysUid">—</span></div>
+            <div class="it-row"><span class="it-k">Session UID</span><span class="it-v" id="sysUid" style="font-family:monospace;font-size:11px">—</span></div>
           </div>
         </div>
       </section>
-
     </div>
   </div>
 </div>
 
-<!-- ============================== MODAL ============================== -->
+<!-- USER DETAIL OVERLAY -->
+<div class="overlay-page" id="userDetailPage">
+  <div class="op-head">
+    <button class="op-back" onclick="closeUserDetail()">←</button>
+    <div style="flex:1;min-width:0">
+      <div class="op-title" id="udTitle">User</div>
+      <div class="op-title-sub" id="udSub">Details</div>
+    </div>
+    <div class="op-actions" id="udTopActions"></div>
+  </div>
+  <div class="op-body" id="udBody"></div>
+</div>
+
+<!-- MARKET PREVIEW OVERLAY (per listing full details) -->
+<div class="overlay-page" id="listingDetailPage">
+  <div class="op-head">
+    <button class="op-back" onclick="closeListingDetail()">←</button>
+    <div style="flex:1;min-width:0">
+      <div class="op-title" id="ldTitle">Listing</div>
+      <div class="op-title-sub" id="ldSub"></div>
+    </div>
+    <div class="op-actions" id="ldTopActions"></div>
+  </div>
+  <div class="op-body" id="ldBody"></div>
+</div>
+
+<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-card">
     <div class="modal-head">
-      <div>
-        <h3 id="modalTitle">Title</h3>
-        <p id="modalSub">Subtitle</p>
-      </div>
+      <div><h3 id="modalTitle">Title</h3><p id="modalSub">Subtitle</p></div>
       <button class="modal-close" id="modalClose">✕</button>
     </div>
     <div class="modal-body" id="modalBody"></div>
@@ -931,7 +1028,7 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
   </div>
 </div>
 
-<!-- Confirm Modal -->
+<!-- CONFIRM -->
 <div class="modal-overlay" id="confirmOverlay">
   <div class="modal-card" style="max-width:400px">
     <div class="modal-body" style="text-align:center;padding:30px 24px 20px">
@@ -946,6 +1043,12 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
   </div>
 </div>
 
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <div class="lb-close" onclick="closeLightbox()">✕</div>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
 <div id="toast"></div>
 
 <script type="module">
@@ -954,7 +1057,7 @@ table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
    ================================================================ */
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth";
-import { getDatabase, ref, get, set, update, push, onValue, remove, off } from "firebase/database";
+import { getDatabase, ref, get, set, update, push, onValue, remove } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDye0P37QYNjtRRKh2_At84QCkKCqjceAQ",
@@ -975,27 +1078,26 @@ const db    = getDatabase(fbApp);
 const State = {
   adminUser: null,
   adminProfile: null,
-  users: {},          // uid -> user object
-  batches: {},        // id -> batch
-  listings: {},       // id -> listing
-  products: {},       // id -> product
-  deliveries: {},     // id -> request
+  users: {},
+  batches: {},
+  listings: {},
+  products: {},
+  deliveries: {},
+  knowledge: {},
   maintenance: { enabled: false, message: '' },
   page: 'dashboard',
-  notifSent: [],      // session-only log
+  roleFilter: 'all',
+  notifSent: [],
   unsubs: [],
+  weatherData: null,
+  mpRole: 'customer',
+  mpCity: '',
   filters: {
-    userSearch: '',
-    userRole: 'all',
-    userStatus: 'all',
-    batchSearch: '',
-    batchStage: 'all',
-    listingSearch: '',
-    listingStatus: 'all',
-    productSearch: '',
-    productCat: 'all',
-    deliverySearch: '',
-    deliveryStatus: 'all'
+    userSearch: '', userStatus: 'all',
+    batchSearch: '', batchStage: 'all',
+    listingSearch: '', listingStatus: 'all',
+    productSearch: '', productCat: 'all',
+    deliverySearch: '', deliveryStatus: 'all'
   }
 };
 
@@ -1005,54 +1107,23 @@ const State = {
 const $ = id => document.getElementById(id);
 const $$ = sel => document.querySelectorAll(sel);
 const esc = s => s == null ? '' : String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const initials = name => {
-  if (!name) return '?';
-  return String(name).trim().split(/\s+/).map(w => w[0]).slice(0,2).join('').toUpperCase();
-};
+const initials = name => { if (!name) return '?'; return String(name).trim().split(/\s+/).map(w => w[0]).slice(0,2).join('').toUpperCase(); };
 const fmtZMK = n => (n == null || isNaN(n)) ? '—' : 'ZMK ' + Number(n).toLocaleString('en-ZM');
-const timeAgo = ts => {
-  if (!ts) return 'just now';
-  const s = Math.floor((Date.now() - ts) / 1000);
-  if (s < 60) return 'just now';
-  if (s < 3600) return Math.floor(s/60) + 'm ago';
-  if (s < 86400) return Math.floor(s/3600) + 'h ago';
-  if (s < 604800) return Math.floor(s/86400) + 'd ago';
-  return new Date(ts).toLocaleDateString();
-};
-const fmtDate = ts => {
-  if (!ts) return '—';
-  const d = new Date(ts);
-  return d.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'});
-};
-const fmtDateTime = ts => {
-  if (!ts) return '—';
-  const d = new Date(ts);
-  return d.toLocaleString('en-GB', {day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
-};
-const pickIcon = name => {
-  if (!name) return '🌿';
-  const n = String(name).toLowerCase();
-  if (n.includes('tomato')) return '🍅';
-  if (n.includes('maize') || n.includes('corn')) return '🌽';
-  if (n.includes('onion')) return '🧅';
-  if (n.includes('wheat')||n.includes('sorghum')||n.includes('millet')) return '🌾';
-  if (n.includes('rice')) return '🍚';
-  if (n.includes('pea')||n.includes('bean')||n.includes('soy')) return '🫛';
-  if (n.includes('groundnut')||n.includes('peanut')) return '🥜';
-  if (n.includes('carrot')) return '🥕';
+const timeAgo = ts => { if (!ts) return 'just now'; const s = Math.floor((Date.now() - ts)/1000); if (s<60) return 'just now'; if (s<3600) return Math.floor(s/60)+'m ago'; if (s<86400) return Math.floor(s/3600)+'h ago'; if (s<604800) return Math.floor(s/86400)+'d ago'; return new Date(ts).toLocaleDateString(); };
+const fmtDate = ts => { if (!ts) return '—'; const d = new Date(ts); return d.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}); };
+const fmtDateTime = ts => { if (!ts) return '—'; const d = new Date(ts); return d.toLocaleString('en-GB', {day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'}); };
+const pickIcon = name => { if (!name) return '🌿'; const n = String(name).toLowerCase();
+  if (n.includes('tomato')) return '🍅'; if (n.includes('maize')||n.includes('corn')) return '🌽';
+  if (n.includes('onion')) return '🧅'; if (n.includes('wheat')||n.includes('sorghum')||n.includes('millet')) return '🌾';
+  if (n.includes('rice')) return '🍚'; if (n.includes('pea')||n.includes('bean')||n.includes('soy')) return '🫛';
+  if (n.includes('groundnut')||n.includes('peanut')) return '🥜'; if (n.includes('carrot')) return '🥕';
   if (n.includes('cabbage')||n.includes('kale')||n.includes('rape')||n.includes('spinach')||n.includes('lettuce')) return '🥬';
-  if (n.includes('potato')) return '🥔';
-  if (n.includes('chilli')||n.includes('chili')) return '🌶️';
-  if (n.includes('pepper')) return '🫑';
-  if (n.includes('eggplant')) return '🍆';
-  if (n.includes('banana')||n.includes('plantain')) return '🍌';
-  if (n.includes('mango')) return '🥭';
-  if (n.includes('avocado')) return '🥑';
-  if (n.includes('orange')||n.includes('citrus')) return '🍊';
-  if (n.includes('cow')||n.includes('cattle')) return '🐄';
-  if (n.includes('goat')) return '🐐';
-  if (n.includes('pig')) return '🐖';
-  if (n.includes('sheep')) return '🐑';
+  if (n.includes('potato')) return '🥔'; if (n.includes('chilli')||n.includes('chili')) return '🌶️';
+  if (n.includes('pepper')) return '🫑'; if (n.includes('eggplant')) return '🍆';
+  if (n.includes('banana')||n.includes('plantain')) return '🍌'; if (n.includes('mango')) return '🥭';
+  if (n.includes('avocado')) return '🥑'; if (n.includes('orange')||n.includes('citrus')) return '🍊';
+  if (n.includes('cow')||n.includes('cattle')) return '🐄'; if (n.includes('goat')) return '🐐';
+  if (n.includes('pig')) return '🐖'; if (n.includes('sheep')) return '🐑';
   if (n.includes('chicken')||n.includes('poultry')||n.includes('broiler')) return '🐔';
   if (n.includes('fish')||n.includes('tilapia')) return '🐟';
   return '🌿';
@@ -1060,9 +1131,6 @@ const pickIcon = name => {
 const roleEmoji = r => ({customer:'🛒',farmer:'🌾',supplier:'📦',marketeer:'🏪',delivery:'🚚',admin:'🛡️'}[r] || '👤');
 const stageEmoji = s => ({planted:'🌱',growing:'🌿',flowering:'🌸',fruiting:'🍅',harvesting:'🌾',harvested:'✅'}[s] || '🌱');
 
-/* ================================================================
-   TOAST
-   ================================================================ */
 const toast = (msg, ms=2600) => {
   const t = $('toast');
   t.textContent = msg;
@@ -1072,7 +1140,7 @@ const toast = (msg, ms=2600) => {
 };
 
 /* ================================================================
-   MODAL
+   MODAL / CONFIRM / LIGHTBOX
    ================================================================ */
 const showModal = (title, sub, bodyHTML, footHTML = '') => {
   $('modalTitle').textContent = title;
@@ -1083,9 +1151,7 @@ const showModal = (title, sub, bodyHTML, footHTML = '') => {
 };
 const closeModal = () => $('modalOverlay').classList.remove('open');
 $('modalClose').addEventListener('click', closeModal);
-$('modalOverlay').addEventListener('click', e => {
-  if (e.target === $('modalOverlay')) closeModal();
-});
+$('modalOverlay').addEventListener('click', e => { if (e.target === $('modalOverlay')) closeModal(); });
 
 let confirmCallback = null;
 const showConfirm = (title, msg, cb, opts = {}) => {
@@ -1097,32 +1163,32 @@ const showConfirm = (title, msg, cb, opts = {}) => {
   confirmCallback = cb;
   $('confirmOverlay').classList.add('open');
 };
-$('confirmCancel').addEventListener('click', () => {
-  $('confirmOverlay').classList.remove('open');
-  confirmCallback = null;
-});
+$('confirmCancel').addEventListener('click', () => { $('confirmOverlay').classList.remove('open'); confirmCallback = null; });
 $('confirmOk').addEventListener('click', async () => {
   $('confirmOverlay').classList.remove('open');
-  const cb = confirmCallback;
-  confirmCallback = null;
+  const cb = confirmCallback; confirmCallback = null;
   if (cb) await cb();
 });
+
+const openLightbox = url => { $('lightboxImg').src = url; $('lightbox').classList.add('open'); };
+const closeLightbox = () => $('lightbox').classList.remove('open');
+window.closeLightbox = closeLightbox;
+window.openLightbox = openLightbox;
+$('lightbox').addEventListener('click', e => { if (e.target === $('lightbox')) closeLightbox(); });
 
 /* ================================================================
    LOGIN
    ================================================================ */
-$('loginForm').addEventListener('submit', async (e) => {
+$('loginForm').addEventListener('submit', async e => {
   e.preventDefault();
   const email = $('loginEmail').value.trim().toLowerCase();
   const password = $('loginPassword').value;
   if (!email || !password) return;
   const btn = $('loginBtn');
-  btn.disabled = true;
-  btn.textContent = 'Signing in…';
+  btn.disabled = true; btn.textContent = 'Signing in…';
   $('loginError').classList.remove('show');
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    // onAuthStateChanged handles next steps
   } catch (err) {
     let msg = 'Sign-in failed.';
     if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') msg = 'Invalid email or password.';
@@ -1131,29 +1197,25 @@ $('loginForm').addEventListener('submit', async (e) => {
     else if (err.message) msg = err.message;
     $('loginError').textContent = msg;
     $('loginError').classList.add('show');
-    btn.disabled = false;
-    btn.textContent = 'Sign In →';
+    btn.disabled = false; btn.textContent = 'Sign In →';
   }
 });
 
 /* ================================================================
-   AUTH GATE
+   AUTH
    ================================================================ */
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth, async user => {
   if (!user) {
     $('loginGate').classList.remove('hidden');
     $('appLayout').classList.add('hidden');
     return;
   }
-  // Load profile
   let profile = {};
   try {
     const snap = await get(ref(db, 'users/' + user.uid));
     if (snap.exists()) profile = snap.val() || {};
   } catch(e) {}
-
-  const role = profile.role || '';
-  if (role !== 'admin') {
+  if (profile.role !== 'admin') {
     await signOut(auth);
     $('loginError').textContent = 'This account is not an administrator. Access denied.';
     $('loginError').classList.add('show');
@@ -1161,7 +1223,6 @@ onAuthStateChanged(auth, async (user) => {
     $('loginBtn').textContent = 'Sign In →';
     return;
   }
-
   State.adminUser = user;
   State.adminProfile = profile;
   $('loginGate').classList.add('hidden');
@@ -1170,7 +1231,7 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 /* ================================================================
-   INITIALIZE
+   INIT
    ================================================================ */
 function initAdmin() {
   const p = State.adminProfile || {};
@@ -1183,12 +1244,10 @@ function initAdmin() {
   $('sysAdminEmail').textContent = State.adminUser.email || '—';
   $('sysSignedIn').textContent = fmtDateTime(Date.now());
   $('sysUid').textContent = State.adminUser.uid;
+  State.mpCity = p.city || 'Lusaka';
 
   startListeners();
-  bindNav();
-  bindToolbars();
-  bindNotif();
-  bindSettings();
+  bindUI();
   navigate('dashboard');
 }
 
@@ -1196,148 +1255,177 @@ function initAdmin() {
    LISTENERS
    ================================================================ */
 function startListeners() {
-  // Users
-  State.unsubs.push(onValue(ref(db, 'users'), (snap) => {
-    const data = snap.val() || {};
-    State.users = data;
-    updateNavCounts();
-    if (State.page === 'users' || State.page === 'dashboard') renderCurrentPage();
+  State.unsubs.push(onValue(ref(db, 'users'), snap => {
+    State.users = snap.val() || {};
+    updateCounts();
+    renderPageIfMatch(['dashboard','users','approvals']);
   }));
-
-  // Batches
-  State.unsubs.push(onValue(ref(db, 'batches'), (snap) => {
+  State.unsubs.push(onValue(ref(db, 'batches'), snap => {
     State.batches = snap.val() || {};
-    updateNavCounts();
-    if (State.page === 'batches' || State.page === 'dashboard') renderCurrentPage();
+    updateCounts();
+    renderPageIfMatch(['dashboard','batches']);
   }));
-
-  // Listings
-  State.unsubs.push(onValue(ref(db, 'marketListings'), (snap) => {
+  State.unsubs.push(onValue(ref(db, 'marketListings'), snap => {
     State.listings = snap.val() || {};
-    updateNavCounts();
-    if (State.page === 'listings' || State.page === 'dashboard') renderCurrentPage();
+    updateCounts();
+    renderPageIfMatch(['dashboard','listings','market-preview']);
   }));
-
-  // Agro Products
-  State.unsubs.push(onValue(ref(db, 'agroProducts'), (snap) => {
+  State.unsubs.push(onValue(ref(db, 'agroProducts'), snap => {
     State.products = snap.val() || {};
-    updateNavCounts();
-    if (State.page === 'products' || State.page === 'dashboard') renderCurrentPage();
+    updateCounts();
+    renderPageIfMatch(['dashboard','products','market-preview']);
   }));
-
-  // Delivery Requests
-  State.unsubs.push(onValue(ref(db, 'deliveryRequests'), (snap) => {
+  State.unsubs.push(onValue(ref(db, 'deliveryRequests'), snap => {
     State.deliveries = snap.val() || {};
-    updateNavCounts();
-    if (State.page === 'deliveries' || State.page === 'dashboard') renderCurrentPage();
+    updateCounts();
+    renderPageIfMatch(['dashboard','deliveries']);
   }));
-
-  // Maintenance
-  State.unsubs.push(onValue(ref(db, 'system/maintenance'), (snap) => {
+  State.unsubs.push(onValue(ref(db, 'system/maintenance'), snap => {
     State.maintenance = snap.val() || { enabled: false, message: '' };
-    if (State.page === 'settings') renderCurrentPage();
+    renderPageIfMatch(['settings']);
   }));
+  State.unsubs.push(onValue(ref(db, 'agriKnowledge'), snap => {
+    State.knowledge = snap.val() || {};
+    renderPageIfMatch(['knowledge']);
+  }));
+}
+
+function renderPageIfMatch(pages) {
+  if (pages.includes(State.page)) renderPage();
+  // If user detail is open, refresh it
+  if ($('userDetailPage').classList.contains('open') && State.detailUid) {
+    renderUserDetail(State.detailUid);
+  }
+}
+
+function updateCounts() {
+  const users = Object.values(State.users);
+  const pending = users.filter(u => u.status === 'pending').length;
+  $('nbApprovals').textContent = pending;
+  $('nbApprovals').style.display = pending > 0 ? 'flex' : 'none';
+  $('nbUsersAll').textContent = users.length;
+  $('nbCustomers').textContent = users.filter(u => u.role === 'customer').length;
+  $('nbFarmers').textContent = users.filter(u => u.role === 'farmer').length;
+  $('nbSuppliers').textContent = users.filter(u => u.role === 'supplier').length;
+  $('nbMarketeers').textContent = users.filter(u => u.role === 'marketeer').length;
+  $('nbDelivery').textContent = users.filter(u => u.role === 'delivery').length;
+  $('nbAdmins').textContent = users.filter(u => u.role === 'admin').length;
+  $('nbBatches').textContent = Object.keys(State.batches).length;
+  $('nbListings').textContent = Object.keys(State.listings).length;
+  $('nbProducts').textContent = Object.keys(State.products).length;
+  $('nbDeliveries').textContent = Object.keys(State.deliveries).length;
 }
 
 /* ================================================================
-   NAV
+   UI BINDINGS
    ================================================================ */
-function bindNav() {
+function bindUI() {
   $$('.nav-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      navigate(btn.dataset.page);
+      const page = btn.dataset.page;
+      const role = btn.dataset.role;
+      if (role) State.roleFilter = role;
+      navigate(page);
       $('sidebar').classList.remove('open');
     });
   });
-  $('mtMenu').addEventListener('click', () => {
-    $('sidebar').classList.toggle('open');
-  });
-  $('mtRefresh').addEventListener('click', () => {
-    renderCurrentPage();
-    toast('Refreshed');
-  });
+  $('mtMenu').addEventListener('click', () => $('sidebar').classList.toggle('open'));
+  $('mtRefresh').addEventListener('click', () => { renderPage(); toast('Refreshed'); });
   $('logoutBtn').addEventListener('click', () => {
     showConfirm('Sign out?', 'You will need to sign in again.', async () => {
-      State.unsubs.forEach(u => { try { u(); } catch(e) {} });
+      State.unsubs.forEach(u => { try { u(); } catch(e){} });
       await signOut(auth);
       window.location.reload();
-    }, { okText: 'Sign Out', okClass: 'btn-danger', icon: '🚪' });
+    }, { okText: 'Sign Out', icon: '🚪' });
+  });
+
+  // Filters
+  $('userSearch').addEventListener('input', e => { State.filters.userSearch = e.target.value; renderUsers(); });
+  $('userStatusFilter').addEventListener('change', e => { State.filters.userStatus = e.target.value; renderUsers(); });
+  $('batchSearch').addEventListener('input', e => { State.filters.batchSearch = e.target.value; renderBatches(); });
+  $('batchStageFilter').addEventListener('change', e => { State.filters.batchStage = e.target.value; renderBatches(); });
+  $('listingSearch').addEventListener('input', e => { State.filters.listingSearch = e.target.value; renderListings(); });
+  $('listingStatusFilter').addEventListener('change', e => { State.filters.listingStatus = e.target.value; renderListings(); });
+  $('productSearch').addEventListener('input', e => { State.filters.productSearch = e.target.value; renderProducts(); });
+  $('productCatFilter').addEventListener('change', e => { State.filters.productCat = e.target.value; renderProducts(); });
+  $('deliverySearch').addEventListener('input', e => { State.filters.deliverySearch = e.target.value; renderDeliveries(); });
+  $('deliveryStatusFilter').addEventListener('change', e => { State.filters.deliveryStatus = e.target.value; renderDeliveries(); });
+
+  // Weather
+  $('weatherRefresh').addEventListener('click', loadWeather);
+
+  // Knowledge
+  $('addCropBtn').addEventListener('click', () => openCropEditor(null));
+
+  // Notifications
+  $('notifAudience').addEventListener('change', e => {
+    $('notifCustomWrap').style.display = e.target.value === 'custom' ? 'block' : 'none';
+  });
+  $('notifClear').addEventListener('click', () => {
+    $('notifTitle').value = ''; $('notifBody').value = ''; $('notifCustomTarget').value = '';
+  });
+  $('notifSend').addEventListener('click', sendNotification);
+
+  // Settings
+  $('maintToggleBtn').addEventListener('click', async () => {
+    const cur = State.maintenance || {};
+    await saveMaintenance({ enabled: !cur.enabled, message: cur.message || '' });
+  });
+  $('maintSave').addEventListener('click', async () => {
+    const cur = State.maintenance || {};
+    await saveMaintenance({ enabled: !!cur.enabled, message: $('maintMessage').value.trim() || 'System maintenance in progress.' });
+  });
+  $$('[data-export]').forEach(btn => {
+    btn.addEventListener('click', () => exportData(btn.dataset.export));
   });
 }
 
-function updateNavCounts() {
-  $('nbCountUsers').textContent = Object.keys(State.users).length;
-  $('nbCountBatches').textContent = Object.keys(State.batches).length;
-  $('nbCountListings').textContent = Object.keys(State.listings).length;
-  $('nbCountProducts').textContent = Object.keys(State.products).length;
-  $('nbCountDeliveries').textContent = Object.keys(State.deliveries).length;
-
-  // Highlight pending users
-  const pending = Object.values(State.users).filter(u => u.status === 'pending').length;
-  const userCountEl = $('nbCountUsers');
-  userCountEl.classList.toggle('alert', pending > 0);
-  if (pending > 0) userCountEl.textContent = pending;
-}
-
+/* ================================================================
+   ROUTER
+   ================================================================ */
 const PAGE_META = {
   dashboard: { title: 'Dashboard', sub: 'Platform overview' },
-  users: { title: 'Users', sub: 'Manage all platform accounts' },
-  batches: { title: 'Batches', sub: 'All active and past batches' },
-  listings: { title: 'Market Listings', sub: 'Moderate listings' },
-  products: { title: 'Agro Products', sub: 'Products from suppliers' },
-  deliveries: { title: 'Delivery Requests', sub: 'All delivery activity' },
+  approvals: { title: 'Approvals', sub: 'Pending accounts with documents' },
+  users: { title: 'Users', sub: 'Manage accounts' },
+  batches: { title: 'Batches', sub: 'All plantings' },
+  listings: { title: 'Market Listings', sub: 'Active & historical listings' },
+  products: { title: 'Agro Products', sub: 'Dealer products' },
+  deliveries: { title: 'Deliveries', sub: 'Delivery requests' },
+  'market-preview': { title: 'Market Preview', sub: 'See market through each role' },
+  weather: { title: 'Weather', sub: 'Conditions across all cities' },
+  knowledge: { title: 'App Knowledge', sub: 'Crops, livestock & fisheries' },
   notifications: { title: 'Notifications', sub: 'Send messages to users' },
   settings: { title: 'Settings', sub: 'System configuration' }
 };
 
 function navigate(page) {
   State.page = page;
-  $$('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.page === page));
+  $$('.nav-btn').forEach(b => {
+    const match = b.dataset.page === page && (!b.dataset.role || b.dataset.role === State.roleFilter);
+    b.classList.toggle('active', match);
+  });
   $$('.page-section').forEach(s => s.classList.toggle('active', s.dataset.section === page));
   const meta = PAGE_META[page] || PAGE_META.dashboard;
   $('mtTitle').textContent = meta.title;
   $('mtSub').textContent = meta.sub;
-  renderCurrentPage();
+  renderPage();
 }
 
-function renderCurrentPage() {
+function renderPage() {
   switch (State.page) {
     case 'dashboard': renderDashboard(); break;
+    case 'approvals': renderApprovals(); break;
     case 'users': renderUsers(); break;
     case 'batches': renderBatches(); break;
     case 'listings': renderListings(); break;
     case 'products': renderProducts(); break;
     case 'deliveries': renderDeliveries(); break;
+    case 'market-preview': renderMarketPreview(); break;
+    case 'weather': renderWeather(); break;
+    case 'knowledge': renderKnowledge(); break;
     case 'notifications': renderNotifications(); break;
     case 'settings': renderSettings(); break;
   }
-}
-
-/* ================================================================
-   TOOLBARS
-   ================================================================ */
-function bindToolbars() {
-  // Users
-  $('userSearch').addEventListener('input', e => { State.filters.userSearch = e.target.value; renderUsers(); });
-  $('userRoleFilter').addEventListener('change', e => { State.filters.userRole = e.target.value; renderUsers(); });
-  $('userStatusFilter').addEventListener('change', e => { State.filters.userStatus = e.target.value; renderUsers(); });
-  $('btnSendBulk').addEventListener('click', () => navigate('notifications'));
-
-  // Batches
-  $('batchSearch').addEventListener('input', e => { State.filters.batchSearch = e.target.value; renderBatches(); });
-  $('batchStageFilter').addEventListener('change', e => { State.filters.batchStage = e.target.value; renderBatches(); });
-
-  // Listings
-  $('listingSearch').addEventListener('input', e => { State.filters.listingSearch = e.target.value; renderListings(); });
-  $('listingStatusFilter').addEventListener('change', e => { State.filters.listingStatus = e.target.value; renderListings(); });
-
-  // Products
-  $('productSearch').addEventListener('input', e => { State.filters.productSearch = e.target.value; renderProducts(); });
-  $('productCatFilter').addEventListener('change', e => { State.filters.productCat = e.target.value; renderProducts(); });
-
-  // Deliveries
-  $('deliverySearch').addEventListener('input', e => { State.filters.deliverySearch = e.target.value; renderDeliveries(); });
-  $('deliveryStatusFilter').addEventListener('change', e => { State.filters.deliveryStatus = e.target.value; renderDeliveries(); });
 }
 
 /* ================================================================
@@ -1349,197 +1437,167 @@ function renderDashboard() {
   const listings = Object.values(State.listings);
   const products = Object.values(State.products);
   const deliveries = Object.values(State.deliveries);
-
-  const pendingUsers = users.filter(u => u.status === 'pending').length;
+  const pending = users.filter(u => u.status === 'pending').length;
   const activeListings = listings.filter(l => l.availabilityStatus === 'available' || l.availabilityStatus === 'pending').length;
   const activeBatches = batches.filter(b => b.stage !== 'harvested').length;
-  const ongoingDeliveries = deliveries.filter(d => ['searching','accepted','arrived','in_progress'].includes(d.status)).length;
+  const ongoing = deliveries.filter(d => ['searching','accepted','arrived','in_progress'].includes(d.status)).length;
 
   $('dashStats').innerHTML = `
-    <div class="stat-card">
-      <div class="sc-emoji green">👥</div>
-      <div class="sc-num">${users.length}</div>
-      <div class="sc-label">Total Users</div>
-      <div class="sc-sub">${pendingUsers > 0 ? `<span style="color:var(--warn);font-weight:800">⚠ ${pendingUsers} pending approval</span>` : 'All approved'}</div>
-    </div>
-    <div class="stat-card">
-      <div class="sc-emoji blue">🌱</div>
-      <div class="sc-num">${activeBatches}</div>
-      <div class="sc-label">Active Batches</div>
-      <div class="sc-sub">${batches.length} total ever</div>
-    </div>
-    <div class="stat-card">
-      <div class="sc-emoji orange">🛒</div>
-      <div class="sc-num">${activeListings}</div>
-      <div class="sc-label">Market Listings</div>
-      <div class="sc-sub">${listings.length} total ever</div>
-    </div>
-    <div class="stat-card">
-      <div class="sc-emoji purple">📦</div>
-      <div class="sc-num">${products.length}</div>
-      <div class="sc-label">Agro Products</div>
-      <div class="sc-sub">${products.filter(p => p.available !== false).length} available</div>
-    </div>
-    <div class="stat-card">
-      <div class="sc-emoji teal">🚚</div>
-      <div class="sc-num">${ongoingDeliveries}</div>
-      <div class="sc-label">Active Deliveries</div>
-      <div class="sc-sub">${deliveries.length} total ever</div>
-    </div>
-    <div class="stat-card">
-      <div class="sc-emoji amber">⚠️</div>
-      <div class="sc-num">${pendingUsers}</div>
-      <div class="sc-label">Awaiting Approval</div>
-      <div class="sc-sub">${users.filter(u => u.status === 'banned').length} banned</div>
-    </div>
+    <div class="stat-card"><div class="sc-emoji green">👥</div><div class="sc-num">${users.length}</div><div class="sc-label">Total Users</div><div class="sc-sub">${pending > 0 ? `<span style="color:var(--warn);font-weight:800">⚠ ${pending} pending</span>` : 'All approved'}</div></div>
+    <div class="stat-card"><div class="sc-emoji blue">🌱</div><div class="sc-num">${activeBatches}</div><div class="sc-label">Active Batches</div><div class="sc-sub">${batches.length} total</div></div>
+    <div class="stat-card"><div class="sc-emoji orange">🛒</div><div class="sc-num">${activeListings}</div><div class="sc-label">Live Listings</div><div class="sc-sub">${listings.length} total</div></div>
+    <div class="stat-card"><div class="sc-emoji purple">📦</div><div class="sc-num">${products.length}</div><div class="sc-label">Agro Products</div><div class="sc-sub">${products.filter(p => p.available !== false).length} available</div></div>
+    <div class="stat-card"><div class="sc-emoji teal">🚚</div><div class="sc-num">${ongoing}</div><div class="sc-label">Active Deliveries</div><div class="sc-sub">${deliveries.length} total</div></div>
+    <div class="stat-card"><div class="sc-emoji amber">⚠️</div><div class="sc-num">${pending}</div><div class="sc-label">Awaiting Approval</div><div class="sc-sub">${users.filter(u => u.status === 'banned').length} banned</div></div>
   `;
 
-  // Role breakdown
   const roles = ['farmer','customer','supplier','marketeer','delivery','admin'];
   const roleCounts = {};
-  users.forEach(u => { const r = u.role || 'unknown'; roleCounts[r] = (roleCounts[r]||0) + 1; });
-
-  // Stage breakdown
-  const stageCounts = {planted:0, growing:0, flowering:0, fruiting:0, harvesting:0, harvested:0};
+  users.forEach(u => { const r = u.role || 'unknown'; roleCounts[r] = (roleCounts[r]||0)+1; });
+  const stageCounts = {planted:0,growing:0,flowering:0,fruiting:0,harvesting:0,harvested:0};
   batches.forEach(b => { if (b.stage && stageCounts[b.stage] != null) stageCounts[b.stage]++; });
 
   $('dashBreakdowns').innerHTML = `
     <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);padding:20px;box-shadow:var(--sh-xs)">
       <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin-bottom:14px">Users by Role</div>
-      ${roles.map(r => {
-        const cnt = roleCounts[r] || 0;
-        const pct = users.length ? Math.round(cnt/users.length*100) : 0;
-        return `
-          <div style="margin-bottom:10px">
-            <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--td);margin-bottom:4px">
-              <span>${roleEmoji(r)} ${r.charAt(0).toUpperCase()+r.slice(1)}</span>
-              <span>${cnt}</span>
-            </div>
-            <div style="height:6px;background:var(--bd);border-radius:3px;overflow:hidden">
-              <div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#86efac,#16a34a);border-radius:3px"></div>
-            </div>
-          </div>
-        `;
+      ${roles.map(r => { const cnt = roleCounts[r]||0; const pct = users.length ? Math.round(cnt/users.length*100) : 0;
+        return `<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--td);margin-bottom:4px"><span>${roleEmoji(r)} ${r}</span><span>${cnt}</span></div><div style="height:6px;background:var(--bd);border-radius:3px;overflow:hidden"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#86efac,#16a34a)"></div></div></div>`;
       }).join('')}
     </div>
     <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);padding:20px;box-shadow:var(--sh-xs)">
       <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin-bottom:14px">Batches by Stage</div>
-      ${Object.entries(stageCounts).map(([stage, cnt]) => {
-        const pct = batches.length ? Math.round(cnt/batches.length*100) : 0;
-        return `
-          <div style="margin-bottom:10px">
-            <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--td);margin-bottom:4px">
-              <span>${stageEmoji(stage)} ${stage.charAt(0).toUpperCase()+stage.slice(1)}</span>
-              <span>${cnt}</span>
-            </div>
-            <div style="height:6px;background:var(--bd);border-radius:3px;overflow:hidden">
-              <div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#fdba74,#ea580c);border-radius:3px"></div>
-            </div>
-          </div>
-        `;
+      ${Object.entries(stageCounts).map(([s,c]) => { const pct = batches.length ? Math.round(c/batches.length*100) : 0;
+        return `<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--td);margin-bottom:4px"><span>${stageEmoji(s)} ${s}</span><span>${c}</span></div><div style="height:6px;background:var(--bd);border-radius:3px;overflow:hidden"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#fdba74,#ea580c)"></div></div></div>`;
       }).join('')}
     </div>
   `;
 
-  // Recent activity
   const recent = [];
-  users.slice(-5).forEach(u => recent.push({ ts: u.createdAt || 0, text: `New ${u.role||'user'}: ${u.firstName||''} ${u.lastName||''}`.trim(), emoji: roleEmoji(u.role) }));
-  listings.slice(-5).forEach(l => recent.push({ ts: l.createdAt || 0, text: `Listing: ${l.productName||l.title||'product'}`, emoji: '🛒' }));
-  batches.slice(-5).forEach(b => recent.push({ ts: b.createdAt || 0, text: `Batch: ${b.cropName||'crop'} by ${b.ownerName||'farmer'}`, emoji: stageEmoji(b.stage) }));
-  recent.sort((a,b) => b.ts - a.ts);
-  const top = recent.slice(0, 8);
-
+  users.slice(-5).forEach(u => recent.push({ts:u.createdAt||0, text:`New ${u.role||'user'}: ${u.firstName||''} ${u.lastName||''}`.trim(), emoji: roleEmoji(u.role)}));
+  listings.slice(-5).forEach(l => recent.push({ts:l.createdAt||0, text:`Listing: ${l.productName||l.title||'product'}`, emoji:'🛒'}));
+  batches.slice(-5).forEach(b => recent.push({ts:b.createdAt||0, text:`Batch: ${b.cropName||'crop'} by ${b.ownerName||'farmer'}`, emoji: stageEmoji(b.stage)}));
+  recent.sort((a,b)=>b.ts-a.ts);
+  const top = recent.slice(0,8);
   $('dashRecent').innerHTML = top.length ? `
     <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);padding:20px;box-shadow:var(--sh-xs)">
       <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin-bottom:14px">Recent Activity</div>
-      ${top.map(r => `
-        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd)">
-          <div style="width:36px;height:36px;border-radius:10px;background:var(--sf2);display:flex;align-items:center;justify-content:center;font-size:16px">${r.emoji}</div>
-          <div style="flex:1;font-size:13px;font-weight:700;color:var(--td)">${esc(r.text)}</div>
-          <div style="font-size:11px;font-weight:700;color:var(--tl)">${r.ts ? timeAgo(r.ts) : ''}</div>
+      ${top.map(r => `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd)"><div style="width:36px;height:36px;border-radius:10px;background:var(--sf2);display:flex;align-items:center;justify-content:center;font-size:16px">${r.emoji}</div><div style="flex:1;font-size:13px;font-weight:700;color:var(--td)">${esc(r.text)}</div><div style="font-size:11px;font-weight:700;color:var(--tl)">${r.ts ? timeAgo(r.ts) : ''}</div></div>`).join('')}
+    </div>` : '';
+}
+
+/* ================================================================
+   APPROVALS
+   ================================================================ */
+function renderApprovals() {
+  const pending = Object.entries(State.users).map(([uid,u])=>({uid,...u})).filter(u => u.status === 'pending');
+  const wrap = $('approvalsList');
+  if (!pending.length) {
+    wrap.innerHTML = `<div class="empty-state"><div class="em">✅</div><h3>No pending approvals</h3><p>All accounts have been reviewed.</p></div>`;
+    return;
+  }
+  wrap.innerHTML = pending.map(u => renderApprovalCard(u)).join('');
+  pending.forEach(u => {
+    $$(`[data-approve="${u.uid}"]`).forEach(b => b.addEventListener('click', () => approveUser(u.uid)));
+    $$(`[data-reject="${u.uid}"]`).forEach(b => b.addEventListener('click', () => rejectUser(u.uid)));
+    $$(`[data-view-user="${u.uid}"]`).forEach(b => b.addEventListener('click', () => openUserDetail(u.uid)));
+  });
+}
+
+function renderApprovalCard(u) {
+  const name = ((u.firstName||'') + ' ' + (u.lastName||'')).trim() || u.businessName || 'Unnamed';
+  const docs = collectUserDocs(u);
+  return `
+    <div class="approval-card">
+      <div class="approval-head">
+        <div class="approval-avatar">${u.profileUrl || u.logoUrl ? `<img src="${esc(u.profileUrl || u.logoUrl)}" alt="">` : initials(name)}</div>
+        <div class="approval-info">
+          <div class="approval-name">${esc(name)}</div>
+          <div class="approval-role">${roleEmoji(u.role)} ${esc(u.role||'user')} · ${esc(u.email||'—')} · ${esc(u.phone||'—')}</div>
+          ${u.city ? `<div style="font-size:11.5px;color:var(--tl);font-weight:600;margin-top:2px">📍 ${esc(u.city)}</div>` : ''}
+          ${u.vehicleType ? `<div style="font-size:11.5px;color:var(--tl);font-weight:600;margin-top:2px">🚗 ${esc(u.vehicleType)}</div>` : ''}
         </div>
-      `).join('')}
+      </div>
+      ${docs.length ? `
+        <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--tl);margin-bottom:8px">📎 Uploaded Documents (tap to view)</div>
+        <div class="ud-doc-grid">
+          ${docs.map(d => `<div class="ud-doc" onclick="openLightbox('${esc(d.url)}')"><img src="${esc(d.url)}" alt="${esc(d.label)}"><div class="ud-doc-label">${esc(d.label)}</div></div>`).join('')}
+        </div>
+      ` : `<div style="font-size:12px;color:var(--tl);font-weight:600;padding:10px;background:var(--sf2);border-radius:10px;text-align:center">No documents uploaded</div>`}
+      <div class="approval-actions">
+        <button class="btn btn-outline" data-view-user="${esc(u.uid)}">👁 View Full Profile</button>
+        <button class="btn btn-danger-soft" data-reject="${esc(u.uid)}">✕ Reject</button>
+        <button class="btn btn-primary" data-approve="${esc(u.uid)}">✓ Approve</button>
+      </div>
     </div>
-  ` : '';
+  `;
+}
+
+function collectUserDocs(u) {
+  const docs = [];
+  if (u.profileUrl) docs.push({label:'Profile Photo', url: u.profileUrl});
+  if (u.logoUrl) docs.push({label:'Business Logo', url: u.logoUrl});
+  if (u.nrcFront) docs.push({label:'NRC Front', url: u.nrcFront});
+  if (u.nrcBack) docs.push({label:'NRC Back', url: u.nrcBack});
+  if (u.licenseUrl) docs.push({label:'Driver License', url: u.licenseUrl});
+  if (u.vehiclePhoto) docs.push({label:'Vehicle', url: u.vehiclePhoto});
+  if (u.vehicleFront) docs.push({label:'Vehicle Front', url: u.vehicleFront});
+  if (u.vehicleBack) docs.push({label:'Vehicle Back', url: u.vehicleBack});
+  if (u.zraUrl) docs.push({label:'ZRA Cert', url: u.zraUrl});
+  if (u.pacraUrl) docs.push({label:'PACRA Cert', url: u.pacraUrl});
+  return docs;
 }
 
 /* ================================================================
    USERS
    ================================================================ */
 function renderUsers() {
-  const { userSearch, userRole, userStatus } = State.filters;
+  const { userSearch, userStatus } = State.filters;
   const search = userSearch.toLowerCase().trim();
-  let users = Object.entries(State.users).map(([uid, u]) => ({ uid, ...u }));
-
-  if (userRole !== 'all') users = users.filter(u => u.role === userRole);
-  if (userStatus !== 'all') users = users.filter(u => (u.status || 'approved') === userStatus);
-  if (search) {
-    users = users.filter(u => {
-      const hay = [u.firstName, u.lastName, u.email, u.phone, u.businessName, u.city].filter(Boolean).join(' ').toLowerCase();
-      return hay.includes(search);
-    });
-  }
-  users.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+  let users = Object.entries(State.users).map(([uid,u])=>({uid,...u}));
+  if (State.roleFilter !== 'all') users = users.filter(u => u.role === State.roleFilter);
+  if (userStatus !== 'all') users = users.filter(u => (u.status||'approved') === userStatus);
+  if (search) users = users.filter(u => {
+    const hay = [u.firstName, u.lastName, u.email, u.phone, u.businessName, u.city].filter(Boolean).join(' ').toLowerCase();
+    return hay.includes(search);
+  });
+  users.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
 
   const tb = $('usersTableBody');
   if (!users.length) {
-    tb.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="em">👥</div><h3>No users found</h3><p>Try a different filter or search term.</p></div></td></tr>`;
+    tb.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="em">👥</div><h3>No users found</h3><p>Try a different filter or search.</p></div></td></tr>`;
     return;
   }
-
   tb.innerHTML = users.map(u => {
-    const name = ((u.firstName || '') + ' ' + (u.lastName || '')).trim() || u.businessName || 'Unnamed';
+    const name = ((u.firstName||'') + ' ' + (u.lastName||'')).trim() || u.businessName || 'Unnamed';
     const status = u.status || 'approved';
-    return `
-      <tr data-uid="${esc(u.uid)}">
-        <td>
-          <div class="cell-user">
-            <div class="cell-avatar">${u.profileUrl || u.logoUrl ? `<img src="${esc(u.profileUrl || u.logoUrl)}" alt="">` : initials(name)}</div>
-            <div>
-              <div class="cell-name">${esc(name)}</div>
-              <div class="cell-sub">${esc(u.email || '—')}</div>
-            </div>
-          </div>
-        </td>
-        <td><span class="badge role ${esc(u.role||'')}">${roleEmoji(u.role)} ${esc(u.role || 'customer')}</span></td>
-        <td><span class="badge ${status}">${esc(status)}</span></td>
-        <td>${esc(u.city || '—')}</td>
-        <td>${esc(u.phone || '—')}</td>
-        <td style="text-align:right">
-          <div class="action-group">
-            <button class="action-btn view" data-user-action="view" data-uid="${esc(u.uid)}" title="View">👁</button>
-            ${status === 'pending' ? `
-              <button class="action-btn approve" data-user-action="approve" data-uid="${esc(u.uid)}" title="Approve">✓</button>
-              <button class="action-btn reject" data-user-action="reject" data-uid="${esc(u.uid)}" title="Reject">✕</button>
-            ` : ''}
-            ${status !== 'banned' ? `
-              <button class="action-btn ban" data-user-action="ban" data-uid="${esc(u.uid)}" title="Ban">🚫</button>
-            ` : `
-              <button class="action-btn approve" data-user-action="unban" data-uid="${esc(u.uid)}" title="Unban">✓</button>
-            `}
-            <button class="action-btn delete" data-user-action="delete" data-uid="${esc(u.uid)}" title="Delete">🗑</button>
-          </div>
-        </td>
-      </tr>
-    `;
+    return `<tr data-uid="${esc(u.uid)}">
+      <td><div class="cell-user"><div class="cell-avatar">${u.profileUrl||u.logoUrl ? `<img src="${esc(u.profileUrl||u.logoUrl)}" alt="">` : initials(name)}</div><div><div class="cell-name">${esc(name)}</div><div class="cell-sub">${esc(u.email||'—')}</div></div></div></td>
+      <td><span class="badge role ${esc(u.role||'')}">${roleEmoji(u.role)} ${esc(u.role||'customer')}</span></td>
+      <td><span class="badge ${status}">${esc(status)}</span></td>
+      <td>${esc(u.city||'—')}</td>
+      <td>${esc(u.phone||'—')}</td>
+      <td style="text-align:right"><div class="action-group">
+        <button class="action-btn view" data-user-action="view" data-uid="${esc(u.uid)}">👁</button>
+        ${status==='pending' ? `<button class="action-btn approve" data-user-action="approve" data-uid="${esc(u.uid)}">✓</button><button class="action-btn reject" data-user-action="reject" data-uid="${esc(u.uid)}">✕</button>` : ''}
+        ${status !== 'banned' ? `<button class="action-btn ban" data-user-action="ban" data-uid="${esc(u.uid)}">🚫</button>` : `<button class="action-btn approve" data-user-action="unban" data-uid="${esc(u.uid)}">✓</button>`}
+        <button class="action-btn delete" data-user-action="delete" data-uid="${esc(u.uid)}">🗑</button>
+      </div></td>
+    </tr>`;
   }).join('');
 
-  // Wire actions
   tb.querySelectorAll('[data-user-action]').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
       const uid = btn.dataset.uid;
-      const action = btn.dataset.userAction;
-      if (action === 'view') openUserDetail(uid);
-      else if (action === 'approve') approveUser(uid);
-      else if (action === 'reject') rejectUser(uid);
-      else if (action === 'ban') banUser(uid);
-      else if (action === 'unban') unbanUser(uid);
-      else if (action === 'delete') deleteUserConfirm(uid);
+      const a = btn.dataset.userAction;
+      if (a === 'view') openUserDetail(uid);
+      else if (a === 'approve') approveUser(uid);
+      else if (a === 'reject') rejectUser(uid);
+      else if (a === 'ban') banUser(uid);
+      else if (a === 'unban') unbanUser(uid);
+      else if (a === 'delete') deleteUserConfirm(uid);
     });
   });
-
-  // Row click opens detail
   tb.querySelectorAll('tr[data-uid]').forEach(tr => {
     tr.addEventListener('click', e => {
       if (e.target.closest('button')) return;
@@ -1548,95 +1606,242 @@ function renderUsers() {
   });
 }
 
-function openUserDetail(uid) {
-  const u = State.users[uid];
-  if (!u) { toast('User not found'); return; }
-  const name = ((u.firstName || '') + ' ' + (u.lastName || '')).trim() || u.businessName || 'Unnamed';
-  const status = u.status || 'approved';
-  const farms = u.farms ? Object.entries(u.farms).map(([id, f]) => ({id, ...f})) : [];
-  const userBatches = Object.entries(State.batches).map(([id, b]) => ({id, ...b})).filter(b => b.ownerId === uid);
-  const userListings = Object.entries(State.listings).map(([id, l]) => ({id, ...l})).filter(l => l.seller_id === uid);
-  const userProducts = Object.entries(State.products).map(([id, p]) => ({id, ...p})).filter(p => p.sellerId === uid);
-
-  const info = `
-    <div class="info-table">
-      <div class="it-row"><span class="it-k">UID</span><span class="it-v" style="font-family:monospace;font-size:11px">${esc(uid)}</span></div>
-      <div class="it-row"><span class="it-k">Role</span><span class="it-v">${roleEmoji(u.role)} ${esc(u.role||'customer')}</span></div>
-      <div class="it-row"><span class="it-k">Status</span><span class="it-v"><span class="badge ${status}">${esc(status)}</span></span></div>
-      <div class="it-row"><span class="it-k">Email</span><span class="it-v">${esc(u.email || '—')}</span></div>
-      <div class="it-row"><span class="it-k">Phone</span><span class="it-v">${esc(u.phone || u.phoneNumber || '—')}</span></div>
-      <div class="it-row"><span class="it-k">City</span><span class="it-v">${esc(u.city || '—')}</span></div>
-      ${u.businessName ? `<div class="it-row"><span class="it-k">Business</span><span class="it-v">${esc(u.businessName)}</span></div>` : ''}
-      ${u.vehicleType ? `<div class="it-row"><span class="it-k">Vehicle</span><span class="it-v">${esc(u.vehicleType)}</span></div>` : ''}
-      ${u.role === 'delivery' ? `<div class="it-row"><span class="it-k">Available</span><span class="it-v">${u.available ? '✅ Yes' : '❌ No'}</span></div>` : ''}
-      <div class="it-row"><span class="it-k">Created</span><span class="it-v">${u.createdAt ? fmtDateTime(u.createdAt) : '—'}</span></div>
-      ${u.banReason ? `<div class="it-row"><span class="it-k">Ban reason</span><span class="it-v" style="color:var(--danger)">${esc(u.banReason)}</span></div>` : ''}
-    </div>
-    ${u.about ? `<div style="padding:12px 14px;background:var(--sf2);border-radius:12px;font-size:13px;font-weight:600;line-height:1.5;margin-bottom:16px"><strong>About:</strong> ${esc(u.about)}</div>` : ''}
-    ${farms.length ? `
-      <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin:16px 0 8px">Farms (${farms.length})</div>
-      ${farms.map(f => `
-        <div style="display:flex;gap:10px;align-items:center;padding:10px;background:var(--sf2);border-radius:10px;margin-bottom:6px">
-          <div style="width:40px;height:40px;border-radius:10px;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:20px">🌾</div>
-          <div style="flex:1;min-width:0">
-            <div style="font-size:13px;font-weight:800;color:var(--td)">${esc(f.name || 'Unnamed Farm')}</div>
-            <div style="font-size:11px;color:var(--tl);font-weight:600">${esc(f.city || '—')}</div>
-          </div>
-        </div>
-      `).join('')}
-    ` : ''}
-    ${userBatches.length ? `
-      <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin:16px 0 8px">Batches (${userBatches.length})</div>
-      ${userBatches.slice(0,5).map(b => `
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--sf2);border-radius:10px;margin-bottom:6px;font-size:12px">
-          <span style="font-weight:800;color:var(--td)">${stageEmoji(b.stage)} ${esc(b.cropName || '—')}</span>
-          <span class="badge stage ${esc(b.stage||'')}">${esc(b.stage || 'planted')}</span>
-        </div>
-      `).join('')}
-    ` : ''}
-    ${userListings.length ? `
-      <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin:16px 0 8px">Listings (${userListings.length})</div>
-      ${userListings.slice(0,5).map(l => `
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--sf2);border-radius:10px;margin-bottom:6px;font-size:12px">
-          <span style="font-weight:800;color:var(--td)">🛒 ${esc(l.productName || l.title || '—')}</span>
-          <span class="badge ${l.availabilityStatus||'pending'}">${esc(l.availabilityStatus || 'pending')}</span>
-        </div>
-      `).join('')}
-    ` : ''}
-    ${userProducts.length ? `
-      <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin:16px 0 8px">Agro Products (${userProducts.length})</div>
-      ${userProducts.slice(0,5).map(p => `
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--sf2);border-radius:10px;margin-bottom:6px;font-size:12px">
-          <span style="font-weight:800;color:var(--td)">📦 ${esc(p.name || '—')}</span>
-          <span style="font-size:11px;color:var(--tl)">${fmtZMK(p.price)}</span>
-        </div>
-      `).join('')}
-    ` : ''}
-  `;
-
-  const foot = `
-    <button class="btn btn-outline" id="mEdit">✏️ Edit</button>
-    <button class="btn btn-primary" id="mNotify">🔔 Notify</button>
-    ${status !== 'banned'
-      ? `<button class="btn btn-danger-soft" id="mBan">🚫 Ban</button>`
-      : `<button class="btn btn-ok-soft" id="mUnban">✓ Unban</button>`}
-  `;
-
-  showModal(name, u.email || '—', info, foot);
-
-  $('mEdit').addEventListener('click', () => openUserEdit(uid));
-  $('mNotify').addEventListener('click', () => {
-    closeModal();
-    navigate('notifications');
-    setTimeout(() => {
-      $('notifAudience').value = 'custom';
-      $('notifAudience').dispatchEvent(new Event('change'));
-      $('notifCustomTarget').value = uid;
-    }, 200);
-  });
-  if (status !== 'banned') $('mBan').addEventListener('click', () => { closeModal(); banUser(uid); });
-  else $('mUnban').addEventListener('click', () => { closeModal(); unbanUser(uid); });
+async function approveUser(uid) {
+  try {
+    await update(ref(db, 'users/'+uid), { status: 'approved', approvedAt: Date.now(), banReason: null });
+    toast('User approved ✓');
+  } catch(e) { toast('Failed: '+e.message); }
 }
+async function rejectUser(uid) {
+  showConfirm('Reject user?', 'This user will not be able to log in.', async () => {
+    try {
+      await update(ref(db, 'users/'+uid), { status: 'rejected', rejectedAt: Date.now() });
+      toast('User rejected');
+    } catch(e) { toast('Failed: '+e.message); }
+  }, { okText:'Reject', okClass:'btn-warn', icon:'✕' });
+}
+async function banUser(uid) {
+  const reason = prompt('Reason for ban (optional):', '') || '';
+  try {
+    await update(ref(db, 'users/'+uid), { status: 'banned', banReason: reason, bannedAt: Date.now() });
+    toast('User banned 🚫');
+  } catch(e) { toast('Failed: '+e.message); }
+}
+async function unbanUser(uid) {
+  try {
+    await update(ref(db, 'users/'+uid), { status: 'approved', banReason: null, unbannedAt: Date.now() });
+    toast('User unbanned ✓');
+  } catch(e) { toast('Failed: '+e.message); }
+}
+function deleteUserConfirm(uid) {
+  const u = State.users[uid];
+  const name = ((u.firstName||'') + ' ' + (u.lastName||'')).trim() || 'this user';
+  showConfirm('Delete user?', `Permanently delete ${name} and all their data (batches, listings, products)? This cannot be undone.`, async () => {
+    try {
+      const promises = [];
+      Object.entries(State.batches).forEach(([id,b]) => { if (b.ownerId === uid) promises.push(remove(ref(db,'batches/'+id))); });
+      Object.entries(State.listings).forEach(([id,l]) => { if (l.seller_id === uid) promises.push(remove(ref(db,'marketListings/'+id))); });
+      Object.entries(State.products).forEach(([id,p]) => { if (p.sellerId === uid) promises.push(remove(ref(db,'agroProducts/'+id))); });
+      await Promise.all(promises);
+      await remove(ref(db,'users/'+uid));
+      toast('User deleted');
+      closeUserDetail();
+    } catch(e) { toast('Failed: '+e.message); }
+  }, { okText:'Delete', icon:'🗑' });
+}
+
+/* ================================================================
+   USER DETAIL FULL PAGE
+   ================================================================ */
+window.openUserDetail = function(uid) {
+  State.detailUid = uid;
+  $('userDetailPage').classList.add('open');
+  renderUserDetail(uid);
+};
+window.closeUserDetail = function() {
+  $('userDetailPage').classList.remove('open');
+  State.detailUid = null;
+};
+
+function renderUserDetail(uid) {
+  const u = State.users[uid];
+  if (!u) { closeUserDetail(); return; }
+  const name = ((u.firstName||'') + ' ' + (u.lastName||'')).trim() || u.businessName || 'Unnamed';
+  const status = u.status || 'approved';
+  const role = u.role || 'customer';
+
+  $('udTitle').textContent = name;
+  $('udSub').textContent = roleEmoji(role) + ' ' + role + ' · ' + (u.email || '—');
+
+  // Top actions
+  $('udTopActions').innerHTML = `
+    ${status === 'pending' ? `
+      <button class="action-btn approve" onclick="approveUserFromDetail('${esc(uid)}')" title="Approve">✓</button>
+      <button class="action-btn reject" onclick="rejectUserFromDetail('${esc(uid)}')" title="Reject">✕</button>
+    ` : ''}
+    <button class="action-btn edit" onclick="editUserFromDetail('${esc(uid)}')" title="Edit">✏️</button>
+    <button class="action-btn delete" onclick="deleteUserConfirm('${esc(uid)}')" title="Delete">🗑</button>
+  `;
+
+  const farms = u.farms ? Object.entries(u.farms).map(([id,f])=>({id,...f})) : [];
+  const userBatches = Object.entries(State.batches).map(([id,b])=>({id,...b})).filter(b => b.ownerId === uid);
+  const userListings = Object.entries(State.listings).map(([id,l])=>({id,...l})).filter(l => l.seller_id === uid);
+  const userProducts = Object.entries(State.products).map(([id,p])=>({id,...p})).filter(p => p.sellerId === uid);
+  const userDeliveries = Object.entries(State.deliveries).map(([id,d])=>({id,...d})).filter(d => d.providerId === uid);
+  const docs = collectUserDocs(u);
+  const activeListings = userListings.filter(l => l.status !== 'removed' && l.availabilityStatus !== 'removed' && l.availabilityStatus !== 'sold');
+  const activeBatches = userBatches.filter(b => b.stage !== 'harvested');
+
+  const html = `
+    <div class="ud-hero">
+      <div class="ud-avatar">${u.profileUrl || u.logoUrl ? `<img src="${esc(u.profileUrl||u.logoUrl)}" alt="">` : initials(name)}</div>
+      <div class="ud-name">${esc(name)}</div>
+      <div class="ud-role-badge">${roleEmoji(role)} ${esc(role)}</div>
+      <div style="margin-top:8px"><span class="ud-status-line ${status}">${status === 'approved' ? '✓ ' : status === 'pending' ? '⏳ ' : '✕ '}${esc(status)}</span></div>
+      <div class="ud-stats">
+        <div class="ud-stat"><div class="n">${farms.length}</div><div class="l">Farms</div></div>
+        <div class="ud-stat"><div class="n">${activeBatches.length}</div><div class="l">Planting</div></div>
+        <div class="ud-stat"><div class="n">${activeListings.length}</div><div class="l">Listings</div></div>
+        <div class="ud-stat"><div class="n">${userProducts.length}</div><div class="l">Products</div></div>
+      </div>
+    </div>
+
+    <div class="ud-section">
+      <div class="ud-section-title">📋 Profile Information</div>
+      <div class="info-table">
+        <div class="it-row"><span class="it-k">Full name</span><span class="it-v">${esc(name)}</span></div>
+        <div class="it-row"><span class="it-k">Email</span><span class="it-v">${esc(u.email||'—')}</span></div>
+        <div class="it-row"><span class="it-k">Phone</span><span class="it-v">${esc(u.phone||u.phoneNumber||'—')}</span></div>
+        <div class="it-row"><span class="it-k">City</span><span class="it-v">${esc(u.city||'—')}</span></div>
+        ${u.businessName ? `<div class="it-row"><span class="it-k">Business</span><span class="it-v">${esc(u.businessName)}</span></div>` : ''}
+        ${u.about ? `<div class="it-row"><span class="it-k">About</span><span class="it-v">${esc(u.about)}</span></div>` : ''}
+        ${u.vehicleType ? `<div class="it-row"><span class="it-k">Vehicle</span><span class="it-v">${esc(u.vehicleType)}</span></div>` : ''}
+        ${role === 'delivery' ? `<div class="it-row"><span class="it-k">Available</span><span class="it-v">${u.available ? '✅ Yes' : '❌ No'}</span></div>` : ''}
+        <div class="it-row"><span class="it-k">UID</span><span class="it-v" style="font-family:monospace;font-size:11px">${esc(uid)}</span></div>
+        <div class="it-row"><span class="it-k">Joined</span><span class="it-v">${fmtDateTime(u.createdAt)}</span></div>
+        ${u.banReason ? `<div class="it-row"><span class="it-k">Ban reason</span><span class="it-v" style="color:var(--danger)">${esc(u.banReason)}</span></div>` : ''}
+      </div>
+    </div>
+
+    ${docs.length ? `
+      <div class="ud-section">
+        <div class="ud-section-title">📎 Documents & Photos (tap to view)</div>
+        <div class="ud-doc-grid">
+          ${docs.map(d => `<div class="ud-doc" onclick="openLightbox('${esc(d.url)}')"><img src="${esc(d.url)}" alt="${esc(d.label)}"><div class="ud-doc-label">${esc(d.label)}</div></div>`).join('')}
+        </div>
+      </div>
+    ` : ''}
+
+    ${farms.length ? `
+      <div class="ud-section">
+        <div class="ud-section-title">🌾 Farms (${farms.length})</div>
+        ${farms.map(f => `
+          <div class="ud-farm-item">
+            <div class="ud-item-thumb">${f.photoUrl ? `<img src="${esc(f.photoUrl)}" alt="">` : '🌾'}</div>
+            <div class="ud-item-body">
+              <div class="ud-item-name">${esc(f.name||'Unnamed Farm')}</div>
+              <div class="ud-item-sub">📍 ${esc(f.city||'—')}</div>
+              <div class="ud-item-meta">${userBatches.filter(b=>b.farmId===f.id).length} batches</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    ` : ''}
+
+    ${userBatches.length ? `
+      <div class="ud-section">
+        <div class="ud-section-title">🌱 Batches (${userBatches.length})</div>
+        ${userBatches.slice(0,10).map(b => `
+          <div class="ud-batch-item" onclick="openBatchDetail('${esc(b.id)}')">
+            <div class="ud-item-thumb">${b.coverUrl ? `<img src="${esc(b.coverUrl)}" alt="">` : pickIcon(b.cropName)}</div>
+            <div class="ud-item-body">
+              <div class="ud-item-name">${esc(b.cropName||'—')} · ${esc(b.varietyName||'')}</div>
+              <div class="ud-item-sub">📍 ${esc(b.town||'—')} · Est. ${b.estimatedBoxes||0} · Actual ${b.actualBoxes||0}</div>
+              <div class="ud-item-meta">${stageEmoji(b.stage)} ${esc(b.stage||'planted')} · ${fmtDate(b.plantedDate)}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    ` : ''}
+
+    ${userListings.length ? `
+      <div class="ud-section">
+        <div class="ud-section-title">🛒 Market Listings (${userListings.length})</div>
+        ${userListings.slice(0,10).map(l => {
+          const st = l.availabilityStatus || l.status || 'pending';
+          return `<div class="ud-listing-item" onclick="openListingDetail('${esc(l.id)}')">
+            <div class="ud-item-thumb">${l.photoUrls && l.photoUrls[0] ? `<img src="${esc(l.photoUrls[0])}" alt="">` : pickIcon(l.productName||l.title)}</div>
+            <div class="ud-item-body">
+              <div class="ud-item-name">${esc(l.productName||l.title||'—')} · ${esc(l.varietyName||'')}</div>
+              <div class="ud-item-sub">📍 ${esc(l.marketName||'—')} · ${esc(l.city||'—')}</div>
+              <div class="ud-item-meta">${fmtZMK(l.priceAmount)} · ${l.quantity||0} ${esc(l.unit||'unit')} · <span class="badge ${st}" style="font-size:9px;padding:2px 7px">${esc(st)}</span></div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    ` : ''}
+
+    ${userProducts.length ? `
+      <div class="ud-section">
+        <div class="ud-section-title">📦 Agro Products (${userProducts.length})</div>
+        ${userProducts.map(p => `
+          <div class="ud-product-item">
+            <div class="ud-item-thumb">${p.photoUrl ? `<img src="${esc(p.photoUrl)}" alt="">` : pickIcon(p.name)}</div>
+            <div class="ud-item-body">
+              <div class="ud-item-name">${esc(p.name||'—')}</div>
+              <div class="ud-item-sub">${esc(p.category||'')} · ${esc(p.cropTag||'')}</div>
+              <div class="ud-item-meta">${fmtZMK(p.price)} / ${esc(p.unit||'unit')} · Stock ${p.stock||0} · ${p.available!==false ? '✓ Available' : '○ Hidden'}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    ` : ''}
+
+    ${userDeliveries.length ? `
+      <div class="ud-section">
+        <div class="ud-section-title">🚚 Delivery Trips (${userDeliveries.length})</div>
+        ${userDeliveries.slice(0,10).map(d => {
+          const st = d.status || 'searching';
+          return `<div class="ud-batch-item">
+            <div class="ud-item-thumb">🚚</div>
+            <div class="ud-item-body">
+              <div class="ud-item-name">${esc(d.pickup?.label||'—')} → ${esc(d.dropoff?.label||'—')}</div>
+              <div class="ud-item-sub">${esc(d.senderName||d.requesterName||'—')}</div>
+              <div class="ud-item-meta">${fmtZMK(d.fare)} · <span class="badge ${st==='delivered'?'approved':st==='cancelled'?'removed':'pending'}" style="font-size:9px;padding:2px 7px">${esc(st)}</span></div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    ` : ''}
+
+    <div class="ud-section">
+      <div class="ud-section-title">⚡ Admin Actions</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        ${status === 'pending' ? `<button class="btn btn-primary" onclick="approveUserFromDetail('${esc(uid)}')">✓ Approve</button><button class="btn btn-warn-soft" onclick="rejectUserFromDetail('${esc(uid)}')">✕ Reject</button>` : ''}
+        <button class="btn btn-outline" onclick="editUserFromDetail('${esc(uid)}')">✏️ Edit Details</button>
+        <button class="btn btn-outline" onclick="notifyFromDetail('${esc(uid)}')">🔔 Send Notification</button>
+        ${status !== 'banned' ? `<button class="btn btn-warn-soft" onclick="banUserFromDetail('${esc(uid)}')">🚫 Ban User</button>` : `<button class="btn btn-ok-soft" onclick="unbanUserFromDetail('${esc(uid)}')">✓ Unban</button>`}
+        <button class="btn btn-danger-soft" onclick="deleteUserConfirm('${esc(uid)}')">🗑 Delete User</button>
+      </div>
+    </div>
+  `;
+  $('udBody').innerHTML = html;
+}
+
+window.approveUserFromDetail = async uid => { await approveUser(uid); renderUserDetail(uid); };
+window.rejectUserFromDetail = async uid => { await rejectUser(uid); renderUserDetail(uid); };
+window.banUserFromDetail = async uid => { await banUser(uid); renderUserDetail(uid); };
+window.unbanUserFromDetail = async uid => { await unbanUser(uid); renderUserDetail(uid); };
+window.editUserFromDetail = uid => openUserEdit(uid);
+window.notifyFromDetail = uid => {
+  closeUserDetail();
+  navigate('notifications');
+  setTimeout(() => {
+    $('notifAudience').value = 'custom';
+    $('notifAudience').dispatchEvent(new Event('change'));
+    $('notifCustomTarget').value = uid;
+  }, 200);
+};
 
 function openUserEdit(uid) {
   const u = State.users[uid];
@@ -1653,23 +1858,18 @@ function openUserEdit(uid) {
     </div>
     <div class="form-row">
       <div class="form-field"><label>Role</label>
-        <select id="euRole">
-          ${['customer','farmer','supplier','marketeer','delivery','admin'].map(r => `<option value="${r}" ${(u.role||'')===r?'selected':''}>${roleEmoji(r)} ${r}</option>`).join('')}
-        </select>
+        <select id="euRole">${['customer','farmer','supplier','marketeer','delivery','admin'].map(r => `<option value="${r}" ${(u.role||'')===r?'selected':''}>${roleEmoji(r)} ${r}</option>`).join('')}</select>
       </div>
       <div class="form-field"><label>Status</label>
-        <select id="euStatus">
-          ${['approved','pending','rejected','banned'].map(s => `<option value="${s}" ${(u.status||'approved')===s?'selected':''}>${s}</option>`).join('')}
-        </select>
+        <select id="euStatus">${['approved','pending','rejected','banned'].map(s => `<option value="${s}" ${(u.status||'approved')===s?'selected':''}>${s}</option>`).join('')}</select>
       </div>
     </div>
-    <div class="form-field"><label>Ban reason (if banning)</label><input type="text" id="euBan" value="${esc(u.banReason||'')}" placeholder="Reason"></div>
+    <div class="form-field"><label>Ban reason</label><input type="text" id="euBan" value="${esc(u.banReason||'')}" placeholder="Reason"></div>
   `;
   showModal('Edit User', u.email || '', body, `
     <button class="btn btn-outline" onclick="document.getElementById('modalOverlay').classList.remove('open')">Cancel</button>
-    <button class="btn btn-primary" id="euSave">💾 Save Changes</button>
+    <button class="btn btn-primary" id="euSave">💾 Save</button>
   `);
-
   $('euSave').addEventListener('click', async () => {
     const updates = {
       firstName: $('euFirst').value.trim(),
@@ -1683,68 +1883,12 @@ function openUserEdit(uid) {
       updatedAt: Date.now()
     };
     try {
-      await update(ref(db, 'users/' + uid), updates);
-      toast('User updated ✓');
+      await update(ref(db,'users/'+uid), updates);
+      toast('Saved ✓');
       closeModal();
-    } catch(e) {
-      toast('Failed: ' + (e.message || e));
-    }
+      if (State.detailUid === uid) renderUserDetail(uid);
+    } catch(e) { toast('Failed: '+e.message); }
   });
-}
-
-async function approveUser(uid) {
-  try {
-    await update(ref(db, 'users/' + uid), { status: 'approved', approvedAt: Date.now(), banReason: null });
-    toast('User approved ✓');
-  } catch(e) { toast('Failed: ' + e.message); }
-}
-
-async function rejectUser(uid) {
-  showConfirm('Reject user?', 'This user will not be able to log in.', async () => {
-    try {
-      await update(ref(db, 'users/' + uid), { status: 'rejected', rejectedAt: Date.now() });
-      toast('User rejected');
-    } catch(e) { toast('Failed: ' + e.message); }
-  }, { okText: 'Reject', okClass: 'btn-warn' });
-}
-
-async function banUser(uid) {
-  const u = State.users[uid];
-  const reason = prompt('Reason for ban (optional):', '') || '';
-  try {
-    await update(ref(db, 'users/' + uid), { status: 'banned', banReason: reason, bannedAt: Date.now() });
-    toast('User banned 🚫');
-  } catch(e) { toast('Failed: ' + e.message); }
-}
-
-async function unbanUser(uid) {
-  try {
-    await update(ref(db, 'users/' + uid), { status: 'approved', banReason: null, unbannedAt: Date.now() });
-    toast('User unbanned ✓');
-  } catch(e) { toast('Failed: ' + e.message); }
-}
-
-function deleteUserConfirm(uid) {
-  const u = State.users[uid];
-  const name = ((u.firstName || '') + ' ' + (u.lastName || '')).trim() || 'this user';
-  showConfirm('Delete user?', `Permanently delete ${name} and all their data (batches, listings, products)? This cannot be undone.`, async () => {
-    try {
-      // Delete related data
-      const promises = [];
-      Object.entries(State.batches).forEach(([id, b]) => {
-        if (b.ownerId === uid) promises.push(remove(ref(db, 'batches/' + id)));
-      });
-      Object.entries(State.listings).forEach(([id, l]) => {
-        if (l.seller_id === uid) promises.push(remove(ref(db, 'marketListings/' + id)));
-      });
-      Object.entries(State.products).forEach(([id, p]) => {
-        if (p.sellerId === uid) promises.push(remove(ref(db, 'agroProducts/' + id)));
-      });
-      await Promise.all(promises);
-      await remove(ref(db, 'users/' + uid));
-      toast('User deleted');
-    } catch(e) { toast('Failed: ' + e.message); }
-  }, { okText: 'Delete', okClass: 'btn-danger', icon: '🗑' });
 }
 
 /* ================================================================
@@ -1753,45 +1897,31 @@ function deleteUserConfirm(uid) {
 function renderBatches() {
   const { batchSearch, batchStage } = State.filters;
   const search = batchSearch.toLowerCase().trim();
-  let batches = Object.entries(State.batches).map(([id, b]) => ({ id, ...b }));
-
+  let batches = Object.entries(State.batches).map(([id,b])=>({id,...b}));
   if (batchStage !== 'all') batches = batches.filter(b => b.stage === batchStage);
-  if (search) {
-    batches = batches.filter(b => {
-      const hay = [b.cropName, b.varietyName, b.ownerName, b.town, b.batchNumber].filter(Boolean).join(' ').toLowerCase();
-      return hay.includes(search);
-    });
-  }
-  batches.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+  if (search) batches = batches.filter(b => {
+    const hay = [b.cropName, b.varietyName, b.ownerName, b.town, b.batchNumber].filter(Boolean).join(' ').toLowerCase();
+    return hay.includes(search);
+  });
+  batches.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
 
   const tb = $('batchesTableBody');
   if (!batches.length) {
-    tb.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="em">🌱</div><h3>No batches found</h3><p>Try a different filter or search.</p></div></td></tr>`;
+    tb.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="em">🌱</div><h3>No batches</h3><p>Try a different filter.</p></div></td></tr>`;
     return;
   }
-
   tb.innerHTML = batches.map(b => `
     <tr data-batch-id="${esc(b.id)}">
-      <td>
-        <div class="cell-user">
-          <div class="cell-avatar" style="background:linear-gradient(145deg,#d1fae5,#10b981)">${pickIcon(b.cropName)}</div>
-          <div>
-            <div class="cell-name">${esc(b.cropName || '—')}</div>
-            <div class="cell-sub">${esc(b.varietyName || '')}</div>
-          </div>
-        </div>
-      </td>
-      <td>${esc(b.ownerName || '—')}</td>
-      <td>${esc(b.town || '—')}</td>
-      <td><span class="badge stage ${esc(b.stage||'')}">${stageEmoji(b.stage)} ${esc(b.stage || 'planted')}</span></td>
+      <td><div class="cell-user"><div class="cell-avatar">${pickIcon(b.cropName)}</div><div><div class="cell-name">${esc(b.cropName||'—')}</div><div class="cell-sub">${esc(b.varietyName||'')}</div></div></div></td>
+      <td>${esc(b.ownerName||'—')}</td>
+      <td>${esc(b.town||'—')}</td>
+      <td><span class="badge stage ${esc(b.stage||'')}">${stageEmoji(b.stage)} ${esc(b.stage||'planted')}</span></td>
       <td>${b.estimatedBoxes ? Number(b.estimatedBoxes).toLocaleString() : '—'}</td>
       <td>${b.actualBoxes ? Number(b.actualBoxes).toLocaleString() : '—'}</td>
-      <td style="text-align:right">
-        <div class="action-group">
-          <button class="action-btn view" data-batch-action="view" data-batch-id="${esc(b.id)}" title="View">👁</button>
-          <button class="action-btn delete" data-batch-action="delete" data-batch-id="${esc(b.id)}" title="Delete">🗑</button>
-        </div>
-      </td>
+      <td style="text-align:right"><div class="action-group">
+        <button class="action-btn view" data-batch-action="view" data-batch-id="${esc(b.id)}">👁</button>
+        <button class="action-btn delete" data-batch-action="delete" data-batch-id="${esc(b.id)}">🗑</button>
+      </div></td>
     </tr>
   `).join('');
 
@@ -1799,9 +1929,13 @@ function renderBatches() {
     btn.addEventListener('click', e => {
       e.stopPropagation();
       const id = btn.dataset.batchId;
-      const action = btn.dataset.batchAction;
-      if (action === 'view') openBatchDetail(id);
-      else if (action === 'delete') deleteBatchConfirm(id);
+      if (btn.dataset.batchAction === 'view') openBatchDetail(id);
+      else if (btn.dataset.batchAction === 'delete') {
+        showConfirm('Delete batch?', 'Permanently remove this batch?', async () => {
+          try { await remove(ref(db,'batches/'+id)); toast('Deleted'); }
+          catch(e) { toast('Failed: '+e.message); }
+        }, { okText:'Delete', icon:'🗑' });
+      }
     });
   });
   tb.querySelectorAll('tr[data-batch-id]').forEach(tr => {
@@ -1812,53 +1946,49 @@ function renderBatches() {
   });
 }
 
-function openBatchDetail(id) {
+window.openBatchDetail = function(id) {
   const b = State.batches[id];
-  if (!b) return;
+  if (!b) { toast('Batch not found'); return; }
   const info = `
     <div class="info-table">
-      <div class="it-row"><span class="it-k">Batch #</span><span class="it-v" style="font-family:monospace;font-size:11px">${esc(b.batchNumber || '—')}</span></div>
-      <div class="it-row"><span class="it-k">Crop</span><span class="it-v">${pickIcon(b.cropName)} ${esc(b.cropName || '—')}</span></div>
-      <div class="it-row"><span class="it-k">Variety</span><span class="it-v">${esc(b.varietyName || '—')}</span></div>
-      <div class="it-row"><span class="it-k">Farmer</span><span class="it-v">${esc(b.ownerName || '—')}</span></div>
-      <div class="it-row"><span class="it-k">Town</span><span class="it-v">${esc(b.town || '—')}</span></div>
-      <div class="it-row"><span class="it-k">Stage</span><span class="it-v"><span class="badge stage ${esc(b.stage||'')}">${esc(b.stage || 'planted')}</span></span></div>
+      <div class="it-row"><span class="it-k">Batch #</span><span class="it-v" style="font-family:monospace;font-size:11px">${esc(b.batchNumber||'—')}</span></div>
+      <div class="it-row"><span class="it-k">Crop</span><span class="it-v">${pickIcon(b.cropName)} ${esc(b.cropName||'—')}</span></div>
+      <div class="it-row"><span class="it-k">Variety</span><span class="it-v">${esc(b.varietyName||'—')}</span></div>
+      <div class="it-row"><span class="it-k">Farmer</span><span class="it-v">${esc(b.ownerName||'—')}</span></div>
+      <div class="it-row"><span class="it-k">Town</span><span class="it-v">${esc(b.town||'—')}</span></div>
+      <div class="it-row"><span class="it-k">Stage</span><span class="it-v"><span class="badge stage ${esc(b.stage||'')}">${esc(b.stage||'planted')}</span></span></div>
       <div class="it-row"><span class="it-k">Est. boxes</span><span class="it-v">${b.estimatedBoxes ? Number(b.estimatedBoxes).toLocaleString() : '—'}</span></div>
       <div class="it-row"><span class="it-k">Actual boxes</span><span class="it-v">${b.actualBoxes ? Number(b.actualBoxes).toLocaleString() : '—'}</span></div>
       <div class="it-row"><span class="it-k">Planted</span><span class="it-v">${fmtDate(b.plantedDate)}</span></div>
-      <div class="it-row"><span class="it-k">Harvest window</span><span class="it-v">${fmtDate(b.harvestStart)} – ${fmtDate(b.harvestEnd)}</span></div>
-      ${b.soilType ? `<div class="it-row"><span class="it-k">Soil</span><span class="it-v">${esc(b.soilType)}</span></div>` : ''}
-      ${b.irrigationType ? `<div class="it-row"><span class="it-k">Irrigation</span><span class="it-v">${esc(b.irrigationType)}</span></div>` : ''}
+      <div class="it-row"><span class="it-k">Harvest</span><span class="it-v">${fmtDate(b.harvestStart)} – ${fmtDate(b.harvestEnd)}</span></div>
     </div>
-    <div class="form-field">
-      <label>Change Stage</label>
-      <select id="bStageSelect">
-        ${['planted','growing','flowering','fruiting','harvesting','harvested'].map(s => `<option value="${s}" ${(b.stage||'planted')===s?'selected':''}>${stageEmoji(s)} ${s}</option>`).join('')}
-      </select>
+    <div class="form-field"><label>Stage</label>
+      <select id="bStage">${['planted','growing','flowering','fruiting','harvesting','harvested'].map(s=>`<option value="${s}" ${(b.stage||'planted')===s?'selected':''}>${stageEmoji(s)} ${s}</option>`).join('')}</select>
     </div>
+    <div class="form-row">
+      <div class="form-field"><label>Est. Boxes</label><input type="number" id="bEst" value="${b.estimatedBoxes||0}"></div>
+      <div class="form-field"><label>Actual Boxes</label><input type="number" id="bAct" value="${b.actualBoxes||0}"></div>
+    </div>
+    <div class="form-field"><label>Variety</label><input type="text" id="bVar" value="${esc(b.varietyName||'')}"></div>
   `;
   showModal(b.cropName || 'Batch', b.batchNumber || '', info, `
     <button class="btn btn-outline" onclick="document.getElementById('modalOverlay').classList.remove('open')">Cancel</button>
-    <button class="btn btn-primary" id="bSaveStage">💾 Update Stage</button>
+    <button class="btn btn-primary" id="bSave">💾 Save Changes</button>
   `);
-  $('bSaveStage').addEventListener('click', async () => {
-    const newStage = $('bStageSelect').value;
+  $('bSave').addEventListener('click', async () => {
     try {
-      await update(ref(db, 'batches/' + id), { stage: newStage, updatedAt: Date.now() });
-      toast('Stage updated ✓');
+      await update(ref(db,'batches/'+id), {
+        stage: $('bStage').value,
+        estimatedBoxes: parseInt($('bEst').value) || 0,
+        actualBoxes: parseInt($('bAct').value) || 0,
+        varietyName: $('bVar').value.trim(),
+        updatedAt: Date.now()
+      });
+      toast('Batch updated ✓');
       closeModal();
-    } catch(e) { toast('Failed: ' + e.message); }
+    } catch(e) { toast('Failed: '+e.message); }
   });
-}
-
-function deleteBatchConfirm(id) {
-  showConfirm('Delete batch?', 'This permanently removes the batch and all its harvest records.', async () => {
-    try {
-      await remove(ref(db, 'batches/' + id));
-      toast('Batch deleted');
-    } catch(e) { toast('Failed: ' + e.message); }
-  }, { okText: 'Delete', okClass: 'btn-danger', icon: '🗑' });
-}
+};
 
 /* ================================================================
    LISTINGS
@@ -1866,69 +1996,53 @@ function deleteBatchConfirm(id) {
 function renderListings() {
   const { listingSearch, listingStatus } = State.filters;
   const search = listingSearch.toLowerCase().trim();
-  let listings = Object.entries(State.listings).map(([id, l]) => ({ id, ...l }));
-
-  if (listingStatus !== 'all') {
-    if (listingStatus === 'active') {
-      listings = listings.filter(l => l.status !== 'removed' && l.availabilityStatus !== 'removed' && l.availabilityStatus !== 'sold');
-    } else {
-      listings = listings.filter(l => (l.availabilityStatus || l.status) === listingStatus);
-    }
-  }
-  if (search) {
-    listings = listings.filter(l => {
-      const hay = [l.productName, l.title, l.sellerName, l.marketName, l.city, l.varietyName].filter(Boolean).join(' ').toLowerCase();
-      return hay.includes(search);
-    });
-  }
-  listings.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+  let listings = Object.entries(State.listings).map(([id,l])=>({id,...l}));
+  if (listingStatus !== 'all') listings = listings.filter(l => (l.availabilityStatus || l.status) === listingStatus);
+  if (search) listings = listings.filter(l => {
+    const hay = [l.productName, l.title, l.sellerName, l.marketName, l.city, l.varietyName].filter(Boolean).join(' ').toLowerCase();
+    return hay.includes(search);
+  });
+  listings.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
 
   const tb = $('listingsTableBody');
   if (!listings.length) {
-    tb.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="em">🛒</div><h3>No listings found</h3><p>Try a different filter.</p></div></td></tr>`;
+    tb.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="em">🛒</div><h3>No listings</h3><p>Try a different filter.</p></div></td></tr>`;
     return;
   }
-
   tb.innerHTML = listings.map(l => {
-    const status = l.availabilityStatus || l.status || 'pending';
-    const quantity = l.quantity || 0;
-    const unit = l.unit || 'unit';
-    return `
-      <tr data-listing-id="${esc(l.id)}">
-        <td>
-          <div class="cell-user">
-            <div class="cell-avatar">${pickIcon(l.productName || l.title)}</div>
-            <div>
-              <div class="cell-name">${esc(l.productName || l.title || '—')}</div>
-              <div class="cell-sub">${esc(l.varietyName || '')}</div>
-            </div>
-          </div>
-        </td>
-        <td>${esc(l.sellerName || '—')}</td>
-        <td>
-          <div style="font-size:13px;font-weight:700;color:var(--td)">${esc(l.marketName || '—')}</div>
-          <div style="font-size:11px;color:var(--tl);font-weight:600">${esc(l.city || '')}</div>
-        </td>
-        <td>${quantity} ${esc(unit)}</td>
-        <td style="font-weight:800">${fmtZMK(l.priceAmount)}</td>
-        <td><span class="badge ${status}">${esc(status)}</span></td>
-        <td style="text-align:right">
-          <div class="action-group">
-            <button class="action-btn view" data-listing-action="view" data-listing-id="${esc(l.id)}" title="View">👁</button>
-            <button class="action-btn delete" data-listing-action="remove" data-listing-id="${esc(l.id)}" title="Remove">🚫</button>
-          </div>
-        </td>
-      </tr>
-    `;
+    const st = l.availabilityStatus || l.status || 'pending';
+    const ageDays = l.createdAt ? Math.floor((Date.now()-l.createdAt)/86400000) : 0;
+    const ageLabel = ageDays === 0 ? 'Today' : ageDays === 1 ? '1 day' : ageDays + ' days';
+    return `<tr data-listing-id="${esc(l.id)}">
+      <td><div class="cell-user"><div class="cell-avatar">${l.photoUrls && l.photoUrls[0] ? `<img src="${esc(l.photoUrls[0])}" alt="">` : pickIcon(l.productName||l.title)}</div><div><div class="cell-name">${esc(l.productName||l.title||'—')}</div><div class="cell-sub">${esc(l.varietyName||'')}</div></div></div></td>
+      <td>${esc(l.sellerName||'—')}</td>
+      <td><div style="font-size:13px;font-weight:700;color:var(--td)">${esc(l.marketName||'—')}</div><div style="font-size:11px;color:var(--tl);font-weight:600">${esc(l.city||'')}</div></td>
+      <td>${l.quantity||0} ${esc(l.unit||'unit')}</td>
+      <td style="font-weight:800">${fmtZMK(l.priceAmount)}</td>
+      <td style="font-size:11.5px;color:var(--tl);font-weight:700">${ageLabel}</td>
+      <td><span class="badge ${st}">${esc(st)}</span></td>
+      <td style="text-align:right"><div class="action-group">
+        <button class="action-btn view" data-listing-action="view" data-listing-id="${esc(l.id)}">👁</button>
+        <button class="action-btn edit" data-listing-action="edit" data-listing-id="${esc(l.id)}">✏️</button>
+        <button class="action-btn delete" data-listing-action="remove" data-listing-id="${esc(l.id)}">🚫</button>
+      </div></td>
+    </tr>`;
   }).join('');
 
   tb.querySelectorAll('[data-listing-action]').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
       const id = btn.dataset.listingId;
-      const action = btn.dataset.listingAction;
-      if (action === 'view') openListingDetail(id);
-      else if (action === 'remove') removeListingConfirm(id);
+      const a = btn.dataset.listingAction;
+      if (a === 'view' || a === 'edit') openListingDetail(id);
+      else if (a === 'remove') {
+        showConfirm('Remove listing?', 'Mark listing as removed? Seller won\'t be able to reactivate.', async () => {
+          try {
+            await update(ref(db,'marketListings/'+id), { status:'removed', availabilityStatus:'removed', removedAt: Date.now(), removedBy:'admin' });
+            toast('Removed');
+          } catch(e) { toast('Failed: '+e.message); }
+        }, { okText:'Remove', okClass:'btn-warn', icon:'🚫' });
+      }
     });
   });
   tb.querySelectorAll('tr[data-listing-id]').forEach(tr => {
@@ -1939,54 +2053,98 @@ function renderListings() {
   });
 }
 
-function openListingDetail(id) {
+window.openListingDetail = function(id) {
   const l = State.listings[id];
-  if (!l) return;
-  const status = l.availabilityStatus || l.status || 'pending';
-  const photos = (l.photoUrls || []).slice(0, 2);
+  if (!l) { toast('Listing not found'); return; }
+  $('listingDetailPage').classList.add('open');
+  State.detailListingId = id;
+  const st = l.availabilityStatus || l.status || 'pending';
+  const photos = (l.photoUrls || []).slice(0,2);
+  const ageMs = l.createdAt ? Date.now()-l.createdAt : 0;
+  const ageDays = Math.floor(ageMs/86400000);
+
+  $('ldTitle').textContent = l.productName || l.title || 'Listing';
+  $('ldSub').textContent = (l.sellerName || '') + ' · ' + (l.city || '');
+  $('ldTopActions').innerHTML = `
+    <button class="action-btn delete" onclick="removeListingFromDetail('${esc(id)}')" title="Remove">🚫</button>
+  `;
+
   const body = `
     ${photos.length ? `
       <div style="display:grid;grid-template-columns:repeat(${Math.min(photos.length,2)},1fr);gap:8px;margin-bottom:16px">
-        ${photos.map(u => `<img src="${esc(u)}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;background:#000">`).join('')}
+        ${photos.map(u => `<div style="aspect-ratio:1;border-radius:12px;overflow:hidden;background:#000;cursor:pointer" onclick="openLightbox('${esc(u)}')"><img src="${esc(u)}" style="width:100%;height:100%;object-fit:cover"></div>`).join('')}
       </div>
     ` : ''}
     <div class="info-table">
-      <div class="it-row"><span class="it-k">Product</span><span class="it-v">${esc(l.productName || l.title || '—')}</span></div>
-      <div class="it-row"><span class="it-k">Variety</span><span class="it-v">${esc(l.varietyName || '—')}</span></div>
-      <div class="it-row"><span class="it-k">Seller</span><span class="it-v">${esc(l.sellerName || '—')}</span></div>
-      <div class="it-row"><span class="it-k">Phone</span><span class="it-v">${esc(l.sellerPhone || '—')}</span></div>
-      <div class="it-row"><span class="it-k">Quantity</span><span class="it-v">${l.quantity || 0} ${esc(l.unit || 'unit')}</span></div>
-      <div class="it-row"><span class="it-k">Price</span><span class="it-v">${fmtZMK(l.priceAmount)} ${l.priceMode === 'total' ? '(total)' : ''}</span></div>
-      <div class="it-row"><span class="it-k">Market</span><span class="it-v">${esc(l.marketName || '—')}</span></div>
-      <div class="it-row"><span class="it-k">City</span><span class="it-v">${esc(l.city || '—')}</span></div>
-      <div class="it-row"><span class="it-k">Status</span><span class="it-v"><span class="badge ${status}">${esc(status)}</span></span></div>
-      <div class="it-row"><span class="it-k">Listed</span><span class="it-v">${fmtDateTime(l.createdAt)}</span></div>
+      <div class="it-row"><span class="it-k">Product</span><span class="it-v">${pickIcon(l.productName||l.title)} ${esc(l.productName||l.title||'—')}</span></div>
+      <div class="it-row"><span class="it-k">Variety</span><span class="it-v">${esc(l.varietyName||'—')}</span></div>
+      <div class="it-row"><span class="it-k">Seller</span><span class="it-v">${esc(l.sellerName||'—')}</span></div>
+      <div class="it-row"><span class="it-k">Phone</span><span class="it-v">${esc(l.sellerPhone||'—')}</span></div>
+      <div class="it-row"><span class="it-k">Quantity</span><span class="it-v">${l.quantity||0} ${esc(l.unit||'unit')}</span></div>
+      <div class="it-row"><span class="it-k">Price</span><span class="it-v">${fmtZMK(l.priceAmount)} ${l.priceMode==='total'?'(total)':'/ '+(l.unit||'unit')}</span></div>
+      <div class="it-row"><span class="it-k">Market</span><span class="it-v">${esc(l.marketName||'—')}</span></div>
+      <div class="it-row"><span class="it-k">City</span><span class="it-v">${esc(l.city||'—')}</span></div>
+      <div class="it-row"><span class="it-k">Status</span><span class="it-v"><span class="badge ${st}">${esc(st)}</span></span></div>
+      <div class="it-row"><span class="it-k">Age</span><span class="it-v">${ageDays === 0 ? 'Today' : ageDays + ' days ago'} (${timeAgo(l.createdAt)})</span></div>
       ${l.description ? `<div class="it-row"><span class="it-k">Notes</span><span class="it-v">${esc(l.description)}</span></div>` : ''}
     </div>
-  `;
-  showModal(l.productName || l.title || 'Listing', l.sellerName || '', body, `
-    <button class="btn btn-outline" onclick="document.getElementById('modalOverlay').classList.remove('open')">Close</button>
-    <button class="btn btn-warn-soft" id="lForceSold">💰 Force Sold</button>
-    <button class="btn btn-danger-soft" id="lRemove">🚫 Remove</button>
-  `);
-  $('lForceSold').addEventListener('click', async () => {
-    try {
-      await update(ref(db, 'marketListings/' + id), { status: 'sold', availabilityStatus: 'sold', soldAt: Date.now() });
-      toast('Marked as sold ✓');
-      closeModal();
-    } catch(e) { toast('Failed: ' + e.message); }
-  });
-  $('lRemove').addEventListener('click', () => { closeModal(); removeListingConfirm(id); });
-}
 
-function removeListingConfirm(id) {
-  showConfirm('Remove listing?', 'The listing will be marked as removed. This cannot be undone by the seller.', async () => {
+    <div class="ud-section">
+      <div class="ud-section-title">✏️ Edit Listing</div>
+      <div class="form-row">
+        <div class="form-field"><label>Price (ZMK)</label><input type="number" id="lePrice" value="${l.priceAmount||0}"></div>
+        <div class="form-field"><label>Price Mode</label>
+          <select id="leMode"><option value="per_box" ${l.priceMode==='per_box'?'selected':''}>Per Unit</option><option value="total" ${l.priceMode==='total'?'selected':''}>Total</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field"><label>Quantity</label><input type="number" id="leQty" value="${l.quantity||0}"></div>
+        <div class="form-field"><label>Unit</label><input type="text" id="leUnit" value="${esc(l.unit||'')}"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-field"><label>Variety</label><input type="text" id="leVar" value="${esc(l.varietyName||'')}"></div>
+        <div class="form-field"><label>Status</label>
+          <select id="leStatus">${['available','pending','sold','removed'].map(s=>`<option value="${s}" ${st===s?'selected':''}>${s}</option>`).join('')}</select>
+        </div>
+      </div>
+      <div class="form-field"><label>Market</label><input type="text" id="leMarket" value="${esc(l.marketName||'')}"></div>
+      <div class="form-field"><label>Description</label><textarea id="leDesc">${esc(l.description||'')}</textarea></div>
+      <button class="btn btn-primary" id="leSave" style="width:100%">💾 Save Changes</button>
+    </div>
+  `;
+  $('ldBody').innerHTML = body;
+
+  $('leSave').addEventListener('click', async () => {
     try {
-      await update(ref(db, 'marketListings/' + id), { status: 'removed', availabilityStatus: 'removed', removedAt: Date.now(), removedBy: 'admin' });
-      toast('Listing removed');
-    } catch(e) { toast('Failed: ' + e.message); }
-  }, { okText: 'Remove', okClass: 'btn-warn', icon: '🚫' });
-}
+      const priceAmount = parseFloat($('lePrice').value) || 0;
+      const qty = parseInt($('leQty').value) || 0;
+      const priceMode = $('leMode').value;
+      const pricePerBox = priceMode === 'total' ? (qty ? priceAmount/qty : 0) : priceAmount;
+      const totalPrice = priceMode === 'total' ? priceAmount : priceAmount * qty;
+      await update(ref(db,'marketListings/'+id), {
+        priceAmount, priceMode, quantity: qty, unit: $('leUnit').value.trim(),
+        varietyName: $('leVar').value.trim(), availabilityStatus: $('leStatus').value,
+        marketName: $('leMarket').value.trim(), description: $('leDesc').value.trim(),
+        pricePerBox, totalPrice, updatedAt: Date.now()
+      });
+      toast('Listing updated ✓');
+    } catch(e) { toast('Failed: '+e.message); }
+  });
+};
+
+window.closeListingDetail = function() {
+  $('listingDetailPage').classList.remove('open');
+  State.detailListingId = null;
+};
+window.removeListingFromDetail = function(id) {
+  showConfirm('Remove listing?', 'Mark this listing as removed from market?', async () => {
+    try {
+      await update(ref(db,'marketListings/'+id), { status:'removed', availabilityStatus:'removed', removedAt: Date.now(), removedBy:'admin' });
+      toast('Removed');
+      closeListingDetail();
+    } catch(e) { toast('Failed: '+e.message); }
+  }, { okText:'Remove', okClass:'btn-warn', icon:'🚫' });
+};
 
 /* ================================================================
    PRODUCTS
@@ -1994,81 +2152,53 @@ function removeListingConfirm(id) {
 function renderProducts() {
   const { productSearch, productCat } = State.filters;
   const search = productSearch.toLowerCase().trim();
-  let products = Object.entries(State.products).map(([id, p]) => ({ id, ...p }));
-
+  let products = Object.entries(State.products).map(([id,p])=>({id,...p}));
   if (productCat !== 'all') products = products.filter(p => p.category === productCat);
-  if (search) {
-    products = products.filter(p => {
-      const hay = [p.name, p.sellerName, p.category, p.cropTag, p.city].filter(Boolean).join(' ').toLowerCase();
-      return hay.includes(search);
-    });
-  }
-  products.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+  if (search) products = products.filter(p => {
+    const hay = [p.name, p.sellerName, p.category, p.cropTag, p.city].filter(Boolean).join(' ').toLowerCase();
+    return hay.includes(search);
+  });
+  products.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
 
   const tb = $('productsTableBody');
   if (!products.length) {
-    tb.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="em">📦</div><h3>No products found</h3><p>Try a different filter.</p></div></td></tr>`;
+    tb.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="em">📦</div><h3>No products</h3></div></td></tr>`;
     return;
   }
-
   tb.innerHTML = products.map(p => {
     const available = p.available !== false;
-    const stock = Number(p.stock);
-    const stockLabel = isFinite(stock) ? `${stock}` : '—';
-    return `
-      <tr data-product-id="${esc(p.id)}">
-        <td>
-          <div class="cell-user">
-            <div class="cell-avatar">${p.photoUrl ? `<img src="${esc(p.photoUrl)}" alt="">` : pickIcon(p.name)}</div>
-            <div>
-              <div class="cell-name">${esc(p.name || '—')}</div>
-              <div class="cell-sub">${esc(p.cropTag || '')}</div>
-            </div>
-          </div>
-        </td>
-        <td>${esc(p.sellerName || '—')}</td>
-        <td>${esc(p.category || '—')}</td>
-        <td style="font-weight:800">${fmtZMK(p.price)}</td>
-        <td>${stockLabel}</td>
-        <td><span class="badge ${available ? 'active' : 'removed'}">${available ? 'available' : 'unavailable'}</span></td>
-        <td style="text-align:right">
-          <div class="action-group">
-            <button class="action-btn ${available ? 'reject' : 'approve'}" data-product-action="toggle" data-product-id="${esc(p.id)}" title="${available ? 'Hide' : 'Show'}">${available ? '👁' : '✓'}</button>
-            <button class="action-btn delete" data-product-action="delete" data-product-id="${esc(p.id)}" title="Delete">🗑</button>
-          </div>
-        </td>
-      </tr>
-    `;
+    return `<tr>
+      <td><div class="cell-user"><div class="cell-avatar">${p.photoUrl ? `<img src="${esc(p.photoUrl)}" alt="">` : pickIcon(p.name)}</div><div><div class="cell-name">${esc(p.name||'—')}</div><div class="cell-sub">${esc(p.cropTag||'')}</div></div></div></td>
+      <td>${esc(p.sellerName||'—')}</td>
+      <td>${esc(p.category||'—')}</td>
+      <td style="font-weight:800">${fmtZMK(p.price)}</td>
+      <td>${p.stock != null ? Number(p.stock) : '—'}</td>
+      <td><span class="badge ${available?'active':'removed'}">${available?'available':'hidden'}</span></td>
+      <td style="text-align:right"><div class="action-group">
+        <button class="action-btn ${available?'reject':'approve'}" data-p-action="toggle" data-pid="${esc(p.id)}" title="${available?'Hide':'Show'}">${available?'👁':'✓'}</button>
+        <button class="action-btn delete" data-p-action="delete" data-pid="${esc(p.id)}">🗑</button>
+      </div></td>
+    </tr>`;
   }).join('');
 
-  tb.querySelectorAll('[data-product-action]').forEach(btn => {
-    btn.addEventListener('click', e => {
+  tb.querySelectorAll('[data-p-action]').forEach(btn => {
+    btn.addEventListener('click', async e => {
       e.stopPropagation();
-      const id = btn.dataset.productId;
-      const action = btn.dataset.productAction;
-      if (action === 'toggle') toggleProductAvailable(id);
-      else if (action === 'delete') deleteProductConfirm(id);
+      const id = btn.dataset.pid;
+      if (btn.dataset.pAction === 'toggle') {
+        const p = State.products[id];
+        try {
+          await update(ref(db,'agroProducts/'+id), { available: p.available===false, updatedAt: Date.now() });
+          toast('Updated');
+        } catch(e) { toast('Failed: '+e.message); }
+      } else if (btn.dataset.pAction === 'delete') {
+        showConfirm('Delete product?', 'Permanently remove?', async () => {
+          try { await remove(ref(db,'agroProducts/'+id)); toast('Deleted'); }
+          catch(e) { toast('Failed: '+e.message); }
+        }, { okText:'Delete', icon:'🗑' });
+      }
     });
   });
-}
-
-async function toggleProductAvailable(id) {
-  const p = State.products[id];
-  if (!p) return;
-  const newVal = p.available === false;
-  try {
-    await update(ref(db, 'agroProducts/' + id), { available: newVal, updatedAt: Date.now() });
-    toast(newVal ? 'Product available ✓' : 'Product hidden');
-  } catch(e) { toast('Failed: ' + e.message); }
-}
-
-function deleteProductConfirm(id) {
-  showConfirm('Delete product?', 'This permanently removes the product from the catalogue.', async () => {
-    try {
-      await remove(ref(db, 'agroProducts/' + id));
-      toast('Product deleted');
-    } catch(e) { toast('Failed: ' + e.message); }
-  }, { okText: 'Delete', okClass: 'btn-danger', icon: '🗑' });
 }
 
 /* ================================================================
@@ -2077,140 +2207,443 @@ function deleteProductConfirm(id) {
 function renderDeliveries() {
   const { deliverySearch, deliveryStatus } = State.filters;
   const search = deliverySearch.toLowerCase().trim();
-  let deliveries = Object.entries(State.deliveries).map(([id, d]) => ({ id, ...d }));
-
+  let deliveries = Object.entries(State.deliveries).map(([id,d])=>({id,...d}));
   if (deliveryStatus !== 'all') deliveries = deliveries.filter(d => d.status === deliveryStatus);
-  if (search) {
-    deliveries = deliveries.filter(d => {
-      const hay = [d.pickup?.label, d.dropoff?.label, d.senderName, d.requesterName, d.providerName].filter(Boolean).join(' ').toLowerCase();
-      return hay.includes(search);
-    });
-  }
-  deliveries.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+  if (search) deliveries = deliveries.filter(d => {
+    const hay = [d.pickup?.label, d.dropoff?.label, d.senderName, d.requesterName, d.providerName].filter(Boolean).join(' ').toLowerCase();
+    return hay.includes(search);
+  });
+  deliveries.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
 
   const tb = $('deliveriesTableBody');
   if (!deliveries.length) {
-    tb.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="em">🚚</div><h3>No delivery requests found</h3><p>Try a different filter.</p></div></td></tr>`;
+    tb.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="em">🚚</div><h3>No deliveries</h3></div></td></tr>`;
+    return;
+  }
+  tb.innerHTML = deliveries.map(d => {
+    const st = d.status || 'searching';
+    const badgeClass = st === 'delivered' ? 'approved' : st === 'cancelled' ? 'removed' : 'pending';
+    return `<tr>
+      <td><div style="font-size:13px;font-weight:800;color:var(--td)">${esc(d.pickup?.label||'—')}</div><div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:2px">→ ${esc(d.dropoff?.label||'—')}</div></td>
+      <td>${esc(d.senderName||d.requesterName||'—')}</td>
+      <td>${esc(d.providerName||'Unassigned')}</td>
+      <td style="font-weight:800">${fmtZMK(d.fare)}</td>
+      <td><span class="badge ${badgeClass}">${esc(st)}</span></td>
+      <td style="text-align:right"><div class="action-group">
+        ${['searching','accepted','arrived','in_progress'].includes(st) ? `<button class="action-btn delete" data-d-action="cancel" data-did="${esc(d.id)}">🚫</button>` : ''}
+      </div></td>
+    </tr>`;
+  }).join('');
+
+  tb.querySelectorAll('[data-d-action]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      if (btn.dataset.dAction === 'cancel') {
+        showConfirm('Cancel delivery?', 'Mark this request as cancelled?', async () => {
+          try { await update(ref(db,'deliveryRequests/'+btn.dataset.did), { status:'cancelled', cancelledAt: Date.now(), cancelledBy:'admin' }); toast('Cancelled'); }
+          catch(e) { toast('Failed: '+e.message); }
+        }, { okText:'Cancel Delivery', icon:'🚫' });
+      }
+    });
+  });
+}
+
+/* ================================================================
+   MARKET PREVIEW (per role)
+   ================================================================ */
+const MP_ROLES = [
+  { key: 'customer', label: 'Customer', emoji: '🛒' },
+  { key: 'farmer', label: 'Farmer', emoji: '🌾' },
+  { key: 'marketeer', label: 'Marketeer', emoji: '🏪' },
+  { key: 'supplier', label: 'Supplier', emoji: '📦' },
+  { key: 'delivery', label: 'Delivery', emoji: '🚚' }
+];
+
+function renderMarketPreview() {
+  $('mpRoleChips').innerHTML = MP_ROLES.map(r => `
+    <button class="mp-role-chip ${State.mpRole===r.key?'active':''}" data-mp-role="${r.key}">
+      ${r.emoji} ${r.label}
+    </button>
+  `).join('');
+  $$('[data-mp-role]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      State.mpRole = btn.dataset.mpRole;
+      renderMarketPreview();
+    });
+  });
+
+  const role = State.mpRole;
+  const city = State.mpCity || 'Lusaka';
+  const allListings = Object.entries(State.listings).map(([id,l])=>({id,...l}));
+
+  let filtered, header;
+  if (role === 'customer') {
+    filtered = allListings.filter(l => (l.availabilityStatus === 'available' || l.availabilityStatus === 'pending') && (l.city||'') === city);
+    header = { title: 'Customer View', sub: 'Live produce available in your city. Prices visible, contact seller directly.' };
+  } else if (role === 'farmer') {
+    filtered = allListings.filter(l => l.availabilityStatus === 'available' || l.availabilityStatus === 'pending');
+    header = { title: 'Farmer View', sub: 'All market activity — see what competitors are selling and at what price.' };
+  } else if (role === 'marketeer') {
+    filtered = allListings.filter(l => l.availabilityStatus === 'available');
+    header = { title: 'Marketeer View', sub: 'Available produce grouped by market — buy in bulk, negotiate prices.' };
+  } else if (role === 'supplier') {
+    const products = Object.entries(State.products).map(([id,p])=>({id,...p})).filter(p => p.available !== false);
+    header = { title: 'Supplier View', sub: 'Agro products catalogue — this is how dealers see your stock.' };
+    renderSupplierPreview(products, header);
+    return;
+  } else if (role === 'delivery') {
+    const batches = Object.entries(State.batches).map(([id,b])=>({id,...b})).filter(b => ['harvesting','fruiting'].includes(b.stage));
+    header = { title: 'Delivery View', sub: 'Farmers approaching harvest — potential delivery jobs.' };
+    renderDeliveryPreview(batches, header);
     return;
   }
 
-  tb.innerHTML = deliveries.map(d => {
-    const status = d.status || 'searching';
-    const customer = d.senderName || d.requesterName || '—';
-    const driver = d.providerName || 'Unassigned';
-    return `
-      <tr data-delivery-id="${esc(d.id)}">
-        <td>
-          <div style="font-size:13px;font-weight:800;color:var(--td)">${esc(d.pickup?.label || '—')}</div>
-          <div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:2px">→ ${esc(d.dropoff?.label || '—')}</div>
-        </td>
-        <td>${esc(customer)}</td>
-        <td>${esc(driver)}</td>
-        <td style="font-weight:800">${fmtZMK(d.fare)}</td>
-        <td><span class="badge ${status === 'delivered' ? 'approved' : status === 'cancelled' ? 'removed' : 'pending'}">${esc(status)}</span></td>
-        <td style="text-align:right">
-          <div class="action-group">
-            <button class="action-btn view" data-delivery-action="view" data-delivery-id="${esc(d.id)}" title="View">👁</button>
-            ${['searching','accepted','arrived','in_progress'].includes(status) ? `
-              <button class="action-btn delete" data-delivery-action="cancel" data-delivery-id="${esc(d.id)}" title="Cancel">🚫</button>
-            ` : ''}
-          </div>
-        </td>
-      </tr>
-    `;
-  }).join('');
-
-  tb.querySelectorAll('[data-delivery-action]').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      const id = btn.dataset.deliveryId;
-      const action = btn.dataset.deliveryAction;
-      if (action === 'view') openDeliveryDetail(id);
-      else if (action === 'cancel') cancelDeliveryConfirm(id);
-    });
-  });
-  tb.querySelectorAll('tr[data-delivery-id]').forEach(tr => {
-    tr.addEventListener('click', e => {
-      if (e.target.closest('button')) return;
-      openDeliveryDetail(tr.dataset.deliveryId);
-    });
-  });
+  filtered.sort((a,b) => (b.createdAt||0)-(a.createdAt||0));
+  renderMarketPreviewContent(filtered, header);
 }
 
-function openDeliveryDetail(id) {
-  const d = State.deliveries[id];
-  if (!d) return;
-  const status = d.status || 'searching';
-  const body = `
-    <div class="info-table">
-      <div class="it-row"><span class="it-k">Status</span><span class="it-v"><span class="badge ${status === 'delivered' ? 'approved' : status === 'cancelled' ? 'removed' : 'pending'}">${esc(status)}</span></span></div>
-      <div class="it-row"><span class="it-k">Customer</span><span class="it-v">${esc(d.senderName || d.requesterName || '—')}</span></div>
-      <div class="it-row"><span class="it-k">Customer phone</span><span class="it-v">${esc(d.senderPhone || d.requesterPhone || '—')}</span></div>
-      <div class="it-row"><span class="it-k">Driver</span><span class="it-v">${esc(d.providerName || 'Unassigned')}</span></div>
-      ${d.providerPhone ? `<div class="it-row"><span class="it-k">Driver phone</span><span class="it-v">${esc(d.providerPhone)}</span></div>` : ''}
-      <div class="it-row"><span class="it-k">Pickup</span><span class="it-v">${esc(d.pickup?.label || '—')}</span></div>
-      <div class="it-row"><span class="it-k">Dropoff</span><span class="it-v">${esc(d.dropoff?.label || '—')}</span></div>
-      <div class="it-row"><span class="it-k">Cargo</span><span class="it-v">${esc(d.cargo || '—')}</span></div>
-      <div class="it-row"><span class="it-k">Fare</span><span class="it-v">${fmtZMK(d.fare)}</span></div>
-      <div class="it-row"><span class="it-k">Created</span><span class="it-v">${fmtDateTime(d.createdAt)}</span></div>
-      ${d.deliveredAt ? `<div class="it-row"><span class="it-k">Delivered</span><span class="it-v">${fmtDateTime(d.deliveredAt)}</span></div>` : ''}
+function renderMarketPreviewContent(listings, header) {
+  if (!listings.length) {
+    $('mpContent').innerHTML = `
+      <div class="mp-banner">
+        <h2>${esc(header.title)}</h2>
+        <p>${esc(header.sub)}</p>
+        <div class="mp-role-tag">${MP_ROLES.find(r=>r.key===State.mpRole)?.emoji || ''} Preview</div>
+      </div>
+      <div class="empty-state"><div class="em">🛒</div><h3>Nothing to preview</h3><p>No listings match this view.</p></div>
+    `;
+    return;
+  }
+  $('mpContent').innerHTML = `
+    <div class="mp-banner">
+      <h2>${esc(header.title)}</h2>
+      <p>${esc(header.sub)}</p>
+      <div class="mp-role-tag">${MP_ROLES.find(r=>r.key===State.mpRole)?.emoji || ''} Preview · ${listings.length} listing${listings.length===1?'':'s'}</div>
+    </div>
+    <div class="mp-list">
+      ${listings.map(l => {
+        const st = l.availabilityStatus || l.status || 'pending';
+        const photo = l.photoUrls && l.photoUrls[0];
+        const canCall = st === 'available' && l.sellerPhone;
+        return `<div class="mp-card" onclick="openListingDetail('${esc(l.id)}')">
+          <div class="mp-thumb">${photo ? `<img src="${esc(photo)}" alt="">` : pickIcon(l.productName||l.title)}</div>
+          <div class="mp-body">
+            <div class="mp-name">${esc(l.productName||l.title||'—')}</div>
+            ${l.varietyName ? `<div class="mp-variety">${esc(l.varietyName)}</div>` : ''}
+            <div class="mp-meta">📍 ${esc(l.marketName||'—')} · ${esc(l.city||'')}</div>
+            <div class="mp-meta">${l.quantity||0} ${esc(l.unit||'unit')} · ${timeAgo(l.createdAt)}</div>
+            <div class="mp-price-row">
+              <span class="mp-price">${fmtZMK(l.priceAmount)}</span>
+              <span class="mp-price-unit">${l.priceMode==='total'?'total':'/ '+(l.unit||'unit')}</span>
+            </div>
+          </div>
+          <div class="mp-side">
+            <span class="mp-badge ${st}">${esc(st)}</span>
+            ${canCall ? `<a class="mp-call" href="tel:${esc(String(l.sellerPhone).replace(/[^\d+]/g,''))}" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></a>` : ''}
+          </div>
+        </div>`;
+      }).join('')}
     </div>
   `;
-  const foot = ['searching','accepted','arrived','in_progress'].includes(status)
-    ? `<button class="btn btn-outline" onclick="document.getElementById('modalOverlay').classList.remove('open')">Close</button>
-       <button class="btn btn-danger-soft" id="dCancel">🚫 Cancel Delivery</button>`
-    : `<button class="btn btn-outline" onclick="document.getElementById('modalOverlay').classList.remove('open')">Close</button>`;
-  showModal('Delivery Request', `${d.pickup?.label || ''} → ${d.dropoff?.label || ''}`, body, foot);
-  const cancelBtn = $('dCancel');
-  if (cancelBtn) cancelBtn.addEventListener('click', () => { closeModal(); cancelDeliveryConfirm(id); });
 }
 
-function cancelDeliveryConfirm(id) {
-  showConfirm('Cancel delivery?', 'The request will be marked as cancelled. The driver and customer will be notified on their next view.', async () => {
-    try {
-      await update(ref(db, 'deliveryRequests/' + id), { status: 'cancelled', cancelledAt: Date.now(), cancelledBy: 'admin' });
-      toast('Delivery cancelled');
-    } catch(e) { toast('Failed: ' + e.message); }
-  }, { okText: 'Cancel Delivery', okClass: 'btn-danger', icon: '🚫' });
+function renderSupplierPreview(products, header) {
+  if (!products.length) {
+    $('mpContent').innerHTML = `<div class="mp-banner"><h2>${esc(header.title)}</h2><p>${esc(header.sub)}</p></div><div class="empty-state"><div class="em">📦</div><h3>No products</h3></div>`;
+    return;
+  }
+  $('mpContent').innerHTML = `
+    <div class="mp-banner">
+      <h2>${esc(header.title)}</h2>
+      <p>${esc(header.sub)}</p>
+      <div class="mp-role-tag">📦 Preview · ${products.length} product${products.length===1?'':'s'}</div>
+    </div>
+    <div class="mp-list">
+      ${products.map(p => `<div class="mp-card">
+        <div class="mp-thumb">${p.photoUrl ? `<img src="${esc(p.photoUrl)}" alt="">` : pickIcon(p.name)}</div>
+        <div class="mp-body">
+          <div class="mp-name">${esc(p.name||'—')}</div>
+          <div class="mp-variety">${esc(p.category||'')} · ${esc(p.sellerName||'')}</div>
+          <div class="mp-meta">📦 Stock: ${p.stock||0} · 📍 ${esc(p.city||'—')}</div>
+          <div class="mp-price-row"><span class="mp-price">${fmtZMK(p.price)}</span><span class="mp-price-unit">/ ${esc(p.unit||'unit')}</span></div>
+        </div>
+        <div class="mp-side"><span class="mp-badge available">available</span></div>
+      </div>`).join('')}
+    </div>
+  `;
 }
+
+function renderDeliveryPreview(batches, header) {
+  if (!batches.length) {
+    $('mpContent').innerHTML = `<div class="mp-banner"><h2>${esc(header.title)}</h2><p>${esc(header.sub)}</p></div><div class="empty-state"><div class="em">🚚</div><h3>No pending deliveries</h3></div>`;
+    return;
+  }
+  $('mpContent').innerHTML = `
+    <div class="mp-banner">
+      <h2>${esc(header.title)}</h2>
+      <p>${esc(header.sub)}</p>
+      <div class="mp-role-tag">🚚 Preview · ${batches.length} candidate${batches.length===1?'':'s'}</div>
+    </div>
+    <div class="mp-list">
+      ${batches.map(b => `<div class="mp-card" onclick="openBatchDetail('${esc(b.id)}')">
+        <div class="mp-thumb">${pickIcon(b.cropName)}</div>
+        <div class="mp-body">
+          <div class="mp-name">${esc(b.cropName||'—')} · ${esc(b.varietyName||'')}</div>
+          <div class="mp-meta">🧑‍🌾 ${esc(b.ownerName||'—')} · 📍 ${esc(b.town||'—')}</div>
+          <div class="mp-meta">📦 ${b.estimatedBoxes||0} boxes · 🌾 ${fmtDate(b.harvestStart)}</div>
+        </div>
+        <div class="mp-side"><span class="mp-badge ${b.stage==='harvesting'?'available':'pending'}">${esc(b.stage||'')}</span></div>
+      </div>`).join('')}
+    </div>
+  `;
+}
+
+/* ================================================================
+   WEATHER
+   ================================================================ */
+const CITIES = [
+  {name:'Lusaka', lat:-15.4167, lng:28.2833},
+  {name:'Kitwe', lat:-12.8024, lng:28.2132},
+  {name:'Ndola', lat:-12.9587, lng:28.6366},
+  {name:'Kabwe', lat:-14.4469, lng:28.4464},
+  {name:'Chingola', lat:-12.5289, lng:27.8542},
+  {name:'Mufulira', lat:-12.5496, lng:28.2398},
+  {name:'Livingstone', lat:-17.8419, lng:25.8543},
+  {name:'Luanshya', lat:-13.1367, lng:28.4166},
+  {name:'Chipata', lat:-13.6333, lng:32.6500},
+  {name:'Kafue', lat:-15.7667, lng:28.1833},
+  {name:'Mazabuka', lat:-15.8667, lng:27.7500},
+  {name:'Kasama', lat:-10.2167, lng:31.1833},
+  {name:'Mongu', lat:-15.2500, lng:23.1333},
+  {name:'Solwezi', lat:-12.1833, lng:26.4000},
+  {name:'Mansa', lat:-11.2000, lng:28.8833},
+  {name:'Choma', lat:-16.8000, lng:26.9833},
+  {name:'Mpika', lat:-11.8333, lng:31.4500},
+  {name:'Petauke', lat:-14.2500, lng:31.3333},
+  {name:'Kalulushi', lat:-12.8333, lng:28.0833},
+  {name:'Chililabombwe', lat:-12.3667, lng:27.8333},
+  {name:'Kapiri Mposhi', lat:-13.9667, lng:28.6667},
+  {name:'Monze', lat:-16.2833, lng:27.4833},
+  {name:'Samfya', lat:-11.3500, lng:29.5500}
+];
+
+const weatherIcon = code => {
+  if (code === 0) return '☀️';
+  if (code <= 3) return '🌤️';
+  if (code <= 48) return '🌫️';
+  if (code <= 55) return '🌦️';
+  if (code <= 65) return '🌧️';
+  if (code <= 77) return '🌨️';
+  if (code <= 82) return '🌧️';
+  return '⛈️';
+};
+const weatherDesc = code => {
+  if (code === 0) return 'Clear';
+  if (code === 1) return 'Mainly clear';
+  if (code === 2) return 'Partly cloudy';
+  if (code === 3) return 'Overcast';
+  if (code <= 48) return 'Fog';
+  if (code <= 55) return 'Drizzle';
+  if (code <= 65) return 'Rain';
+  if (code <= 77) return 'Snow';
+  if (code <= 82) return 'Showers';
+  return 'Thunderstorm';
+};
+
+async function loadWeather() {
+  const grid = $('weatherGrid');
+  grid.innerHTML = `<div class="loader-row"><span class="spinner"></span> Fetching weather for ${CITIES.length} cities…</div>`;
+  try {
+    const results = await Promise.all(CITIES.map(async c => {
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,is_day&timezone=auto`;
+        const r = await fetch(url);
+        const j = await r.json();
+        return {
+          name: c.name, lat: c.lat, lng: c.lng,
+          temp: Math.round(j.current?.temperature_2m ?? 0),
+          hum: j.current?.relative_humidity_2m ?? 0,
+          wind: Math.round(j.current?.wind_speed_10m ?? 0),
+          code: j.current?.weather_code ?? 0,
+          isDay: j.current?.is_day === 1
+        };
+      } catch(e) {
+        return { name: c.name, lat: c.lat, lng: c.lng, temp: null };
+      }
+    }));
+    State.weatherData = results;
+    renderWeather(results);
+  } catch(e) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="em">⛅</div><h3>Could not load weather</h3><p>${esc(e.message)}</p></div>`;
+  }
+}
+
+function renderWeather(data) {
+  if (!data) data = State.weatherData;
+  if (!data) { loadWeather(); return; }
+  $('weatherGrid').innerHTML = data.map(c => {
+    if (c.temp == null) {
+      return `<div class="weather-card"><div class="weather-city">${esc(c.name)}</div><div class="weather-coords">${c.lat.toFixed(2)}, ${c.lng.toFixed(2)}</div><div class="weather-icon">❓</div><div class="weather-temp">—</div><div class="weather-desc">Unavailable</div></div>`;
+    }
+    return `<div class="weather-card">
+      <div class="weather-city">${esc(c.name)}</div>
+      <div class="weather-coords">${c.lat.toFixed(2)}, ${c.lng.toFixed(2)}</div>
+      <div class="weather-icon">${weatherIcon(c.code)}</div>
+      <div class="weather-temp">${c.temp}°C</div>
+      <div class="weather-desc">${weatherDesc(c.code)} ${c.isDay ? '☀️' : '🌙'}</div>
+      <div class="weather-details">
+        <div class="weather-detail"><div class="wd-val">${c.hum}%</div><div class="wd-lb">Humidity</div></div>
+        <div class="weather-detail"><div class="wd-val">${c.wind} km/h</div><div class="wd-lb">Wind</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ================================================================
+   KNOWLEDGE (Crops / Livestock / Fisheries Editor)
+   ================================================================ */
+const CATEGORY_PATHS = {
+  fieldCrops:  { path:'crops/fieldCrops',   label:'Field Crops',  emoji:'🌾' },
+  pulses:      { path:'crops/pulses',        label:'Pulses',       emoji:'🫛' },
+  vegetables:  { path:'crops/vegetables',    label:'Vegetables',   emoji:'🥬' },
+  fruits:      { path:'crops/fruits',        label:'Fruits',       emoji:'🍎' },
+  livestock:   { path:'livestock',           label:'Livestock',    emoji:'🐄' },
+  poultry:     { path:'poultry',             label:'Poultry',      emoji:'🐔' },
+  aquaculture: { path:'fisheries/aquaculture', label:'Aquaculture', emoji:'🐟' },
+  capture:     { path:'fisheries/capture',   label:'Capture Fisheries', emoji:'🎣' }
+};
+
+function flattenKnowledge() {
+  const k = State.knowledge || {};
+  const result = {};
+  Object.entries(CATEGORY_PATHS).forEach(([key, def]) => {
+    const parts = def.path.split('/');
+    let node = k;
+    for (const p of parts) { if (!node) break; node = node[p]; }
+    result[key] = node ? Object.entries(node).map(([id,c])=>({id,...c})) : [];
+  });
+  return result;
+}
+
+function renderKnowledge() {
+  const flat = flattenKnowledge();
+  const wrap = $('knowledgeList');
+  let html = '';
+  Object.entries(CATEGORY_PATHS).forEach(([key, def]) => {
+    const items = flat[key] || [];
+    html += `<div class="know-category">
+      <div class="know-cat-head">
+        <div class="know-cat-title"><span class="em">${def.emoji}</span> ${def.label} <span style="font-size:11px;color:var(--tl);font-weight:700">(${items.length})</span></div>
+        <button class="toolbar-btn" style="padding:7px 14px;font-size:11.5px" onclick="openCropEditor('${key}',null)">➕ Add</button>
+      </div>
+      ${items.length ? items.map(c => `
+        <div class="know-crop" onclick="openCropEditor('${key}','${esc(c.id)}')">
+          <div class="know-crop-em">${pickIcon(c.name)}</div>
+          <div class="know-crop-body">
+            <div class="know-crop-name">${esc(c.name||'—')}</div>
+            <div class="know-crop-sub">${c.scientificName ? esc(c.scientificName) + ' · ' : ''}${c.indicativeDuration ? esc(c.indicativeDuration) : 'no duration'}</div>
+          </div>
+          <div class="know-crop-actions">
+            <button class="action-btn edit" onclick="event.stopPropagation();openCropEditor('${key}','${esc(c.id)}')">✏️</button>
+            <button class="action-btn delete" onclick="event.stopPropagation();deleteCrop('${key}','${esc(c.id)}')">🗑</button>
+          </div>
+        </div>
+      `).join('') : `<div style="padding:14px;text-align:center;font-size:12.5px;color:var(--tl);font-weight:600">No ${def.label.toLowerCase()} yet</div>`}
+    </div>`;
+  });
+  wrap.innerHTML = html;
+}
+
+window.openCropEditor = function(categoryKey, cropId) {
+  const def = CATEGORY_PATHS[categoryKey];
+  if (!def) return;
+  const flat = flattenKnowledge();
+  const existing = cropId ? (flat[categoryKey]||[]).find(c => c.id === cropId) : null;
+  const isEdit = !!existing;
+
+  const body = `
+    <div class="form-field"><label>Crop / Item Name *</label><input type="text" id="kcName" value="${esc(existing?.name||'')}" placeholder="e.g. Tomato"></div>
+    <div class="form-field"><label>Scientific Name</label><input type="text" id="kcSci" value="${esc(existing?.scientificName||'')}" placeholder="e.g. Solanum lycopersicum"></div>
+    <div class="form-row">
+      <div class="form-field"><label>Indicative Duration</label><input type="text" id="kcDur" value="${esc(existing?.indicativeDuration||'')}" placeholder="e.g. 90-120 days"></div>
+      <div class="form-field"><label>Category</label><input type="text" id="kcCat" value="${esc(def.label)}" readonly></div>
+    </div>
+    <div class="form-field"><label>Management Notes</label><textarea id="kcNotes" placeholder="General cultivation advice…">${esc(existing?.managementNotes||'')}</textarea></div>
+    <div class="form-field"><label>Harvest Signal</label><input type="text" id="kcSignal" value="${esc(existing?.harvestSignal||'')}" placeholder="How to know it's ready"></div>
+    <div class="form-field"><label>Risks (comma separated)</label><input type="text" id="kcRisks" value="${esc(Array.isArray(existing?.risks) ? existing.risks.join(', ') : '')}" placeholder="e.g. Blight, Aphids"></div>
+    <div class="form-field"><label>Stages (comma separated)</label><input type="text" id="kcStages" value="${esc(Array.isArray(existing?.stages) ? existing.stages.map(s=>typeof s==='string'?s:s.stage||'').join(', ') : '')}" placeholder="e.g. germination, vegetative, flowering"></div>
+    ${isEdit ? `
+      <div style="padding:12px;background:var(--info-soft);border-radius:10px;font-size:12px;color:#1e40af;font-weight:600;line-height:1.5">
+        💡 Varieties, spacing & fertilizer details can be edited separately in the farmer app data.
+      </div>
+    ` : ''}
+  `;
+  showModal(isEdit ? 'Edit: '+existing.name : 'Add New '+def.label, def.emoji+' '+def.label, body, `
+    <button class="btn btn-outline" onclick="document.getElementById('modalOverlay').classList.remove('open')">Cancel</button>
+    <button class="btn btn-primary" id="kcSave">💾 Save</button>
+  `);
+
+  $('kcSave').addEventListener('click', async () => {
+    const name = $('kcName').value.trim();
+    if (!name) { toast('Name required'); return; }
+    const payload = {
+      name,
+      scientificName: $('kcSci').value.trim(),
+      indicativeDuration: $('kcDur').value.trim(),
+      managementNotes: $('kcNotes').value.trim(),
+      harvestSignal: $('kcSignal').value.trim(),
+      risks: $('kcRisks').value.split(',').map(s=>s.trim()).filter(Boolean),
+      stages: $('kcStages').value.split(',').map(s=>s.trim()).filter(Boolean)
+    };
+
+    try {
+      if (isEdit) {
+        await update(ref(db, 'agriKnowledge/'+def.path+'/'+cropId), payload);
+        toast('Crop updated ✓');
+      } else {
+        const newRef = push(ref(db, 'agriKnowledge/'+def.path));
+        await set(newRef, payload);
+        toast('Crop added ✓');
+      }
+      closeModal();
+    } catch(e) { toast('Failed: '+e.message); }
+  });
+};
+
+window.deleteCrop = function(categoryKey, cropId) {
+  const def = CATEGORY_PATHS[categoryKey];
+  if (!def) return;
+  showConfirm('Delete crop?', 'This removes the crop from the farmer app knowledge base. This cannot be undone.', async () => {
+    try {
+      await remove(ref(db, 'agriKnowledge/'+def.path+'/'+cropId));
+      toast('Deleted');
+    } catch(e) { toast('Failed: '+e.message); }
+  }, { okText:'Delete', icon:'🗑' });
+};
 
 /* ================================================================
    NOTIFICATIONS
    ================================================================ */
-function bindNotif() {
-  $('notifAudience').addEventListener('change', e => {
-    $('notifCustomWrap').style.display = e.target.value === 'custom' ? 'block' : 'none';
-  });
-  $('notifClear').addEventListener('click', () => {
-    $('notifTitle').value = '';
-    $('notifBody').value = '';
-    $('notifCustomTarget').value = '';
-  });
-  $('notifSend').addEventListener('click', sendNotification);
-}
-
 function renderNotifications() {
-  // Counts
-  const allUsers = Object.entries(State.users).map(([uid, u]) => ({ uid, ...u }));
-  const reachable = allUsers.filter(u => u.status === 'approved');
+  const allUsers = Object.entries(State.users).map(([uid,u])=>({uid,...u}));
+  const reachable = allUsers.filter(u => u.status === 'approved' && u.status !== 'banned');
   $('notifTotalSent').textContent = State.notifSent.length;
   $('notifReachable').textContent = reachable.length;
 
-  // Log
   if (!State.notifSent.length) {
-    $('notifSentList').innerHTML = `<div class="empty-state"><div class="em">📢</div><h3>No notifications sent yet</h3><p>Send your first notification above.</p></div>`;
+    $('notifSentList').innerHTML = `<div class="empty-state"><div class="em">📢</div><h3>No notifications sent</h3><p>Send your first notification above.</p></div>`;
     return;
   }
   $('notifSentList').innerHTML = `
     <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);padding:20px;box-shadow:var(--sh-xs)">
-      <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin-bottom:14px">Session Log (${State.notifSent.length})</div>
+      <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin-bottom:14px">Session Log</div>
       ${State.notifSent.slice().reverse().map(n => `
         <div style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--bd)">
           <div style="width:36px;height:36px;border-radius:10px;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🔔</div>
           <div style="flex:1;min-width:0">
             <div style="font-size:13px;font-weight:800;color:var(--td)">${esc(n.title)}</div>
             <div style="font-size:12px;color:var(--tl);font-weight:600;margin-top:2px;line-height:1.4">${esc(n.body)}</div>
-            <div style="font-size:11px;color:var(--tl);font-weight:700;margin-top:4px">To: ${esc(n.audience)} · ${n.count} user${n.count === 1 ? '' : 's'} · ${timeAgo(n.ts)}</div>
+            <div style="font-size:11px;color:var(--tl);font-weight:700;margin-top:4px">To: ${esc(n.audience)} · ${n.count} user${n.count===1?'':'s'} · ${timeAgo(n.ts)}</div>
           </div>
         </div>
       `).join('')}
@@ -2224,98 +2657,51 @@ async function sendNotification() {
   const title = $('notifTitle').value.trim();
   const body = $('notifBody').value.trim();
   const type = $('notifType').value;
-
   if (!title || !body) { toast('Title and message required'); return; }
 
   let targets = [];
-
   if (audience === 'custom') {
     if (!customTarget) { toast('Enter target UID or email'); return; }
-    // Find by uid or email
     let targetUid = null;
-    if (State.users[customTarget]) {
-      targetUid = customTarget;
-    } else {
+    if (State.users[customTarget]) targetUid = customTarget;
+    else {
       for (const uid in State.users) {
-        if ((State.users[uid].email || '').toLowerCase() === customTarget.toLowerCase()) {
-          targetUid = uid;
-          break;
-        }
+        if ((State.users[uid].email||'').toLowerCase() === customTarget.toLowerCase()) { targetUid = uid; break; }
       }
     }
     if (!targetUid) { toast('User not found'); return; }
     targets.push(targetUid);
   } else {
-    const all = Object.entries(State.users).map(([uid, u]) => ({ uid, ...u }));
-    if (audience === 'all') targets = all.filter(u => u.status === 'approved' && u.status !== 'banned').map(u => u.uid);
-    else if (audience === 'pending') targets = all.filter(u => u.status === 'pending').map(u => u.uid);
-    else targets = all.filter(u => u.role === audience).map(u => u.uid);
+    const all = Object.entries(State.users).map(([uid,u])=>({uid,...u}));
+    if (audience === 'all') targets = all.filter(u => u.status === 'approved').map(u=>u.uid);
+    else if (audience === 'pending') targets = all.filter(u => u.status === 'pending').map(u=>u.uid);
+    else targets = all.filter(u => u.role === audience).map(u=>u.uid);
   }
-
   if (!targets.length) { toast('No matching users'); return; }
 
   const btn = $('notifSend');
-  btn.disabled = true;
-  btn.textContent = 'Sending…';
-
+  btn.disabled = true; btn.textContent = 'Sending…';
   try {
     const ts = Date.now();
-    const promises = targets.map(uid => {
-      const newNotifRef = push(ref(db, `users/${uid}/notifications`));
-      return set(newNotifRef, {
-        title, body, type,
-        createdAt: ts,
-        read: false,
-        from: 'admin',
-        fromName: 'UTOM Admin'
-      }).catch(e => console.warn('Failed for', uid, e));
-    });
-    await Promise.all(promises);
-
-    State.notifSent.push({
-      title, body, type, audience,
-      count: targets.length, ts
-    });
-
-    $('notifTitle').value = '';
-    $('notifBody').value = '';
-    $('notifCustomTarget').value = '';
-    toast(`Notification sent to ${targets.length} user${targets.length === 1 ? '' : 's'} ✓`);
+    await Promise.all(targets.map(uid => {
+      const newRef = push(ref(db, `users/${uid}/notifications`));
+      return set(newRef, { title, body, type, createdAt: ts, read: false, from: 'admin', fromName: 'UTOM Admin' }).catch(e=>console.warn(uid, e));
+    }));
+    State.notifSent.push({ title, body, type, audience, count: targets.length, ts });
+    $('notifTitle').value = ''; $('notifBody').value = ''; $('notifCustomTarget').value = '';
+    toast(`Sent to ${targets.length} user${targets.length===1?'':'s'} ✓`);
     renderNotifications();
-  } catch(e) {
-    toast('Failed: ' + (e.message || e));
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '📤 Send Notification';
-  }
+  } catch(e) { toast('Failed: '+e.message); }
+  finally { btn.disabled = false; btn.textContent = '📤 Send Notification'; }
 }
 
 /* ================================================================
    SETTINGS
    ================================================================ */
-function bindSettings() {
-  $('maintToggleBtn').addEventListener('click', async () => {
-    const cur = State.maintenance || {};
-    await saveMaintenance({ enabled: !cur.enabled, message: cur.message || $('maintMessage').value || '' });
-  });
-  $('maintSave').addEventListener('click', async () => {
-    const cur = State.maintenance || {};
-    await saveMaintenance({
-      enabled: !!cur.enabled,
-      message: $('maintMessage').value.trim() || 'System maintenance in progress. Please check back shortly.'
-    });
-  });
-  $$('[data-export]').forEach(btn => {
-    btn.addEventListener('click', () => exportData(btn.dataset.export));
-  });
-}
-
 function renderSettings() {
   const cur = State.maintenance || { enabled: false, message: '' };
   $('maintStatusLabel').textContent = cur.enabled ? '🔴 Maintenance ON' : '🟢 Platform Live';
-  $('maintStatusSub').textContent = cur.enabled
-    ? 'Users see a maintenance screen'
-    : 'All apps running normally';
+  $('maintStatusSub').textContent = cur.enabled ? 'Users see maintenance screen' : 'All apps running normally';
   $('maintToggleBtn').textContent = cur.enabled ? 'Disable' : 'Enable';
   $('maintToggleBtn').className = 'btn ' + (cur.enabled ? 'btn-ok-soft' : 'btn-warn-soft');
   $('maintMessage').value = cur.message || '';
@@ -2330,9 +2716,7 @@ async function saveMaintenance(data) {
       updatedBy: State.adminUser.uid
     });
     toast('Maintenance settings saved ✓');
-  } catch(e) {
-    toast('Failed: ' + (e.message || e));
-  }
+  } catch(e) { toast('Failed: '+e.message); }
 }
 
 function exportData(what) {
@@ -2342,8 +2726,7 @@ function exportData(what) {
   if (what === 'listings' || what === 'all') payload.listings = State.listings;
   if (what === 'products' || what === 'all') payload.products = State.products;
   if (what === 'all') payload.deliveries = State.deliveries;
-
-  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -2354,19 +2737,16 @@ function exportData(what) {
 }
 
 /* ================================================================
-   GLOBAL HANDLERS
+   GLOBAL
    ================================================================ */
 window.addEventListener('popstate', () => {
   if ($('modalOverlay').classList.contains('open')) closeModal();
-  if ($('confirmOverlay').classList.contains('open')) {
-    $('confirmOverlay').classList.remove('open');
-    confirmCallback = null;
-  }
+  if ($('confirmOverlay').classList.contains('open')) { $('confirmOverlay').classList.remove('open'); confirmCallback = null; }
+  if ($('lightbox').classList.contains('open')) closeLightbox();
+  if ($('userDetailPage').classList.contains('open')) { closeUserDetail(); return; }
+  if ($('listingDetailPage').classList.contains('open')) { closeListingDetail(); return; }
 });
-
-window.addEventListener('unhandledrejection', e => {
-  console.warn('Unhandled:', e.reason);
-});
+window.addEventListener('unhandledrejection', e => console.warn('Unhandled:', e.reason));
 </script>
 </body>
 </html>
