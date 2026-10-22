@@ -1,0 +1,2372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f7a34">
+<title>UTOM Admin · Control Center</title>
+
+<script type="importmap">
+{
+  "imports": {
+    "firebase/app": "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js",
+    "firebase/auth": "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js",
+    "firebase/database": "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js"
+  }
+}
+</script>
+
+<style>
+:root{
+  --p:#0f7a34;--p-h:#0b5f28;--p-d:#084d20;--p-l:#e6f5eb;--p-ll:#f1faf4;--p-glow:rgba(15,122,52,.28);
+  --td:#0f172a;--tb:#334155;--tl:#64748b;--tm:#94a3b8;
+  --bd:#e2e8f0;--bd-s:#cbd5e1;
+  --sf:#ffffff;--sf2:#f8fafc;--bg:#f4f7f5;
+  --danger:#dc2626;--danger-soft:#fee2e2;
+  --warn:#b45309;--warn-soft:#fef3c7;
+  --ok:#16a34a;--ok-soft:#d1fae5;
+  --info:#2563eb;--info-soft:#dbeafe;
+  --purple:#7c3aed;--purple-soft:#ede9fe;
+  --r-sm:8px;--r:12px;--r-lg:16px;--r-xl:22px;--r-p:999px;
+  --e:cubic-bezier(.22,1,.36,1);
+  --sh-xs:0 1px 2px rgba(15,23,42,.05);
+  --sh-sm:0 1px 3px rgba(15,23,42,.06);
+  --sh:0 4px 12px rgba(15,23,42,.07);
+  --sh-md:0 8px 24px rgba(15,23,42,.09);
+  --sh-lg:0 20px 40px rgba(15,23,42,.13);
+  --sh-brand:0 10px 26px -8px var(--p-glow);
+  --ring:0 0 0 4px rgba(15,122,52,.14);
+  --sidebar-w:260px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);color:var(--tb);height:100vh;height:100dvh;overflow:hidden;
+  -webkit-font-smoothing:antialiased;overscroll-behavior:none;
+}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+
+/* ---- LOGIN ---- */
+#loginGate{
+  position:fixed;inset:0;z-index:9000;
+  background:linear-gradient(135deg,#0f7a34 0%,#084d20 60%,#052e14 100%);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+#loginGate.hidden{display:none}
+.login-card{
+  background:#fff;border-radius:24px;padding:36px 30px 30px;
+  width:100%;max-width:400px;box-shadow:0 40px 80px -20px rgba(0,0,0,.5);
+}
+.login-card .lc-logo{
+  width:64px;height:64px;border-radius:18px;
+  background:linear-gradient(145deg,#12903e,#084d20);
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;margin:0 auto 18px;
+  box-shadow:0 12px 28px -8px rgba(15,122,52,.5);
+}
+.login-card h1{font-size:22px;font-weight:900;color:var(--td);text-align:center;letter-spacing:-.03em;margin-bottom:6px}
+.login-card p{text-align:center;font-size:13px;color:var(--tl);font-weight:600;margin-bottom:24px;line-height:1.5}
+.login-field{margin-bottom:12px;position:relative}
+.login-field input{
+  width:100%;padding:14px 16px;border:1.5px solid var(--bd);border-radius:14px;
+  font-size:15px;outline:none;transition:all .2s var(--e);background:var(--sf);
+}
+.login-field input:focus{border-color:var(--p);box-shadow:var(--ring)}
+.login-btn{
+  width:100%;padding:15px;border-radius:999px;
+  background:linear-gradient(180deg,#12903e,#0f7a34);color:#fff;
+  font-weight:800;font-size:15px;margin-top:8px;
+  box-shadow:0 12px 28px -8px var(--p-glow);transition:transform .2s var(--e);
+}
+.login-btn:active{transform:scale(.97)}
+.login-btn:disabled{opacity:.5}
+.login-error{
+  background:var(--danger-soft);color:var(--danger);
+  padding:12px 16px;border-radius:12px;font-size:13px;font-weight:600;
+  margin-top:14px;display:none;
+}
+.login-error.show{display:block}
+
+/* ---- APP LAYOUT ---- */
+#appLayout{
+  position:fixed;inset:0;display:flex;background:var(--bg);
+}
+#appLayout.hidden{display:none}
+
+/* Sidebar */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  background:linear-gradient(180deg,#0a2417 0%,#041a0e 100%);
+  color:#fff;display:flex;flex-direction:column;
+  transition:transform .35s var(--e);z-index:100;
+}
+.sidebar-head{
+  padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,.08);
+}
+.sidebar-head .sb-brand{
+  display:flex;align-items:center;gap:10px;margin-bottom:4px;
+}
+.sidebar-head .sb-brand-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(145deg,#22c55e,#0f7a34);
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  box-shadow:0 6px 16px -6px rgba(34,197,94,.5);
+}
+.sidebar-head .sb-brand-text{font-size:16px;font-weight:900;letter-spacing:-.02em}
+.sidebar-head .sb-sub{font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#86efac;opacity:.7;margin-top:2px;padding-left:46px}
+
+.sidebar-nav{flex:1;overflow-y:auto;padding:14px 10px;scrollbar-width:none}
+.sidebar-nav::-webkit-scrollbar{display:none}
+.sidebar-nav .group-label{
+  font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.32);padding:14px 12px 6px;
+}
+.sidebar-nav .nav-btn{
+  display:flex;align-items:center;gap:12px;width:100%;
+  padding:11px 14px;border-radius:11px;
+  color:rgba(255,255,255,.7);font-size:13.5px;font-weight:600;
+  transition:all .2s var(--e);text-align:left;margin-bottom:2px;
+  position:relative;
+}
+.sidebar-nav .nav-btn:hover{background:rgba(255,255,255,.07);color:#fff}
+.sidebar-nav .nav-btn.active{
+  background:linear-gradient(135deg,#12903e,#0f7a34);color:#fff;
+  box-shadow:0 8px 18px -6px rgba(34,197,94,.4);
+}
+.sidebar-nav .nav-btn .nb-icon{
+  width:22px;text-align:center;font-size:15px;flex-shrink:0;
+}
+.sidebar-nav .nav-btn .nb-count{
+  margin-left:auto;font-size:10px;font-weight:900;padding:2px 8px;
+  border-radius:999px;background:rgba(255,255,255,.15);color:#fff;
+  min-width:20px;text-align:center;
+}
+.sidebar-nav .nav-btn.active .nb-count{background:rgba(255,255,255,.25)}
+.sidebar-nav .nav-btn .nb-count.alert{background:#dc2626;color:#fff}
+
+.sidebar-foot{
+  padding:14px 14px 20px;border-top:1px solid rgba(255,255,255,.08);
+}
+.sb-user{
+  display:flex;align-items:center;gap:10px;padding:8px 10px 10px;
+}
+.sb-user-avatar{
+  width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.14);
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;
+  flex-shrink:0;overflow:hidden;
+}
+.sb-user-avatar img{width:100%;height:100%;object-fit:cover}
+.sb-user-info{min-width:0;flex:1}
+.sb-user-info strong{display:block;font-size:12.5px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#fff}
+.sb-user-info span{display:block;font-size:10.5px;color:#86efac;opacity:.7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-logout{
+  width:100%;display:flex;align-items:center;gap:10px;padding:11px 14px;
+  border-radius:11px;color:#f87171;font-size:13px;font-weight:700;
+  transition:background .2s var(--e);
+}
+.sb-logout:hover{background:rgba(248,113,113,.1)}
+.sb-logout i{font-style:normal;font-size:15px}
+
+/* Main */
+.main-area{
+  flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;
+}
+.main-topbar{
+  height:64px;flex-shrink:0;background:#fff;border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;padding:0 24px;gap:16px;
+  box-shadow:0 1px 3px rgba(15,23,42,.04);
+}
+.mt-menu{
+  display:none;width:38px;height:38px;border-radius:10px;
+  background:var(--sf2);align-items:center;justify-content:center;
+  font-size:18px;color:var(--td);
+}
+.mt-title{font-size:18px;font-weight:900;color:var(--td);letter-spacing:-.02em;flex:1}
+.mt-title-sub{font-size:11px;color:var(--tl);font-weight:700;margin-top:2px;letter-spacing:.02em}
+.mt-actions{display:flex;gap:8px;align-items:center}
+.mt-btn{
+  width:38px;height:38px;border-radius:10px;background:var(--sf2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;color:var(--tb);transition:all .2s var(--e);position:relative;
+}
+.mt-btn:hover{background:var(--p-l);color:var(--p-d)}
+.mt-badge{
+  position:absolute;top:6px;right:6px;
+  min-width:16px;height:16px;border-radius:8px;
+  background:var(--danger);color:#fff;font-size:9px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;padding:0 4px;
+  border:1.5px solid #fff;
+}
+
+.content-scroll{
+  flex:1;overflow-y:auto;overflow-x:hidden;padding:24px;
+  scrollbar-width:thin;scrollbar-color:var(--bd-s) transparent;
+}
+.content-scroll::-webkit-scrollbar{width:8px}
+.content-scroll::-webkit-scrollbar-thumb{background:var(--bd-s);border-radius:4px}
+
+/* ---- COMPONENTS ---- */
+.page-section{display:none}
+.page-section.active{display:block;animation:fadeIn .28s var(--e)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* Stat cards */
+.stat-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:16px;margin-bottom:24px;
+}
+.stat-card{
+  background:#fff;border:1px solid var(--bd);border-radius:var(--r-xl);
+  padding:20px;box-shadow:var(--sh-xs);position:relative;overflow:hidden;
+}
+.stat-card::before{
+  content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;
+  border-radius:50%;background:radial-gradient(circle,var(--p-l) 0%,transparent 70%);
+  pointer-events:none;
+}
+.stat-card .sc-emoji{
+  width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-size:22px;margin-bottom:14px;position:relative;z-index:1;
+}
+.stat-card .sc-num{
+  font-size:28px;font-weight:900;letter-spacing:-.03em;color:var(--td);line-height:1;
+  position:relative;z-index:1;
+}
+.stat-card .sc-label{
+  font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--tl);margin-top:8px;position:relative;z-index:1;
+}
+.stat-card .sc-sub{
+  font-size:11.5px;font-weight:600;color:var(--tl);margin-top:6px;
+  position:relative;z-index:1;
+}
+.sc-emoji.green{background:linear-gradient(145deg,#d1fae5,#10b981)}
+.sc-emoji.blue{background:linear-gradient(145deg,#dbeafe,#2563eb)}
+.sc-emoji.orange{background:linear-gradient(145deg,#ffedd5,#ea580c)}
+.sc-emoji.purple{background:linear-gradient(145deg,#ede9fe,#7c3aed)}
+.sc-emoji.amber{background:linear-gradient(145deg,#fef3c7,#d97706)}
+.sc-emoji.red{background:linear-gradient(145deg,#fee2e2,#dc2626)}
+.sc-emoji.teal{background:linear-gradient(145deg,#ccfbf1,#0d9488)}
+
+/* Toolbar */
+.toolbar{
+  display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;align-items:center;
+}
+.toolbar-search{
+  flex:1;min-width:220px;position:relative;
+}
+.toolbar-search input{
+  width:100%;padding:11px 16px 11px 42px;
+  border:1.5px solid var(--bd);border-radius:12px;
+  font-size:14px;background:#fff;outline:none;transition:all .2s var(--e);
+}
+.toolbar-search input:focus{border-color:var(--p);box-shadow:var(--ring)}
+.toolbar-search::before{
+  content:'🔍';position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  font-size:14px;pointer-events:none;opacity:.55;
+}
+.toolbar-select{
+  padding:11px 36px 11px 14px;
+  border:1.5px solid var(--bd);border-radius:12px;
+  font-size:13px;font-weight:700;background:#fff;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;
+  -webkit-appearance:none;appearance:none;outline:none;
+}
+.toolbar-btn{
+  padding:11px 18px;border-radius:12px;
+  background:linear-gradient(180deg,#12903e,var(--p));color:#fff;
+  font-size:13px;font-weight:800;display:inline-flex;align-items:center;gap:6px;
+  box-shadow:0 6px 16px -6px var(--p-glow);transition:transform .2s var(--e);
+}
+.toolbar-btn:active{transform:scale(.97)}
+
+/* Data table */
+.table-wrap{
+  background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);
+  overflow:hidden;box-shadow:var(--sh-xs);
+}
+.table-scroll{overflow-x:auto}
+table.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
+table.data-table thead{background:var(--sf2)}
+table.data-table th{
+  text-align:left;padding:12px 16px;
+  font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--tl);white-space:nowrap;border-bottom:1px solid var(--bd);
+}
+table.data-table td{
+  padding:14px 16px;border-bottom:1px solid var(--bd);vertical-align:middle;
+}
+table.data-table tbody tr:last-child td{border-bottom:none}
+table.data-table tbody tr:hover{background:var(--p-ll)}
+table.data-table tbody tr{cursor:pointer;transition:background .15s var(--e)}
+
+.cell-user{display:flex;align-items:center;gap:10px}
+.cell-avatar{
+  width:34px;height:34px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(145deg,#d1fae5,#10b981);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:900;color:#fff;overflow:hidden;
+}
+.cell-avatar img{width:100%;height:100%;object-fit:cover}
+.cell-name{font-weight:800;color:var(--td);line-height:1.2}
+.cell-sub{font-size:11.5px;color:var(--tl);font-weight:600;margin-top:2px}
+
+.badge{
+  display:inline-block;padding:3px 9px;border-radius:999px;
+  font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;
+  white-space:nowrap;
+}
+.badge.approved{background:var(--ok-soft);color:#065f46}
+.badge.pending{background:var(--warn-soft);color:#92400e}
+.badge.rejected{background:var(--danger-soft);color:#991b1b}
+.badge.banned{background:#1e293b;color:#f1f5f9}
+.badge.active{background:var(--ok-soft);color:#065f46}
+.badge.removed{background:#f1f5f9;color:#475569}
+.badge.sold{background:var(--purple-soft);color:#5b21b6}
+.badge.role{background:var(--info-soft);color:#1e40af}
+.badge.role.farmer{background:var(--p-l);color:var(--p-d)}
+.badge.role.supplier{background:var(--purple-soft);color:#5b21b6}
+.badge.role.delivery{background:#cffafe;color:#155e75}
+.badge.role.marketeer{background:#fef3c7;color:#92400e}
+.badge.role.admin{background:#1e293b;color:#f1f5f9}
+.badge.stage{background:var(--info-soft);color:#1e40af}
+.badge.stage.planted{background:#dbeafe;color:#1e40af}
+.badge.stage.growing{background:#d1fae5;color:#065f46}
+.badge.stage.flowering{background:#fef3c7;color:#92400e}
+.badge.stage.fruiting{background:#ede9fe;color:#5b21b6}
+.badge.stage.harvesting{background:#ffedd5;color:#9a3412}
+.badge.stage.harvested{background:#f1f5f9;color:#475569}
+
+.action-group{display:flex;gap:5px;justify-content:flex-end}
+.action-btn{
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;transition:all .2s var(--e);border:1px solid transparent;
+}
+.action-btn:active{transform:scale(.88)}
+.action-btn.view{background:var(--info-soft);color:var(--info)}
+.action-btn.approve{background:var(--ok-soft);color:#065f46}
+.action-btn.reject{background:var(--warn-soft);color:#92400e}
+.action-btn.ban{background:var(--danger-soft);color:var(--danger)}
+.action-btn.delete{background:var(--danger-soft);color:var(--danger)}
+.action-btn.edit{background:var(--p-l);color:var(--p-d)}
+.action-btn:hover{filter:brightness(.94)}
+
+.empty-state{
+  padding:60px 24px;text-align:center;color:var(--tl);
+}
+.empty-state .em{font-size:52px;margin-bottom:14px;opacity:.55;line-height:1}
+.empty-state h3{font-size:15px;font-weight:900;color:var(--td);margin-bottom:6px}
+.empty-state p{font-size:13px;line-height:1.55}
+
+.loader-row{
+  padding:50px 20px;text-align:center;color:var(--tl);
+  font-weight:600;font-size:13.5px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.spinner{
+  width:16px;height:16px;border-radius:50%;
+  border:2px solid var(--bd-s);border-top-color:var(--p);
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Modal */
+.modal-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(15,23,42,.55);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;padding:20px;
+  animation:fadeIn .22s var(--e);
+}
+.modal-overlay.open{display:flex}
+.modal-card{
+  background:#fff;border-radius:var(--r-xl);width:100%;max-width:560px;
+  max-height:90vh;overflow-y:auto;box-shadow:0 40px 80px -20px rgba(0,0,0,.4);
+  animation:modalIn .3s cubic-bezier(.34,1.4,.64,1);
+  scrollbar-width:thin;
+}
+.modal-card::-webkit-scrollbar{width:6px}
+.modal-card::-webkit-scrollbar-thumb{background:var(--bd-s);border-radius:3px}
+@keyframes modalIn{from{opacity:0;transform:scale(.94) translateY(16px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-head{
+  padding:20px 22px 14px;border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  position:sticky;top:0;background:#fff;z-index:2;border-radius:var(--r-xl) var(--r-xl) 0 0;
+}
+.modal-head h3{font-size:17px;font-weight:900;color:var(--td);letter-spacing:-.02em;line-height:1.2}
+.modal-head p{font-size:11.5px;color:var(--tl);font-weight:600;margin-top:3px}
+.modal-close{
+  width:34px;height:34px;border-radius:50%;background:var(--sf2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;color:var(--tb);flex-shrink:0;transition:background .2s var(--e);
+}
+.modal-close:hover{background:var(--danger-soft);color:var(--danger)}
+.modal-body{padding:20px 22px 22px}
+.modal-foot{
+  padding:14px 22px 20px;border-top:1px solid var(--bd);
+  display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;
+  position:sticky;bottom:0;background:#fff;border-radius:0 0 var(--r-xl) var(--r-xl);
+}
+
+.form-field{margin-bottom:14px}
+.form-field label{
+  display:block;font-size:10.5px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin-bottom:6px;
+}
+.form-field input,.form-field select,.form-field textarea{
+  width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:11px;
+  font-size:14px;background:var(--sf);outline:none;transition:all .2s var(--e);
+}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{
+  border-color:var(--p);box-shadow:var(--ring);
+}
+.form-field textarea{resize:vertical;min-height:70px;line-height:1.5}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-note{font-size:11.5px;color:var(--tl);font-weight:600;margin-top:6px;line-height:1.5}
+
+.info-table{background:var(--sf2);border-radius:12px;overflow:hidden;margin-bottom:16px}
+.info-table .it-row{
+  display:flex;justify-content:space-between;gap:12px;
+  padding:11px 14px;border-bottom:1px solid var(--bd);font-size:13px;
+}
+.info-table .it-row:last-child{border-bottom:none}
+.info-table .it-k{color:var(--tl);font-weight:700;flex-shrink:0}
+.info-table .it-v{color:var(--td);font-weight:800;text-align:right;word-break:break-word;max-width:65%}
+
+.btn{
+  padding:11px 18px;border-radius:999px;font-size:13.5px;font-weight:800;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  transition:transform .2s var(--e);
+}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(180deg,#12903e,var(--p));color:#fff;box-shadow:0 8px 20px -6px var(--p-glow)}
+.btn-outline{background:#fff;color:var(--td);border:1.5px solid var(--bd)}
+.btn-outline:hover{background:var(--sf2)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger-soft{background:var(--danger-soft);color:var(--danger);border:1.5px solid rgba(220,38,38,.2)}
+.btn-warn{background:var(--warn);color:#fff}
+.btn-warn-soft{background:var(--warn-soft);color:#92400e;border:1.5px solid rgba(180,83,9,.2)}
+.btn-ok{background:var(--ok);color:#fff}
+.btn-ok-soft{background:var(--ok-soft);color:#065f46;border:1.5px solid rgba(22,163,74,.2)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* Toast */
+#toast{
+  position:fixed;bottom:28px;left:50%;transform:translate(-50%,20px);
+  background:rgba(15,23,42,.95);color:#fff;
+  padding:12px 22px;border-radius:999px;
+  font-size:13px;font-weight:700;
+  opacity:0;pointer-events:none;transition:all .3s var(--e);z-index:1100;
+  box-shadow:0 12px 30px -8px rgba(0,0,0,.4);
+  max-width:calc(100vw - 40px);text-align:center;
+}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* Mobile */
+@media(max-width:960px){
+  .sidebar{
+    position:fixed;top:0;left:0;bottom:0;transform:translateX(-100%);
+    box-shadow:14px 0 40px rgba(0,0,0,.3);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .mt-menu{display:flex}
+  .content-scroll{padding:16px}
+  .form-row{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .main-topbar{padding:0 16px;gap:10px}
+  .mt-title{font-size:15px}
+  .stat-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .stat-card{padding:14px}
+  .stat-card .sc-num{font-size:22px}
+  .toolbar{padding:0;gap:8px}
+  .toolbar-search{min-width:0;flex-basis:100%}
+  .toolbar-select{flex:1}
+  .toolbar-btn{flex:1;justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================== LOGIN ============================== -->
+<div id="loginGate">
+  <div class="login-card">
+    <div class="lc-logo">🛡️</div>
+    <h1>UTOM Admin</h1>
+    <p>Sign in with your administrator account to manage the platform.</p>
+    <form id="loginForm">
+      <div class="login-field">
+        <input type="email" id="loginEmail" placeholder="admin@utom.com" autocomplete="email" required>
+      </div>
+      <div class="login-field">
+        <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="login-btn" id="loginBtn">Sign In →</button>
+      <div class="login-error" id="loginError"></div>
+    </form>
+  </div>
+</div>
+
+<!-- ============================== APP ============================== -->
+<div id="appLayout" class="hidden">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <div class="sb-brand">
+        <div class="sb-brand-mark">🛡️</div>
+        <div class="sb-brand-text">UTOM Admin</div>
+      </div>
+      <div class="sb-sub">Control Center</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="group-label">Overview</div>
+      <button class="nav-btn active" data-page="dashboard">
+        <span class="nb-icon">📊</span> Dashboard
+      </button>
+
+      <div class="group-label">People</div>
+      <button class="nav-btn" data-page="users">
+        <span class="nb-icon">👥</span> Users
+        <span class="nb-count" id="nbCountUsers">0</span>
+      </button>
+
+      <div class="group-label">Platform</div>
+      <button class="nav-btn" data-page="batches">
+        <span class="nb-icon">🌱</span> Batches
+        <span class="nb-count" id="nbCountBatches">0</span>
+      </button>
+      <button class="nav-btn" data-page="listings">
+        <span class="nb-icon">🛒</span> Market Listings
+        <span class="nb-count" id="nbCountListings">0</span>
+      </button>
+      <button class="nav-btn" data-page="products">
+        <span class="nb-icon">📦</span> Agro Products
+        <span class="nb-count" id="nbCountProducts">0</span>
+      </button>
+      <button class="nav-btn" data-page="deliveries">
+        <span class="nb-icon">🚚</span> Delivery Requests
+        <span class="nb-count" id="nbCountDeliveries">0</span>
+      </button>
+
+      <div class="group-label">Communications</div>
+      <button class="nav-btn" data-page="notifications">
+        <span class="nb-icon">🔔</span> Notifications
+      </button>
+
+      <div class="group-label">System</div>
+      <button class="nav-btn" data-page="settings">
+        <span class="nb-icon">⚙️</span> Settings
+      </button>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="sb-user">
+        <div class="sb-user-avatar" id="adminAvatar">A</div>
+        <div class="sb-user-info">
+          <strong id="adminName">Admin</strong>
+          <span id="adminEmail">admin@utom.com</span>
+        </div>
+      </div>
+      <button class="sb-logout" id="logoutBtn">
+        <i>🚪</i> Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <div class="main-topbar">
+      <button class="mt-menu" id="mtMenu">☰</button>
+      <div style="flex:1;min-width:0">
+        <div class="mt-title" id="mtTitle">Dashboard</div>
+        <div class="mt-title-sub" id="mtSub">Platform overview</div>
+      </div>
+      <div class="mt-actions">
+        <button class="mt-btn" id="mtRefresh" title="Refresh">🔄</button>
+      </div>
+    </div>
+
+    <div class="content-scroll" id="contentScroll">
+
+      <!-- Dashboard -->
+      <section class="page-section active" data-section="dashboard">
+        <div class="stat-grid" id="dashStats">
+          <div class="loader-row"><span class="spinner"></span> Loading dashboard…</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="dashBreakdowns">
+        </div>
+        <div id="dashRecent" style="margin-top:16px"></div>
+      </section>
+
+      <!-- Users -->
+      <section class="page-section" data-section="users">
+        <div class="toolbar">
+          <div class="toolbar-search">
+            <input type="text" id="userSearch" placeholder="Search by name, email, phone…">
+          </div>
+          <select class="toolbar-select" id="userRoleFilter">
+            <option value="all">All Roles</option>
+            <option value="customer">Customers</option>
+            <option value="farmer">Farmers</option>
+            <option value="supplier">Suppliers</option>
+            <option value="marketeer">Marketeers</option>
+            <option value="delivery">Delivery</option>
+            <option value="admin">Admins</option>
+          </select>
+          <select class="toolbar-select" id="userStatusFilter">
+            <option value="all">All Status</option>
+            <option value="approved">Approved</option>
+            <option value="pending">Pending</option>
+            <option value="rejected">Rejected</option>
+            <option value="banned">Banned</option>
+          </select>
+          <button class="toolbar-btn" id="btnSendBulk">🔔 Notify</button>
+        </div>
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>City</th>
+                  <th>Phone</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody">
+                <tr><td colspan="6"><div class="loader-row"><span class="spinner"></span> Loading users…</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Batches -->
+      <section class="page-section" data-section="batches">
+        <div class="toolbar">
+          <div class="toolbar-search">
+            <input type="text" id="batchSearch" placeholder="Search by crop, farmer, batch #…">
+          </div>
+          <select class="toolbar-select" id="batchStageFilter">
+            <option value="all">All Stages</option>
+            <option value="planted">Planted</option>
+            <option value="growing">Growing</option>
+            <option value="flowering">Flowering</option>
+            <option value="fruiting">Fruiting</option>
+            <option value="harvesting">Harvesting</option>
+            <option value="harvested">Harvested</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Crop</th>
+                  <th>Farmer</th>
+                  <th>City</th>
+                  <th>Stage</th>
+                  <th>Est. Boxes</th>
+                  <th>Actual</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="batchesTableBody">
+                <tr><td colspan="7"><div class="loader-row"><span class="spinner"></span> Loading batches…</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Listings -->
+      <section class="page-section" data-section="listings">
+        <div class="toolbar">
+          <div class="toolbar-search">
+            <input type="text" id="listingSearch" placeholder="Search by product, seller, market…">
+          </div>
+          <select class="toolbar-select" id="listingStatusFilter">
+            <option value="all">All Status</option>
+            <option value="active">Active</option>
+            <option value="pending">Pending</option>
+            <option value="available">Available</option>
+            <option value="sold">Sold</option>
+            <option value="removed">Removed</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Seller</th>
+                  <th>Market / City</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="listingsTableBody">
+                <tr><td colspan="7"><div class="loader-row"><span class="spinner"></span> Loading listings…</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Agro Products -->
+      <section class="page-section" data-section="products">
+        <div class="toolbar">
+          <div class="toolbar-search">
+            <input type="text" id="productSearch" placeholder="Search by product, dealer, category…">
+          </div>
+          <select class="toolbar-select" id="productCatFilter">
+            <option value="all">All Categories</option>
+            <option value="Pesticide">Pesticide</option>
+            <option value="Herbicide">Herbicide</option>
+            <option value="Fungicide">Fungicide</option>
+            <option value="Fertilizer">Fertilizer</option>
+            <option value="Seeds">Seeds</option>
+            <option value="Tools">Tools</option>
+            <option value="Feed">Feed</option>
+            <option value="Veterinary">Veterinary</option>
+            <option value="Packaging">Packaging</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Dealer</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Status</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="productsTableBody">
+                <tr><td colspan="7"><div class="loader-row"><span class="spinner"></span> Loading products…</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Delivery Requests -->
+      <section class="page-section" data-section="deliveries">
+        <div class="toolbar">
+          <div class="toolbar-search">
+            <input type="text" id="deliverySearch" placeholder="Search by route, customer, driver…">
+          </div>
+          <select class="toolbar-select" id="deliveryStatusFilter">
+            <option value="all">All Status</option>
+            <option value="searching">Searching</option>
+            <option value="accepted">Accepted</option>
+            <option value="arrived">Arrived</option>
+            <option value="in_progress">In Progress</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Route</th>
+                  <th>Customer</th>
+                  <th>Driver</th>
+                  <th>Fare</th>
+                  <th>Status</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="deliveriesTableBody">
+                <tr><td colspan="6"><div class="loader-row"><span class="spinner"></span> Loading deliveries…</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Notifications -->
+      <section class="page-section" data-section="notifications">
+        <div class="stat-grid" style="grid-template-columns:1fr 1fr">
+          <div class="stat-card">
+            <div class="sc-emoji purple">📢</div>
+            <div class="sc-num" id="notifTotalSent">0</div>
+            <div class="sc-label">Notifications Tracked</div>
+            <div class="sc-sub">This session</div>
+          </div>
+          <div class="stat-card">
+            <div class="sc-emoji orange">👥</div>
+            <div class="sc-num" id="notifReachable">0</div>
+            <div class="sc-label">Reachable Users</div>
+            <div class="sc-sub">Approved & unbanned</div>
+          </div>
+        </div>
+
+        <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);padding:22px;box-shadow:var(--sh-xs);margin-bottom:16px">
+          <h3 style="font-size:15px;font-weight:900;color:var(--td);margin-bottom:14px">📨 Send Notification</h3>
+          <div class="form-field">
+            <label>Audience</label>
+            <select id="notifAudience">
+              <option value="all">All approved users</option>
+              <option value="farmer">All farmers</option>
+              <option value="customer">All customers</option>
+              <option value="supplier">All suppliers</option>
+              <option value="marketeer">All marketeers</option>
+              <option value="delivery">All delivery partners</option>
+              <option value="pending">All pending approvals</option>
+              <option value="custom">Specific user (by UID or email)</option>
+            </select>
+          </div>
+          <div class="form-field" id="notifCustomWrap" style="display:none">
+            <label>Target UID or email</label>
+            <input type="text" id="notifCustomTarget" placeholder="uid or user@example.com">
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label>Title</label>
+              <input type="text" id="notifTitle" placeholder="e.g. Platform update" maxlength="60">
+            </div>
+            <div class="form-field">
+              <label>Type</label>
+              <select id="notifType">
+                <option value="info">Info</option>
+                <option value="success">Success</option>
+                <option value="warning">Warning</option>
+                <option value="alert">Alert</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Message</label>
+            <textarea id="notifBody" placeholder="Write your message…" maxlength="400"></textarea>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button class="btn btn-outline" id="notifClear">Clear</button>
+            <button class="btn btn-primary" id="notifSend">📤 Send Notification</button>
+          </div>
+        </div>
+
+        <div id="notifSentList"></div>
+      </section>
+
+      <!-- Settings -->
+      <section class="page-section" data-section="settings">
+        <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);padding:22px;box-shadow:var(--sh-xs);margin-bottom:16px">
+          <h3 style="font-size:15px;font-weight:900;color:var(--td);margin-bottom:14px">🛠️ System Maintenance</h3>
+          <p style="font-size:13px;color:var(--tl);font-weight:600;margin-bottom:14px;line-height:1.5">
+            When enabled, all app users see a maintenance screen. Delivery partners see this check on app boot.
+          </p>
+          <div style="display:flex;align-items:center;gap:12px;padding:14px;background:var(--sf2);border-radius:12px;margin-bottom:14px">
+            <div style="flex:1">
+              <div style="font-size:13.5px;font-weight:800;color:var(--td)" id="maintStatusLabel">Loading…</div>
+              <div style="font-size:11.5px;color:var(--tl);font-weight:600;margin-top:2px" id="maintStatusSub">Current state</div>
+            </div>
+            <button class="btn btn-outline" id="maintToggleBtn">Toggle</button>
+          </div>
+          <div class="form-field">
+            <label>Maintenance message</label>
+            <textarea id="maintMessage" placeholder="e.g. We'll be back shortly…"></textarea>
+          </div>
+          <button class="btn btn-primary" id="maintSave">💾 Save Maintenance Settings</button>
+        </div>
+
+        <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);padding:22px;box-shadow:var(--sh-xs);margin-bottom:16px">
+          <h3 style="font-size:15px;font-weight:900;color:var(--td);margin-bottom:14px">💾 Data Export</h3>
+          <p style="font-size:13px;color:var(--tl);font-weight:600;margin-bottom:14px;line-height:1.5">
+            Download a JSON snapshot of all platform data.
+          </p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-outline" data-export="users">👥 Users</button>
+            <button class="btn btn-outline" data-export="batches">🌱 Batches</button>
+            <button class="btn btn-outline" data-export="listings">🛒 Listings</button>
+            <button class="btn btn-outline" data-export="products">📦 Products</button>
+            <button class="btn btn-primary" data-export="all">📥 Export Everything</button>
+          </div>
+        </div>
+
+        <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);padding:22px;box-shadow:var(--sh-xs)">
+          <h3 style="font-size:15px;font-weight:900;color:var(--td);margin-bottom:14px">ℹ️ System Info</h3>
+          <div class="info-table">
+            <div class="it-row"><span class="it-k">Project</span><span class="it-v">reaper-7b33d</span></div>
+            <div class="it-row"><span class="it-k">Admin</span><span class="it-v" id="sysAdminEmail">—</span></div>
+            <div class="it-row"><span class="it-k">Signed in at</span><span class="it-v" id="sysSignedIn">—</span></div>
+            <div class="it-row"><span class="it-k">Session UID</span><span class="it-v" id="sysUid">—</span></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============================== MODAL ============================== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <h3 id="modalTitle">Title</h3>
+        <p id="modalSub">Subtitle</p>
+      </div>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot" id="modalFoot"></div>
+  </div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirmOverlay">
+  <div class="modal-card" style="max-width:400px">
+    <div class="modal-body" style="text-align:center;padding:30px 24px 20px">
+      <div style="font-size:44px;margin-bottom:12px" id="confirmIcon">⚠️</div>
+      <h3 style="font-size:18px;font-weight:900;color:var(--td);letter-spacing:-.02em;margin-bottom:8px" id="confirmTitle">Are you sure?</h3>
+      <p style="font-size:13.5px;color:var(--tl);line-height:1.55;font-weight:600" id="confirmMsg">This action cannot be undone.</p>
+    </div>
+    <div class="modal-foot" style="justify-content:center;padding-bottom:24px">
+      <button class="btn btn-outline" id="confirmCancel" style="min-width:110px">Cancel</button>
+      <button class="btn btn-danger" id="confirmOk" style="min-width:110px">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+/* ================================================================
+   FIREBASE
+   ================================================================ */
+import { initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, get, set, update, push, onValue, remove, off } from "firebase/database";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDye0P37QYNjtRRKh2_At84QCkKCqjceAQ",
+  authDomain: "reaper-7b33d.firebaseapp.com",
+  databaseURL: "https://reaper-7b33d-default-rtdb.firebaseio.com",
+  projectId: "reaper-7b33d",
+  storageBucket: "reaper-7b33d.firebasestorage.app",
+  messagingSenderId: "1023523985110",
+  appId: "1:1023523985110:web:889e2200fad1fa5b98db77"
+};
+const fbApp = initializeApp(firebaseConfig);
+const auth  = getAuth(fbApp);
+const db    = getDatabase(fbApp);
+
+/* ================================================================
+   STATE
+   ================================================================ */
+const State = {
+  adminUser: null,
+  adminProfile: null,
+  users: {},          // uid -> user object
+  batches: {},        // id -> batch
+  listings: {},       // id -> listing
+  products: {},       // id -> product
+  deliveries: {},     // id -> request
+  maintenance: { enabled: false, message: '' },
+  page: 'dashboard',
+  notifSent: [],      // session-only log
+  unsubs: [],
+  filters: {
+    userSearch: '',
+    userRole: 'all',
+    userStatus: 'all',
+    batchSearch: '',
+    batchStage: 'all',
+    listingSearch: '',
+    listingStatus: 'all',
+    productSearch: '',
+    productCat: 'all',
+    deliverySearch: '',
+    deliveryStatus: 'all'
+  }
+};
+
+/* ================================================================
+   HELPERS
+   ================================================================ */
+const $ = id => document.getElementById(id);
+const $$ = sel => document.querySelectorAll(sel);
+const esc = s => s == null ? '' : String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const initials = name => {
+  if (!name) return '?';
+  return String(name).trim().split(/\s+/).map(w => w[0]).slice(0,2).join('').toUpperCase();
+};
+const fmtZMK = n => (n == null || isNaN(n)) ? '—' : 'ZMK ' + Number(n).toLocaleString('en-ZM');
+const timeAgo = ts => {
+  if (!ts) return 'just now';
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s/60) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  if (s < 604800) return Math.floor(s/86400) + 'd ago';
+  return new Date(ts).toLocaleDateString();
+};
+const fmtDate = ts => {
+  if (!ts) return '—';
+  const d = new Date(ts);
+  return d.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'});
+};
+const fmtDateTime = ts => {
+  if (!ts) return '—';
+  const d = new Date(ts);
+  return d.toLocaleString('en-GB', {day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
+};
+const pickIcon = name => {
+  if (!name) return '🌿';
+  const n = String(name).toLowerCase();
+  if (n.includes('tomato')) return '🍅';
+  if (n.includes('maize') || n.includes('corn')) return '🌽';
+  if (n.includes('onion')) return '🧅';
+  if (n.includes('wheat')||n.includes('sorghum')||n.includes('millet')) return '🌾';
+  if (n.includes('rice')) return '🍚';
+  if (n.includes('pea')||n.includes('bean')||n.includes('soy')) return '🫛';
+  if (n.includes('groundnut')||n.includes('peanut')) return '🥜';
+  if (n.includes('carrot')) return '🥕';
+  if (n.includes('cabbage')||n.includes('kale')||n.includes('rape')||n.includes('spinach')||n.includes('lettuce')) return '🥬';
+  if (n.includes('potato')) return '🥔';
+  if (n.includes('chilli')||n.includes('chili')) return '🌶️';
+  if (n.includes('pepper')) return '🫑';
+  if (n.includes('eggplant')) return '🍆';
+  if (n.includes('banana')||n.includes('plantain')) return '🍌';
+  if (n.includes('mango')) return '🥭';
+  if (n.includes('avocado')) return '🥑';
+  if (n.includes('orange')||n.includes('citrus')) return '🍊';
+  if (n.includes('cow')||n.includes('cattle')) return '🐄';
+  if (n.includes('goat')) return '🐐';
+  if (n.includes('pig')) return '🐖';
+  if (n.includes('sheep')) return '🐑';
+  if (n.includes('chicken')||n.includes('poultry')||n.includes('broiler')) return '🐔';
+  if (n.includes('fish')||n.includes('tilapia')) return '🐟';
+  return '🌿';
+};
+const roleEmoji = r => ({customer:'🛒',farmer:'🌾',supplier:'📦',marketeer:'🏪',delivery:'🚚',admin:'🛡️'}[r] || '👤');
+const stageEmoji = s => ({planted:'🌱',growing:'🌿',flowering:'🌸',fruiting:'🍅',harvesting:'🌾',harvested:'✅'}[s] || '🌱');
+
+/* ================================================================
+   TOAST
+   ================================================================ */
+const toast = (msg, ms=2600) => {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), ms);
+};
+
+/* ================================================================
+   MODAL
+   ================================================================ */
+const showModal = (title, sub, bodyHTML, footHTML = '') => {
+  $('modalTitle').textContent = title;
+  $('modalSub').textContent = sub || '';
+  $('modalBody').innerHTML = bodyHTML;
+  $('modalFoot').innerHTML = footHTML;
+  $('modalOverlay').classList.add('open');
+};
+const closeModal = () => $('modalOverlay').classList.remove('open');
+$('modalClose').addEventListener('click', closeModal);
+$('modalOverlay').addEventListener('click', e => {
+  if (e.target === $('modalOverlay')) closeModal();
+});
+
+let confirmCallback = null;
+const showConfirm = (title, msg, cb, opts = {}) => {
+  $('confirmTitle').textContent = title;
+  $('confirmMsg').textContent = msg;
+  $('confirmIcon').textContent = opts.icon || '⚠️';
+  $('confirmOk').textContent = opts.okText || 'Confirm';
+  $('confirmOk').className = 'btn ' + (opts.okClass || 'btn-danger');
+  confirmCallback = cb;
+  $('confirmOverlay').classList.add('open');
+};
+$('confirmCancel').addEventListener('click', () => {
+  $('confirmOverlay').classList.remove('open');
+  confirmCallback = null;
+});
+$('confirmOk').addEventListener('click', async () => {
+  $('confirmOverlay').classList.remove('open');
+  const cb = confirmCallback;
+  confirmCallback = null;
+  if (cb) await cb();
+});
+
+/* ================================================================
+   LOGIN
+   ================================================================ */
+$('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = $('loginEmail').value.trim().toLowerCase();
+  const password = $('loginPassword').value;
+  if (!email || !password) return;
+  const btn = $('loginBtn');
+  btn.disabled = true;
+  btn.textContent = 'Signing in…';
+  $('loginError').classList.remove('show');
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    // onAuthStateChanged handles next steps
+  } catch (err) {
+    let msg = 'Sign-in failed.';
+    if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') msg = 'Invalid email or password.';
+    else if (err.code === 'auth/invalid-email') msg = 'Invalid email address.';
+    else if (err.code === 'auth/too-many-requests') msg = 'Too many attempts. Try again later.';
+    else if (err.message) msg = err.message;
+    $('loginError').textContent = msg;
+    $('loginError').classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Sign In →';
+  }
+});
+
+/* ================================================================
+   AUTH GATE
+   ================================================================ */
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    $('loginGate').classList.remove('hidden');
+    $('appLayout').classList.add('hidden');
+    return;
+  }
+  // Load profile
+  let profile = {};
+  try {
+    const snap = await get(ref(db, 'users/' + user.uid));
+    if (snap.exists()) profile = snap.val() || {};
+  } catch(e) {}
+
+  const role = profile.role || '';
+  if (role !== 'admin') {
+    await signOut(auth);
+    $('loginError').textContent = 'This account is not an administrator. Access denied.';
+    $('loginError').classList.add('show');
+    $('loginBtn').disabled = false;
+    $('loginBtn').textContent = 'Sign In →';
+    return;
+  }
+
+  State.adminUser = user;
+  State.adminProfile = profile;
+  $('loginGate').classList.add('hidden');
+  $('appLayout').classList.remove('hidden');
+  initAdmin();
+});
+
+/* ================================================================
+   INITIALIZE
+   ================================================================ */
+function initAdmin() {
+  const p = State.adminProfile || {};
+  const name = ((p.firstName || '') + ' ' + (p.lastName || '')).trim() || p.displayName || 'Admin';
+  $('adminName').textContent = name;
+  $('adminEmail').textContent = p.email || State.adminUser.email || '';
+  $('adminAvatar').innerHTML = p.profileUrl
+    ? `<img src="${esc(p.profileUrl)}" alt="">`
+    : initials(name);
+  $('sysAdminEmail').textContent = State.adminUser.email || '—';
+  $('sysSignedIn').textContent = fmtDateTime(Date.now());
+  $('sysUid').textContent = State.adminUser.uid;
+
+  startListeners();
+  bindNav();
+  bindToolbars();
+  bindNotif();
+  bindSettings();
+  navigate('dashboard');
+}
+
+/* ================================================================
+   LISTENERS
+   ================================================================ */
+function startListeners() {
+  // Users
+  State.unsubs.push(onValue(ref(db, 'users'), (snap) => {
+    const data = snap.val() || {};
+    State.users = data;
+    updateNavCounts();
+    if (State.page === 'users' || State.page === 'dashboard') renderCurrentPage();
+  }));
+
+  // Batches
+  State.unsubs.push(onValue(ref(db, 'batches'), (snap) => {
+    State.batches = snap.val() || {};
+    updateNavCounts();
+    if (State.page === 'batches' || State.page === 'dashboard') renderCurrentPage();
+  }));
+
+  // Listings
+  State.unsubs.push(onValue(ref(db, 'marketListings'), (snap) => {
+    State.listings = snap.val() || {};
+    updateNavCounts();
+    if (State.page === 'listings' || State.page === 'dashboard') renderCurrentPage();
+  }));
+
+  // Agro Products
+  State.unsubs.push(onValue(ref(db, 'agroProducts'), (snap) => {
+    State.products = snap.val() || {};
+    updateNavCounts();
+    if (State.page === 'products' || State.page === 'dashboard') renderCurrentPage();
+  }));
+
+  // Delivery Requests
+  State.unsubs.push(onValue(ref(db, 'deliveryRequests'), (snap) => {
+    State.deliveries = snap.val() || {};
+    updateNavCounts();
+    if (State.page === 'deliveries' || State.page === 'dashboard') renderCurrentPage();
+  }));
+
+  // Maintenance
+  State.unsubs.push(onValue(ref(db, 'system/maintenance'), (snap) => {
+    State.maintenance = snap.val() || { enabled: false, message: '' };
+    if (State.page === 'settings') renderCurrentPage();
+  }));
+}
+
+/* ================================================================
+   NAV
+   ================================================================ */
+function bindNav() {
+  $$('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      navigate(btn.dataset.page);
+      $('sidebar').classList.remove('open');
+    });
+  });
+  $('mtMenu').addEventListener('click', () => {
+    $('sidebar').classList.toggle('open');
+  });
+  $('mtRefresh').addEventListener('click', () => {
+    renderCurrentPage();
+    toast('Refreshed');
+  });
+  $('logoutBtn').addEventListener('click', () => {
+    showConfirm('Sign out?', 'You will need to sign in again.', async () => {
+      State.unsubs.forEach(u => { try { u(); } catch(e) {} });
+      await signOut(auth);
+      window.location.reload();
+    }, { okText: 'Sign Out', okClass: 'btn-danger', icon: '🚪' });
+  });
+}
+
+function updateNavCounts() {
+  $('nbCountUsers').textContent = Object.keys(State.users).length;
+  $('nbCountBatches').textContent = Object.keys(State.batches).length;
+  $('nbCountListings').textContent = Object.keys(State.listings).length;
+  $('nbCountProducts').textContent = Object.keys(State.products).length;
+  $('nbCountDeliveries').textContent = Object.keys(State.deliveries).length;
+
+  // Highlight pending users
+  const pending = Object.values(State.users).filter(u => u.status === 'pending').length;
+  const userCountEl = $('nbCountUsers');
+  userCountEl.classList.toggle('alert', pending > 0);
+  if (pending > 0) userCountEl.textContent = pending;
+}
+
+const PAGE_META = {
+  dashboard: { title: 'Dashboard', sub: 'Platform overview' },
+  users: { title: 'Users', sub: 'Manage all platform accounts' },
+  batches: { title: 'Batches', sub: 'All active and past batches' },
+  listings: { title: 'Market Listings', sub: 'Moderate listings' },
+  products: { title: 'Agro Products', sub: 'Products from suppliers' },
+  deliveries: { title: 'Delivery Requests', sub: 'All delivery activity' },
+  notifications: { title: 'Notifications', sub: 'Send messages to users' },
+  settings: { title: 'Settings', sub: 'System configuration' }
+};
+
+function navigate(page) {
+  State.page = page;
+  $$('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.page === page));
+  $$('.page-section').forEach(s => s.classList.toggle('active', s.dataset.section === page));
+  const meta = PAGE_META[page] || PAGE_META.dashboard;
+  $('mtTitle').textContent = meta.title;
+  $('mtSub').textContent = meta.sub;
+  renderCurrentPage();
+}
+
+function renderCurrentPage() {
+  switch (State.page) {
+    case 'dashboard': renderDashboard(); break;
+    case 'users': renderUsers(); break;
+    case 'batches': renderBatches(); break;
+    case 'listings': renderListings(); break;
+    case 'products': renderProducts(); break;
+    case 'deliveries': renderDeliveries(); break;
+    case 'notifications': renderNotifications(); break;
+    case 'settings': renderSettings(); break;
+  }
+}
+
+/* ================================================================
+   TOOLBARS
+   ================================================================ */
+function bindToolbars() {
+  // Users
+  $('userSearch').addEventListener('input', e => { State.filters.userSearch = e.target.value; renderUsers(); });
+  $('userRoleFilter').addEventListener('change', e => { State.filters.userRole = e.target.value; renderUsers(); });
+  $('userStatusFilter').addEventListener('change', e => { State.filters.userStatus = e.target.value; renderUsers(); });
+  $('btnSendBulk').addEventListener('click', () => navigate('notifications'));
+
+  // Batches
+  $('batchSearch').addEventListener('input', e => { State.filters.batchSearch = e.target.value; renderBatches(); });
+  $('batchStageFilter').addEventListener('change', e => { State.filters.batchStage = e.target.value; renderBatches(); });
+
+  // Listings
+  $('listingSearch').addEventListener('input', e => { State.filters.listingSearch = e.target.value; renderListings(); });
+  $('listingStatusFilter').addEventListener('change', e => { State.filters.listingStatus = e.target.value; renderListings(); });
+
+  // Products
+  $('productSearch').addEventListener('input', e => { State.filters.productSearch = e.target.value; renderProducts(); });
+  $('productCatFilter').addEventListener('change', e => { State.filters.productCat = e.target.value; renderProducts(); });
+
+  // Deliveries
+  $('deliverySearch').addEventListener('input', e => { State.filters.deliverySearch = e.target.value; renderDeliveries(); });
+  $('deliveryStatusFilter').addEventListener('change', e => { State.filters.deliveryStatus = e.target.value; renderDeliveries(); });
+}
+
+/* ================================================================
+   DASHBOARD
+   ================================================================ */
+function renderDashboard() {
+  const users = Object.values(State.users);
+  const batches = Object.values(State.batches);
+  const listings = Object.values(State.listings);
+  const products = Object.values(State.products);
+  const deliveries = Object.values(State.deliveries);
+
+  const pendingUsers = users.filter(u => u.status === 'pending').length;
+  const activeListings = listings.filter(l => l.availabilityStatus === 'available' || l.availabilityStatus === 'pending').length;
+  const activeBatches = batches.filter(b => b.stage !== 'harvested').length;
+  const ongoingDeliveries = deliveries.filter(d => ['searching','accepted','arrived','in_progress'].includes(d.status)).length;
+
+  $('dashStats').innerHTML = `
+    <div class="stat-card">
+      <div class="sc-emoji green">👥</div>
+      <div class="sc-num">${users.length}</div>
+      <div class="sc-label">Total Users</div>
+      <div class="sc-sub">${pendingUsers > 0 ? `<span style="color:var(--warn);font-weight:800">⚠ ${pendingUsers} pending approval</span>` : 'All approved'}</div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-emoji blue">🌱</div>
+      <div class="sc-num">${activeBatches}</div>
+      <div class="sc-label">Active Batches</div>
+      <div class="sc-sub">${batches.length} total ever</div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-emoji orange">🛒</div>
+      <div class="sc-num">${activeListings}</div>
+      <div class="sc-label">Market Listings</div>
+      <div class="sc-sub">${listings.length} total ever</div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-emoji purple">📦</div>
+      <div class="sc-num">${products.length}</div>
+      <div class="sc-label">Agro Products</div>
+      <div class="sc-sub">${products.filter(p => p.available !== false).length} available</div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-emoji teal">🚚</div>
+      <div class="sc-num">${ongoingDeliveries}</div>
+      <div class="sc-label">Active Deliveries</div>
+      <div class="sc-sub">${deliveries.length} total ever</div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-emoji amber">⚠️</div>
+      <div class="sc-num">${pendingUsers}</div>
+      <div class="sc-label">Awaiting Approval</div>
+      <div class="sc-sub">${users.filter(u => u.status === 'banned').length} banned</div>
+    </div>
+  `;
+
+  // Role breakdown
+  const roles = ['farmer','customer','supplier','marketeer','delivery','admin'];
+  const roleCounts = {};
+  users.forEach(u => { const r = u.role || 'unknown'; roleCounts[r] = (roleCounts[r]||0) + 1; });
+
+  // Stage breakdown
+  const stageCounts = {planted:0, growing:0, flowering:0, fruiting:0, harvesting:0, harvested:0};
+  batches.forEach(b => { if (b.stage && stageCounts[b.stage] != null) stageCounts[b.stage]++; });
+
+  $('dashBreakdowns').innerHTML = `
+    <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);padding:20px;box-shadow:var(--sh-xs)">
+      <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin-bottom:14px">Users by Role</div>
+      ${roles.map(r => {
+        const cnt = roleCounts[r] || 0;
+        const pct = users.length ? Math.round(cnt/users.length*100) : 0;
+        return `
+          <div style="margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--td);margin-bottom:4px">
+              <span>${roleEmoji(r)} ${r.charAt(0).toUpperCase()+r.slice(1)}</span>
+              <span>${cnt}</span>
+            </div>
+            <div style="height:6px;background:var(--bd);border-radius:3px;overflow:hidden">
+              <div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#86efac,#16a34a);border-radius:3px"></div>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+    <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);padding:20px;box-shadow:var(--sh-xs)">
+      <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin-bottom:14px">Batches by Stage</div>
+      ${Object.entries(stageCounts).map(([stage, cnt]) => {
+        const pct = batches.length ? Math.round(cnt/batches.length*100) : 0;
+        return `
+          <div style="margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--td);margin-bottom:4px">
+              <span>${stageEmoji(stage)} ${stage.charAt(0).toUpperCase()+stage.slice(1)}</span>
+              <span>${cnt}</span>
+            </div>
+            <div style="height:6px;background:var(--bd);border-radius:3px;overflow:hidden">
+              <div style="width:${pct}%;height:100%;background:linear-gradient(90deg,#fdba74,#ea580c);border-radius:3px"></div>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+
+  // Recent activity
+  const recent = [];
+  users.slice(-5).forEach(u => recent.push({ ts: u.createdAt || 0, text: `New ${u.role||'user'}: ${u.firstName||''} ${u.lastName||''}`.trim(), emoji: roleEmoji(u.role) }));
+  listings.slice(-5).forEach(l => recent.push({ ts: l.createdAt || 0, text: `Listing: ${l.productName||l.title||'product'}`, emoji: '🛒' }));
+  batches.slice(-5).forEach(b => recent.push({ ts: b.createdAt || 0, text: `Batch: ${b.cropName||'crop'} by ${b.ownerName||'farmer'}`, emoji: stageEmoji(b.stage) }));
+  recent.sort((a,b) => b.ts - a.ts);
+  const top = recent.slice(0, 8);
+
+  $('dashRecent').innerHTML = top.length ? `
+    <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);padding:20px;box-shadow:var(--sh-xs)">
+      <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin-bottom:14px">Recent Activity</div>
+      ${top.map(r => `
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd)">
+          <div style="width:36px;height:36px;border-radius:10px;background:var(--sf2);display:flex;align-items:center;justify-content:center;font-size:16px">${r.emoji}</div>
+          <div style="flex:1;font-size:13px;font-weight:700;color:var(--td)">${esc(r.text)}</div>
+          <div style="font-size:11px;font-weight:700;color:var(--tl)">${r.ts ? timeAgo(r.ts) : ''}</div>
+        </div>
+      `).join('')}
+    </div>
+  ` : '';
+}
+
+/* ================================================================
+   USERS
+   ================================================================ */
+function renderUsers() {
+  const { userSearch, userRole, userStatus } = State.filters;
+  const search = userSearch.toLowerCase().trim();
+  let users = Object.entries(State.users).map(([uid, u]) => ({ uid, ...u }));
+
+  if (userRole !== 'all') users = users.filter(u => u.role === userRole);
+  if (userStatus !== 'all') users = users.filter(u => (u.status || 'approved') === userStatus);
+  if (search) {
+    users = users.filter(u => {
+      const hay = [u.firstName, u.lastName, u.email, u.phone, u.businessName, u.city].filter(Boolean).join(' ').toLowerCase();
+      return hay.includes(search);
+    });
+  }
+  users.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+  const tb = $('usersTableBody');
+  if (!users.length) {
+    tb.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="em">👥</div><h3>No users found</h3><p>Try a different filter or search term.</p></div></td></tr>`;
+    return;
+  }
+
+  tb.innerHTML = users.map(u => {
+    const name = ((u.firstName || '') + ' ' + (u.lastName || '')).trim() || u.businessName || 'Unnamed';
+    const status = u.status || 'approved';
+    return `
+      <tr data-uid="${esc(u.uid)}">
+        <td>
+          <div class="cell-user">
+            <div class="cell-avatar">${u.profileUrl || u.logoUrl ? `<img src="${esc(u.profileUrl || u.logoUrl)}" alt="">` : initials(name)}</div>
+            <div>
+              <div class="cell-name">${esc(name)}</div>
+              <div class="cell-sub">${esc(u.email || '—')}</div>
+            </div>
+          </div>
+        </td>
+        <td><span class="badge role ${esc(u.role||'')}">${roleEmoji(u.role)} ${esc(u.role || 'customer')}</span></td>
+        <td><span class="badge ${status}">${esc(status)}</span></td>
+        <td>${esc(u.city || '—')}</td>
+        <td>${esc(u.phone || '—')}</td>
+        <td style="text-align:right">
+          <div class="action-group">
+            <button class="action-btn view" data-user-action="view" data-uid="${esc(u.uid)}" title="View">👁</button>
+            ${status === 'pending' ? `
+              <button class="action-btn approve" data-user-action="approve" data-uid="${esc(u.uid)}" title="Approve">✓</button>
+              <button class="action-btn reject" data-user-action="reject" data-uid="${esc(u.uid)}" title="Reject">✕</button>
+            ` : ''}
+            ${status !== 'banned' ? `
+              <button class="action-btn ban" data-user-action="ban" data-uid="${esc(u.uid)}" title="Ban">🚫</button>
+            ` : `
+              <button class="action-btn approve" data-user-action="unban" data-uid="${esc(u.uid)}" title="Unban">✓</button>
+            `}
+            <button class="action-btn delete" data-user-action="delete" data-uid="${esc(u.uid)}" title="Delete">🗑</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  // Wire actions
+  tb.querySelectorAll('[data-user-action]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const uid = btn.dataset.uid;
+      const action = btn.dataset.userAction;
+      if (action === 'view') openUserDetail(uid);
+      else if (action === 'approve') approveUser(uid);
+      else if (action === 'reject') rejectUser(uid);
+      else if (action === 'ban') banUser(uid);
+      else if (action === 'unban') unbanUser(uid);
+      else if (action === 'delete') deleteUserConfirm(uid);
+    });
+  });
+
+  // Row click opens detail
+  tb.querySelectorAll('tr[data-uid]').forEach(tr => {
+    tr.addEventListener('click', e => {
+      if (e.target.closest('button')) return;
+      openUserDetail(tr.dataset.uid);
+    });
+  });
+}
+
+function openUserDetail(uid) {
+  const u = State.users[uid];
+  if (!u) { toast('User not found'); return; }
+  const name = ((u.firstName || '') + ' ' + (u.lastName || '')).trim() || u.businessName || 'Unnamed';
+  const status = u.status || 'approved';
+  const farms = u.farms ? Object.entries(u.farms).map(([id, f]) => ({id, ...f})) : [];
+  const userBatches = Object.entries(State.batches).map(([id, b]) => ({id, ...b})).filter(b => b.ownerId === uid);
+  const userListings = Object.entries(State.listings).map(([id, l]) => ({id, ...l})).filter(l => l.seller_id === uid);
+  const userProducts = Object.entries(State.products).map(([id, p]) => ({id, ...p})).filter(p => p.sellerId === uid);
+
+  const info = `
+    <div class="info-table">
+      <div class="it-row"><span class="it-k">UID</span><span class="it-v" style="font-family:monospace;font-size:11px">${esc(uid)}</span></div>
+      <div class="it-row"><span class="it-k">Role</span><span class="it-v">${roleEmoji(u.role)} ${esc(u.role||'customer')}</span></div>
+      <div class="it-row"><span class="it-k">Status</span><span class="it-v"><span class="badge ${status}">${esc(status)}</span></span></div>
+      <div class="it-row"><span class="it-k">Email</span><span class="it-v">${esc(u.email || '—')}</span></div>
+      <div class="it-row"><span class="it-k">Phone</span><span class="it-v">${esc(u.phone || u.phoneNumber || '—')}</span></div>
+      <div class="it-row"><span class="it-k">City</span><span class="it-v">${esc(u.city || '—')}</span></div>
+      ${u.businessName ? `<div class="it-row"><span class="it-k">Business</span><span class="it-v">${esc(u.businessName)}</span></div>` : ''}
+      ${u.vehicleType ? `<div class="it-row"><span class="it-k">Vehicle</span><span class="it-v">${esc(u.vehicleType)}</span></div>` : ''}
+      ${u.role === 'delivery' ? `<div class="it-row"><span class="it-k">Available</span><span class="it-v">${u.available ? '✅ Yes' : '❌ No'}</span></div>` : ''}
+      <div class="it-row"><span class="it-k">Created</span><span class="it-v">${u.createdAt ? fmtDateTime(u.createdAt) : '—'}</span></div>
+      ${u.banReason ? `<div class="it-row"><span class="it-k">Ban reason</span><span class="it-v" style="color:var(--danger)">${esc(u.banReason)}</span></div>` : ''}
+    </div>
+    ${u.about ? `<div style="padding:12px 14px;background:var(--sf2);border-radius:12px;font-size:13px;font-weight:600;line-height:1.5;margin-bottom:16px"><strong>About:</strong> ${esc(u.about)}</div>` : ''}
+    ${farms.length ? `
+      <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin:16px 0 8px">Farms (${farms.length})</div>
+      ${farms.map(f => `
+        <div style="display:flex;gap:10px;align-items:center;padding:10px;background:var(--sf2);border-radius:10px;margin-bottom:6px">
+          <div style="width:40px;height:40px;border-radius:10px;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:20px">🌾</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:800;color:var(--td)">${esc(f.name || 'Unnamed Farm')}</div>
+            <div style="font-size:11px;color:var(--tl);font-weight:600">${esc(f.city || '—')}</div>
+          </div>
+        </div>
+      `).join('')}
+    ` : ''}
+    ${userBatches.length ? `
+      <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin:16px 0 8px">Batches (${userBatches.length})</div>
+      ${userBatches.slice(0,5).map(b => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--sf2);border-radius:10px;margin-bottom:6px;font-size:12px">
+          <span style="font-weight:800;color:var(--td)">${stageEmoji(b.stage)} ${esc(b.cropName || '—')}</span>
+          <span class="badge stage ${esc(b.stage||'')}">${esc(b.stage || 'planted')}</span>
+        </div>
+      `).join('')}
+    ` : ''}
+    ${userListings.length ? `
+      <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin:16px 0 8px">Listings (${userListings.length})</div>
+      ${userListings.slice(0,5).map(l => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--sf2);border-radius:10px;margin-bottom:6px;font-size:12px">
+          <span style="font-weight:800;color:var(--td)">🛒 ${esc(l.productName || l.title || '—')}</span>
+          <span class="badge ${l.availabilityStatus||'pending'}">${esc(l.availabilityStatus || 'pending')}</span>
+        </div>
+      `).join('')}
+    ` : ''}
+    ${userProducts.length ? `
+      <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin:16px 0 8px">Agro Products (${userProducts.length})</div>
+      ${userProducts.slice(0,5).map(p => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--sf2);border-radius:10px;margin-bottom:6px;font-size:12px">
+          <span style="font-weight:800;color:var(--td)">📦 ${esc(p.name || '—')}</span>
+          <span style="font-size:11px;color:var(--tl)">${fmtZMK(p.price)}</span>
+        </div>
+      `).join('')}
+    ` : ''}
+  `;
+
+  const foot = `
+    <button class="btn btn-outline" id="mEdit">✏️ Edit</button>
+    <button class="btn btn-primary" id="mNotify">🔔 Notify</button>
+    ${status !== 'banned'
+      ? `<button class="btn btn-danger-soft" id="mBan">🚫 Ban</button>`
+      : `<button class="btn btn-ok-soft" id="mUnban">✓ Unban</button>`}
+  `;
+
+  showModal(name, u.email || '—', info, foot);
+
+  $('mEdit').addEventListener('click', () => openUserEdit(uid));
+  $('mNotify').addEventListener('click', () => {
+    closeModal();
+    navigate('notifications');
+    setTimeout(() => {
+      $('notifAudience').value = 'custom';
+      $('notifAudience').dispatchEvent(new Event('change'));
+      $('notifCustomTarget').value = uid;
+    }, 200);
+  });
+  if (status !== 'banned') $('mBan').addEventListener('click', () => { closeModal(); banUser(uid); });
+  else $('mUnban').addEventListener('click', () => { closeModal(); unbanUser(uid); });
+}
+
+function openUserEdit(uid) {
+  const u = State.users[uid];
+  if (!u) return;
+  const body = `
+    <div class="form-row">
+      <div class="form-field"><label>First Name</label><input type="text" id="euFirst" value="${esc(u.firstName||'')}"></div>
+      <div class="form-field"><label>Last Name</label><input type="text" id="euLast" value="${esc(u.lastName||'')}"></div>
+    </div>
+    <div class="form-field"><label>Business Name</label><input type="text" id="euBiz" value="${esc(u.businessName||'')}"></div>
+    <div class="form-row">
+      <div class="form-field"><label>Phone</label><input type="tel" id="euPhone" value="${esc(u.phone||u.phoneNumber||'')}"></div>
+      <div class="form-field"><label>City</label><input type="text" id="euCity" value="${esc(u.city||'')}"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-field"><label>Role</label>
+        <select id="euRole">
+          ${['customer','farmer','supplier','marketeer','delivery','admin'].map(r => `<option value="${r}" ${(u.role||'')===r?'selected':''}>${roleEmoji(r)} ${r}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-field"><label>Status</label>
+        <select id="euStatus">
+          ${['approved','pending','rejected','banned'].map(s => `<option value="${s}" ${(u.status||'approved')===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="form-field"><label>Ban reason (if banning)</label><input type="text" id="euBan" value="${esc(u.banReason||'')}" placeholder="Reason"></div>
+  `;
+  showModal('Edit User', u.email || '', body, `
+    <button class="btn btn-outline" onclick="document.getElementById('modalOverlay').classList.remove('open')">Cancel</button>
+    <button class="btn btn-primary" id="euSave">💾 Save Changes</button>
+  `);
+
+  $('euSave').addEventListener('click', async () => {
+    const updates = {
+      firstName: $('euFirst').value.trim(),
+      lastName: $('euLast').value.trim(),
+      businessName: $('euBiz').value.trim() || null,
+      phone: $('euPhone').value.trim(),
+      city: $('euCity').value.trim(),
+      role: $('euRole').value,
+      status: $('euStatus').value,
+      banReason: $('euBan').value.trim() || null,
+      updatedAt: Date.now()
+    };
+    try {
+      await update(ref(db, 'users/' + uid), updates);
+      toast('User updated ✓');
+      closeModal();
+    } catch(e) {
+      toast('Failed: ' + (e.message || e));
+    }
+  });
+}
+
+async function approveUser(uid) {
+  try {
+    await update(ref(db, 'users/' + uid), { status: 'approved', approvedAt: Date.now(), banReason: null });
+    toast('User approved ✓');
+  } catch(e) { toast('Failed: ' + e.message); }
+}
+
+async function rejectUser(uid) {
+  showConfirm('Reject user?', 'This user will not be able to log in.', async () => {
+    try {
+      await update(ref(db, 'users/' + uid), { status: 'rejected', rejectedAt: Date.now() });
+      toast('User rejected');
+    } catch(e) { toast('Failed: ' + e.message); }
+  }, { okText: 'Reject', okClass: 'btn-warn' });
+}
+
+async function banUser(uid) {
+  const u = State.users[uid];
+  const reason = prompt('Reason for ban (optional):', '') || '';
+  try {
+    await update(ref(db, 'users/' + uid), { status: 'banned', banReason: reason, bannedAt: Date.now() });
+    toast('User banned 🚫');
+  } catch(e) { toast('Failed: ' + e.message); }
+}
+
+async function unbanUser(uid) {
+  try {
+    await update(ref(db, 'users/' + uid), { status: 'approved', banReason: null, unbannedAt: Date.now() });
+    toast('User unbanned ✓');
+  } catch(e) { toast('Failed: ' + e.message); }
+}
+
+function deleteUserConfirm(uid) {
+  const u = State.users[uid];
+  const name = ((u.firstName || '') + ' ' + (u.lastName || '')).trim() || 'this user';
+  showConfirm('Delete user?', `Permanently delete ${name} and all their data (batches, listings, products)? This cannot be undone.`, async () => {
+    try {
+      // Delete related data
+      const promises = [];
+      Object.entries(State.batches).forEach(([id, b]) => {
+        if (b.ownerId === uid) promises.push(remove(ref(db, 'batches/' + id)));
+      });
+      Object.entries(State.listings).forEach(([id, l]) => {
+        if (l.seller_id === uid) promises.push(remove(ref(db, 'marketListings/' + id)));
+      });
+      Object.entries(State.products).forEach(([id, p]) => {
+        if (p.sellerId === uid) promises.push(remove(ref(db, 'agroProducts/' + id)));
+      });
+      await Promise.all(promises);
+      await remove(ref(db, 'users/' + uid));
+      toast('User deleted');
+    } catch(e) { toast('Failed: ' + e.message); }
+  }, { okText: 'Delete', okClass: 'btn-danger', icon: '🗑' });
+}
+
+/* ================================================================
+   BATCHES
+   ================================================================ */
+function renderBatches() {
+  const { batchSearch, batchStage } = State.filters;
+  const search = batchSearch.toLowerCase().trim();
+  let batches = Object.entries(State.batches).map(([id, b]) => ({ id, ...b }));
+
+  if (batchStage !== 'all') batches = batches.filter(b => b.stage === batchStage);
+  if (search) {
+    batches = batches.filter(b => {
+      const hay = [b.cropName, b.varietyName, b.ownerName, b.town, b.batchNumber].filter(Boolean).join(' ').toLowerCase();
+      return hay.includes(search);
+    });
+  }
+  batches.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+  const tb = $('batchesTableBody');
+  if (!batches.length) {
+    tb.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="em">🌱</div><h3>No batches found</h3><p>Try a different filter or search.</p></div></td></tr>`;
+    return;
+  }
+
+  tb.innerHTML = batches.map(b => `
+    <tr data-batch-id="${esc(b.id)}">
+      <td>
+        <div class="cell-user">
+          <div class="cell-avatar" style="background:linear-gradient(145deg,#d1fae5,#10b981)">${pickIcon(b.cropName)}</div>
+          <div>
+            <div class="cell-name">${esc(b.cropName || '—')}</div>
+            <div class="cell-sub">${esc(b.varietyName || '')}</div>
+          </div>
+        </div>
+      </td>
+      <td>${esc(b.ownerName || '—')}</td>
+      <td>${esc(b.town || '—')}</td>
+      <td><span class="badge stage ${esc(b.stage||'')}">${stageEmoji(b.stage)} ${esc(b.stage || 'planted')}</span></td>
+      <td>${b.estimatedBoxes ? Number(b.estimatedBoxes).toLocaleString() : '—'}</td>
+      <td>${b.actualBoxes ? Number(b.actualBoxes).toLocaleString() : '—'}</td>
+      <td style="text-align:right">
+        <div class="action-group">
+          <button class="action-btn view" data-batch-action="view" data-batch-id="${esc(b.id)}" title="View">👁</button>
+          <button class="action-btn delete" data-batch-action="delete" data-batch-id="${esc(b.id)}" title="Delete">🗑</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+
+  tb.querySelectorAll('[data-batch-action]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = btn.dataset.batchId;
+      const action = btn.dataset.batchAction;
+      if (action === 'view') openBatchDetail(id);
+      else if (action === 'delete') deleteBatchConfirm(id);
+    });
+  });
+  tb.querySelectorAll('tr[data-batch-id]').forEach(tr => {
+    tr.addEventListener('click', e => {
+      if (e.target.closest('button')) return;
+      openBatchDetail(tr.dataset.batchId);
+    });
+  });
+}
+
+function openBatchDetail(id) {
+  const b = State.batches[id];
+  if (!b) return;
+  const info = `
+    <div class="info-table">
+      <div class="it-row"><span class="it-k">Batch #</span><span class="it-v" style="font-family:monospace;font-size:11px">${esc(b.batchNumber || '—')}</span></div>
+      <div class="it-row"><span class="it-k">Crop</span><span class="it-v">${pickIcon(b.cropName)} ${esc(b.cropName || '—')}</span></div>
+      <div class="it-row"><span class="it-k">Variety</span><span class="it-v">${esc(b.varietyName || '—')}</span></div>
+      <div class="it-row"><span class="it-k">Farmer</span><span class="it-v">${esc(b.ownerName || '—')}</span></div>
+      <div class="it-row"><span class="it-k">Town</span><span class="it-v">${esc(b.town || '—')}</span></div>
+      <div class="it-row"><span class="it-k">Stage</span><span class="it-v"><span class="badge stage ${esc(b.stage||'')}">${esc(b.stage || 'planted')}</span></span></div>
+      <div class="it-row"><span class="it-k">Est. boxes</span><span class="it-v">${b.estimatedBoxes ? Number(b.estimatedBoxes).toLocaleString() : '—'}</span></div>
+      <div class="it-row"><span class="it-k">Actual boxes</span><span class="it-v">${b.actualBoxes ? Number(b.actualBoxes).toLocaleString() : '—'}</span></div>
+      <div class="it-row"><span class="it-k">Planted</span><span class="it-v">${fmtDate(b.plantedDate)}</span></div>
+      <div class="it-row"><span class="it-k">Harvest window</span><span class="it-v">${fmtDate(b.harvestStart)} – ${fmtDate(b.harvestEnd)}</span></div>
+      ${b.soilType ? `<div class="it-row"><span class="it-k">Soil</span><span class="it-v">${esc(b.soilType)}</span></div>` : ''}
+      ${b.irrigationType ? `<div class="it-row"><span class="it-k">Irrigation</span><span class="it-v">${esc(b.irrigationType)}</span></div>` : ''}
+    </div>
+    <div class="form-field">
+      <label>Change Stage</label>
+      <select id="bStageSelect">
+        ${['planted','growing','flowering','fruiting','harvesting','harvested'].map(s => `<option value="${s}" ${(b.stage||'planted')===s?'selected':''}>${stageEmoji(s)} ${s}</option>`).join('')}
+      </select>
+    </div>
+  `;
+  showModal(b.cropName || 'Batch', b.batchNumber || '', info, `
+    <button class="btn btn-outline" onclick="document.getElementById('modalOverlay').classList.remove('open')">Cancel</button>
+    <button class="btn btn-primary" id="bSaveStage">💾 Update Stage</button>
+  `);
+  $('bSaveStage').addEventListener('click', async () => {
+    const newStage = $('bStageSelect').value;
+    try {
+      await update(ref(db, 'batches/' + id), { stage: newStage, updatedAt: Date.now() });
+      toast('Stage updated ✓');
+      closeModal();
+    } catch(e) { toast('Failed: ' + e.message); }
+  });
+}
+
+function deleteBatchConfirm(id) {
+  showConfirm('Delete batch?', 'This permanently removes the batch and all its harvest records.', async () => {
+    try {
+      await remove(ref(db, 'batches/' + id));
+      toast('Batch deleted');
+    } catch(e) { toast('Failed: ' + e.message); }
+  }, { okText: 'Delete', okClass: 'btn-danger', icon: '🗑' });
+}
+
+/* ================================================================
+   LISTINGS
+   ================================================================ */
+function renderListings() {
+  const { listingSearch, listingStatus } = State.filters;
+  const search = listingSearch.toLowerCase().trim();
+  let listings = Object.entries(State.listings).map(([id, l]) => ({ id, ...l }));
+
+  if (listingStatus !== 'all') {
+    if (listingStatus === 'active') {
+      listings = listings.filter(l => l.status !== 'removed' && l.availabilityStatus !== 'removed' && l.availabilityStatus !== 'sold');
+    } else {
+      listings = listings.filter(l => (l.availabilityStatus || l.status) === listingStatus);
+    }
+  }
+  if (search) {
+    listings = listings.filter(l => {
+      const hay = [l.productName, l.title, l.sellerName, l.marketName, l.city, l.varietyName].filter(Boolean).join(' ').toLowerCase();
+      return hay.includes(search);
+    });
+  }
+  listings.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+  const tb = $('listingsTableBody');
+  if (!listings.length) {
+    tb.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="em">🛒</div><h3>No listings found</h3><p>Try a different filter.</p></div></td></tr>`;
+    return;
+  }
+
+  tb.innerHTML = listings.map(l => {
+    const status = l.availabilityStatus || l.status || 'pending';
+    const quantity = l.quantity || 0;
+    const unit = l.unit || 'unit';
+    return `
+      <tr data-listing-id="${esc(l.id)}">
+        <td>
+          <div class="cell-user">
+            <div class="cell-avatar">${pickIcon(l.productName || l.title)}</div>
+            <div>
+              <div class="cell-name">${esc(l.productName || l.title || '—')}</div>
+              <div class="cell-sub">${esc(l.varietyName || '')}</div>
+            </div>
+          </div>
+        </td>
+        <td>${esc(l.sellerName || '—')}</td>
+        <td>
+          <div style="font-size:13px;font-weight:700;color:var(--td)">${esc(l.marketName || '—')}</div>
+          <div style="font-size:11px;color:var(--tl);font-weight:600">${esc(l.city || '')}</div>
+        </td>
+        <td>${quantity} ${esc(unit)}</td>
+        <td style="font-weight:800">${fmtZMK(l.priceAmount)}</td>
+        <td><span class="badge ${status}">${esc(status)}</span></td>
+        <td style="text-align:right">
+          <div class="action-group">
+            <button class="action-btn view" data-listing-action="view" data-listing-id="${esc(l.id)}" title="View">👁</button>
+            <button class="action-btn delete" data-listing-action="remove" data-listing-id="${esc(l.id)}" title="Remove">🚫</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  tb.querySelectorAll('[data-listing-action]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = btn.dataset.listingId;
+      const action = btn.dataset.listingAction;
+      if (action === 'view') openListingDetail(id);
+      else if (action === 'remove') removeListingConfirm(id);
+    });
+  });
+  tb.querySelectorAll('tr[data-listing-id]').forEach(tr => {
+    tr.addEventListener('click', e => {
+      if (e.target.closest('button')) return;
+      openListingDetail(tr.dataset.listingId);
+    });
+  });
+}
+
+function openListingDetail(id) {
+  const l = State.listings[id];
+  if (!l) return;
+  const status = l.availabilityStatus || l.status || 'pending';
+  const photos = (l.photoUrls || []).slice(0, 2);
+  const body = `
+    ${photos.length ? `
+      <div style="display:grid;grid-template-columns:repeat(${Math.min(photos.length,2)},1fr);gap:8px;margin-bottom:16px">
+        ${photos.map(u => `<img src="${esc(u)}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;background:#000">`).join('')}
+      </div>
+    ` : ''}
+    <div class="info-table">
+      <div class="it-row"><span class="it-k">Product</span><span class="it-v">${esc(l.productName || l.title || '—')}</span></div>
+      <div class="it-row"><span class="it-k">Variety</span><span class="it-v">${esc(l.varietyName || '—')}</span></div>
+      <div class="it-row"><span class="it-k">Seller</span><span class="it-v">${esc(l.sellerName || '—')}</span></div>
+      <div class="it-row"><span class="it-k">Phone</span><span class="it-v">${esc(l.sellerPhone || '—')}</span></div>
+      <div class="it-row"><span class="it-k">Quantity</span><span class="it-v">${l.quantity || 0} ${esc(l.unit || 'unit')}</span></div>
+      <div class="it-row"><span class="it-k">Price</span><span class="it-v">${fmtZMK(l.priceAmount)} ${l.priceMode === 'total' ? '(total)' : ''}</span></div>
+      <div class="it-row"><span class="it-k">Market</span><span class="it-v">${esc(l.marketName || '—')}</span></div>
+      <div class="it-row"><span class="it-k">City</span><span class="it-v">${esc(l.city || '—')}</span></div>
+      <div class="it-row"><span class="it-k">Status</span><span class="it-v"><span class="badge ${status}">${esc(status)}</span></span></div>
+      <div class="it-row"><span class="it-k">Listed</span><span class="it-v">${fmtDateTime(l.createdAt)}</span></div>
+      ${l.description ? `<div class="it-row"><span class="it-k">Notes</span><span class="it-v">${esc(l.description)}</span></div>` : ''}
+    </div>
+  `;
+  showModal(l.productName || l.title || 'Listing', l.sellerName || '', body, `
+    <button class="btn btn-outline" onclick="document.getElementById('modalOverlay').classList.remove('open')">Close</button>
+    <button class="btn btn-warn-soft" id="lForceSold">💰 Force Sold</button>
+    <button class="btn btn-danger-soft" id="lRemove">🚫 Remove</button>
+  `);
+  $('lForceSold').addEventListener('click', async () => {
+    try {
+      await update(ref(db, 'marketListings/' + id), { status: 'sold', availabilityStatus: 'sold', soldAt: Date.now() });
+      toast('Marked as sold ✓');
+      closeModal();
+    } catch(e) { toast('Failed: ' + e.message); }
+  });
+  $('lRemove').addEventListener('click', () => { closeModal(); removeListingConfirm(id); });
+}
+
+function removeListingConfirm(id) {
+  showConfirm('Remove listing?', 'The listing will be marked as removed. This cannot be undone by the seller.', async () => {
+    try {
+      await update(ref(db, 'marketListings/' + id), { status: 'removed', availabilityStatus: 'removed', removedAt: Date.now(), removedBy: 'admin' });
+      toast('Listing removed');
+    } catch(e) { toast('Failed: ' + e.message); }
+  }, { okText: 'Remove', okClass: 'btn-warn', icon: '🚫' });
+}
+
+/* ================================================================
+   PRODUCTS
+   ================================================================ */
+function renderProducts() {
+  const { productSearch, productCat } = State.filters;
+  const search = productSearch.toLowerCase().trim();
+  let products = Object.entries(State.products).map(([id, p]) => ({ id, ...p }));
+
+  if (productCat !== 'all') products = products.filter(p => p.category === productCat);
+  if (search) {
+    products = products.filter(p => {
+      const hay = [p.name, p.sellerName, p.category, p.cropTag, p.city].filter(Boolean).join(' ').toLowerCase();
+      return hay.includes(search);
+    });
+  }
+  products.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+  const tb = $('productsTableBody');
+  if (!products.length) {
+    tb.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="em">📦</div><h3>No products found</h3><p>Try a different filter.</p></div></td></tr>`;
+    return;
+  }
+
+  tb.innerHTML = products.map(p => {
+    const available = p.available !== false;
+    const stock = Number(p.stock);
+    const stockLabel = isFinite(stock) ? `${stock}` : '—';
+    return `
+      <tr data-product-id="${esc(p.id)}">
+        <td>
+          <div class="cell-user">
+            <div class="cell-avatar">${p.photoUrl ? `<img src="${esc(p.photoUrl)}" alt="">` : pickIcon(p.name)}</div>
+            <div>
+              <div class="cell-name">${esc(p.name || '—')}</div>
+              <div class="cell-sub">${esc(p.cropTag || '')}</div>
+            </div>
+          </div>
+        </td>
+        <td>${esc(p.sellerName || '—')}</td>
+        <td>${esc(p.category || '—')}</td>
+        <td style="font-weight:800">${fmtZMK(p.price)}</td>
+        <td>${stockLabel}</td>
+        <td><span class="badge ${available ? 'active' : 'removed'}">${available ? 'available' : 'unavailable'}</span></td>
+        <td style="text-align:right">
+          <div class="action-group">
+            <button class="action-btn ${available ? 'reject' : 'approve'}" data-product-action="toggle" data-product-id="${esc(p.id)}" title="${available ? 'Hide' : 'Show'}">${available ? '👁' : '✓'}</button>
+            <button class="action-btn delete" data-product-action="delete" data-product-id="${esc(p.id)}" title="Delete">🗑</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  tb.querySelectorAll('[data-product-action]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = btn.dataset.productId;
+      const action = btn.dataset.productAction;
+      if (action === 'toggle') toggleProductAvailable(id);
+      else if (action === 'delete') deleteProductConfirm(id);
+    });
+  });
+}
+
+async function toggleProductAvailable(id) {
+  const p = State.products[id];
+  if (!p) return;
+  const newVal = p.available === false;
+  try {
+    await update(ref(db, 'agroProducts/' + id), { available: newVal, updatedAt: Date.now() });
+    toast(newVal ? 'Product available ✓' : 'Product hidden');
+  } catch(e) { toast('Failed: ' + e.message); }
+}
+
+function deleteProductConfirm(id) {
+  showConfirm('Delete product?', 'This permanently removes the product from the catalogue.', async () => {
+    try {
+      await remove(ref(db, 'agroProducts/' + id));
+      toast('Product deleted');
+    } catch(e) { toast('Failed: ' + e.message); }
+  }, { okText: 'Delete', okClass: 'btn-danger', icon: '🗑' });
+}
+
+/* ================================================================
+   DELIVERIES
+   ================================================================ */
+function renderDeliveries() {
+  const { deliverySearch, deliveryStatus } = State.filters;
+  const search = deliverySearch.toLowerCase().trim();
+  let deliveries = Object.entries(State.deliveries).map(([id, d]) => ({ id, ...d }));
+
+  if (deliveryStatus !== 'all') deliveries = deliveries.filter(d => d.status === deliveryStatus);
+  if (search) {
+    deliveries = deliveries.filter(d => {
+      const hay = [d.pickup?.label, d.dropoff?.label, d.senderName, d.requesterName, d.providerName].filter(Boolean).join(' ').toLowerCase();
+      return hay.includes(search);
+    });
+  }
+  deliveries.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+  const tb = $('deliveriesTableBody');
+  if (!deliveries.length) {
+    tb.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="em">🚚</div><h3>No delivery requests found</h3><p>Try a different filter.</p></div></td></tr>`;
+    return;
+  }
+
+  tb.innerHTML = deliveries.map(d => {
+    const status = d.status || 'searching';
+    const customer = d.senderName || d.requesterName || '—';
+    const driver = d.providerName || 'Unassigned';
+    return `
+      <tr data-delivery-id="${esc(d.id)}">
+        <td>
+          <div style="font-size:13px;font-weight:800;color:var(--td)">${esc(d.pickup?.label || '—')}</div>
+          <div style="font-size:11px;color:var(--tl);font-weight:600;margin-top:2px">→ ${esc(d.dropoff?.label || '—')}</div>
+        </td>
+        <td>${esc(customer)}</td>
+        <td>${esc(driver)}</td>
+        <td style="font-weight:800">${fmtZMK(d.fare)}</td>
+        <td><span class="badge ${status === 'delivered' ? 'approved' : status === 'cancelled' ? 'removed' : 'pending'}">${esc(status)}</span></td>
+        <td style="text-align:right">
+          <div class="action-group">
+            <button class="action-btn view" data-delivery-action="view" data-delivery-id="${esc(d.id)}" title="View">👁</button>
+            ${['searching','accepted','arrived','in_progress'].includes(status) ? `
+              <button class="action-btn delete" data-delivery-action="cancel" data-delivery-id="${esc(d.id)}" title="Cancel">🚫</button>
+            ` : ''}
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  tb.querySelectorAll('[data-delivery-action]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = btn.dataset.deliveryId;
+      const action = btn.dataset.deliveryAction;
+      if (action === 'view') openDeliveryDetail(id);
+      else if (action === 'cancel') cancelDeliveryConfirm(id);
+    });
+  });
+  tb.querySelectorAll('tr[data-delivery-id]').forEach(tr => {
+    tr.addEventListener('click', e => {
+      if (e.target.closest('button')) return;
+      openDeliveryDetail(tr.dataset.deliveryId);
+    });
+  });
+}
+
+function openDeliveryDetail(id) {
+  const d = State.deliveries[id];
+  if (!d) return;
+  const status = d.status || 'searching';
+  const body = `
+    <div class="info-table">
+      <div class="it-row"><span class="it-k">Status</span><span class="it-v"><span class="badge ${status === 'delivered' ? 'approved' : status === 'cancelled' ? 'removed' : 'pending'}">${esc(status)}</span></span></div>
+      <div class="it-row"><span class="it-k">Customer</span><span class="it-v">${esc(d.senderName || d.requesterName || '—')}</span></div>
+      <div class="it-row"><span class="it-k">Customer phone</span><span class="it-v">${esc(d.senderPhone || d.requesterPhone || '—')}</span></div>
+      <div class="it-row"><span class="it-k">Driver</span><span class="it-v">${esc(d.providerName || 'Unassigned')}</span></div>
+      ${d.providerPhone ? `<div class="it-row"><span class="it-k">Driver phone</span><span class="it-v">${esc(d.providerPhone)}</span></div>` : ''}
+      <div class="it-row"><span class="it-k">Pickup</span><span class="it-v">${esc(d.pickup?.label || '—')}</span></div>
+      <div class="it-row"><span class="it-k">Dropoff</span><span class="it-v">${esc(d.dropoff?.label || '—')}</span></div>
+      <div class="it-row"><span class="it-k">Cargo</span><span class="it-v">${esc(d.cargo || '—')}</span></div>
+      <div class="it-row"><span class="it-k">Fare</span><span class="it-v">${fmtZMK(d.fare)}</span></div>
+      <div class="it-row"><span class="it-k">Created</span><span class="it-v">${fmtDateTime(d.createdAt)}</span></div>
+      ${d.deliveredAt ? `<div class="it-row"><span class="it-k">Delivered</span><span class="it-v">${fmtDateTime(d.deliveredAt)}</span></div>` : ''}
+    </div>
+  `;
+  const foot = ['searching','accepted','arrived','in_progress'].includes(status)
+    ? `<button class="btn btn-outline" onclick="document.getElementById('modalOverlay').classList.remove('open')">Close</button>
+       <button class="btn btn-danger-soft" id="dCancel">🚫 Cancel Delivery</button>`
+    : `<button class="btn btn-outline" onclick="document.getElementById('modalOverlay').classList.remove('open')">Close</button>`;
+  showModal('Delivery Request', `${d.pickup?.label || ''} → ${d.dropoff?.label || ''}`, body, foot);
+  const cancelBtn = $('dCancel');
+  if (cancelBtn) cancelBtn.addEventListener('click', () => { closeModal(); cancelDeliveryConfirm(id); });
+}
+
+function cancelDeliveryConfirm(id) {
+  showConfirm('Cancel delivery?', 'The request will be marked as cancelled. The driver and customer will be notified on their next view.', async () => {
+    try {
+      await update(ref(db, 'deliveryRequests/' + id), { status: 'cancelled', cancelledAt: Date.now(), cancelledBy: 'admin' });
+      toast('Delivery cancelled');
+    } catch(e) { toast('Failed: ' + e.message); }
+  }, { okText: 'Cancel Delivery', okClass: 'btn-danger', icon: '🚫' });
+}
+
+/* ================================================================
+   NOTIFICATIONS
+   ================================================================ */
+function bindNotif() {
+  $('notifAudience').addEventListener('change', e => {
+    $('notifCustomWrap').style.display = e.target.value === 'custom' ? 'block' : 'none';
+  });
+  $('notifClear').addEventListener('click', () => {
+    $('notifTitle').value = '';
+    $('notifBody').value = '';
+    $('notifCustomTarget').value = '';
+  });
+  $('notifSend').addEventListener('click', sendNotification);
+}
+
+function renderNotifications() {
+  // Counts
+  const allUsers = Object.entries(State.users).map(([uid, u]) => ({ uid, ...u }));
+  const reachable = allUsers.filter(u => u.status === 'approved');
+  $('notifTotalSent').textContent = State.notifSent.length;
+  $('notifReachable').textContent = reachable.length;
+
+  // Log
+  if (!State.notifSent.length) {
+    $('notifSentList').innerHTML = `<div class="empty-state"><div class="em">📢</div><h3>No notifications sent yet</h3><p>Send your first notification above.</p></div>`;
+    return;
+  }
+  $('notifSentList').innerHTML = `
+    <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--bd);padding:20px;box-shadow:var(--sh-xs)">
+      <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);margin-bottom:14px">Session Log (${State.notifSent.length})</div>
+      ${State.notifSent.slice().reverse().map(n => `
+        <div style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--bd)">
+          <div style="width:36px;height:36px;border-radius:10px;background:var(--p-l);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🔔</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:800;color:var(--td)">${esc(n.title)}</div>
+            <div style="font-size:12px;color:var(--tl);font-weight:600;margin-top:2px;line-height:1.4">${esc(n.body)}</div>
+            <div style="font-size:11px;color:var(--tl);font-weight:700;margin-top:4px">To: ${esc(n.audience)} · ${n.count} user${n.count === 1 ? '' : 's'} · ${timeAgo(n.ts)}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+async function sendNotification() {
+  const audience = $('notifAudience').value;
+  const customTarget = $('notifCustomTarget').value.trim();
+  const title = $('notifTitle').value.trim();
+  const body = $('notifBody').value.trim();
+  const type = $('notifType').value;
+
+  if (!title || !body) { toast('Title and message required'); return; }
+
+  let targets = [];
+
+  if (audience === 'custom') {
+    if (!customTarget) { toast('Enter target UID or email'); return; }
+    // Find by uid or email
+    let targetUid = null;
+    if (State.users[customTarget]) {
+      targetUid = customTarget;
+    } else {
+      for (const uid in State.users) {
+        if ((State.users[uid].email || '').toLowerCase() === customTarget.toLowerCase()) {
+          targetUid = uid;
+          break;
+        }
+      }
+    }
+    if (!targetUid) { toast('User not found'); return; }
+    targets.push(targetUid);
+  } else {
+    const all = Object.entries(State.users).map(([uid, u]) => ({ uid, ...u }));
+    if (audience === 'all') targets = all.filter(u => u.status === 'approved' && u.status !== 'banned').map(u => u.uid);
+    else if (audience === 'pending') targets = all.filter(u => u.status === 'pending').map(u => u.uid);
+    else targets = all.filter(u => u.role === audience).map(u => u.uid);
+  }
+
+  if (!targets.length) { toast('No matching users'); return; }
+
+  const btn = $('notifSend');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  try {
+    const ts = Date.now();
+    const promises = targets.map(uid => {
+      const newNotifRef = push(ref(db, `users/${uid}/notifications`));
+      return set(newNotifRef, {
+        title, body, type,
+        createdAt: ts,
+        read: false,
+        from: 'admin',
+        fromName: 'UTOM Admin'
+      }).catch(e => console.warn('Failed for', uid, e));
+    });
+    await Promise.all(promises);
+
+    State.notifSent.push({
+      title, body, type, audience,
+      count: targets.length, ts
+    });
+
+    $('notifTitle').value = '';
+    $('notifBody').value = '';
+    $('notifCustomTarget').value = '';
+    toast(`Notification sent to ${targets.length} user${targets.length === 1 ? '' : 's'} ✓`);
+    renderNotifications();
+  } catch(e) {
+    toast('Failed: ' + (e.message || e));
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📤 Send Notification';
+  }
+}
+
+/* ================================================================
+   SETTINGS
+   ================================================================ */
+function bindSettings() {
+  $('maintToggleBtn').addEventListener('click', async () => {
+    const cur = State.maintenance || {};
+    await saveMaintenance({ enabled: !cur.enabled, message: cur.message || $('maintMessage').value || '' });
+  });
+  $('maintSave').addEventListener('click', async () => {
+    const cur = State.maintenance || {};
+    await saveMaintenance({
+      enabled: !!cur.enabled,
+      message: $('maintMessage').value.trim() || 'System maintenance in progress. Please check back shortly.'
+    });
+  });
+  $$('[data-export]').forEach(btn => {
+    btn.addEventListener('click', () => exportData(btn.dataset.export));
+  });
+}
+
+function renderSettings() {
+  const cur = State.maintenance || { enabled: false, message: '' };
+  $('maintStatusLabel').textContent = cur.enabled ? '🔴 Maintenance ON' : '🟢 Platform Live';
+  $('maintStatusSub').textContent = cur.enabled
+    ? 'Users see a maintenance screen'
+    : 'All apps running normally';
+  $('maintToggleBtn').textContent = cur.enabled ? 'Disable' : 'Enable';
+  $('maintToggleBtn').className = 'btn ' + (cur.enabled ? 'btn-ok-soft' : 'btn-warn-soft');
+  $('maintMessage').value = cur.message || '';
+}
+
+async function saveMaintenance(data) {
+  try {
+    await set(ref(db, 'system/maintenance'), {
+      enabled: !!data.enabled,
+      message: data.message || 'System maintenance in progress. Please check back shortly.',
+      updatedAt: Date.now(),
+      updatedBy: State.adminUser.uid
+    });
+    toast('Maintenance settings saved ✓');
+  } catch(e) {
+    toast('Failed: ' + (e.message || e));
+  }
+}
+
+function exportData(what) {
+  const payload = {};
+  if (what === 'users' || what === 'all') payload.users = State.users;
+  if (what === 'batches' || what === 'all') payload.batches = State.batches;
+  if (what === 'listings' || what === 'all') payload.listings = State.listings;
+  if (what === 'products' || what === 'all') payload.products = State.products;
+  if (what === 'all') payload.deliveries = State.deliveries;
+
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `utom-${what}-${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Export downloaded ✓');
+}
+
+/* ================================================================
+   GLOBAL HANDLERS
+   ================================================================ */
+window.addEventListener('popstate', () => {
+  if ($('modalOverlay').classList.contains('open')) closeModal();
+  if ($('confirmOverlay').classList.contains('open')) {
+    $('confirmOverlay').classList.remove('open');
+    confirmCallback = null;
+  }
+});
+
+window.addEventListener('unhandledrejection', e => {
+  console.warn('Unhandled:', e.reason);
+});
+</script>
+</body>
+</html>
